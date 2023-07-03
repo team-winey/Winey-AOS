@@ -20,7 +20,7 @@ GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
 
 | [@sxunea](https://github.com/sxunea) | [@Sangwook123](https://github.com/Sangwook123)  | [@leeeha](https://github.com/leeeha) |
 |:------------------------------------:|:-------------------------:|:------------------------------:|
-|      <img width="150" src=""/>       | <img width="150" src=""/> |   <img width="150" src="https://github.com/team-winey/Winey-AOS/assets/68090939/ddd5b602-ee67-453c-8fff-d5fa50727b5b"/>    |
+|      <img width="150" src="https://github.com/team-winey/Winey-AOS/assets/68090939/03ec7e2e-5ed9-4245-8832-d5c8bfee77db"/>       | <img width="150" src="https://github.com/team-winey/Winey-AOS/assets/68090939/765d0885-d68a-4e59-a3a4-d1ff61f84686"/> |   <img width="150" src="https://github.com/team-winey/Winey-AOS/assets/68090939/ddd5b602-ee67-453c-8fff-d5fa50727b5b"/>    |
 |             머닛 피드, 마이 피드             |          마이 머닛            |         머닛 업로드, 추천 머닛          |
 
 ## 🛠 Tech Stack 
@@ -36,8 +36,3 @@ GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
 [위니 안드 팀의 칸반보드가 궁금하다면? click ✔](https://github.com/orgs/team-winey/projects/2)
 
 ## 📂 Foldering 
-
-
-
-
-
