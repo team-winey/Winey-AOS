@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- YellowScale -->
-    <color name="yellow">#FFCCFC56</color>
+    <color name="winey_yellow">#FFCCFC56</color>
     <!-- PurpleScale -->
     <color name="purple_100">#FFF2E9FF</color>
     <color name="purple_200">#FFC9A6FD</color>

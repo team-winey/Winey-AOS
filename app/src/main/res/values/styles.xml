@@ -13,14 +13,14 @@
         <item name="android:fontFamily">@font/pretendard_bold</item>
         <item name="fontWeight">700</item>
         <item name="android:textSize">24dp</item>
-        <item name="lineHeight">23dp</item>
+        <item name="lineHeight">31dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.Headline_b_20_xl">
         <item name="android:fontFamily">@font/pretendard_bold</item>
         <item name="fontWeight">700</item>
         <item name="android:textSize">24dp</item>
-        <item name="lineHeight">23dp</item>
+        <item name="lineHeight">26dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.Headline_b_18_xl">
@@ -103,8 +103,8 @@
     <style name="TextAppearance.WINEY.detail_b_11">
         <item name="android:fontFamily">@font/pretendard_bold</item>
         <item name="fontWeight">700</item>
-        <item name="android:textSize">14dp</item>
-        <item name="lineHeight">27dp</item>
+        <item name="android:textSize">11dp</item>
+        <item name="lineHeight">15dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.detail_m_11">
