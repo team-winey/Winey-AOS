@@ -1,7 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
+    <!-- YellowScale -->
+    <color name="winey_yellow">#FFCCFC56</color>
+    <!-- PurpleScale -->
+    <color name="purple_100">#FFF2E9FF</color>
+    <color name="purple_200">#FFC9A6FD</color>
+    <color name="purple_300">#FFA266FC</color>
+    <color name="purple_400">#FF7C26FA</color>
+    <color name="purple_500">#FF4C1799</color>
+    <!-- GrayScale -->
+    <color name="gray_0">#FFFFFFFF</color>
+    <color name="gray_50">#FFF7F8FA</color>
+    <color name="gray_100">#FFF0F2F5</color>
+    <color name="gray_200">#FFE0E5EB</color>
+    <color name="gray_300">#FFBFC7CE</color>
+    <color name="gray_400">#FF97A2AF</color>
+    <color name="gray_500">#FF758595</color>
+    <color name="gray_600">#FF52667A</color>
+    <color name="gray_700">#FF3A4857</color>
+    <color name="gray_800">#FF2D3843</color>
+    <color name="gray_900">#FF14191F</color>
+    <!-- SemanticColor -->
+    <!--Danger-->
+    <color name="red_500">#FFFF5150</color>
+    <!-- Informative -->
+    <color name="blue_500">#FF276EF2</color>
+    <!-- Success -->
+    <color name="green_500">#FF00CB81</color>
+    <!-- Others -->
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
