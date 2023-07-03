@@ -9,22 +9,28 @@
         <item name="android:letterSpacing">-0.025</item>
     </style>
     <!-- headline -->
+    <style name="TextAppearance.WINEY.Headline_b_28_xxl">
+        <item name="android:fontFamily">@font/winey_pretendard_bold</item>
+        <item name="android:textSize">28dp</item>
+        <item name="lineHeight">30dp</item>
+    </style>
+
     <style name="TextAppearance.WINEY.Headline_b_24_xxl">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
         <item name="android:textSize">24dp</item>
-        <item name="lineHeight">31dp</item>
+        <item name="lineHeight">28dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.Headline_b_20_xl">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">24dp</item>
-        <item name="lineHeight">26dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="lineHeight">24dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.Headline_b_18_xl">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
         <item name="android:textSize">18dp</item>
-        <item name="lineHeight">23dp</item>
+        <item name="lineHeight">24dp</item>
     </style>
     <!-- body -->
     <style name="TextAppearance.WINEY.body_b_16">
