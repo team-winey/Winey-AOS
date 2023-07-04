@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.ui
+package com.android.go.sopt.winey.presentation.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
