@@ -2,6 +2,8 @@ package com.android.go.sopt.winey.presentation.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityMainBinding
 import com.android.go.sopt.winey.presentation.main.feed.FeedFragment
@@ -15,21 +17,26 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        changeFragment(FeedFragment())
+        initBnvItemSelectedListener()
+    }
 
-        binding.bnvMainView.setOnItemSelectedListener { item ->
+    private fun initBnvItemSelectedListener() {
+        navigateTo<FeedFragment>()
+
+        binding.bnvMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.menu_feed -> changeFragment(FeedFragment())
-                R.id.menu_recommend -> changeFragment(RecommendFragment())
-                R.id.menu_mypage -> changeFragment(MyPageFragment())
+                R.id.menu_feed -> navigateTo<FeedFragment>()
+                R.id.menu_recommend -> navigateTo<RecommendFragment>()
+                R.id.menu_mypage -> navigateTo<MyPageFragment>()
             }
             true
         }
     }
 
-    private fun changeFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fcv_main_view, fragment)
-            .commit()
+    private inline fun <reified T : Fragment> navigateTo() {
+        supportFragmentManager.commit {
+            replace<T>(R.id.fcv_main, T::class.simpleName)
+        }
     }
+
 }
