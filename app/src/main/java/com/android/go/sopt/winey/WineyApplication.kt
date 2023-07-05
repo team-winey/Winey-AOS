@@ -4,7 +4,7 @@ import dagger.hilt.android.HiltAndroidApp
 import android.app.Application
 
 @HiltAndroidApp
-class Application : Application() {
+class WineyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
     }
