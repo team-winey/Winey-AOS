@@ -100,6 +100,7 @@ dependencies {
         implementation(progressView)
         implementation(balloon)
         implementation(lottie)
+
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
         debugImplementation(flipperLeakCanary)
