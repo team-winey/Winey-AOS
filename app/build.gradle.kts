@@ -59,12 +59,15 @@ dependencies {
         implementation(coreKtx)
         implementation(appCompat)
         implementation(constraintLayout)
-        implementation(fragment)
         implementation(startup)
+        implementation(hilt)
+        implementation(activity)
+        implementation(fragment)
         implementation(legacy)
         implementation(security)
-        implementation(hilt)
-        implementation(lifeCycleKtx)
+        implementation(lifecycleKtx)
+        implementation(lifecycleLiveDataKtx)
+        implementation(lifecycleViewModelKtx)
         implementation(lifecycleJava8)
         implementation(splashScreen)
         implementation(pagingRuntime)
@@ -72,20 +75,17 @@ dependencies {
         implementation(hiltWorkManager)
     }
 
-    KaptDependencies.run {
-        kapt(hiltCompiler)
-        kapt(hiltWorkManagerCompiler)
-    }
-
-    implementation(MaterialDesignDependencies.materialDesign)
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1")
-
     TestDependencies.run {
         testImplementation(jUnit)
         androidTestImplementation(androidTest)
         androidTestImplementation(espresso)
+    }
+
+    implementation(MaterialDesignDependencies.materialDesign)
+
+    KaptDependencies.run {
+        kapt(hiltCompiler)
+        kapt(hiltWorkManagerCompiler)
     }
 
     ThirdPartyDependencies.run {
@@ -100,6 +100,7 @@ dependencies {
         implementation(progressView)
         implementation(balloon)
         implementation(lottie)
+
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
         debugImplementation(flipperLeakCanary)
