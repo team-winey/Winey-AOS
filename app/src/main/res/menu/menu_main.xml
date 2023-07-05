@@ -3,13 +3,13 @@
     <item
         android:id="@+id/menu_feed"
         android:icon="@drawable/ic_main_feed"
-        android:title="피드"/>
+        android:title="피드" />
     <item
         android:id="@+id/menu_recommend"
         android:icon="@drawable/ic_main_recommend"
-        android:title="추천"/>
+        android:title="추천" />
     <item
         android:id="@+id/menu_mypage"
         android:icon="@drawable/ic_main_mypage"
-        android:title="마이페이지"/>
+        android:title="마이페이지" />
 </menu>

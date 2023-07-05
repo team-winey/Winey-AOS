@@ -12,14 +12,39 @@
         android:layout_height="match_parent"
         tools:context=".presentation.main.MainActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_main_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/line1_main_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/line1_main_view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_200"
+            app:layout_constraintBottom_toTopOf="@id/bnv_main_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bnv_main_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimaryVariant"
+            app:itemIconTint="@drawable/main_bnv_menu_color_selector"
+            app:itemTextAppearanceActive="@style/TextAppearance.WINEY.detail_m_12"
+            app:itemTextAppearanceInactive="@style/TextAppearance.WINEY.detail_m_12"
+            app:itemTextColor="@drawable/main_bnv_menu_color_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:menu="@menu/menu_main" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
