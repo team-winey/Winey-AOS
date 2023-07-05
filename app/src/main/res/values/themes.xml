@@ -1,6 +1,8 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Theme.Winey" parent="Theme.Material3.Light.NoActionBar">
+        <!-- default background color. -->
+        <item name="android:windowBackground">@color/gray_0</item>
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_400</item>
         <item name="colorPrimaryVariant">@color/gray_0</item>
@@ -13,6 +15,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
-        <item name="background">@color/gray_0</item>
+
+        <!-- Navigation Bar Container color -->
+        <item name="colorSurface">@color/gray_0</item>
+
+        <!-- Navigation Bar Icon/Text Active color -->
+        <item name="colorOnSurface">@color/purple_400</item>
+
+        <!-- Navigation Bar Icon/Text Inactive color -->
+        <item name="colorOnSurfaceVariant">@color/gray_300</item>
     </style>
 </resources>
