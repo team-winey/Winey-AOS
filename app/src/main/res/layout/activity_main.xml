@@ -12,14 +12,39 @@
         android:layout_height="match_parent"
         tools:context=".presentation.main.MainActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_main"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/line1_main"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout="@layout/fragment_feed" />
+
+        <View
+            android:id="@+id/line1_main"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:backgroundTint="@color/gray_200"
+            app:layout_constraintBottom_toTopOf="@id/bnv_main"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bnv_main"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
+            app:itemIconTint="@drawable/sel_main_bnv_icon_color"
+            app:itemTextAppearanceActive="@style/TextAppearance.WINEY.detail_m_12"
+            app:itemTextAppearanceInactive="@style/TextAppearance.WINEY.detail_m_12"
+            app:itemTextColor="@drawable/sel_main_bnv_icon_color"
+            app:itemBackground="?colorSurface"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:menu="@menu/menu_main" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
