@@ -3,4 +3,6 @@
     <string name="main_feed">피드</string>
     <string name="main_recommend">추천</string>
     <string name="main_mypage">마이페이지</string>
+    <string name="wineyfeed_head">이웃나라 왕족들의 소비생활을\n관찰하고 소통할 수 있어요!</string>
+    <string name="wineyfeed_sub">아니, 어제만해도 왕족인 내가 평민이라고?\n 용납할 수 없지. 얘들아 모여봐 뭔일이야</string>
 </resources>
