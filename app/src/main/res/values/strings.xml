@@ -3,4 +3,10 @@
     <string name="main_feed">피드</string>
     <string name="main_recommend">추천</string>
     <string name="main_mypage">마이페이지</string>
+    <string name="mypage_title">마이페이지</string>
+    <string name="mypage_target_amount">절약 목표</string>
+    <string name="mypage_period">절약 기간</string>
+    <string name="mypage_accumulated_winey">누적 위니</string>
+    <string name="mypage_winey_count">위니 횟수</string>
+    <string name="mypage_myfeed">마이피드</string>
 </resources>
