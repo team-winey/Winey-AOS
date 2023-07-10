@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
             type="com.android.go.sopt.winey.domain.model.WineyFeedModel" />
@@ -17,28 +18,28 @@
             android:id="@+id/iv_wineyfeed_profilephoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:layout_marginStart="17dp"
+            android:layout_marginTop="12dp"
             android:layout_marginBottom="10dp"
             android:src="@{context.getDrawable(data.profile)}"
-            tools:src="@drawable/img_feed_profile"
             app:civ_border_color="@color/gray_200"
             app:civ_border_width="1dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/img_feed_profile" />
 
         <TextView
             android:id="@+id/iv_wineyfeed_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="20dp"
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
             android:text="@{data.nickName}"
-            tools:text="@string/wineyfeed_nickname"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            app:layout_constraintBottom_toBottomOf="@id/iv_wineyfeed_profilephoto"
             app:layout_constraintStart_toEndOf="@id/iv_wineyfeed_profilephoto"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/iv_wineyfeed_profilephoto"
+            tools:text="@string/wineyfeed_nickname" />
 
         <ImageButton
             android:id="@+id/btn_wineyfeed_more"
@@ -59,13 +60,14 @@
             android:layout_marginTop="10dp"
             android:scaleType="centerCrop"
             android:src="@{context.getDrawable(data.feedImage)}"
-            tools:src="@drawable/img_feed_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_profilephoto" />
+            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_profilephoto"
+            tools:src="@drawable/img_feed_default" />
 
         <TextView
             android:id="@+id/tv_wineyfeed_money"
+            moneyAmount="@{data.feedMoney}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -73,7 +75,6 @@
             android:background="@drawable/wineyfeed_yellowbox"
             android:paddingHorizontal="16dp"
             android:paddingVertical="9dp"
-            android:text="@{@string/wineyfeed_money(data.feedMoney)}"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="parent"
@@ -92,16 +93,16 @@
 
         <TextView
             android:id="@+id/tv_wineyfeed_like"
+            likedAmount="@{data.likes}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="20dp"
-            android:text="@{@string/wineyfeed_like(data.likes)}"
-            tools:text="@string/wineyfeed_like"
+            android:gravity="center"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_10"
             android:textColor="@color/gray_700"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_like" />
+            app:layout_constraintStart_toStartOf="@id/iv_wineyfeed_like"
+            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_like"
+            tools:text="5,319" />
 
         <TextView
             android:id="@+id/tv_wineyfeed_title"
@@ -110,11 +111,11 @@
             android:layout_marginStart="26dp"
             android:layout_marginTop="6dp"
             android:text="@{data.feedTitle}"
-            tools:text="@string/wineyfeed_title"
             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_money" />
+            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_money"
+            tools:text="@string/wineyfeed_title" />
 
         <View
             android:layout_width="match_parent"
