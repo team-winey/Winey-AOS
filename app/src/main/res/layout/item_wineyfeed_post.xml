@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="data"
+            type="com.android.go.sopt.winey.domain.model.WineyFeedModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,9 +17,11 @@
             android:id="@+id/iv_wineyfeed_profilephoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:layout_marginStart="17dp"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/img_feed_profile"
+            android:src="@{context.getDrawable(data.profile)}"
+            tools:src="@drawable/img_feed_profile"
             app:civ_border_color="@color/gray_200"
             app:civ_border_width="1dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,10 +31,11 @@
             android:id="@+id/iv_wineyfeed_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="7dp"
+            android:layout_marginVertical="20dp"
             android:layout_marginStart="8dp"
             android:gravity="center_vertical"
-            android:text="부자가 되고싶어"
+            android:text="@{data.nickName}"
+            tools:text="@string/wineyfeed_nickname"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             app:layout_constraintStart_toEndOf="@id/iv_wineyfeed_profilephoto"
             app:layout_constraintTop_toTopOf="parent" />
@@ -38,6 +44,7 @@
             android:id="@+id/btn_wineyfeed_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:layout_marginEnd="17dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_more"
@@ -51,7 +58,8 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/img_feed_default"
+            android:src="@{context.getDrawable(data.feedImage)}"
+            tools:src="@drawable/img_feed_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_profilephoto" />
@@ -65,11 +73,12 @@
             android:background="@drawable/wineyfeed_yellowbox"
             android:paddingHorizontal="16dp"
             android:paddingVertical="9dp"
-            android:text="4,000원 절약"
+            android:text="@{@string/wineyfeed_money(data.feedMoney)}"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_image" />
+            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_image"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/iv_wineyfeed_like"
@@ -87,7 +96,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="20dp"
-            android:text="1,312만"
+            android:text="@{@string/wineyfeed_like(data.likes)}"
+            tools:text="@string/wineyfeed_like"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_10"
             android:textColor="@color/gray_700"
             app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +109,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
             android:layout_marginTop="6dp"
-            android:text="교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다"
+            android:text="@{data.feedTitle}"
+            tools:text="@string/wineyfeed_title"
             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="parent"
