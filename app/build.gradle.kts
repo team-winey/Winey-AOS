@@ -99,6 +99,7 @@ dependencies {
         implementation(progressView)
         implementation(balloon)
         implementation(lottie)
+        implementation("de.hdodenhof:circleimageview:3.1.0")
 
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
