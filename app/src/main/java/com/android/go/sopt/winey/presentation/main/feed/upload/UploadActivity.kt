@@ -1,12 +1,23 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
+import com.android.go.sopt.winey.databinding.ActivityUploadBinding
+import com.android.go.sopt.winey.util.binding.BindingActivity
 
-class UploadActivity : AppCompatActivity() {
+class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_upload) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_upload)
+
+        navigateTo<PhotoFragment>()
+    }
+
+    private inline fun <reified T : Fragment> navigateTo() {
+        supportFragmentManager.commit {
+            replace<T>(R.id.fcv_upload, T::class.simpleName)
+        }
     }
 }

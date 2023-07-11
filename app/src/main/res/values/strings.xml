@@ -3,4 +3,8 @@
     <string name="main_feed">피드</string>
     <string name="main_recommend">추천</string>
     <string name="main_mypage">마이페이지</string>
+    <string name="upload_photo_title">절약을 실천한\n모습을 보여주세요!</string>
+    <string name="upload_photo_detail_guide">사진은 피드의 썸네일로 사용됩니다 :)</string>
+    <string name="upload_photo_button_guide">절약을 인증할 수 있는\n사진을 업로드 해주세요.</string>
+    <string name="upload_photo_next_btn_text">다음</string>
 </resources>

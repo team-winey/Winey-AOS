@@ -38,5 +38,4 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }
     }
-
 }
