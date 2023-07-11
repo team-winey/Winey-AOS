@@ -34,6 +34,7 @@
     <style name="BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheet</item>
         <item name="android:colorBackground">@color/gray_0</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
