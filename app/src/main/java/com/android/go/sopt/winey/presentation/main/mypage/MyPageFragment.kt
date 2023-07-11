@@ -13,5 +13,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initBtnEvent()
+    }
+
+    fun initBtnEvent() {
+        binding.btnMypageTargetEdit.setOnClickListener {
+            val bottomsheet = TargetAmountBottomSheetFragment()
+
+            bottomsheet.show(this.childFragmentManager, bottomsheet.tag)
+        }
     }
 }
