@@ -16,10 +16,41 @@
             android:id="@+id/btn_upload_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/ic_upload_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/ll_upload_indicators"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_upload_close">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/shape_purple_fill_circle" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/shape_gray_fill_circle" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shape_gray_fill_circle" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_photo_title"
@@ -31,7 +62,7 @@
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_upload_close" />
+            app:layout_constraintTop_toBottomOf="@id/ll_upload_indicators" />
 
         <TextView
             android:id="@+id/tv_photo_detail"
@@ -72,6 +103,7 @@
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_photo_next"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
