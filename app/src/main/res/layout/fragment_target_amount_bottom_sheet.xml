@@ -11,5 +11,182 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/shape_top10_rect">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_target_amount_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="3dp"
+            android:background="@android:color/transparent"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="10dp"
+            android:text="취소"
+            android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/sv_target_amount_input"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/btn_target_amount_cancel"
+            app:layout_constraintBottom_toTopOf="@id/cl_target_amount_save">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tv_target_amount_set_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="18dp"
+                    android:text="목표 절약 금액을 설정해주세요"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
+                    android:textColor="@color/gray_900"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_target_amount_set_amount"
+                    style="@style/textInputLayout_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    app:boxStrokeColor="@drawable/sel_target_amount_til_stroke_color"
+                    app:boxStrokeWidth="1dp"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                    app:errorTextColor="@drawable/sel_target_amount_til_stroke_color"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_target_amount_set_amount">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:hint="30,000"
+                        android:inputType="number"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="38dp"
+                        android:paddingBottom="10dp"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
+                        android:textColor="@drawable/sel_target_amount_til_stroke_color"
+                        android:textColorHint="@color/gray_400" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="18dp"
+                    android:text="원"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
+                    app:layout_constraintEnd_toEndOf="@id/til_target_amount_set_amount"
+                    app:layout_constraintTop_toTopOf="@id/til_target_amount_set_amount" />
+
+                <TextView
+                    android:id="@+id/tv_target_amount_set_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="34dp"
+                    android:text="목표 절약 일수를 설정해주세요"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
+                    android:textColor="@color/gray_900"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/til_target_amount_set_amount" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_target_amount_set_day"
+                    style="@style/textInputLayout_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    app:boxStrokeColor="@drawable/sel_target_amount_til_stroke_color"
+                    app:boxStrokeWidth="1dp"
+                    app:errorEnabled="true"
+                    app:errorTextAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                    app:errorTextColor="@drawable/sel_target_amount_til_stroke_color"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_target_amount_set_day">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:hint="5"
+                        android:inputType="number"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="38dp"
+                        android:paddingBottom="10dp"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
+                        android:textColor="@drawable/sel_target_amount_til_stroke_color"
+                        android:textColorHint="@color/gray_400" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="18dp"
+                    android:text="일"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
+                    app:layout_constraintEnd_toEndOf="@id/til_target_amount_set_day"
+                    app:layout_constraintTop_toTopOf="@id/til_target_amount_set_day" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_target_amount_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_0"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <TextView
+                android:id="@+id/tv_target_amount_warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="설정한 목표는 목표 절약 일수 전까지 변경이 불가능합니다.\n신중하게 작성해주세요!"
+                android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
+                android:textColor="@color/gray_400"
+                app:layout_constraintBottom_toTopOf="@id/btn_target_amount_save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_target_amount_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/shape_yellow_fill_10_rect"
+                android:backgroundTint="@color/gray_200"
+                android:enabled="false"
+                android:text="저장하기"
+                android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                android:textColor="@color/gray_500"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
