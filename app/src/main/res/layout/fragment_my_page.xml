@@ -289,7 +289,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="17dp"
-                android:text="1:1 문의"
+                android:text="@string/mypage_1on1"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                 app:layout_constraintBottom_toTopOf="@id/v_mypage_space"
                 app:layout_constraintStart_toStartOf="parent"

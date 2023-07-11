@@ -9,4 +9,14 @@
     <string name="mypage_accumulated_winey">누적 위니</string>
     <string name="mypage_winey_count">위니 횟수</string>
     <string name="mypage_myfeed">마이피드</string>
+    <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
+    <string name="impossible_dialog_close">닫기</string>
+    <string name="mypage_1on1">1:1 문의</string>
+    <string name="target_amount_cancel">취소</string>
+    <string name="target_amount_set_amount">목표 절약 금액을 설정해주세요</string>
+    <string name="target_amount_won">원</string>
+    <string name="target_amount_set_day">목표 절약 일수를 설정해주세요</string>
+    <string name="target_amount_day">일</string>
+    <string name="target_amount_warning">설정한 목표는 목표 절약 일수 전까지 변경이 불가능합니다.\n신중하게 작성해주세요!</string>
+    <string name="target_amount_save">저장하기</string>
 </resources>
