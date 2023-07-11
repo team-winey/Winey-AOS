@@ -15,10 +15,12 @@
         android:theme="@style/Theme.Winey"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".presentation.main.feed.upload.UploadActivity"
             android:exported="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
