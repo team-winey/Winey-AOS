@@ -11,109 +11,109 @@
     <!-- headline -->
     <style name="TextAppearance.WINEY.Headline_b_28_xxl">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">28dp</item>
+        <item name="android:textSize">28sp</item>
         <item name="lineHeight">30dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.Headline_b_24_xxl">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">24dp</item>
+        <item name="android:textSize">24sp</item>
         <item name="lineHeight">28dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.Headline_b_20_xl">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">20sp</item>
         <item name="lineHeight">24dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.Headline_b_18_xl">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">18sp</item>
         <item name="lineHeight">24dp</item>
     </style>
     <!-- body -->
     <style name="TextAppearance.WINEY.body_b_16">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="lineHeight">22dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.body_m_16">
         <item name="android:fontFamily">@font/winey_pretendard_medium</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">16sp</item>
         <item name="lineHeight">22dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.body2_b_15">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">15sp</item>
         <item name="lineHeight">22dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.body2_m_15">
         <item name="android:fontFamily">@font/winey_pretendard_medium</item>
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">15sp</item>
         <item name="lineHeight">22dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.body_b_14">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="lineHeight">20dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.body_m_14">
         <item name="android:fontFamily">@font/winey_pretendard_medium</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="lineHeight">20dp</item>
     </style>
     <!-- detail -->
     <style name="TextAppearance.WINEY.detail_b_13">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">13sp</item>
         <item name="lineHeight">18dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.detail_m_13">
         <item name="android:fontFamily">@font/winey_pretendard_medium</item>
-        <item name="android:textSize">13dp</item>
+        <item name="android:textSize">13sp</item>
         <item name="lineHeight">18dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.detail_b_12">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">12sp</item>
         <item name="lineHeight">17dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.detail_m_12">
         <item name="android:fontFamily">@font/winey_pretendard_medium</item>
-        <item name="android:textSize">12dp</item>
+        <item name="android:textSize">12sp</item>
         <item name="lineHeight">17dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.detail_b_11">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">11dp</item>
+        <item name="android:textSize">11sp</item>
         <item name="lineHeight">15dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.detail_m_11">
         <item name="android:fontFamily">@font/winey_pretendard_medium</item>
-        <item name="android:textSize">11dp</item>
+        <item name="android:textSize">11sp</item>
         <item name="lineHeight">15dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.detail_b_10">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
-        <item name="android:textSize">10dp</item>
+        <item name="android:textSize">10sp</item>
         <item name="lineHeight">14dp</item>
     </style>
 
     <style name="TextAppearance.WINEY.detail_m_10">
         <item name="android:fontFamily">@font/winey_pretendard_medium</item>
-        <item name="android:textSize">10dp</item>
+        <item name="android:textSize">10sp</item>
         <item name="lineHeight">14dp</item>
     </style>
 </resources>
