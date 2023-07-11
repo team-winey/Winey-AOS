@@ -81,7 +81,7 @@
             android:layout_height="89dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/shape_gray_line_10_rect"
+            android:background="@drawable/sel_upload_content_stroke_color"
             android:gravity="top"
             android:hint="@string/upload_text_field_hint"
             android:padding="18dp"
