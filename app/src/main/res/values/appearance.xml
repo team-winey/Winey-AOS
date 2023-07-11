@@ -8,6 +8,7 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:letterSpacing">-0.025</item>
     </style>
+
     <!-- headline -->
     <style name="TextAppearance.WINEY.Headline_b_28_xxl">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
@@ -32,7 +33,20 @@
         <item name="android:textSize">18sp</item>
         <item name="lineHeight">24dp</item>
     </style>
+
     <!-- body -->
+    <style name="TextAppearance.WINEY.body_b_18">
+        <item name="android:fontFamily">@font/winey_pretendard_bold</item>
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">24dp</item>
+    </style>
+
+    <style name="TextAppearance.WINEY.body_m_18">
+        <item name="android:fontFamily">@font/winey_pretendard_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="lineHeight">24dp</item>
+    </style>
+
     <style name="TextAppearance.WINEY.body_b_16">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
         <item name="android:textSize">16sp</item>
@@ -68,6 +82,7 @@
         <item name="android:textSize">14sp</item>
         <item name="lineHeight">20dp</item>
     </style>
+
     <!-- detail -->
     <style name="TextAppearance.WINEY.detail_b_13">
         <item name="android:fontFamily">@font/winey_pretendard_bold</item>
