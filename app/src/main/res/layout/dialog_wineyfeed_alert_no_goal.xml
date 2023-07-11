@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dp"
+    android:paddingHorizontal="24dp"
+    android:paddingBottom="18dp"
+    android:background="@drawable/dialog_radius_background"
+    android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/iv_dialog_caution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_caution"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/gray_900"
+        android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_dialog_caution"
+        android:text="@string/dialog_alert_title" />
+
+    <TextView
+        android:id="@+id/tv_dialog_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        android:textColor="@color/gray_500"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
+        android:text="@string/dialog_alert_sub" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_dialog_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/box_gray_radius_5"
+        android:paddingHorizontal="43dp"
+        android:paddingVertical="10dp"
+        android:textColor="@color/gray_500"
+        android:text="취소"
+        android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+        app:layout_constraintEnd_toStartOf="@id/btn_dialog_setgoal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_dialog_setgoal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/box_yellow_radius_5"
+        android:padding="10dp"
+        android:text="목표 설정하기"
+        android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+        android:textColor="@color/gray_900"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btn_dialog_cancel"
+        app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,4 +8,6 @@
     <string name="wineyfeed_nickname">부자가 되고싶어</string>
     <string name="wineyfeed_title">교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다</string>
     <string name="wineyfeed_money">원 절약</string>
+    <string name="dialog_alert_title">목표 설정 시 피드 작성이 가능해요!</string>
+    <string name="dialog_alert_sub">지금 마이프로필에서 간단한 목표를\n 설정해보세요!</string>
 </resources>
