@@ -22,46 +22,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/ll_upload_indicators"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="36dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_upload_nav">
-
-            <ImageView
-                android:id="@+id/iv_upload_first_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/shape_purple_fill_circle" />
-
-            <ImageView
-                android:id="@+id/iv_upload_second_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/shape_gray_fill_circle" />
-
-            <ImageView
-                android:id="@+id/iv_upload_third_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/shape_gray_fill_circle" />
-
-        </LinearLayout>
-
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fcv_upload"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ll_upload_indicators"
+            app:layout_constraintTop_toBottomOf="@id/btn_upload_nav"
             tools:layout="@layout/fragment_amount" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -71,7 +38,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="14dp"
             android:background="@drawable/sel_upload_next_btn_bg_color"
-            android:enabled="false"
+            android:enabled="true"
             android:stateListAnimator="@null"
             android:text="@string/upload_photo_next_btn_text"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"

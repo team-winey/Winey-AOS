@@ -12,6 +12,39 @@
         android:layout_height="match_parent"
         tools:context=".presentation.main.feed.upload.PhotoFragment">
 
+        <LinearLayout
+            android:id="@+id/ll_upload_indicators"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="36dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_upload_first_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/shape_purple_fill_circle" />
+
+            <ImageView
+                android:id="@+id/iv_upload_second_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/shape_gray_fill_circle" />
+
+            <ImageView
+                android:id="@+id/iv_upload_third_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/shape_gray_fill_circle" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tv_photo_title"
             android:layout_width="wrap_content"
@@ -20,7 +53,7 @@
             android:layout_marginTop="18dp"
             android:text="@string/upload_photo_title"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_upload_indicators"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="parent" />
 

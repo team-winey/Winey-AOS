@@ -13,11 +13,28 @@ class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_
         super.onCreate(savedInstanceState)
 
         navigateTo<PhotoFragment>()
+        initNextButtonClickListener()
+    }
+
+    private fun initNextButtonClickListener() {
+        binding.btnUploadNext.setOnClickListener {
+            when (supportFragmentManager.findFragmentById(R.id.fcv_upload)) {
+                is PhotoFragment -> {
+                    navigateTo<ContentFragment>()
+                }
+
+                is ContentFragment -> {
+                    navigateTo<AmountFragment>()
+                }
+                is AmountFragment -> TODO("서버에 이미지 업로드 하면서 위니 피드로 돌아가기")
+            }
+
+        }
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
         supportFragmentManager.commit {
-            replace< T>(R.id.fcv_upload, T::class.simpleName)
+            replace<T>(R.id.fcv_upload, T::class.simpleName)
         }
     }
 }
