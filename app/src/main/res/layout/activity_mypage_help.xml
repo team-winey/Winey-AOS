@@ -7,4 +7,52 @@
 
     </data>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.main.feed.FeedFragment">
+
+        <ImageButton
+            android:id="@+id/btn_help_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_help_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_help_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_title"
+            android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+            android:textColor="@color/gray_900"
+            app:layout_constraintBottom_toBottomOf="@id/btn_help_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_help_back" />
+
+        <View
+            android:id="@+id/v_help_line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/gray_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_help_back" />
+
+        <ScrollView
+            android:id="@+id/sv_help_how"
+            android:layout_width="match_parent"
+            android:layout_height="800dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_help_line1">
+        </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
