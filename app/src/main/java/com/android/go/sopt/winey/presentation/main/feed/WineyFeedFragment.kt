@@ -16,6 +16,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         getFeed()
+        clickViewEvents()
     }
 
     private fun initAdapter() {
@@ -26,6 +27,14 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun getFeed() {
         wineyFeedAdapter.submitList(viewModel.dummyFeedList)
+    }
+
+    private fun clickViewEvents() {
+        binding.btnWineyfeedFloating.setOnClickListener {
+            val dialog = WineyFeedAlertDialog()
+            dialog.isCancelable = false
+            dialog.show(activity?.supportFragmentManager!!, "ConfirmDialog")
+        }
     }
 
 }
