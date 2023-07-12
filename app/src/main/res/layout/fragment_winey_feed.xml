@@ -23,6 +23,12 @@
                 android:src="@drawable/img_app_bar"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_200"
+                app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_appbar" />
+
             <Space
                 android:id="@+id/space_wineyfeed_start"
                 android:layout_width="match_parent"

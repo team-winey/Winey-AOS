@@ -23,10 +23,9 @@
         android:background="@drawable/box_gray_radius_5"
         android:paddingStart="16dp"
         android:paddingTop="19dp"
-        android:paddingEnd="118dp"
         android:paddingBottom="18dp"
         android:text="@string/wineyfeed_sub"
-        android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
         android:textColor="@color/gray_600"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_head" />
