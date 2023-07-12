@@ -12,7 +12,7 @@ class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        navigateTo<ContentFragment>()
+        navigateTo<AmountFragment>()
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
