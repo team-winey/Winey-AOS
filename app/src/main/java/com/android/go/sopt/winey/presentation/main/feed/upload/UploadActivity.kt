@@ -22,14 +22,15 @@ class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_
         binding.btnUploadNext.setOnClickListener {
             when (supportFragmentManager.findFragmentById(R.id.fcv_upload)) {
                 is PhotoFragment -> {
-                    binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_back))
+                    setBackButton()
                     navigateTo<ContentFragment>()
                 }
 
                 is ContentFragment -> {
-                    binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_back))
+                    setBackButton()
                     navigateTo<AmountFragment>()
                 }
+
                 is AmountFragment -> TODO("서버에 이미지 업로드 하면서 위니 피드로 돌아가기")
             }
         }
@@ -37,20 +38,30 @@ class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_
 
     private fun initNavigationButtonClickListener() {
         binding.ivUploadNav.setOnClickListener {
-            when(supportFragmentManager.findFragmentById(R.id.fcv_upload)){
+            when (supportFragmentManager.findFragmentById(R.id.fcv_upload)) {
                 is PhotoFragment -> {
                     finish()
                 }
+
                 is ContentFragment -> {
-                    binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_close))
+                    setCloseButton()
                     navigateTo<PhotoFragment>()
                 }
+
                 is AmountFragment -> {
-                    binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_back))
+                    setBackButton()
                     navigateTo<ContentFragment>()
                 }
             }
         }
+    }
+
+    private fun setBackButton() {
+        binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_back))
+    }
+
+    private fun setCloseButton() {
+        binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_close))
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
