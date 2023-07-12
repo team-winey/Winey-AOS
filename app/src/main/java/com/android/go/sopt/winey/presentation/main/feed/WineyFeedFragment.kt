@@ -11,13 +11,20 @@ import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
     private val viewModel by viewModels<WineyFeedViewModel>()
+    private lateinit var wineyFeedDialogFragment: WineyFeedDialogFragment
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initDialog()
         initAdapter()
         getFeed()
         clickViewEvents()
+    }
+
+    private fun initDialog(){
+        wineyFeedDialogFragment = WineyFeedDialogFragment()
+        wineyFeedDialogFragment.isCancelable = false
     }
 
     private fun initAdapter() {
@@ -32,10 +39,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun clickViewEvents() {
         binding.btnWineyfeedFloating.setOnSingleClickListener {
-            val dialog = WineyFeedDialogFragment()
-            dialog.isCancelable = false
-            dialog.show(activity?.supportFragmentManager!!, "ConfirmDialog")
+            wineyFeedDialogFragment.show(parentFragmentManager, TAG_WINEYFEED_DIALOG)
         }
     }
-
+    companion object {
+        private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
+    }
 }
