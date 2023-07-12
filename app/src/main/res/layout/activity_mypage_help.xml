@@ -79,6 +79,58 @@
                     app:layout_constraintStart_toStartOf="@id/iv_help_speech_bubble"
                     app:layout_constraintTop_toTopOf="@id/iv_help_speech_bubble" />
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_help_levelup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="28dp"
+                    android:backgroundTint="@color/purple_100"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="12dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_help_speech_bubble">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_help_levelup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="23dp"
+                            android:layout_marginTop="23dp"
+                            android:text="@string/help_levelup"
+                            android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
+                            android:textColor="@color/gray_900"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_help_levelup_how"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/help_levelup_how"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintStart_toStartOf="@id/tv_help_levelup"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_levelup" />
+
+                        <ImageView
+                            android:id="@+id/iv_help_levelup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:paddingBottom="42dp"
+                            android:src="@drawable/ic_help_levelup"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_levelup_how" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
         </ScrollView>
 
 
