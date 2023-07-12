@@ -1,5 +1,7 @@
 package com.android.go.sopt.winey.util.binding
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +24,7 @@ abstract class BindingDialogFragment<T : ViewDataBinding>(
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, layoutResId, container, false)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return binding.root
     }
 

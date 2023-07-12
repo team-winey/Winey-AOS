@@ -1,32 +1,17 @@
 package com.android.go.sopt.winey.presentation.main.mypage
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentImpossibleDialogBinding
+import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 
-class ImpossibleDialogFragment : DialogFragment() {
-    private lateinit var binding: FragmentImpossibleDialogBinding
+class ImpossibleDialogFragment : BindingDialogFragment<FragmentImpossibleDialogBinding>(R.layout.fragment_impossible_dialog) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         isCancelable = false
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = FragmentImpossibleDialogBinding.inflate(inflater, container, false)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
