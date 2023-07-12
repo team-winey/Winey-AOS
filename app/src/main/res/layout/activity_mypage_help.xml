@@ -98,26 +98,29 @@
 
                         <TextView
                             android:id="@+id/tv_help_levelup"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="23dp"
+                            android:layout_marginHorizontal="23dp"
                             android:layout_marginTop="23dp"
                             android:text="@string/help_levelup"
                             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
                             android:textColor="@color/gray_900"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                         <TextView
                             android:id="@+id/tv_help_levelup_how"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="23dp"
                             android:layout_marginTop="4dp"
                             android:text="@string/help_levelup_how"
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                             android:textColor="@color/gray_600"
-                            app:layout_constraintStart_toStartOf="@id/tv_help_levelup"
-                            app:layout_constraintTop_toBottomOf="@id/tv_help_levelup" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_levelup"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                         <ImageView
                             android:id="@+id/iv_help_levelup"
@@ -151,26 +154,29 @@
 
                         <TextView
                             android:id="@+id/tv_help_rule"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="23dp"
+                            android:layout_marginHorizontal="23dp"
                             android:layout_marginTop="23dp"
                             android:text="@string/help_rule"
                             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
                             android:textColor="@color/gray_900"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                         <TextView
                             android:id="@+id/tv_help_rule_how"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="23dp"
                             android:layout_marginTop="4dp"
                             android:text="@string/help_rule_how"
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                             android:textColor="@color/gray_600"
-                            app:layout_constraintStart_toStartOf="@id/tv_help_rule"
-                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                         <ImageView
                             android:id="@+id/iv_help_rule"
@@ -196,14 +202,16 @@
 
                         <TextView
                             android:id="@+id/tv_help_rule_knight_how"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
+                            android:layout_marginEnd="23dp"
                             android:text="@string/help_rule_knight_how"
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                             android:textColor="@color/gray_600"
                             app:layout_constraintStart_toEndOf="@id/tv_help_rule_knight"
-                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_knight" />
+                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_knight"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                         <View
                             android:id="@+id/v_help_line2"
@@ -211,10 +219,10 @@
                             android:layout_height="1dp"
                             android:layout_marginHorizontal="28dp"
                             android:layout_marginTop="12dp"
-                            android:background="@color/winey_yellow"
+                            android:background="@color/yellow_dark"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule_knight" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule_knight_how" />
 
                         <TextView
                             android:id="@+id/tv_help_rule_nobless"
@@ -230,14 +238,16 @@
 
                         <TextView
                             android:id="@+id/tv_help_rule_nobless_how"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
+                            android:layout_marginEnd="23dp"
                             android:text="@string/help_rule_nobless_how"
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                             android:textColor="@color/gray_600"
                             app:layout_constraintStart_toEndOf="@id/tv_help_rule_nobless"
-                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_nobless" />
+                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_nobless"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
                         <View
                             android:id="@+id/v_help_line3"
@@ -245,10 +255,10 @@
                             android:layout_height="1dp"
                             android:layout_marginHorizontal="28dp"
                             android:layout_marginTop="12dp"
-                            android:background="@color/winey_yellow"
+                            android:background="@color/yellow_dark"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule_nobless" />
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule_nobless_how" />
 
                         <TextView
                             android:id="@+id/tv_help_rule_king"
@@ -264,15 +274,17 @@
 
                         <TextView
                             android:id="@+id/tv_help_rule_king_how"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="15dp"
+                            android:layout_marginEnd="23dp"
                             android:paddingBottom="39dp"
                             android:text="@string/help_rule_king_how"
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                             android:textColor="@color/gray_600"
                             app:layout_constraintStart_toEndOf="@id/tv_help_rule_king"
-                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_king" />
+                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_king"
+                            app:layout_constraintEnd_toEndOf="parent"/>
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
