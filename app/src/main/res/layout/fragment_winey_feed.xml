@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
-                android:src="@drawable/img_app_bar"
+                android:src="@drawable/img_wineyfeed_app_bar"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:layout_marginBottom="18dp"
-            android:src="@drawable/ic_floatingbtn"
+            android:src="@drawable/ic_wineyfeed_upload"
             app:backgroundTint="@color/winey_yellow"
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"

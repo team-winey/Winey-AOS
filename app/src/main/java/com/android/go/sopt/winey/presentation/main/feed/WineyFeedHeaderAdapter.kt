@@ -21,5 +21,9 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
         return
     }
 
-    override fun getItemCount() = 1
+    override fun getItemCount():Int = HEADER_COUNT
+
+    companion object {
+        private const val HEADER_COUNT = 1
+    }
 }
