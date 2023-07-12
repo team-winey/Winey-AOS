@@ -32,7 +32,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun clickViewEvents() {
         binding.btnWineyfeedFloating.setOnSingleClickListener {
-            val dialog = WineyFeedAlertDialog()
+            val dialog = WineyFeedDialogFragment()
             dialog.isCancelable = false
             dialog.show(activity?.supportFragmentManager!!, "ConfirmDialog")
         }
