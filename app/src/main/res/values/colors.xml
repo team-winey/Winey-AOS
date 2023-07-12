@@ -3,6 +3,7 @@
     <!-- YellowScale -->
     <color name="winey_yellow">#FFCCFC56</color>
     <color name="yellow_light">#FFE6FDAE</color>
+    <color name="yellow_dark">#FFB6ED31</color>
     <!-- PurpleScale -->
     <color name="purple_100">#FFF2E9FF</color>
     <color name="purple_200">#FFC9A6FD</color>
