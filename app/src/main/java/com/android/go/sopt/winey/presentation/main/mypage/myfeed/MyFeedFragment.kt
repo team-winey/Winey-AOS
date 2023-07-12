@@ -9,9 +9,20 @@ import com.android.go.sopt.winey.util.binding.BindingFragment
 
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
     private val viewModel by viewModels<MyFeedViewModel>()
+    private lateinit var myFeedAdapter: MyFeedAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initAdapter()
+        getFeed()
+    }
 
+    private fun initAdapter() {
+        myFeedAdapter = MyFeedAdapter()
+        binding.rvMyfeedPost.adapter = myFeedAdapter
+    }
+
+    private fun getFeed() {
+        myFeedAdapter.submitList(viewModel.dummyFeedList)
     }
 }
