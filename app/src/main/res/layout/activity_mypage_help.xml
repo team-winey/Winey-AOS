@@ -51,6 +51,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/v_help_line1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="14dp">
+
+                <ImageView
+                    android:id="@+id/iv_help_speech_bubble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/ic_help_speech_bubble"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_help_how"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="11dp"
+                    android:text="@string/help_how"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                    android:textColor="@color/gray_500"
+                    app:layout_constraintStart_toStartOf="@id/iv_help_speech_bubble"
+                    app:layout_constraintTop_toTopOf="@id/iv_help_speech_bubble" />
+
         </ScrollView>
 
 
