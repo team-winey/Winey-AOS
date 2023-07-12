@@ -8,12 +8,8 @@ import com.android.go.sopt.winey.databinding.ItemWineyfeedPostBinding
 import com.android.go.sopt.winey.domain.model.WineyFeedModel
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
-class WineyFeedAdapter : ListAdapter<WineyFeedModel, WineyFeedAdapter.WineyFeedViewHolder>(
-    ItemDiffCallback<WineyFeedModel>(
-        onItemsTheSame = { old, new -> old.feedId == new.feedId },
-        onContentsTheSame = { old, new -> old == new }
-    )
-) {
+class WineyFeedAdapter :
+    ListAdapter<WineyFeedModel, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
 
     class WineyFeedViewHolder(
         private val binding: ItemWineyfeedPostBinding
@@ -25,7 +21,8 @@ class WineyFeedAdapter : ListAdapter<WineyFeedModel, WineyFeedAdapter.WineyFeedV
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WineyFeedViewHolder {
-        val binding = ItemWineyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemWineyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return WineyFeedViewHolder(binding)
     }
 
@@ -33,4 +30,10 @@ class WineyFeedAdapter : ListAdapter<WineyFeedModel, WineyFeedAdapter.WineyFeedV
         holder.onBind(getItem(position))
     }
 
+    companion object {
+        private val diffUtil = ItemDiffCallback<WineyFeedModel>(
+            onItemsTheSame = { old, new -> old.feedId == new.feedId },
+            onContentsTheSame = { old, new -> old == new }
+        )
+    }
 }
