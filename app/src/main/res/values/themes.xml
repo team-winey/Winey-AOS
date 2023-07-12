@@ -18,6 +18,7 @@
         <item name="colorOnSurface">@color/purple_400</item>
         <!-- Navigation Bar Icon/Text Inactive color -->
         <item name="colorOnSurfaceVariant">@color/gray_300</item>
+
     </style>
 
     <style name="Widget.Winey.EditText" parent="Widget.AppCompat.EditText">
