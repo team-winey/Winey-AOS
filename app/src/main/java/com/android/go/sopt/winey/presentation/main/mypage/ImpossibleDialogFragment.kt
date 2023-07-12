@@ -18,10 +18,10 @@ class ImpossibleDialogFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initBtnEvent()
+        initCancelButtonClickListener()
     }
 
-    fun initBtnEvent() {
+    fun initCancelButtonClickListener() {
         binding.btnImpossibleDialogCancel.setOnClickListener {
             this.dismiss()
         }

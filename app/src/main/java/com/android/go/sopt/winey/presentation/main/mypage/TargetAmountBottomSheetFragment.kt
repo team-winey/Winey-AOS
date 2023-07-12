@@ -15,11 +15,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 class TargetAmountBottomSheetFragment :
     BindingBottomSheetDialogFragment<FragmentTargetAmountBottomSheetBinding>(R.layout.fragment_target_amount_bottom_sheet) {
     private val viewModel by viewModels<MyPageViewModel>()
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initBtnEvent()
-    }
 
     override fun onStart() {
         super.onStart()
@@ -27,7 +22,14 @@ class TargetAmountBottomSheetFragment :
         initFullScreen()
     }
 
-    fun initBtnEvent() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initCancelButtonClickListener()
+    }
+
+
+    fun initCancelButtonClickListener() {
         binding.btnTargetAmountCancel.setOnClickListener {
             this.dismiss()
         }
