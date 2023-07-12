@@ -19,10 +19,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         initDialog()
         initAdapter()
         getFeed()
-        clickViewEvents()
+        initFabClickListener()
     }
 
-    private fun initDialog(){
+    private fun initDialog() {
         wineyFeedDialogFragment = WineyFeedDialogFragment()
         wineyFeedDialogFragment.isCancelable = false
     }
@@ -37,11 +37,12 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         wineyFeedAdapter.submitList(viewModel.dummyFeedList)
     }
 
-    private fun clickViewEvents() {
+    private fun initFabClickListener() {
         binding.btnWineyfeedFloating.setOnSingleClickListener {
             wineyFeedDialogFragment.show(parentFragmentManager, TAG_WINEYFEED_DIALOG)
         }
     }
+
     companion object {
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
     }

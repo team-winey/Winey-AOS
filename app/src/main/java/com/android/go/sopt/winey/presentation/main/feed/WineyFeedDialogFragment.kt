@@ -18,10 +18,11 @@ class WineyFeedDialogFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initFabClickListener()
+        initBtnlickListener()
     }
 
-    private fun initFabClickListener() {
+
+    private fun initBtnlickListener() {
         binding.btnDialogCancel.setOnClickListener {
             this.dismiss()
         }
