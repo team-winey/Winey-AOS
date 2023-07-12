@@ -7,6 +7,7 @@ import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityUploadBinding
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import com.android.go.sopt.winey.util.context.drawableOf
 
 class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_upload) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,21 +15,41 @@ class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_
 
         navigateTo<PhotoFragment>()
         initNextButtonClickListener()
+        initNavigationButtonClickListener()
     }
 
     private fun initNextButtonClickListener() {
         binding.btnUploadNext.setOnClickListener {
             when (supportFragmentManager.findFragmentById(R.id.fcv_upload)) {
                 is PhotoFragment -> {
+                    binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_back))
                     navigateTo<ContentFragment>()
                 }
 
                 is ContentFragment -> {
+                    binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_back))
                     navigateTo<AmountFragment>()
                 }
                 is AmountFragment -> TODO("서버에 이미지 업로드 하면서 위니 피드로 돌아가기")
             }
+        }
+    }
 
+    private fun initNavigationButtonClickListener() {
+        binding.ivUploadNav.setOnClickListener {
+            when(supportFragmentManager.findFragmentById(R.id.fcv_upload)){
+                is PhotoFragment -> {
+                    finish()
+                }
+                is ContentFragment -> {
+                    binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_close))
+                    navigateTo<PhotoFragment>()
+                }
+                is AmountFragment -> {
+                    binding.ivUploadNav.setImageDrawable(drawableOf(R.drawable.ic_upload_back))
+                    navigateTo<ContentFragment>()
+                }
+            }
         }
     }
 
