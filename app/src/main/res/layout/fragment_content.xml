@@ -70,7 +70,7 @@
 
         <EditText
             android:id="@+id/et_upload_content"
-            style="@style/Widget.Winey.EditText"
+            style="?editTextStyle"
             android:layout_width="0dp"
             android:layout_height="89dp"
             android:layout_marginHorizontal="16dp"
