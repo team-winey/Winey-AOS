@@ -86,8 +86,8 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="28dp"
                     android:backgroundTint="@color/purple_100"
-                    app:cardElevation="0dp"
                     app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/iv_help_speech_bubble">
@@ -139,8 +139,8 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/yellow_light"
-                    app:cardElevation="0dp"
                     app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cv_help_levelup">

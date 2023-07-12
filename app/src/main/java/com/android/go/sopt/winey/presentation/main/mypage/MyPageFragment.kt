@@ -34,7 +34,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.btnMypageLevelHelp.setOnClickListener {
             val intent = Intent(context, MypageHelpActivity::class.java)
 
-                startActivity(intent)
-            }
+            startActivity(intent)
+        }
     }
 }

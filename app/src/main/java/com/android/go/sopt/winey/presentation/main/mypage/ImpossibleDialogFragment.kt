@@ -6,7 +6,8 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentImpossibleDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 
-class ImpossibleDialogFragment : BindingDialogFragment<FragmentImpossibleDialogBinding>(R.layout.fragment_impossible_dialog) {
+class ImpossibleDialogFragment :
+    BindingDialogFragment<FragmentImpossibleDialogBinding>(R.layout.fragment_impossible_dialog) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
