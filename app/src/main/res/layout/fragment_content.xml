@@ -87,6 +87,7 @@
             android:padding="18dp"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
             android:textColorHint="@color/gray_400"
+            android:textCursorDrawable="@drawable/shape_purple_line_cursor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_content_detail" />
