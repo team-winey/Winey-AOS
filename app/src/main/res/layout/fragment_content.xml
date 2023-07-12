@@ -77,22 +77,22 @@
 
         <EditText
             android:id="@+id/et_upload_content"
+            style="@style/Widget.Winey.EditText"
             android:layout_width="0dp"
-            android:layout_height="89dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/sel_upload_content_stroke_color"
             android:gravity="top"
             android:hint="@string/upload_text_field_hint"
+            android:importantForAutofill="no"
+            android:inputType="text|textMultiLine"
             android:padding="18dp"
-            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
-            android:textColorHint="@color/gray_400"
-            android:textCursorDrawable="@drawable/shape_purple_line_cursor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_content_detail" />
 
         <TextView
+            android:id="@+id/tv_content_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"

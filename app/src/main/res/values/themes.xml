@@ -19,4 +19,12 @@
         <!-- Navigation Bar Icon/Text Inactive color -->
         <item name="colorOnSurfaceVariant">@color/gray_300</item>
     </style>
+
+    <style name="Widget.Winey.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/sel_upload_content_stroke_color</item>
+        <item name="android:textAppearance">@style/TextAppearance.WINEY.body_m_16</item>
+        <item name="android:textColorHint">@color/gray_400</item>
+        <item name="android:textColorHighlight">@color/purple_200</item>
+        <item name="android:textCursorDrawable">@drawable/shape_purple_line_cursor</item>
+    </style>
 </resources>
