@@ -14,4 +14,5 @@
     <string name="upload_amount_title">얼마나 절약했나요?</string>
     <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
     <string name="upload_amount_unit_text">원</string>
+    <string name="upload_amount_next_btn_text">업로드</string>
 </resources>
