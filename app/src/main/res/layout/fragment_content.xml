@@ -82,6 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
             android:gravity="top"
             android:hint="@string/upload_text_field_hint"
             android:importantForAutofill="no"
