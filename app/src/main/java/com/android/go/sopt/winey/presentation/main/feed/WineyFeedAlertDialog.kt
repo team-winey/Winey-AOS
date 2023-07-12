@@ -1,5 +1,7 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ class WineyFeedAlertDialog : BindingDialogFragment<DialogWineyfeedAlertNoGoalBin
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
