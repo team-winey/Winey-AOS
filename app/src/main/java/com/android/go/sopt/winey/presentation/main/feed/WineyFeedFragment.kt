@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
     private val viewModel by viewModels<WineyFeedViewModel>()
@@ -30,7 +31,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun clickViewEvents() {
-        binding.btnWineyfeedFloating.setOnClickListener {
+        binding.btnWineyfeedFloating.setOnSingleClickListener {
             val dialog = WineyFeedAlertDialog()
             dialog.isCancelable = false
             dialog.show(activity?.supportFragmentManager!!, "ConfirmDialog")
