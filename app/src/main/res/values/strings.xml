@@ -19,4 +19,8 @@
     <string name="myfeed_nickname">루이당 4세</string>
     <string name="myfeed_title">오늘은 자네가 자주 타는\n대중교통비를 줄여보는 거 어떤가?</string>
     <string name="myfeed_money">원 절약</string>
+    <string name="myfeed_dialog_title">진짜 게시물을 삭제하시겠어요?</string>
+    <string name="myfeed_dialog_sub">지금 게시물을 삭제하면\n누적 금액이 삭감되니 주의하세요!</string>
+    <string name="myfeed_dialog_cancel">취소</string>
+    <string name="myfeed_dialog_delete">삭제하기</string>
 </resources>
