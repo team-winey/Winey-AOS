@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/shape_white_fill_12_rect">
+        android:background="@drawable/shape_gray0_fill_12_rect">
 
         <ImageView
             android:id="@+id/iv_impossible_dialog_warning"

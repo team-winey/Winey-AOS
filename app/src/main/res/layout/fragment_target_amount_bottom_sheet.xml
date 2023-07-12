@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/shape_top10_rect">
+        android:background="@drawable/shape_gray0_fill_top10_rect">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_target_amount_cancel"
