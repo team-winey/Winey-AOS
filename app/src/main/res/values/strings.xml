@@ -19,4 +19,18 @@
     <string name="target_amount_day">일</string>
     <string name="target_amount_warning">설정한 목표는 목표 절약 일수 전까지 변경이 불가능합니다.\n신중하게 작성해주세요!</string>
     <string name="target_amount_save">저장하기</string>
+    <string name="help_title">더 즐거운 위니 사용법</string>
+    <string name="help_how">캐릭터를 레벨업해\n더 즐겁게 위니를 사용해보세요!</string>
+    <string name="help_levelup">레벨업을 어떻게 하나요?</string>
+    <string name="help_levelup_how">목표금액과 기간을 설정하고,\n목표를 달성하면 레벨업할 수 있어요!</string>
+    <string name="help_rule">레벨업 규칙이 어떻게 되나요?</string>
+    <string name="help_rule_how">목표 달성 성공여부에 따라 레벨이 달라집니다.</string>
+    <string name="help_rule_knight">기사</string>
+    <string name="help_rule_knight_how">목표를 총 1번 세우고 1번 달성 시 레벨업</string>
+    <string name="help_rule_nobless">귀족</string>
+    <string name="help_rule_nobless_how">목표를 총 3번 이상 세우고 3번 달성 시 레벨업</string>
+    <string name="help_rule_king">황제</string>
+    <string name="help_rule_king_how">목표를 총 9번 이상 세우고 9번 달성 시 레벨업</string>
+    <string name="help_warning">주의사항</string>
+    <string name="help_warning_how">귀족 레벨부터는 레벨을 유지하기 위해 주 3회이상 출석을 해야해요!\n절약 인증 사진을 삭제하면 목표기간 내에 누적된 절약 금액이 삭감되며 경우에 따라 레벨이 강등될 수 있어요! 삭제는 신중하게 해주세요.</string>
 </resources>
