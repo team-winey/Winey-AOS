@@ -19,10 +19,12 @@
         <!-- Navigation Bar Icon/Text Inactive color -->
         <item name="colorOnSurfaceVariant">@color/gray_300</item>
 
-        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.WINEY.BottomSheetDialog</item>
+        <item name="textInputOutlinedStyle">@style/Widget.WINEY.TextInputLayout.OutlineBox</item>
+        <item name="bottomSheetStyle">@style/Widget.WINEY.BottomSheet.Modal</item>
     </style>
 
-    <style name="textInputLayout_style" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="Widget.WINEY.TextInputLayout.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxBackgroundMode">outline</item>
         <item name="boxBackgroundColor">@color/gray_0</item>
         <item name="boxCornerRadiusBottomEnd">5dp</item>
@@ -31,13 +33,13 @@
         <item name="boxCornerRadiusTopStart">5dp</item>
     </style>
 
-    <style name="BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BottomSheet</item>
+    <style name="ThemeOverlay.WINEY.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.WINEY.BottomSheet.Modal</item>
         <item name="android:colorBackground">@color/gray_0</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
-    <style name="BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+    <style name="Widget.WINEY.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">@android:color/transparent</item>
     </style>
 </resources>

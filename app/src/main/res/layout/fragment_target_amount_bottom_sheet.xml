@@ -53,7 +53,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_target_amount_set_amount"
-                    style="@style/textInputLayout_style"
+                    style="?textInputOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="16dp"
@@ -108,7 +108,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/til_target_amount_set_day"
-                    style="@style/textInputLayout_style"
+                    style="?textInputOutlinedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="16dp"
