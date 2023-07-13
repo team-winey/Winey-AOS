@@ -13,5 +13,11 @@ fun applyNumberFormatToMoney(view: TextView, amount: Long) {
 @BindingAdapter("likedAmount")
 fun applyNumberFormat(view: TextView, amount: Long) {
     val decimalFormat = DecimalFormat("#,###")
-    view.text = decimalFormat.format(amount)
+    val formattedValue = when {
+        amount >= 1E9 -> "${(amount.toFloat() / 1E9).toInt()}B"
+        amount >= 1E6 -> "${(amount.toFloat() / 1E6).toInt()}M"
+        amount >= 1E3 -> "${(amount.toFloat() / 1E3).toInt()}K"
+        else -> decimalFormat.format(amount)
+    }
+    view.text = formattedValue
 }

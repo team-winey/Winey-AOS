@@ -12,7 +12,7 @@ class WineyFeedViewModel : ViewModel() {
             feedMoney = 4000,
             feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
             profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
+            likes = 10000,
             nickName = "부자가 되고싶어"
         ), WineyFeedModel(
             feedId = 2,
@@ -20,15 +20,15 @@ class WineyFeedViewModel : ViewModel() {
             feedMoney = 4000,
             feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
             profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
+            likes = 200000,
             nickName = "부자가 되고싶어"
         ), WineyFeedModel(
             feedId = 3,
             feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
+            feedMoney = 5000000,
             feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
             profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
+            likes = 2000000,
             nickName = "부자가 되고싶어"
         ), WineyFeedModel(
             feedId = 4,
@@ -36,15 +36,15 @@ class WineyFeedViewModel : ViewModel() {
             feedMoney = 4000,
             feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
             profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
+            likes = 20,
             nickName = "부자가 되고싶어"
         ), WineyFeedModel(
             feedId = 5,
             feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
+            feedMoney = 2886,
             feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
             profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
+            likes = 222,
             nickName = "부자가 되고싶어"
         ), WineyFeedModel(
             feedId = 6,
@@ -52,7 +52,7 @@ class WineyFeedViewModel : ViewModel() {
             feedMoney = 4000,
             feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
             profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
+            likes = 5000,
             nickName = "부자가 되고싶어"
         )
     )
