@@ -20,12 +20,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:layout="@layout/fragment_feed" />
+            tools:layout="@layout/fragment_winey_feed" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bnv_main"
             android:layout_width="0dp"
-            android:layout_height="56dp"
+            android:layout_height="wrap_content"
             app:itemIconTint="@drawable/sel_main_bnv_icon_color"
             app:itemTextAppearanceActive="@style/TextAppearance.WINEY.detail_m_12"
             app:itemTextAppearanceInactive="@style/TextAppearance.WINEY.detail_m_12"
