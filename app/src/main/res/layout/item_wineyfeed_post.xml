@@ -16,8 +16,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_wineyfeed_profilephoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginStart="17dp"
             android:layout_marginTop="28dp"
             android:layout_marginBottom="10dp"
@@ -45,7 +45,7 @@
             android:id="@+id/btn_wineyfeed_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="17dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_wineyfeed_more"
