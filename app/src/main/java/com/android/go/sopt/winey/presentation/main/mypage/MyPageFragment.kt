@@ -14,7 +14,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initTargetModifyButtonClickListener()
         init1On1ButtonClickListener()
         initLevelHelpButtonClickListener()
@@ -23,7 +22,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initTargetModifyButtonClickListener() {
         binding.btnMypageTargetModify.setOnSingleClickListener {
             val bottomSheet = TargetAmountBottomSheetFragment()
-
             bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
         }
     }
@@ -31,7 +29,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun init1On1ButtonClickListener() {
         binding.btnMypage1on1.setOnClickListener {
             val dialog = MyPageDialogFragment()
-
             dialog.show(this.childFragmentManager, dialog.tag)
         }
     }
@@ -39,7 +36,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initLevelHelpButtonClickListener() {
         binding.btnMypageLevelHelp.setOnClickListener {
             val intent = Intent(context, MypageHelpActivity::class.java)
-
             startActivity(intent)
         }
     }

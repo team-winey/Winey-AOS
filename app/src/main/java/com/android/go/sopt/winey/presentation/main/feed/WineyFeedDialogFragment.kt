@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyfeedNoGoalDialogBinding
+import com.android.go.sopt.winey.presentation.main.mypage.TargetAmountBottomSheetFragment
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 
 class WineyFeedDialogFragment :
@@ -21,13 +22,13 @@ class WineyFeedDialogFragment :
         initBtnlickListener()
     }
 
-
     private fun initBtnlickListener() {
         binding.btnDialogCancel.setOnClickListener {
             this.dismiss()
         }
         binding.btnDialogSetgoal.setOnClickListener {
-            /* 목표 구현완료되면 인터랙션 구현 */
+            val bottomSheet = TargetAmountBottomSheetFragment()
+            bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
         }
     }
 }
