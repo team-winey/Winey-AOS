@@ -2,7 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import androidx.lifecycle.ViewModel
 import com.android.go.sopt.winey.R
-import com.android.go.sopt.winey.domain.model.WineyFeedModel
+import com.android.go.sopt.winey.domain.entity.WineyFeedModel
 
 class WineyFeedViewModel : ViewModel() {
     val dummyFeedList = listOf(

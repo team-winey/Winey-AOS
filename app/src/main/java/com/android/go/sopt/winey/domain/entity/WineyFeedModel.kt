@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.domain.model
+package com.android.go.sopt.winey.domain.entity
 
 import androidx.annotation.DrawableRes
 
