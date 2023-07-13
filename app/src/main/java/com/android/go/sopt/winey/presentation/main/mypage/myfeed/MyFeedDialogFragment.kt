@@ -25,8 +25,8 @@ class MyFeedDialogFragment :
         binding.btnDialogCancel.setOnClickListener {
             this.dismiss()
         }
-        binding.btnDialogSetgoal.setOnClickListener {
-            /* 목표 구현완료되면 인터랙션 구현 */
+        binding.btnDialogDelete.setOnClickListener {
+            /* 마이위니 구현완료되면 인터랙션 구현 */
         }
     }
 }
