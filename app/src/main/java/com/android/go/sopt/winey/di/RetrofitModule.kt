@@ -26,7 +26,6 @@ object RetrofitModule {
         prettyPrint = true
     }
 
-
     @Provides
     @Singleton
     fun provideJsonConverter(json: Json): Converter.Factory =

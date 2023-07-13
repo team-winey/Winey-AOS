@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.databinding.ItemWineyfeedPostBinding
-import com.android.go.sopt.winey.domain.model.WineyFeedModel
+import com.android.go.sopt.winey.domain.entity.WineyFeedModel
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
 class WineyFeedAdapter :
