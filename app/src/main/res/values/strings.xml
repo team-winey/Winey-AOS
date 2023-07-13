@@ -2,9 +2,9 @@
     <string name="app_name">Winey</string>
     <string name="main_feed">피드</string>
     <string name="main_recommend">추천</string>
-    <string name="main_mypage">마이페이지</string> 
-  
-    <!-- winey feed --> 
+    <string name="main_mypage">마이페이지</string>
+
+    <!-- winey feed -->
     <string name="wineyfeed_head">이웃나라 왕족들의 소비생활을\n관찰하고 소통할 수 있어요!</string>
     <string name="wineyfeed_sub">아니, 어제만해도 왕족인 내가 평민이라고?\n용납할 수 없지. 얘들아 모여봐 뭔일이야</string>
     <string name="wineyfeed_nickname">부자가 되고싶어</string>
@@ -28,8 +28,8 @@
     <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
     <string name="upload_amount_unit_text">원</string>
     <string name="upload_amount_next_btn_text">업로드</string>
-  
-    <!-- mypage --> 
+
+    <!-- mypage -->
     <string name="mypage_title">마이페이지</string>
     <string name="mypage_target_amount">절약 목표</string>
     <string name="mypage_period">절약 기간</string>
@@ -60,4 +60,15 @@
     <string name="help_rule_king_how">목표를 총 9번 이상 세우고 9번 달성 시 레벨업</string>
     <string name="help_warning">주의사항</string>
     <string name="help_warning_how">귀족 레벨부터는 레벨을 유지하기 위해 주 3회이상 출석을 해야해요!\n절약 인증 사진을 삭제하면 목표기간 내에 누적된 절약 금액이 삭감되며 경우에 따라 레벨이 강등될 수 있어요! 삭제는 신중하게 해주세요.</string>
+
+    <!-- myfeed -->
+    <string name="myfeed_head">마이피드</string>
+    <string name="myfeed_delete">삭제하기</string>
+    <string name="myfeed_nickname">루이당 4세</string>
+    <string name="myfeed_title">오늘은 자네가 자주 타는\n대중교통비를 줄여보는 거 어떤가?</string>
+    <string name="myfeed_money">원 절약</string>
+    <string name="myfeed_dialog_title">진짜 게시물을 삭제하시겠어요?</string>
+    <string name="myfeed_dialog_sub">지금 게시물을 삭제하면\n누적 금액이 삭감되니 주의하세요!</string>
+    <string name="myfeed_dialog_cancel">취소</string>
+    <string name="myfeed_dialog_delete">삭제하기</string>
 </resources>
