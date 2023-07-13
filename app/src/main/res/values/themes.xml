@@ -21,8 +21,8 @@
 
         <item name="editTextStyle">@style/Widget.Winey.EditText</item>
         <item name="textInputOutlinedStyle">@style/Widget.Winey.TextInputLayout.OutlineBox</item>
-        <item name="bottomSheetDialogStyle">@style/ThemeOverlay.Winey.BottomSheetDialog</item>
-        <item name="bottomSheetModalStyle">@style/Widget.Winey.BottomSheet.Modal</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Winey.BottomSheetDialog</item>
+        <item name="bottomSheetStyle">@style/Widget.Winey.BottomSheet.Modal</item>
     </style>
 
     <style name="Widget.Winey.EditText" parent="Widget.AppCompat.EditText">
@@ -41,7 +41,7 @@
     </style>
 
     <style name="ThemeOverlay.Winey.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/Widget.WINEY.BottomSheet.Modal</item>
+        <item name="bottomSheetStyle">@style/Widget.Winey.BottomSheet.Modal</item>
         <item name="android:colorBackground">@color/gray_0</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
