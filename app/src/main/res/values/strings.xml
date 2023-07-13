@@ -4,6 +4,7 @@
     <string name="main_recommend">추천</string>
     <string name="main_mypage">마이페이지</string>
 
+    <!-- winey feed -->
     <string name="wineyfeed_head">이웃나라 왕족들의 소비생활을\n관찰하고 소통할 수 있어요!</string>
     <string name="wineyfeed_sub">아니, 어제만해도 왕족인 내가 평민이라고?\n용납할 수 없지. 얘들아 모여봐 뭔일이야</string>
     <string name="wineyfeed_nickname">부자가 되고싶어</string>
@@ -14,6 +15,53 @@
     <string name="wineyfeed_dialog_cancel">취소</string>
     <string name="wineyfeed_dialog_setgoal">목표 설정하기</string>
 
+    <!-- upload -->
+    <string name="upload_photo_title">절약을 실천한\n모습을 보여주세요!</string>
+    <string name="upload_photo_detail">사진은 피드의 썸네일로 사용됩니다 :)</string>
+    <string name="upload_photo_button_guide">절약을 인증할 수 있는\n사진을 업로드 해주세요.</string>
+    <string name="upload_photo_next_btn_text">다음</string>
+    <string name="upload_content_title">절약 내용을\n작성해주세요!</string>
+    <string name="upload_content_detail">적어주신 글을 썸네일과 함께 표시합니다 :)</string>
+    <string name="upload_content_edittext_hint">Ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!</string>
+    <string name="upload_content_counter">(%d/36)</string>
+    <string name="upload_amount_title">얼마나 절약했나요?</string>
+    <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
+    <string name="upload_amount_unit_text">원</string>
+    <string name="upload_amount_next_btn_text">업로드</string>
+
+    <!-- mypage -->
+    <string name="mypage_title">마이페이지</string>
+    <string name="mypage_target_amount">절약 목표</string>
+    <string name="mypage_period">절약 기간</string>
+    <string name="mypage_accumulated_winey">누적 위니</string>
+    <string name="mypage_winey_count">위니 횟수</string>
+    <string name="mypage_myfeed">마이피드</string>
+    <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
+    <string name="impossible_dialog_close">닫기</string>
+    <string name="mypage_1on1">1:1 문의</string>
+    <string name="target_amount_cancel">취소</string>
+    <string name="target_amount_set_amount">목표 절약 금액을 설정해주세요</string>
+    <string name="target_amount_won">원</string>
+    <string name="target_amount_set_day">목표 절약 일수를 설정해주세요</string>
+    <string name="target_amount_day">일</string>
+    <string name="target_amount_warning">설정한 목표는 목표 절약 일수 전까지 변경이 불가능합니다.\n신중하게 작성해주세요!</string>
+    <string name="target_amount_save">저장하기</string>
+    <string name="help_title">더 즐거운 위니 사용법</string>
+    <string name="help_how">캐릭터를 레벨업해\n더 즐겁게 위니를 사용해보세요!</string>
+    <string name="help_levelup">레벨업을 어떻게 하나요?</string>
+    <string name="help_levelup_how">목표금액과 기간을 설정하고,\n목표를 달성하면 레벨업할 수 있어요!</string>
+    <string name="help_rule">레벨업 규칙이 어떻게 되나요?</string>
+    <string name="help_rule_how">목표 달성 성공여부에 따라 레벨이 달라집니다.</string>
+    <string name="help_rule_knight">기사</string>
+    <string name="help_rule_knight_how">목표를 총 1번 세우고 1번 달성 시 레벨업</string>
+    <string name="help_rule_nobless">귀족</string>
+    <string name="help_rule_nobless_how">목표를 총 3번 이상 세우고 3번 달성 시 레벨업</string>
+    <string name="help_rule_king">황제</string>
+    <string name="help_rule_king_how">목표를 총 9번 이상 세우고 9번 달성 시 레벨업</string>
+    <string name="help_warning">주의사항</string>
+    <string name="help_warning_how">귀족 레벨부터는 레벨을 유지하기 위해 주 3회이상 출석을 해야해요!\n절약 인증 사진을 삭제하면 목표기간 내에 누적된 절약 금액이 삭감되며 경우에 따라 레벨이 강등될 수 있어요! 삭제는 신중하게 해주세요.</string>
+
+    <!-- myfeed -->
     <string name="myfeed_head">마이피드</string>
     <string name="myfeed_delete">삭제하기</string>
     <string name="myfeed_nickname">루이당 4세</string>

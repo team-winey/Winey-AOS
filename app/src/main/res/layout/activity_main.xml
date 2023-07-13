@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             app:itemIconTint="@drawable/sel_main_bnv_icon_color"
             app:itemTextAppearanceActive="@style/TextAppearance.WINEY.detail_m_12"
-            app:itemTextAppearanceInactive="@style/TextAppearance.WINEY.detail_m_12"
+            app:itemTextAppearanceInactive="@style/TextAppearance.WINEY.detail_m_11"
             app:itemTextColor="@drawable/sel_main_bnv_icon_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
