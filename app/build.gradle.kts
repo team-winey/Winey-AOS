@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id(Plugins.androidApplication)
     id(Plugins.kotlinAndroid)
@@ -17,6 +19,12 @@ android {
         targetSdk = DefaultConfig.targetSdk
         versionCode = DefaultConfig.versionCode
         versionName = DefaultConfig.versionName
+
+        buildConfigField(
+            "String",
+            "BASE_URL",
+            gradleLocalProperties(rootDir).getProperty("auth.base.url"),
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,6 +51,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        buildConfig = true
     }
 }
 
