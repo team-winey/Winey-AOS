@@ -22,7 +22,7 @@ android {
 
         buildConfigField(
             "String",
-            "BASE_URL",
+            "AUTH_BASE_URL",
             gradleLocalProperties(rootDir).getProperty("auth.base.url"),
         )
 
