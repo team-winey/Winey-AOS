@@ -20,12 +20,34 @@
         <item name="colorOnSurfaceVariant">@color/gray_300</item>
 
         <item name="editTextStyle">@style/Widget.Winey.EditText</item>
+        <item name="textInputOutlinedStyle">@style/Widget.Winey.TextInputLayout.OutlineBox</item>
+        <item name="bottomSheetDialogStyle">@style/ThemeOverlay.Winey.BottomSheetDialog</item>
+        <item name="bottomSheetModalStyle">@style/Widget.Winey.BottomSheet.Modal</item>
     </style>
 
     <style name="Widget.Winey.EditText" parent="Widget.AppCompat.EditText">
         <item name="android:textColorHint">@color/gray_400</item>
         <item name="android:textColorHighlight">@color/purple_200</item>
         <item name="android:textCursorDrawable">@drawable/shape_purple_line_cursor</item>
+    </style>
+
+    <style name="Widget.Winey.TextInputLayout.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxBackgroundColor">@color/gray_0</item>
+        <item name="boxCornerRadiusBottomEnd">5dp</item>
+        <item name="boxCornerRadiusBottomStart">5dp</item>
+        <item name="boxCornerRadiusTopEnd">5dp</item>
+        <item name="boxCornerRadiusTopStart">5dp</item>
+    </style>
+
+    <style name="ThemeOverlay.Winey.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.WINEY.BottomSheet.Modal</item>
+        <item name="android:colorBackground">@color/gray_0</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="Widget.Winey.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
     </style>
 
 </resources>

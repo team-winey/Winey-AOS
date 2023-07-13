@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.main.feed.FeedFragment">
+
+        <ImageButton
+            android:id="@+id/btn_help_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@android:color/transparent"
+            android:src="@drawable/ic_help_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_help_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/help_title"
+            android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+            android:textColor="@color/gray_900"
+            app:layout_constraintBottom_toBottomOf="@id/btn_help_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/btn_help_back" />
+
+        <View
+            android:id="@+id/v_help_line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="3dp"
+            android:background="@color/gray_50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_help_back" />
+
+        <ScrollView
+            android:id="@+id/sv_help_how"
+            android:layout_width="match_parent"
+            android:layout_height="800dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/v_help_line1">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="14dp">
+
+                <ImageView
+                    android:id="@+id/iv_help_speech_bubble"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="14dp"
+                    android:src="@drawable/ic_help_speech_bubble"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_help_how"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="26dp"
+                    android:layout_marginTop="11dp"
+                    android:text="@string/help_how"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                    android:textColor="@color/gray_500"
+                    app:layout_constraintStart_toStartOf="@id/iv_help_speech_bubble"
+                    app:layout_constraintTop_toTopOf="@id/iv_help_speech_bubble" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_help_levelup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="28dp"
+                    android:backgroundTint="@color/purple_100"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_help_speech_bubble">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_help_levelup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="23dp"
+                            android:layout_marginTop="23dp"
+                            android:text="@string/help_levelup"
+                            android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
+                            android:textColor="@color/gray_900"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/tv_help_levelup_how"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="23dp"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/help_levelup_how"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_levelup"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <ImageView
+                            android:id="@+id/iv_help_levelup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:paddingBottom="42dp"
+                            android:src="@drawable/ic_help_levelup"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_levelup_how" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_help_rule"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:backgroundTint="@color/yellow_light"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cv_help_levelup">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_help_rule"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="23dp"
+                            android:layout_marginTop="23dp"
+                            android:text="@string/help_rule"
+                            android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
+                            android:textColor="@color/gray_900"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/tv_help_rule_how"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="23dp"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/help_rule_how"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <ImageView
+                            android:id="@+id/iv_help_rule"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:src="@drawable/ic_help_levelup"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule_how" />
+
+                        <TextView
+                            android:id="@+id/tv_help_rule_knight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="30dp"
+                            android:text="@string/help_rule_knight"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+                            android:textColor="@color/gray_700"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/iv_help_rule" />
+
+                        <TextView
+                            android:id="@+id/tv_help_rule_knight_how"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="23dp"
+                            android:text="@string/help_rule_knight_how"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintStart_toEndOf="@id/tv_help_rule_knight"
+                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_knight"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <View
+                            android:id="@+id/v_help_line2"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="28dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/yellow_dark"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule_knight_how" />
+
+                        <TextView
+                            android:id="@+id/tv_help_rule_nobless"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/help_rule_nobless"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+                            android:textColor="@color/gray_700"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_help_line2" />
+
+                        <TextView
+                            android:id="@+id/tv_help_rule_nobless_how"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="23dp"
+                            android:text="@string/help_rule_nobless_how"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintStart_toEndOf="@id/tv_help_rule_nobless"
+                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_nobless"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                        <View
+                            android:id="@+id/v_help_line3"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="28dp"
+                            android:layout_marginTop="12dp"
+                            android:background="@color/yellow_dark"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_help_rule_nobless_how" />
+
+                        <TextView
+                            android:id="@+id/tv_help_rule_king"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="30dp"
+                            android:layout_marginTop="12dp"
+                            android:text="@string/help_rule_king"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+                            android:textColor="@color/gray_700"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_help_line3" />
+
+                        <TextView
+                            android:id="@+id/tv_help_rule_king_how"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="15dp"
+                            android:layout_marginEnd="23dp"
+                            android:paddingBottom="39dp"
+                            android:text="@string/help_rule_king_how"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintStart_toEndOf="@id/tv_help_rule_king"
+                            app:layout_constraintTop_toTopOf="@id/tv_help_rule_king"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv_help_warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="108dp"
+                    android:text="@string/help_warning"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_b_14"
+                    android:textColor="@color/gray_900"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cv_help_rule" />
+
+                <TextView
+                    android:id="@+id/tv_help_warning_how"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="18dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/help_warning_how"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                    android:textColor="@color/gray_400"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_help_warning" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_help_close"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="17dp"
+                    android:layout_marginTop="39dp"
+                    android:layout_marginBottom="14dp"
+                    android:background="@drawable/shape_yellow_fill_10_rect"
+                    android:backgroundTint="@color/gray_200"
+                    android:stateListAnimator="@null"
+                    android:text="@string/impossible_dialog_close"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                    android:textColor="@color/gray_500"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_help_warning_how" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
