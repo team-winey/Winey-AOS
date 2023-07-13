@@ -5,11 +5,11 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import com.android.go.sopt.winey.R
-import com.android.go.sopt.winey.databinding.DialogWineyfeedAlertNoGoalBinding
+import com.android.go.sopt.winey.databinding.FragmentWineyfeedNoGoalDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 
 class WineyFeedDialogFragment :
-    BindingDialogFragment<DialogWineyfeedAlertNoGoalBinding>(R.layout.dialog_wineyfeed_alert_no_goal) {
+    BindingDialogFragment<FragmentWineyfeedNoGoalDialogBinding>(R.layout.fragment_wineyfeed_no_goal_dialog) {
 
     override fun onStart() {
         super.onStart()

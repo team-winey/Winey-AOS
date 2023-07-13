@@ -5,11 +5,11 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import com.android.go.sopt.winey.R
-import com.android.go.sopt.winey.databinding.DialogMyfeedAlertDeleteBinding
+import com.android.go.sopt.winey.databinding.FragmentMyfeedDeleteDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 
 class MyFeedDialogFragment :
-    BindingDialogFragment<DialogMyfeedAlertDeleteBinding>(R.layout.dialog_myfeed_alert_delete) {
+    BindingDialogFragment<FragmentMyfeedDeleteDialogBinding>(R.layout.fragment_myfeed_delete_dialog) {
 
     override fun onStart() {
         super.onStart()

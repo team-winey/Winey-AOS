@@ -30,7 +30,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun init1On1ButtonClickListener() {
         binding.btnMypage1on1.setOnClickListener {
-            val dialog = ImpossibleDialogFragment()
+            val dialog = MyPageDialogFragment()
 
             dialog.show(this.childFragmentManager, dialog.tag)
         }
