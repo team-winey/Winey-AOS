@@ -64,12 +64,12 @@
             android:stateListAnimator="@null"
             android:text="@string/myfeed_dialog_cancel"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
-            app:layout_constraintEnd_toStartOf="@id/btn_dialog_setgoal"
+            app:layout_constraintEnd_toStartOf="@id/btn_dialog_delete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_dialog_setgoal"
+            android:id="@+id/btn_dialog_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
