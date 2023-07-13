@@ -6,7 +6,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityMainBinding
-import com.android.go.sopt.winey.presentation.main.feed.FeedFragment
+import com.android.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import com.android.go.sopt.winey.util.binding.BindingActivity
@@ -21,11 +21,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initBnvItemSelectedListener() {
-        navigateTo<FeedFragment>()
+        navigateTo<WineyFeedFragment>()
 
         binding.bnvMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.menu_feed -> navigateTo<FeedFragment>()
+                R.id.menu_feed -> navigateTo<WineyFeedFragment>()
                 R.id.menu_recommend -> navigateTo<RecommendFragment>()
                 R.id.menu_mypage -> navigateTo<MyPageFragment>()
             }
@@ -38,5 +38,4 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }
     }
-
 }

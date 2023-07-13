@@ -99,6 +99,7 @@ dependencies {
         implementation(progressView)
         implementation(balloon)
         implementation(lottie)
+        implementation(circleImageView)
 
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
