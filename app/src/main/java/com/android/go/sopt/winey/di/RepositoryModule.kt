@@ -10,6 +10,6 @@ abstract class RepositoryModule {
     /*
     @Singleton
     @Binds
-    abstract fun providesExampleRepo(exampleRepository: ExampleRepositoryImpl): ExampleRepository = exampleRepository
+    abstract fun bindsExampleRepo(exampleRepository: ExampleRepositoryImpl): ExampleRepository = exampleRepository
     */
 }
