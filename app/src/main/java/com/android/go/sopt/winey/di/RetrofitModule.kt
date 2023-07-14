@@ -1,6 +1,9 @@
 package com.android.go.sopt.winey.di
 
-import com.android.go.sopt.winey.BuildConfig.BASE_URL
+import com.android.go.sopt.winey.BuildConfig.AUTH_BASE_URL
+import com.android.go.sopt.winey.data.interceptor.AuthInterceptor
+import com.android.go.sopt.winey.di.qualifier.Auth
+import com.android.go.sopt.winey.di.qualifier.Logger
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -18,7 +21,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
-
+    private const val APPLICATION_JSON = "application/json"
     @Provides
     @Singleton
     fun provideJson(): Json = Json {
@@ -29,22 +32,24 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideJsonConverter(json: Json): Converter.Factory =
-        json.asConverterFactory("application/json".toMediaType())
+        json.asConverterFactory(APPLICATION_JSON.toMediaType())
 
     @Provides
     @Singleton
+    @Logger
     fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
     @Provides
     @Singleton
-    fun provideAuthInterceptor(interceptor: HttpLoggingInterceptor): Interceptor = interceptor
+    @Auth
+    fun provideAuthInterceptor(interceptor: AuthInterceptor): Interceptor = interceptor
 
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        authInterceptor: HttpLoggingInterceptor
+        authInterceptor: AuthInterceptor
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(authInterceptor)
         .build()
@@ -55,7 +60,7 @@ object RetrofitModule {
         client: OkHttpClient,
         factory: Converter.Factory,
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(AUTH_BASE_URL)
         .client(client)
         .addConverterFactory(factory)
         .build()
