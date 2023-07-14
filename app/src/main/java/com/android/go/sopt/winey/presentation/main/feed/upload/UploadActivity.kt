@@ -6,6 +6,9 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityUploadBinding
+import com.android.go.sopt.winey.presentation.main.feed.upload.amount.AmountFragment
+import com.android.go.sopt.winey.presentation.main.feed.upload.content.ContentFragment
+import com.android.go.sopt.winey.presentation.main.feed.upload.photo.PhotoFragment
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.drawableOf
 

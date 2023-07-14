@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.main.feed.upload
+package com.android.go.sopt.winey.presentation.main.feed.upload.content
 
 import android.os.Bundle
 import android.view.View

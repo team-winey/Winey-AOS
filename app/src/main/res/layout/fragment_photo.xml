@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.main.feed.upload.PhotoFragment">
+        tools:context=".presentation.main.feed.upload.photo.PhotoFragment">
 
         <LinearLayout
             android:id="@+id/ll_upload_indicators"
