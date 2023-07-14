@@ -7,17 +7,23 @@ import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val viewModel by viewModels<MyPageViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.data = viewModel
 
         initTargetModifyButtonClickListener()
         init1On1ButtonClickListener()
         initLevelHelpButtonClickListener()
+        viewModel.getUser()
+        //setupGetUserState()
     }
 
     private fun initTargetModifyButtonClickListener() {
@@ -41,6 +47,28 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             val intent = Intent(context, MypageHelpActivity::class.java)
 
             startActivity(intent)
+        }
+    }
+
+    private fun setupGetUserState() {
+        viewModel.getUserState.observe(this) { state ->
+            when (state) {
+                is UiState.Loading -> {
+
+                }
+
+                is UiState.Success -> {
+
+                }
+
+                is UiState.Failure -> {
+
+                }
+
+                is UiState.Empty -> {
+
+                }
+            }
         }
     }
 }

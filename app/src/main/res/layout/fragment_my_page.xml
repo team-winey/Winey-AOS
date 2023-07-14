@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="data"
+            type="com.android.go.sopt.winey.presentation.main.mypage.MyPageViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,10 +69,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:text="@{data.nickname}"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
                     app:layout_constraintStart_toStartOf="@id/iv_mypage_level_token"
                     app:layout_constraintTop_toBottomOf="@id/iv_mypage_level_token"
-                    tools:text="부자될꺼임" />
+                     />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_mypage_profile"
