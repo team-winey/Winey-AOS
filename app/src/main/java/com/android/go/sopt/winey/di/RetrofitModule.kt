@@ -21,7 +21,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object RetrofitModule {
-    private const val APPLICATION_JSON = "application/json"
+    private const val CONTENT_TYPE = "application/json"
+
     @Provides
     @Singleton
     fun provideJson(): Json = Json {
@@ -32,7 +33,7 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideJsonConverter(json: Json): Converter.Factory =
-        json.asConverterFactory(APPLICATION_JSON.toMediaType())
+        json.asConverterFactory(CONTENT_TYPE.toMediaType())
 
     @Provides
     @Singleton
@@ -49,8 +50,10 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        authInterceptor: AuthInterceptor
+        @Logger loggingInterceptor: Interceptor,
+        @Auth authInterceptor: Interceptor,
     ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
         .addInterceptor(authInterceptor)
         .build()
 
