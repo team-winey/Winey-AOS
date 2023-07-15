@@ -8,8 +8,8 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
 ) : AuthRepository {
-    override suspend fun getUser(userId: Int): Result<ResponseGetUserDto> =
+    override suspend fun getUser(): Result<ResponseGetUserDto> =
         runCatching {
-            authDataSource.getUser(userId)
+            authDataSource.getUser()
         }
 }
