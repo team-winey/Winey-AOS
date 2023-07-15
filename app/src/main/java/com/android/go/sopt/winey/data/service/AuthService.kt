@@ -8,7 +8,6 @@ import retrofit2.http.Query
 interface AuthService {
     @GET("feed")
     suspend fun getWineyFeedList(
-        @Header("userId") userId: Int,
         @Query("page") page:Int
     ):ResponseGetWineyFeed
 }

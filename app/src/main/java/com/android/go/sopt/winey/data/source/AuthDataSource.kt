@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class AuthDataSource @Inject constructor(
     private val authService: AuthService
-){
-    suspend fun getWineyFeed(userId:Int, page:Int): ResponseGetWineyFeed =
-        authService.getWineyFeedList(userId,page)
+) {
+    suspend fun getWineyFeed(page: Int): ResponseGetWineyFeed =
+        authService.getWineyFeedList(page)
 }

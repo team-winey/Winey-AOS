@@ -54,7 +54,7 @@ data class ResponseGetWineyFeed(
         )
     }
 
-    fun convertToModel() = data.getFeedResponseDtoList.map { feed ->
+    fun convertToWineyFeedModel() = data.getFeedResponseDtoList.map { feed ->
         WineyFeedModel(
             feedTitle = feed.feedTitle,
             feedMoney = feed.feedMoney,

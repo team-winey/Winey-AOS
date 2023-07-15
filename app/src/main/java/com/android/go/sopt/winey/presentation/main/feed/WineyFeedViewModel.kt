@@ -31,13 +31,17 @@ class WineyFeedViewModel @Inject constructor(
     private fun getWineyFeed() {
         viewModelScope.launch {
             _getListState.value = UiState.Loading
-            authRepository.getWineyFeed(1, 1)
+            authRepository.getWineyFeed(1)
                 .onSuccess { response ->
                     _getListState.value = UiState.Success(response)
                     _WineyFeedListLiveData.value = response
                 }
                 .onFailure {
+                    _getListState.value = UiState.Failure(WINEYFEED_FAIL_MSG)
                 }
         }
+    }
+    companion object {
+        private const val WINEYFEED_FAIL_MSG = "getWineyFeed fail"
     }
 }
