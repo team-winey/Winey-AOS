@@ -46,15 +46,20 @@
                     android:background="@color/gray_200"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/iv_mypage_level_token"
+                <TextView
+                    android:id="@+id/tv_mypage_level_token"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="23dp"
                     android:layout_marginTop="10dp"
-                    android:src="@drawable/ic_mypage_lv1"
+                    android:background="@drawable/shape_yellow_fill_99_rect"
+                    android:text="@{String.valueOf(`LV. `) + data.userLevel}"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="4.5dp"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line1" />
+                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line1"
+                    tools:text="LV. 평민" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/btn_mypage_level_help"
@@ -62,8 +67,8 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_mypage_lv_help"
-                    app:layout_constraintStart_toEndOf="@id/iv_mypage_level_token"
-                    app:layout_constraintTop_toTopOf="@id/iv_mypage_level_token" />
+                    app:layout_constraintStart_toEndOf="@id/tv_mypage_level_token"
+                    app:layout_constraintTop_toTopOf="@id/tv_mypage_level_token" />
 
                 <TextView
                     android:id="@+id/tv_mypage_username"
@@ -72,8 +77,8 @@
                     android:layout_marginTop="8dp"
                     android:text="@{data.nickname}"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
-                    app:layout_constraintStart_toStartOf="@id/iv_mypage_level_token"
-                    app:layout_constraintTop_toBottomOf="@id/iv_mypage_level_token" />
+                    app:layout_constraintStart_toStartOf="@id/tv_mypage_level_token"
+                    app:layout_constraintTop_toBottomOf="@id/tv_mypage_level_token" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_mypage_profile"
