@@ -1,59 +1,43 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.go.sopt.winey.R
+import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.domain.entity.WineyFeedModel
+import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.util.view.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class WineyFeedViewModel : ViewModel() {
-    val dummyFeedList = listOf(
-        WineyFeedModel(
-            feedId = 1,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 2,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 3,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 4,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 5,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 6,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        )
-    )
+@HiltViewModel
+class WineyFeedViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
+
+    private val _WineyFeedListLiveData = MutableLiveData<List<WineyFeedModel>>()
+    val WineyFeedListLiveData: List<WineyFeedModel>?
+        get() = _WineyFeedListLiveData.value
+    private val _getListState = MutableLiveData<UiState<List<WineyFeedModel>>>(UiState.Loading)
+    val getListState: LiveData<UiState<List<WineyFeedModel>>>
+        get() = _getListState
+
+    init {
+        getWineyFeed()
+    }
+
+    private fun getWineyFeed() {
+        viewModelScope.launch {
+            _getListState.value = UiState.Loading
+            authRepository.getWineyFeed(1, 1)
+                .onSuccess { response ->
+                    _getListState.value = UiState.Success(response)
+                    _WineyFeedListLiveData.value = response
+                }
+                .onFailure {
+                }
+        }
+    }
 }

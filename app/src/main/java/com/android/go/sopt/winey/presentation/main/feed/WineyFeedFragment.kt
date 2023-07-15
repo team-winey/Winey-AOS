@@ -1,14 +1,19 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
+@AndroidEntryPoint
 class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
     private val viewModel by viewModels<WineyFeedViewModel>()
     private lateinit var wineyFeedDialogFragment: WineyFeedDialogFragment
@@ -34,7 +39,19 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun getFeed() {
-        wineyFeedAdapter.submitList(viewModel.dummyFeedList)
+        viewModel.getListState.observe(viewLifecycleOwner){state->
+            when(state){
+                is UiState.Success->{
+                    viewModel.WineyFeedListLiveData.let { list ->
+                        wineyFeedAdapter.submitList(list)
+                        Timber.tag("success").e(list.toString())
+                    }
+                }
+
+                else -> {
+                }
+            }
+        }
     }
 
     private fun initFabClickListener() {
