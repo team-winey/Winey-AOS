@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.photo
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,15 +29,27 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
     private fun initPhotoUploadButtonClickListener() {
         val getContent =
             registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
-                binding.ivUploadPhoto.load(imageUri) {
-                    error(R.drawable.ic_upload_image_error)
-                    transformations(RoundedCornersTransformation(20f))
+                if (imageUri == null) {
+                    displayErrorImage()
+                    return@registerForActivityResult
                 }
+
+                uploadPhoto(imageUri)
                 viewModel.activateNextButton()
             }
 
         binding.ivUploadPhoto.setOnClickListener {
             getContent.launch("image/*")
+        }
+    }
+
+    private fun displayErrorImage() {
+        binding.ivUploadPhoto.setImageResource(R.drawable.ic_upload_image_error)
+    }
+
+    private fun uploadPhoto(imageUri: Uri) {
+        binding.ivUploadPhoto.load(imageUri) {
+            transformations(RoundedCornersTransformation(20f))
         }
     }
 
