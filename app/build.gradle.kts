@@ -7,7 +7,7 @@ plugins {
     id(Plugins.kotlinKapt)
     id(Plugins.hiltPlugin)
     id(Plugins.ossLicensesPlugin)
-    kotlin("plugin.serialization") version "1.5.10"
+    id(Plugins.kotlinSerialize)
 }
 
 android {
