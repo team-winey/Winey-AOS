@@ -17,13 +17,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.data = viewModel
 
         initTargetModifyButtonClickListener()
         init1On1ButtonClickListener()
         initLevelHelpButtonClickListener()
-        viewModel.getUser()
-        //setupGetUserState()
+
+        viewModel.getUserResult.observe(viewLifecycleOwner){
+            binding.data = it.toMypageModel(it)
+        }
     }
 
     private fun initTargetModifyButtonClickListener() {
@@ -49,7 +50,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             startActivity(intent)
         }
     }
-
     private fun setupGetUserState() {
         viewModel.getUserState.observe(this) { state ->
             when (state) {
