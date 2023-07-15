@@ -71,4 +71,5 @@
     <string name="myfeed_dialog_sub">지금 게시물을 삭제하면\n누적 금액이 삭감되니 주의하세요!</string>
     <string name="myfeed_dialog_cancel">취소</string>
     <string name="myfeed_dialog_delete">삭제하기</string>
+    <string name="upload_last_btn_text">업로드</string>
 </resources>

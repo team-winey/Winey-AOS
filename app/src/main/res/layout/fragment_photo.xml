@@ -53,9 +53,9 @@
             android:layout_marginTop="18dp"
             android:text="@string/upload_photo_title"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
-            app:layout_constraintTop_toBottomOf="@id/ll_upload_indicators"
             android:textColor="@color/gray_900"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_upload_indicators" />
 
         <TextView
             android:id="@+id/tv_photo_detail"
@@ -68,32 +68,15 @@
             app:layout_constraintStart_toStartOf="@id/tv_photo_title"
             app:layout_constraintTop_toBottomOf="@id/tv_photo_title" />
 
-        <FrameLayout
-            android:id="@+id/fl_photo_upload"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/shape_purple_fill_10_rect"
-            android:padding="18dp"
+        <ImageView
+            android:id="@+id/iv_upload_photo"
+            android:layout_width="375dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="9:6"
+            android:src="@drawable/img_upload_photo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_photo_detail">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/upload_photo_button_guide"
-                android:textAppearance="@style/TextAppearance.WINEY.body_m_18"
-                android:textColor="@color/white" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:background="@drawable/ic_upload_gallery" />
-
-        </FrameLayout>
+            app:layout_constraintTop_toBottomOf="@id/tv_photo_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -80,6 +80,7 @@
             android:hint="@string/upload_content_edittext_hint"
             android:importantForAutofill="no"
             android:inputType="text|textMultiLine"
+            android:maxLength="36"
             android:padding="18dp"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
             app:layout_constraintEnd_toEndOf="parent"
