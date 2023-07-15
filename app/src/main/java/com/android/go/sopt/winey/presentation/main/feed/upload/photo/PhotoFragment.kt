@@ -17,6 +17,7 @@ import com.android.go.sopt.winey.util.binding.BindingFragment
 
 class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_photo) {
     private val viewModel by viewModels<PhotoViewModel>()
+    private lateinit var imageUriBundleValue: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,6 +36,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
                     return@registerForActivityResult
                 }
 
+                imageUriBundleValue = imageUri.toString()
                 uploadPhoto(imageUri)
                 viewModel.activateNextButton()
             }
@@ -54,10 +56,9 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         }
     }
 
-    // todo: 다음 프래그먼트에 번들로 imageUri 넘기기
     private fun initNextButtonClickListener() {
         binding.btnPhotoNext.setOnClickListener {
-            navigateTo<ContentFragment>()
+            navigateWithBundle<ContentFragment>(imageUriBundleValue)
         }
     }
 
@@ -67,10 +68,17 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         }
     }
 
-
-    private inline fun <reified T : Fragment> navigateTo() {
+    private inline fun <reified T : Fragment> navigateWithBundle(imageUri: String) {
         requireActivity().supportFragmentManager.commit {
-            replace<T>(R.id.fcv_upload, T::class.simpleName)
+            replace<T>(
+                R.id.fcv_upload,
+                T::class.simpleName,
+                Bundle().apply { putString(PHOTO_KEY, imageUri) }
+            )
         }
+    }
+
+    companion object {
+        private const val PHOTO_KEY = "photo"
     }
 }
