@@ -1,6 +1,6 @@
 package com.android.go.sopt.winey.di
 
-import com.android.go.sopt.winey.BuildConfig.BASE_URL
+import com.android.go.sopt.winey.BuildConfig.AUTH_BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -33,8 +33,10 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        return interceptor
     }
 
     @Provides
@@ -55,7 +57,7 @@ object RetrofitModule {
         client: OkHttpClient,
         factory: Converter.Factory,
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(AUTH_BASE_URL)
         .client(client)
         .addConverterFactory(factory)
         .build()
