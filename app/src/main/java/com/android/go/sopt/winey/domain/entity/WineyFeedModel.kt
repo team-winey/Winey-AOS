@@ -1,13 +1,14 @@
 package com.android.go.sopt.winey.domain.entity
 
-import androidx.annotation.DrawableRes
 
-class WineyFeedModel (
+data class WineyFeedModel (
+    val feedId: Int,
+    val feedImage: String,
     val feedMoney: Int,
-    var likes: Int,
-    @DrawableRes val feedImage: Int,
-    var feedTitle: String,
-    var nickName: String,
-    @DrawableRes val profile: Int,
-    var feedId: Int
+    val feedTitle: String,
+    val isLiked: Boolean,
+    val likes: Int,
+    val nickName: String,
+    val userId: Int,
+    val writerLevel: Int
 )
