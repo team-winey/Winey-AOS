@@ -6,42 +6,43 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResponseGetUserDto(
     @SerialName("code")
-    val code : Int,
-    @SerialName("message")
-    val message : String,
+    val code: Int,
     @SerialName("data")
-    val data : Data,
-){
+    val data: Data?,
+    @SerialName("message")
+    val message: String
+) {
     @Serializable
     data class Data(
-        @SerialName("user")
-        val user : User,
-        @SerialName("goal")
-        val goal : Goal,
-    ){
+        @SerialName("userResponseGoalDto")
+        val userResponseGoalDto: UserResponseGoalDto?,
+        @SerialName("userResponseUserDto")
+        val userResponseUserDto: UserResponseUserDto?
+    ) {
         @Serializable
-        data class User(
-            @SerialName("userId")
-            val userId : Int,
-            @SerialName("nickname")
-            val nickname : String,
-            @SerialName("userLevel")
-            val userLevel : String,
-        )
-        @Serializable
-        data class Goal(
+        data class UserResponseGoalDto(
             @SerialName("duringGoalAmount")
-            val duringGoalAmount : Int,
+            val duringGoalAmount: Int,
             @SerialName("duringGoalCount")
-            val duringGoalCount : Int,
-            @SerialName("targetMoney")
-            val targetMoney : Int,
-            @SerialName("targetDay")
-            val targetDay : Int,
-            @SerialName("isOver")
-            val isOver : Boolean,
+            val duringGoalCount: Int,
             @SerialName("isAttained")
-            val isAttained : Boolean
+            val isAttained: Boolean,
+            @SerialName("isOver")
+            val isOver: Boolean,
+            @SerialName("targetDay")
+            val targetDay: Int,
+            @SerialName("targetMoney")
+            val targetMoney: Int
+        )
+
+        @Serializable
+        data class UserResponseUserDto(
+            @SerialName("nickname")
+            val nickname: String,
+            @SerialName("userId")
+            val userId: Int,
+            @SerialName("userLevel")
+            val userLevel: String
         )
     }
 }
