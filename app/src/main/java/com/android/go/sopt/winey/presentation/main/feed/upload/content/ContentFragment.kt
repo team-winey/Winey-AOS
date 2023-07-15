@@ -14,6 +14,7 @@ import com.android.go.sopt.winey.util.binding.BindingFragment
 
 class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragment_content) {
     private val viewModel by viewModels<ContentViewModel>()
+    private val imageUri by lazy { requireArguments().getString(PHOTO_KEY, "") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,10 +24,9 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
         initBackButtonClickListener()
     }
 
-    // todo: 번들로 입력된 텍스트 넘기기
     private fun initNextButtonClickListener() {
         binding.btnContentNext.setOnClickListener {
-            navigateTo<AmountFragment>()
+            navigateWithBundle<AmountFragment>(imageUri.toString(), viewModel.content)
         }
     }
 
@@ -40,5 +40,26 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
         requireActivity().supportFragmentManager.commit {
             replace<T>(R.id.fcv_upload, T::class.simpleName)
         }
+    }
+
+    private inline fun <reified T : Fragment> navigateWithBundle(
+        imageUri: String,
+        content: String
+    ) {
+        requireActivity().supportFragmentManager.commit {
+            replace<T>(
+                R.id.fcv_upload,
+                T::class.simpleName,
+                Bundle().apply {
+                    putString(PHOTO_KEY, imageUri)
+                    putString(CONTENT_KEY, content)
+                }
+            )
+        }
+    }
+
+    companion object {
+        private const val PHOTO_KEY = "photo"
+        private const val CONTENT_KEY = "content"
     }
 }

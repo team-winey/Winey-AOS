@@ -9,7 +9,7 @@ import androidx.lifecycle.map
 // 내용 채워지면 버튼 활성화 (액티비티 참조)
 class AmountViewModel : ViewModel() {
     val _amount = MutableLiveData<String>()
-    private val amount: String get() = _amount.value ?: ""
+    val amount: String get() = _amount.value ?: ""
 
     val isValidAmount: LiveData<Boolean> = _amount.map { validateLength(it) }
 

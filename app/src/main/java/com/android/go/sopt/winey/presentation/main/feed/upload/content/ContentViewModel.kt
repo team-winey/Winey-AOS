@@ -7,7 +7,7 @@ import androidx.lifecycle.map
 
 class ContentViewModel : ViewModel() {
     val _content = MutableLiveData<String>()
-    private val content: String get() = _content.value ?: ""
+    val content: String get() = _content.value ?: ""
 
     val isValidContent : LiveData<Boolean> = _content.map { validateLength(it) }
 

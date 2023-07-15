@@ -10,15 +10,19 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.content.ContentFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
     private val viewModel by viewModels<AmountViewModel>()
+    private val imageUri by lazy { requireArguments().getString(PHOTO_KEY, "") }
+    private val content by lazy { requireArguments().getString(CONTENT_KEY, "") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
         initBackButtonClickListener()
+        initUploadButtonClickListener()
     }
 
     private fun initBackButtonClickListener() {
@@ -27,9 +31,21 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         }
     }
 
+    // todo: imageUri, content, viewModel.amount -> 멀티파트 서버통신
+    private fun initUploadButtonClickListener() {
+        binding.btnAmountNext.setOnSingleClickListener {
+
+        }
+    }
+
     private inline fun <reified T : Fragment> navigateTo() {
         requireActivity().supportFragmentManager.commit {
             replace<T>(R.id.fcv_upload, T::class.simpleName)
         }
+    }
+
+    companion object {
+        private const val PHOTO_KEY = "photo"
+        private const val CONTENT_KEY = "content"
     }
 }
