@@ -58,19 +58,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 is UiState.Success -> {
                     binding.data = state.data
                     when (state.data.userLevel) {
-                        common -> {
+                        LEVEL_COMMON -> {
                             binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
                         }
 
-                        knight -> {
+                        LEVEL_KNIGHT -> {
                             binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv2_progressbar)
                         }
 
-                        nobless -> {
+                        LEVEL_NOBLESS -> {
                             binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv3_progressbar)
                         }
 
-                        king -> {
+                        LEVEL_KING -> {
                             binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
                         }
                     }
@@ -88,9 +88,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val common = "평민"
-        private const val knight = "기사"
-        private const val nobless = "귀족"
-        private const val king = "황제"
+        private const val LEVEL_COMMON = "평민"
+        private const val LEVEL_KNIGHT = "기사"
+        private const val LEVEL_NOBLESS = "귀족"
+        private const val LEVEL_KING = "황제"
     }
 }
