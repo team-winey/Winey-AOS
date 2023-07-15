@@ -1,4 +1,14 @@
 package com.android.go.sopt.winey.data.service
 
-class AuthService {
+import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeed
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.Query
+
+interface AuthService {
+    @GET("feed")
+    suspend fun getWineyFeedList(
+        @Header("userId") userId: Int,
+        @Query("page") page:Int
+    ):ResponseGetWineyFeed
 }
