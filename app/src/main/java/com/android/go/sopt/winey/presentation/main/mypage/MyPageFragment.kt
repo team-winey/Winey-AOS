@@ -21,10 +21,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initTargetModifyButtonClickListener()
         init1On1ButtonClickListener()
         initLevelHelpButtonClickListener()
-
-        viewModel.getUserResult.observe(viewLifecycleOwner) {
-            binding.data = it.toMypageModel(it)
-        }
+        setupGetUserState()
     }
 
     private fun initTargetModifyButtonClickListener() {
@@ -52,14 +49,31 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun setupGetUserState() {
-        viewModel.getUserState.observe(this) { state ->
+        viewModel.getUserState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
 
                 }
 
                 is UiState.Success -> {
+                    binding.data = state.data
+                    when (state.data.userLevel) {
+                        common -> {
+                            binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
+                        }
 
+                        knight -> {
+                            binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv2_progressbar)
+                        }
+
+                        nobless -> {
+                            binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv3_progressbar)
+                        }
+
+                        king -> {
+                            binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
+                        }
+                    }
                 }
 
                 is UiState.Failure -> {
@@ -71,5 +85,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 }
             }
         }
+    }
+
+    companion object {
+        val common = "평민"
+        val knight = "기사"
+        val nobless = "귀족"
+        val king = "황제"
     }
 }

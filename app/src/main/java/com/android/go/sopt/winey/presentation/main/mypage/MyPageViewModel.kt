@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
+import com.android.go.sopt.winey.domain.entity.MypageModel
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,8 +22,8 @@ class MyPageViewModel @Inject constructor(
     private val _getUserResult = MutableLiveData<ResponseGetUserDto>()
     val getUserResult: LiveData<ResponseGetUserDto> get() = _getUserResult
 
-    private val _getUserState = MutableLiveData<UiState<ResponseGetUserDto>>()
-    val getUserState: LiveData<UiState<ResponseGetUserDto>> get() = _getUserState
+    private val _getUserState = MutableLiveData<UiState<MypageModel>>(UiState.Loading)
+    val getUserState: LiveData<UiState<MypageModel>> get() = _getUserState
 
     init {
         getUser()
@@ -30,9 +31,10 @@ class MyPageViewModel @Inject constructor(
 
     fun getUser() {
         viewModelScope.launch {
+            _getUserState.value = UiState.Loading
             authRepository.getUser()
                 .onSuccess { response ->
-                    _getUserResult.value = response
+                    _getUserState.value = UiState.Success(response.toMypageModel(response))
                     Log.e("test log", "성공")
                 }
                 .onFailure { t ->
@@ -40,6 +42,7 @@ class MyPageViewModel @Inject constructor(
                         Log.e("test log", "HTTP 실패")
                     }
                     Log.e("test log", "${t.message}")
+                    _getUserState.value = UiState.Failure("${t.message}")
                 }
         }
     }
