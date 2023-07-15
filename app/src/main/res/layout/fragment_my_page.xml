@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
             type="com.android.go.sopt.winey.domain.entity.MypageModel" />
@@ -72,8 +73,7 @@
                     android:text="@{data.nickname}"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
                     app:layout_constraintStart_toStartOf="@id/iv_mypage_level_token"
-                    app:layout_constraintTop_toBottomOf="@id/iv_mypage_level_token"
-                     />
+                    app:layout_constraintTop_toBottomOf="@id/iv_mypage_level_token" />
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cv_mypage_profile"
@@ -137,9 +137,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
-                        android:text="@{data.targetMoney+'원'}"
                         android:layout_marginStart="21dp"
                         android:layout_marginBottom="10dp"
+                        android:text="@{data.targetMoney+'원'}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         tools:text="10,000원" />
 
@@ -180,9 +180,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
+                        android:text="@{String.valueOf(`D-`) + data.targetDay}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
-                        android:text="@{String.valueOf(`D-`) + data.targetDay}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/v_mypage_line3"
                         app:layout_constraintStart_toStartOf="parent"
@@ -215,9 +215,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
+                        android:text="@{data.duringGoalAmount+'원'}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
-                        android:text="@{data.duringGoalAmount+'원'}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/v_mypage_line4"
                         app:layout_constraintStart_toEndOf="@id/v_mypage_line3"
@@ -250,9 +250,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
+                        android:text="@{data.duringGoalCount+'번'}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
-                        android:text="@{data.duringGoalCount+'번'}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/v_mypage_line4"

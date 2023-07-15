@@ -23,13 +23,15 @@ class MyPageViewModel @Inject constructor(
 
     private val _getUserState = MutableLiveData<UiState<ResponseGetUserDto>>()
     val getUserState: LiveData<UiState<ResponseGetUserDto>> get() = _getUserState
-    init{
+
+    init {
         getUser()
     }
+
     fun getUser() {
         viewModelScope.launch {
             authRepository.getUser()
-                .onSuccess { response->
+                .onSuccess { response ->
                     _getUserResult.value = response
                     Log.e("test log", "성공")
                 }

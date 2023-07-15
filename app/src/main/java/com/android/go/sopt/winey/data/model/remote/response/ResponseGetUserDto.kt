@@ -47,6 +47,7 @@ data class ResponseGetUserDto(
             val userLevel: String
         )
     }
+
     fun toMypageModel(response: ResponseGetUserDto): MypageModel {
         val data = response.data
         val userResponseUserDto = data?.userResponseUserDto
@@ -54,9 +55,15 @@ data class ResponseGetUserDto(
         return MypageModel(
             nickname = userResponseUserDto?.nickname.orEmpty(),
             userLevel = userResponseUserDto?.userLevel.orEmpty(),
-            duringGoalAmount = DecimalFormat("#,###").format(data?.userResponseGoalDto?.duringGoalAmount?: 0),
-            duringGoalCount = DecimalFormat("#,###").format(data?.userResponseGoalDto?.duringGoalCount ?: 0),
-            targetMoney = DecimalFormat("#,###").format(data?.userResponseGoalDto?.targetMoney ?: 0),
+            duringGoalAmount = DecimalFormat("#,###").format(
+                data?.userResponseGoalDto?.duringGoalAmount ?: 0
+            ),
+            duringGoalCount = DecimalFormat("#,###").format(
+                data?.userResponseGoalDto?.duringGoalCount ?: 0
+            ),
+            targetMoney = DecimalFormat("#,###").format(
+                data?.userResponseGoalDto?.targetMoney ?: 0
+            ),
             targetDay = DecimalFormat("#,###").format(data?.userResponseGoalDto?.targetDay ?: 0),
             isOver = data?.userResponseGoalDto?.isOver ?: false,
             isAttained = data?.userResponseGoalDto?.isAttained ?: false

@@ -22,7 +22,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         init1On1ButtonClickListener()
         initLevelHelpButtonClickListener()
 
-        viewModel.getUserResult.observe(viewLifecycleOwner){
+        viewModel.getUserResult.observe(viewLifecycleOwner) {
             binding.data = it.toMypageModel(it)
         }
     }
@@ -50,6 +50,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             startActivity(intent)
         }
     }
+
     private fun setupGetUserState() {
         viewModel.getUserState.observe(this) { state ->
             when (state) {
