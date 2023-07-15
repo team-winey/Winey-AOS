@@ -1,6 +1,21 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.content
 
-// 내용 채워지면 버튼 활성화 (액티비티 참조)
-// 텍스트 길이 측정해서 카운터에 표시
-class ContentViewModel {
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
+
+class ContentViewModel : ViewModel() {
+    val _content = MutableLiveData<String>()
+    private val content: String get() = _content.value ?: ""
+
+    val isValidContent : LiveData<Boolean> = _content.map { validateLength(it) }
+
+    private fun validateLength(content: String): Boolean =
+        content.length in MIN_CONTENT_LENGTH..MAX_CONTENT_LENGTH
+
+    companion object {
+        const val MIN_CONTENT_LENGTH = 1
+        const val MAX_CONTENT_LENGTH = 36
+    }
 }

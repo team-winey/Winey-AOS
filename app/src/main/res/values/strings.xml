@@ -28,6 +28,7 @@
     <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
     <string name="upload_amount_unit_text">원</string>
     <string name="upload_amount_next_btn_text">업로드</string>
+    <string name="upload_content_counter_preview">(0/36)</string>
 
     <!-- mypage -->
     <string name="mypage_title">마이페이지</string>
@@ -71,5 +72,4 @@
     <string name="myfeed_dialog_sub">지금 게시물을 삭제하면\n누적 금액이 삭감되니 주의하세요!</string>
     <string name="myfeed_dialog_cancel">취소</string>
     <string name="myfeed_dialog_delete">삭제하기</string>
-    <string name="upload_last_btn_text">업로드</string>
 </resources>

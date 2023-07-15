@@ -11,7 +11,6 @@ import com.android.go.sopt.winey.util.binding.BindingActivity
 
 class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_upload) {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
