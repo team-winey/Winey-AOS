@@ -11,6 +11,7 @@ import com.android.go.sopt.winey.databinding.FragmentContentBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.amount.AmountFragment
 import com.android.go.sopt.winey.presentation.main.feed.upload.photo.PhotoFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.context.hideKeyboard
 
 class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragment_content) {
     private val viewModel by viewModels<ContentViewModel>()
@@ -20,13 +21,14 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
+        initRootLayoutClickListener()
         initNextButtonClickListener()
         initBackButtonClickListener()
     }
 
     private fun initNextButtonClickListener() {
         binding.btnContentNext.setOnClickListener {
-            navigateWithBundle<AmountFragment>(imageUri.toString(), viewModel.content)
+            navigateWithBundle<AmountFragment>(imageUri, viewModel.content)
         }
     }
 
@@ -56,6 +58,17 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
                 }
             )
         }
+    }
+
+    private fun initRootLayoutClickListener() {
+        binding.root.setOnClickListener {
+            requireContext().hideKeyboard(binding.root)
+            focusOutEditText()
+        }
+    }
+
+    private fun focusOutEditText() {
+        binding.etUploadContent.clearFocus()
     }
 
     companion object {

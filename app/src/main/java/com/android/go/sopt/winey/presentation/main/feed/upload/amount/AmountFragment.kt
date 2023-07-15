@@ -10,6 +10,8 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.content.ContentFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.context.hideKeyboard
+import com.android.go.sopt.winey.util.fragment.toast
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
@@ -21,6 +23,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
+        initRootLayoutClickListener()
         initBackButtonClickListener()
         initUploadButtonClickListener()
     }
@@ -34,7 +37,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     // todo: imageUri, content, viewModel.amount -> 멀티파트 서버통신
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
-
+            toast("$content ${viewModel.amount}")
         }
     }
 
@@ -42,6 +45,17 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         requireActivity().supportFragmentManager.commit {
             replace<T>(R.id.fcv_upload, T::class.simpleName)
         }
+    }
+
+    private fun initRootLayoutClickListener() {
+        binding.root.setOnClickListener {
+            requireContext().hideKeyboard(binding.root)
+            focusOutEditText()
+        }
+    }
+
+    private fun focusOutEditText() {
+        binding.etUploadAmount.clearFocus()
     }
 
     companion object {
