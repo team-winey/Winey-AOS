@@ -88,9 +88,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     companion object {
-        val common = "평민"
-        val knight = "기사"
-        val nobless = "귀족"
-        val king = "황제"
+        private const val common = "평민"
+        private const val knight = "기사"
+        private const val nobless = "귀족"
+        private const val king = "황제"
     }
 }
