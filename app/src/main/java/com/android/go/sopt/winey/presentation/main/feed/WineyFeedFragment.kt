@@ -1,7 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
@@ -39,15 +38,13 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun getFeed() {
-        viewModel.getListState.observe(viewLifecycleOwner){state->
-            when(state){
-                is UiState.Success->{
-                    viewModel.WineyFeedListLiveData.let { list ->
-                        wineyFeedAdapter.submitList(list)
-                        Timber.tag("success").e(list.toString())
-                    }
+        viewModel.getListState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Success -> {
+                    val wineyFeedList = state.data
+                    wineyFeedAdapter.submitList(wineyFeedList)
+                    Timber.tag("success").e(wineyFeedList.toString())
                 }
-
                 else -> {
                 }
             }
@@ -59,7 +56,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             wineyFeedDialogFragment.show(parentFragmentManager, TAG_WINEYFEED_DIALOG)
         }
     }
-
     companion object {
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
     }
