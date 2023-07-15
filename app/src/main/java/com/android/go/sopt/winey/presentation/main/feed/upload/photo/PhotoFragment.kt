@@ -24,6 +24,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
 
         initPhotoUploadButtonClickListener()
         initNextButtonClickListener()
+        initCloseButtonClickListener()
     }
 
     private fun initPhotoUploadButtonClickListener() {
@@ -59,6 +60,13 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
             navigateTo<ContentFragment>()
         }
     }
+
+    private fun initCloseButtonClickListener() {
+        binding.ivPhotoClose.setOnClickListener {
+            requireActivity().finish()
+        }
+    }
+
 
     private inline fun <reified T : Fragment> navigateTo() {
         requireActivity().supportFragmentManager.commit {
