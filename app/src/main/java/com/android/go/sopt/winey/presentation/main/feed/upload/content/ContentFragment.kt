@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentContentBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.amount.AmountFragment
+import com.android.go.sopt.winey.presentation.main.feed.upload.photo.PhotoFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 
 class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragment_content) {
@@ -19,12 +20,19 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
         binding.vm = viewModel
 
         initNextButtonClickListener()
+        initBackButtonClickListener()
     }
 
     // todo: 번들로 입력된 텍스트 넘기기
     private fun initNextButtonClickListener() {
         binding.btnContentNext.setOnClickListener {
             navigateTo<AmountFragment>()
+        }
+    }
+
+    private fun initBackButtonClickListener() {
+        binding.ivContentBack.setOnClickListener {
+            navigateTo<PhotoFragment>()
         }
     }
 
