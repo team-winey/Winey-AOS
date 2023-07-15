@@ -53,8 +53,9 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         }
     }
 
+    // todo: 다음 프래그먼트에 번들로 imageUri 넘기기
     private fun initNextButtonClickListener() {
-        binding.btnUploadPhotoNext.setOnClickListener {
+        binding.btnPhotoNext.setOnClickListener {
             navigateTo<ContentFragment>()
         }
     }
