@@ -4,9 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -17,7 +15,7 @@ import com.android.go.sopt.winey.util.binding.BindingFragment
 
 class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_photo) {
     private val viewModel by viewModels<PhotoViewModel>()
-    private lateinit var imageUriBundleValue: String
+    private lateinit var imageUriArg: String // todo: image uri 뷰모델에 저장하기
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,7 +34,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
                     return@registerForActivityResult
                 }
 
-                imageUriBundleValue = imageUri.toString()
+                imageUriArg = imageUri.toString()
                 uploadPhoto(imageUri)
                 viewModel.activateNextButton()
             }
@@ -58,7 +56,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
 
     private fun initNextButtonClickListener() {
         binding.btnPhotoNext.setOnClickListener {
-            navigateWithBundle<ContentFragment>(imageUriBundleValue)
+            navigateToNext()
         }
     }
 
@@ -68,13 +66,15 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         }
     }
 
-    private inline fun <reified T : Fragment> navigateWithBundle(imageUri: String) {
+    private fun navigateToNext() {
         parentFragmentManager.commit {
-            replace<T>(
-                R.id.fcv_upload,
-                T::class.simpleName,
-                Bundle().apply { putString(PHOTO_KEY, imageUri) }
-            )
+            val fragmentWithBundle = ContentFragment().apply {
+                arguments = Bundle().apply {
+                    putString(PHOTO_KEY, imageUriArg)
+                }
+            }
+            replace(R.id.fcv_upload, fragmentWithBundle)
+            addToBackStack(null)
         }
     }
 

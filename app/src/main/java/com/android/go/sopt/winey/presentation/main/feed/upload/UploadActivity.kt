@@ -1,9 +1,7 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityUploadBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.photo.PhotoFragment
@@ -13,13 +11,10 @@ class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        navigateTo<PhotoFragment>()
-    }
-
-    private inline fun <reified T : Fragment> navigateTo() {
-        supportFragmentManager.commit {
-            replace<T>(R.id.fcv_upload, T::class.simpleName)
+        if (savedInstanceState == null) {
+            supportFragmentManager.commit {
+                replace(R.id.fcv_upload, PhotoFragment())
+            }
         }
     }
 }
