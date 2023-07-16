@@ -34,9 +34,12 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
                     return@registerForActivityResult
                 }
 
-                imageUriArg = imageUri.toString()
-                uploadPhoto(imageUri)
-                viewModel.activateNextButton()
+                initImageUri(imageUri)
+                displayImage()
+                viewModel.apply {
+                    updateImageUri(imageUri)
+                    activateNextButton()
+                }
             }
 
         binding.ivUploadPhoto.setOnClickListener {
@@ -44,12 +47,16 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         }
     }
 
+    private fun initImageUri(imageUri: Uri) {
+        imageUriArg = imageUri.toString()
+    }
+
     private fun displayErrorImage() {
         binding.ivUploadPhoto.setImageResource(R.drawable.ic_upload_image_error)
     }
 
-    private fun uploadPhoto(imageUri: Uri) {
-        binding.ivUploadPhoto.load(imageUri) {
+    private fun displayImage() {
+        binding.ivUploadPhoto.load(imageUriArg) {
             transformations(RoundedCornersTransformation(20f))
         }
     }
