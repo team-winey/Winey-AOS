@@ -72,7 +72,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
-        requireActivity().supportFragmentManager.commit {
+        parentFragmentManager.commit {
             replace<T>(R.id.fcv_upload, T::class.simpleName)
         }
     }

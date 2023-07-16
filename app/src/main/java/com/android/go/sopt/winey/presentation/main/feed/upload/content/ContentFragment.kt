@@ -39,7 +39,7 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
-        requireActivity().supportFragmentManager.commit {
+        parentFragmentManager.commit {
             replace<T>(R.id.fcv_upload, T::class.simpleName)
         }
     }
@@ -48,7 +48,7 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
         imageUri: String,
         content: String
     ) {
-        requireActivity().supportFragmentManager.commit {
+        parentFragmentManager.commit {
             replace<T>(
                 R.id.fcv_upload,
                 T::class.simpleName,

@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 
-// 1000 단위에 따라 콤마 표시
-// 내용 채워지면 버튼 활성화 (액티비티 참조)
 class AmountViewModel : ViewModel() {
     val _amount = MutableLiveData<String>()
     val amount: String get() = _amount.value ?: ""

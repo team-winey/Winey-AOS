@@ -69,7 +69,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
     }
 
     private inline fun <reified T : Fragment> navigateWithBundle(imageUri: String) {
-        requireActivity().supportFragmentManager.commit {
+        parentFragmentManager.commit {
             replace<T>(
                 R.id.fcv_upload,
                 T::class.simpleName,
