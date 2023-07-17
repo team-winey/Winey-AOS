@@ -1,6 +1,6 @@
 package com.android.go.sopt.winey.data.model.remote.response
 
-import com.android.go.sopt.winey.domain.entity.WineyFeedModel
+import com.android.go.sopt.winey.domain.entity.WineyFeed
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -54,8 +54,8 @@ data class ResponseGetWineyFeed(
         )
     }
 
-    fun convertToWineyFeedModel() = data.getFeedResponseDtoList.map { feed ->
-        WineyFeedModel(
+    fun toWineyFeed() = data.getFeedResponseDtoList.map { feed ->
+        WineyFeed(
             feedTitle = feed.feedTitle,
             feedMoney = feed.feedMoney,
             feedImage = feed.feedImage,

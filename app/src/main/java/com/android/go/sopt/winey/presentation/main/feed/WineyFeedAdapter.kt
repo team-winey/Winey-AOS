@@ -6,16 +6,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyfeedPostBinding
-import com.android.go.sopt.winey.domain.entity.WineyFeedModel
+import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
 class WineyFeedAdapter :
-    ListAdapter<WineyFeedModel, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
+    ListAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
 
     class WineyFeedViewHolder(
         private val binding: ItemWineyfeedPostBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(data: WineyFeedModel) {
+        fun onBind(data: WineyFeed) {
             binding.data = data
             binding.ivWineyfeedLike.setImageResource(
                 if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
@@ -35,7 +35,7 @@ class WineyFeedAdapter :
     }
 
     companion object {
-        private val diffUtil = ItemDiffCallback<WineyFeedModel>(
+        private val diffUtil = ItemDiffCallback<WineyFeed>(
             onItemsTheSame = { old, new -> old.feedId == new.feedId },
             onContentsTheSame = { old, new -> old == new }
         )

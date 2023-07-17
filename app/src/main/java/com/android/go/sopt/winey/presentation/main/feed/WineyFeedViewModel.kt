@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.go.sopt.winey.domain.entity.WineyFeedModel
+import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,12 +18,12 @@ class WineyFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private val _WineyFeedListLiveData = MutableLiveData<List<WineyFeedModel>>()
-    val WineyFeedListLiveData: List<WineyFeedModel>?
+    private val _WineyFeedListLiveData = MutableLiveData<List<WineyFeed>>()
+    val WineyFeedListLiveData: List<WineyFeed>?
         get() = _WineyFeedListLiveData.value
-    private val _getListState = MutableLiveData<UiState<List<WineyFeedModel>>>(UiState.Loading)
-    val getListState: LiveData<UiState<List<WineyFeedModel>>>
-        get() = _getListState
+    private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
+    val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
+        get() = _getWineyFeedListState
 
     init {
         getWineyFeed()
@@ -31,21 +31,23 @@ class WineyFeedViewModel @Inject constructor(
 
     private fun getWineyFeed() {
         viewModelScope.launch {
-            _getListState.value = UiState.Loading
+            _getWineyFeedListState.value = UiState.Loading
             authRepository.getWineyFeed(1)
                 .onSuccess { response ->
-                    _getListState.value = UiState.Success(response)
+                    _getWineyFeedListState.value = UiState.Success(response)
                     _WineyFeedListLiveData.value = response
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
                         when (t.code()) {
-                            CODE_WINEYFEED_INVALID_USER -> _getListState.value =
+                            CODE_WINEYFEED_INVALID_USER -> _getWineyFeedListState.value =
                                 UiState.Failure(CODE_WINEYFEED_INVALID_USER.toString())
 
-                            CODE_WINEYFEED_INVALID_REQUEST -> _getListState.value =
-                                    UiState.Failure(CODE_WINEYFEED_INVALID_USER.toString())
-                            else -> _getListState.value = UiState.Failure(MSG_WINEYFEED_FAIL)
+                            CODE_WINEYFEED_INVALID_REQUEST -> _getWineyFeedListState.value =
+                                UiState.Failure(CODE_WINEYFEED_INVALID_USER.toString())
+
+                            else -> _getWineyFeedListState.value =
+                                UiState.Failure(MSG_WINEYFEED_FAIL)
                         }
                         Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
                     }

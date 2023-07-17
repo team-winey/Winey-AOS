@@ -38,13 +38,14 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun getFeed() {
-        viewModel.getListState.observe(viewLifecycleOwner) { state ->
+        viewModel.getWineyFeedListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
                     val wineyFeedList = state.data
                     wineyFeedAdapter.submitList(wineyFeedList)
                     Timber.tag("success").e(wineyFeedList.toString())
                 }
+
                 else -> {
                 }
             }
@@ -56,6 +57,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             wineyFeedDialogFragment.show(parentFragmentManager, TAG_WINEYFEED_DIALOG)
         }
     }
+
     companion object {
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
     }

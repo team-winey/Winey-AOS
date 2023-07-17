@@ -1,7 +1,7 @@
 package com.android.go.sopt.winey.domain.entity
 
 
-data class WineyFeedModel (
+data class WineyFeed (
     val feedId: Int,
     val feedImage: String,
     val feedMoney: Int,
