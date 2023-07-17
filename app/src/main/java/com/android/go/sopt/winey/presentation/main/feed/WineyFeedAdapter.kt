@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyfeedPostBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeedModel
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
@@ -16,6 +17,9 @@ class WineyFeedAdapter :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: WineyFeedModel) {
             binding.data = data
+            binding.ivWineyfeedLike.setImageResource(
+                if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
+            )
             binding.executePendingBindings()
         }
     }
