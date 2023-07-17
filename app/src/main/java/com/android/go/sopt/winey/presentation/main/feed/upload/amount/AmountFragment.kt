@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.amount
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,23 +9,34 @@ import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.context.UriToRequestBody
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
+import timber.log.Timber
 import java.text.DecimalFormat
 
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
     private val viewModel by viewModels<AmountViewModel>()
-    private val imageUriArg by lazy { requireArguments().getString(PHOTO_KEY, "") }
+    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(PHOTO_KEY) }
     private val contentArg by lazy { requireArguments().getString(CONTENT_KEY, "") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
+        setImageRequestBody()
         initRootLayoutClickListener()
         initBackButtonClickListener()
         initUploadButtonClickListener()
         initEditTextWatcher()
+    }
+
+    private fun setImageRequestBody() {
+        if (imageUriArg != null) {
+            viewModel.updateImageRequestBody(UriToRequestBody(requireContext(), imageUriArg!!))
+        }else {
+            Timber.e("Image Uri Argument is null")
+        }
     }
 
     private fun initBackButtonClickListener() {
@@ -36,7 +48,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     // todo: imageUri, content, viewModel.amount -> 멀티파트 서버통신
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
-
+            viewModel.postImage()
         }
     }
 

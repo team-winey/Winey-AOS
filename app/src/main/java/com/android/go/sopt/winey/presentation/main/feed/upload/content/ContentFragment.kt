@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.content
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commit
@@ -12,7 +13,7 @@ import com.android.go.sopt.winey.util.context.hideKeyboard
 
 class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragment_content) {
     private val viewModel by viewModels<ContentViewModel>()
-    private val imageUriArg by lazy { requireArguments().getString(PHOTO_KEY, "") }
+    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(PHOTO_KEY) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +40,7 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
         parentFragmentManager.commit {
             val fragmentWithBundle = AmountFragment().apply {
                 arguments = Bundle().apply {
-                    putString(PHOTO_KEY, imageUriArg)
+                    putParcelable(PHOTO_KEY, imageUriArg)
                     putString(CONTENT_KEY, viewModel.content)
                 }
             }
