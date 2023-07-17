@@ -7,7 +7,7 @@ plugins {
     id(Plugins.kotlinKapt)
     id(Plugins.hiltPlugin)
     id(Plugins.ossLicensesPlugin)
-    id("kotlinx-serialization")
+    id(Plugins.kotlinSerialization)
 }
 
 android {
