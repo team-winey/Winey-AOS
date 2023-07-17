@@ -32,7 +32,7 @@ class WineyFeedViewModel @Inject constructor(
     private fun getWineyFeed() {
         viewModelScope.launch {
             _getWineyFeedListState.value = UiState.Loading
-            authRepository.getWineyFeed(1)
+            authRepository.getWineyFeed(WINEY_FEED_PAGE)
                 .onSuccess { response ->
                     _getWineyFeedListState.value = UiState.Success(response)
                     _WineyFeedListLiveData.value = response
@@ -59,5 +59,6 @@ class WineyFeedViewModel @Inject constructor(
         private const val CODE_WINEYFEED_INVALID_USER = 404
         private const val CODE_WINEYFEED_INVALID_REQUEST = 400
         private const val MSG_WINEYFEED_FAIL = "FAIL"
+        private const val WINEY_FEED_PAGE = 1
     }
 }
