@@ -69,6 +69,23 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun handleSuccessState(data: User) {
         binding.data = data
+        when (data.isOver) {
+            true -> {
+                binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
+                binding.tvMypagePeriodValue.text = getString(R.string.mypage_not_yet_set)
+            }
+
+            false -> {
+                if(data.targetDay == 0){
+                    binding.tvMypagePeriodValue.text = getString(R.string.mypage_d_day)
+                    binding.targetMoney = data
+                }else{
+                    binding.targetMoney = data
+                    binding.targetDay = data
+                }
+
+            }
+        }
         when (data.userLevel) {
             LEVEL_COMMON -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)

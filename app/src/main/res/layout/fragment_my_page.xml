@@ -8,7 +8,15 @@
         <variable
             name="data"
             type="com.android.go.sopt.winey.domain.entity.User" />
-        
+
+        <variable
+            name="targetMoney"
+            type="com.android.go.sopt.winey.domain.entity.User" />
+
+        <variable
+            name="targetDay"
+            type="com.android.go.sopt.winey.domain.entity.User" />
+
         <variable
             name="pre"
             type="String" />
@@ -149,7 +157,7 @@
                         android:layout_marginStart="21dp"
                         android:layout_marginBottom="10dp"
                         setSuffix="@{@string/mypage_amount}"
-                        setAmount="@{data.targetMoney}"
+                        setAmount="@{targetMoney.targetMoney}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         tools:text="10,000원" />
 
@@ -191,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
                         setPrefix="@{@string/mypage_dday}"
-                        setAmount="@{data.targetDay}"
+                        setAmount="@{targetDay.targetDay}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -262,7 +270,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        setSuffix="@{@string/mypage_amount}"
+                        setSuffix="@{@string/mypage_count}"
                         setAmount="@{data.duringGoalCount}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
