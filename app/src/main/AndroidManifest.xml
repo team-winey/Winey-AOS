@@ -20,26 +20,23 @@
             android:name=".presentation.main.mypage.MypageHelpActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-      
+
         <activity
             android:name=".presentation.main.feed.upload.UploadActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize" />
 
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-        </activity>
-
-        <activity
-            android:name=".presentation.main.MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait">
-          
         </activity>
     </application>
 

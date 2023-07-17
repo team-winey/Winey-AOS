@@ -1,59 +1,63 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.go.sopt.winey.R
-import com.android.go.sopt.winey.domain.entity.WineyFeedModel
+import androidx.lifecycle.viewModelScope
+import com.android.go.sopt.winey.domain.entity.WineyFeed
+import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.util.view.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import retrofit2.HttpException
+import timber.log.Timber
+import javax.inject.Inject
 
-class WineyFeedViewModel : ViewModel() {
-    val dummyFeedList = listOf(
-        WineyFeedModel(
-            feedId = 1,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 2,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 3,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 4,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 5,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        ), WineyFeedModel(
-            feedId = 6,
-            feedImage = R.drawable.img_wineyfeed_default,
-            feedMoney = 4000,
-            feedTitle = "교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다",
-            profile = R.drawable.img_wineyfeed_profile,
-            likes = 5319,
-            nickName = "부자가 되고싶어"
-        )
-    )
+@HiltViewModel
+class WineyFeedViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
+
+    private val _WineyFeedListLiveData = MutableLiveData<List<WineyFeed>>()
+    val WineyFeedListLiveData: List<WineyFeed>?
+        get() = _WineyFeedListLiveData.value
+    private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
+    val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
+        get() = _getWineyFeedListState
+
+    init {
+        getWineyFeed()
+    }
+
+    private fun getWineyFeed() {
+        viewModelScope.launch {
+            authRepository.getWineyFeed(WINEY_FEED_PAGE)
+                .onSuccess { response ->
+                    _getWineyFeedListState.value = UiState.Success(response)
+                    _WineyFeedListLiveData.value = response
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        when (t.code()) {
+                            CODE_WINEYFEED_INVALID_USER -> _getWineyFeedListState.value =
+                                UiState.Failure(t.message())
+
+                            CODE_WINEYFEED_INVALID_REQUEST -> _getWineyFeedListState.value =
+                                UiState.Failure(t.message())
+
+                            else -> _getWineyFeedListState.value =
+                                UiState.Failure(t.message())
+                        }
+                        Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
+                    }
+                }
+        }
+    }
+
+    companion object {
+        private const val CODE_WINEYFEED_INVALID_USER = 404
+        private const val CODE_WINEYFEED_INVALID_REQUEST = 400
+        private const val MSG_WINEYFEED_FAIL = "FAIL"
+        private const val WINEY_FEED_PAGE = 1
+    }
 }

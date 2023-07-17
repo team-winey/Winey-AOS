@@ -1,7 +1,9 @@
 package com.android.go.sopt.winey.util.binding
 
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import coil.load
 import java.text.DecimalFormat
 
 @BindingAdapter("moneyAmount")
@@ -24,4 +26,9 @@ fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) 
     val decimalFormat = DecimalFormat("#,###")
     val formattedNumber = decimalFormat.format(amount)
     text = "$pre$formattedNumber$suf"
+}
+
+@BindingAdapter("imageUrl")
+fun loadImager(view: ImageView, imageurl: String) {
+    view.load(imageurl)
 }
