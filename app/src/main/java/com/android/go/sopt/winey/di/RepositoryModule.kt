@@ -14,12 +14,6 @@ abstract class RepositoryModule {
     @Singleton
     @Binds
     abstract fun bindsAuthRepository(
-        authRepository: AuthRepositoryImpl,
-    ): AuthRepository
-
-    @Singleton
-    @Binds
-    abstract fun bindsWineyFeedRepository(
-        wineyFeedRepoImpl: AuthRepositoryImpl
+        authRepository: AuthRepositoryImpl
     ): AuthRepository
 }
