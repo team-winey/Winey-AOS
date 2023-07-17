@@ -65,9 +65,9 @@
                     android:layout_marginStart="23dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/shape_yellow_fill_99_rect"
-                    android:text="@{@string/mypage_level_token(data.userLevel)}"
                     android:paddingHorizontal="10dp"
                     android:paddingVertical="4dp"
+                    android:text="@{@string/mypage_level_token(data.userLevel)}"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/v_mypage_line1"
@@ -151,13 +151,13 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_target_amount"
+                        setAmount="@{targetMoney.targetMoney}"
+                        setSuffix="@{@string/mypage_amount}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="21dp"
                         android:layout_marginBottom="10dp"
-                        setSuffix="@{@string/mypage_amount}"
-                        setAmount="@{targetMoney.targetMoney}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         tools:text="10,000원" />
 
@@ -195,11 +195,11 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_period_value"
+                        setAmount="@{targetDay.targetDay}"
+                        setPrefix="@{@string/mypage_dday}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        setPrefix="@{@string/mypage_dday}"
-                        setAmount="@{targetDay.targetDay}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -231,11 +231,11 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_accumulated_winey_value"
+                        setAmount="@{data.duringGoalAmount}"
+                        setSuffix="@{@string/mypage_amount}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        setSuffix="@{@string/mypage_amount}"
-                        setAmount="@{data.duringGoalAmount}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -267,11 +267,11 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_winey_count_value"
+                        setAmount="@{data.duringGoalCount}"
+                        setSuffix="@{@string/mypage_count}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        setSuffix="@{@string/mypage_count}"
-                        setAmount="@{data.duringGoalCount}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -289,55 +289,71 @@
                     android:background="@color/gray_50"
                     app:layout_constraintTop_toBottomOf="@id/cl_mypage_detail" />
 
-                <TextView
-                    android:id="@+id/tv_mypage_myfeed"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_mypage_to_myfeed"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="23dp"
-                    android:layout_marginTop="17dp"
-                    android:text="@string/mypage_myfeed"
-                    android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line5" />
+                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line5">
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/btn_mypage_myfeed"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_mypage_next"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line5" />
+                    <TextView
+                        android:id="@+id/tv_mypage_myfeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginTop="17dp"
+                        android:text="@string/mypage_myfeed"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_mypage_myfeed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_mypage_next"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <View
                     android:id="@+id/v_mypage_line6"
                     android:layout_width="match_parent"
                     android:layout_height="4dp"
-                    android:layout_marginTop="16dp"
                     android:background="@color/gray_50"
-                    app:layout_constraintTop_toBottomOf="@id/tv_mypage_myfeed" />
+                    app:layout_constraintTop_toBottomOf="@id/cl_mypage_to_myfeed" />
 
-                <TextView
-                    android:id="@+id/tv_mypage_1on1"
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_mypage_to_1on1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="23dp"
-                    android:layout_marginTop="17dp"
-                    android:text="@string/mypage_1on1"
-                    android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                     app:layout_constraintBottom_toTopOf="@id/v_mypage_space"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line6" />
+                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line6">
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/btn_mypage_1on1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/ic_mypage_next"
-                    app:layout_constraintBottom_toTopOf="@id/v_mypage_space"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line6" />
+                    <TextView
+                        android:id="@+id/tv_mypage_1on1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginTop="17dp"
+                        android:text="@string/mypage_1on1"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_mypage_1on1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_mypage_next"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <View
                     android:id="@+id/v_mypage_space"

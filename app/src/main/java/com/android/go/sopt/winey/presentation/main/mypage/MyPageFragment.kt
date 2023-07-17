@@ -30,13 +30,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initToMyFeedButtonClickListener() {
-        binding.btnMypageMyfeed.setOnSingleClickListener {
+        binding.clMypageToMyfeed.setOnSingleClickListener {
             navigateTo<MyFeedFragment>()
         }
     }
 
     private fun init1On1ButtonClickListener() {
-        binding.btnMypage1on1.setOnClickListener {
+        binding.clMypageTo1on1.setOnClickListener {
             val url = "https://open.kakao.com/o/s751Susf"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
