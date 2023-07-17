@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.di
 import com.android.go.sopt.winey.BuildConfig.AUTH_BASE_URL
 import com.android.go.sopt.winey.data.interceptor.AuthInterceptor
 import com.android.go.sopt.winey.di.qualifier.Auth
+import com.android.go.sopt.winey.di.qualifier.Logger
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -36,10 +37,9 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.level = HttpLoggingInterceptor.Level.BODY
-        return interceptor
+    @Logger
+    fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
     @Provides
@@ -50,7 +50,7 @@ object RetrofitModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor,
+        @Logger loggingInterceptor: Interceptor,
         @Auth authInterceptor: Interceptor,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
