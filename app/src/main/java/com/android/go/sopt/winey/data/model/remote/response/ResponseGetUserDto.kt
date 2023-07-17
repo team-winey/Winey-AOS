@@ -1,9 +1,8 @@
 package com.android.go.sopt.winey.data.model.remote.response
 
-import com.android.go.sopt.winey.domain.entity.MypageModel
+import com.android.go.sopt.winey.domain.entity.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.text.DecimalFormat
 
 @Serializable
 data class ResponseGetUserDto(
@@ -48,25 +47,21 @@ data class ResponseGetUserDto(
         )
     }
 
-    fun toMypageModel(response: ResponseGetUserDto): MypageModel {
-        val data = response.data
+    fun convertToUser(): User {
+        val data = this.data
         val userResponseUserDto = data?.userResponseUserDto
 
-        return MypageModel(
+        return User(
             nickname = userResponseUserDto?.nickname.orEmpty(),
             userLevel = userResponseUserDto?.userLevel.orEmpty(),
-            duringGoalAmount = DecimalFormat("#,###").format(
-                data?.userResponseGoalDto?.duringGoalAmount ?: 0
-            ),
-            duringGoalCount = DecimalFormat("#,###").format(
-                data?.userResponseGoalDto?.duringGoalCount ?: 0
-            ),
-            targetMoney = DecimalFormat("#,###").format(
-                data?.userResponseGoalDto?.targetMoney ?: 0
-            ),
-            targetDay = DecimalFormat("#,###").format(data?.userResponseGoalDto?.targetDay ?: 0),
+            duringGoalAmount = data?.userResponseGoalDto?.duringGoalAmount ?: 0,
+            duringGoalCount = data?.userResponseGoalDto?.duringGoalCount ?: 0,
+            targetMoney = data?.userResponseGoalDto?.targetMoney ?: 0,
+            targetDay = data?.userResponseGoalDto?.targetDay ?: 0,
             isOver = data?.userResponseGoalDto?.isOver ?: false,
             isAttained = data?.userResponseGoalDto?.isAttained ?: false
         )
     }
+
+
 }

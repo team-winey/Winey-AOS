@@ -5,6 +5,5 @@ import retrofit2.http.GET
 
 interface AuthService {
     @GET("/user")
-    suspend fun getUser(
-    ): ResponseGetUserDto
+    suspend fun getUser(): ResponseGetUserDto
 }
