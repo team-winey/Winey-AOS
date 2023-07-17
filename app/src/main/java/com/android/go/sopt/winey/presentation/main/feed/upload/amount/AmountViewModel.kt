@@ -16,6 +16,6 @@ class AmountViewModel : ViewModel() {
 
     companion object {
         const val MIN_AMOUNT_LENGTH = 1
-        const val MAX_AMOUNT_LENGTH = 23
+        const val MAX_AMOUNT_LENGTH = 19
     }
 }

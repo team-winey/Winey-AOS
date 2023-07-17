@@ -15,7 +15,7 @@ import com.android.go.sopt.winey.util.binding.BindingFragment
 
 class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_photo) {
     private val viewModel by viewModels<PhotoViewModel>()
-    private lateinit var imageUriArg: String // todo: image uri 뷰모델에 저장하기
+    private lateinit var imageUriArg: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,7 +34,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
                     return@registerForActivityResult
                 }
 
-                initImageUri(imageUri)
+                initImageUriString(imageUri)
                 displayImage()
                 viewModel.apply {
                     updateImageUri(imageUri)
@@ -47,12 +47,12 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         }
     }
 
-    private fun initImageUri(imageUri: Uri) {
-        imageUriArg = imageUri.toString()
-    }
-
     private fun displayErrorImage() {
         binding.ivUploadPhoto.setImageResource(R.drawable.ic_upload_image_error)
+    }
+
+    private fun initImageUriString(imageUri: Uri) {
+        imageUriArg = imageUri.toString()
     }
 
     private fun displayImage() {

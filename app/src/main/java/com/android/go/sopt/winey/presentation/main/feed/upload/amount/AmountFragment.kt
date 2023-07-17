@@ -9,9 +9,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
-import com.android.go.sopt.winey.util.fragment.toast
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
-import java.math.BigInteger
 import java.text.DecimalFormat
 
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
@@ -22,8 +20,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
-
-        toast("$imageUriArg $contentArg")
 
         initRootLayoutClickListener()
         initBackButtonClickListener()
@@ -55,7 +51,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                 // 문자열이 비어있거나 이전과 변함 없으면 그대로 둔다.
                 if (input.isBlank() || input == temp) return
 
-                temp = makeCommaNumber(input.replace(",", "").toBigInteger())
+                temp = makeCommaString(input.replace(",", "").toLong())
                 binding.etUploadAmount.apply {
                     setText(temp)
                     setSelection(temp.length) // 커서를 오른쪽 끝으로 보낸다.
@@ -64,7 +60,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         })
     }
 
-    private fun makeCommaNumber(input: BigInteger): String {
+    private fun makeCommaString(input: Long): String {
         val formatter = DecimalFormat("#,###")
         return formatter.format(input)
     }
