@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,8 +47,11 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                     Timber.tag("success").e(wineyFeedList.toString())
                 }
 
-                else -> {
+                is UiState.Failure -> {
+                    snackBar(requireView()) { state.msg }
                 }
+
+                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
             }
         }
     }
@@ -60,5 +64,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     companion object {
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
+        private const val MSG_WINEYFEED_ERROR = "ERROR"
     }
 }

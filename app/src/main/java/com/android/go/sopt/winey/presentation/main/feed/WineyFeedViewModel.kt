@@ -31,7 +31,6 @@ class WineyFeedViewModel @Inject constructor(
 
     private fun getWineyFeed() {
         viewModelScope.launch {
-            _getWineyFeedListState.value = UiState.Loading
             authRepository.getWineyFeed(WINEY_FEED_PAGE)
                 .onSuccess { response ->
                     _getWineyFeedListState.value = UiState.Success(response)
@@ -41,13 +40,13 @@ class WineyFeedViewModel @Inject constructor(
                     if (t is HttpException) {
                         when (t.code()) {
                             CODE_WINEYFEED_INVALID_USER -> _getWineyFeedListState.value =
-                                UiState.Failure(CODE_WINEYFEED_INVALID_USER.toString())
+                                UiState.Failure(t.message())
 
                             CODE_WINEYFEED_INVALID_REQUEST -> _getWineyFeedListState.value =
-                                UiState.Failure(CODE_WINEYFEED_INVALID_USER.toString())
+                                UiState.Failure(t.message())
 
                             else -> _getWineyFeedListState.value =
-                                UiState.Failure(MSG_WINEYFEED_FAIL)
+                                UiState.Failure(t.message())
                         }
                         Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
                     }
