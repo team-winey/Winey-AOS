@@ -19,7 +19,7 @@ class TargetAmountBottomSheetFragment :
     override fun onStart() {
         super.onStart()
 
-        initFullScreen()
+        initScreenHeight()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -35,7 +35,7 @@ class TargetAmountBottomSheetFragment :
         }
     }
 
-    fun initFullScreen() {
+    fun initScreenHeight() {
         if (dialog != null) {
             val bottomSheet: View =
                 dialog!!.findViewById(com.google.android.material.R.id.design_bottom_sheet)
@@ -49,6 +49,8 @@ class TargetAmountBottomSheetFragment :
             val behavior = params.behavior
             val bottomSheetBehavior = behavior as BottomSheetBehavior<*>?
             bottomSheetBehavior!!.peekHeight = view.measuredHeight
+            val maxHeight = resources.displayMetrics.heightPixels * 3 / 4
+            bottomSheetBehavior.maxHeight = maxHeight
             parent.setBackgroundColor(Color.TRANSPARENT)
         }
     }
