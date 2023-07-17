@@ -37,6 +37,8 @@
     <string name="mypage_accumulated_winey">누적 위니</string>
     <string name="mypage_winey_count">위니 횟수</string>
     <string name="mypage_myfeed">마이피드</string>
+    <string name="mypage_not_yet_set">아직 없어요</string>
+    <string name="mypage_d_day">D-DAY</string>
     <string name="mypage_amount">원</string>
     <string name="mypage_dday">D-</string>
     <string name="mypage_count">번</string>
