@@ -8,4 +8,3 @@ import com.android.go.sopt.winey.util.context.hideKeyboard
 fun Activity.hideKeyboard() {
     hideKeyboard(currentFocus ?: View(this))
 }
-

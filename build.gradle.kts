@@ -10,6 +10,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlinVersion}")
         classpath(ClassPathPlugins.hilt)
         classpath(ClassPathPlugins.oss)
+        classpath("org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlinVersion}")
     }
 }
 

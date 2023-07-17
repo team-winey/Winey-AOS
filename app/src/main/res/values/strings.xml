@@ -19,7 +19,7 @@
     <string name="upload_photo_title">절약을 실천한\n모습을 보여주세요!</string>
     <string name="upload_photo_detail">사진은 피드의 썸네일로 사용됩니다 :)</string>
     <string name="upload_photo_button_guide">절약을 인증할 수 있는\n사진을 업로드 해주세요.</string>
-    <string name="upload_photo_next_btn_text">다음</string>
+    <string name="upload_next_btn_text">다음</string>
     <string name="upload_content_title">절약 내용을\n작성해주세요!</string>
     <string name="upload_content_detail">적어주신 글을 썸네일과 함께 표시합니다 :)</string>
     <string name="upload_content_edittext_hint">Ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!</string>
@@ -27,7 +27,8 @@
     <string name="upload_amount_title">얼마나 절약했나요?</string>
     <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
     <string name="upload_amount_unit_text">원</string>
-    <string name="upload_amount_next_btn_text">업로드</string>
+    <string name="upload_last_btn_text">업로드</string>
+    <string name="upload_content_counter_preview">(0/36)</string>
 
     <!-- mypage -->
     <string name="mypage_title">마이페이지</string>
@@ -36,6 +37,10 @@
     <string name="mypage_accumulated_winey">누적 위니</string>
     <string name="mypage_winey_count">위니 횟수</string>
     <string name="mypage_myfeed">마이피드</string>
+    <string name="mypage_amount">원</string>
+    <string name="mypage_dday">D-</string>
+    <string name="mypage_count">번</string>
+    <string name="mypage_level_token">LV. %s</string>
     <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
     <string name="impossible_dialog_close">닫기</string>
     <string name="mypage_1on1">1:1 문의</string>

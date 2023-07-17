@@ -3,7 +3,7 @@ object Plugins {
     const val kotlinAndroid = "org.jetbrains.kotlin.android"
     const val kotlinKapt = "kotlin-kapt"
     const val kotlinParcelize = "kotlin-parcelize"
-    const val kotlinSerialize = "kotlinx-serialization"
+    const val kotlinSerialization = "kotlinx-serialization"
 
     // classpath plugin
     const val hiltPlugin = "dagger.hilt.android.plugin"

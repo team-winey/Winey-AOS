@@ -7,7 +7,7 @@ plugins {
     id(Plugins.kotlinKapt)
     id(Plugins.hiltPlugin)
     id(Plugins.ossLicensesPlugin)
-    id(Plugins.kotlinSerialize)
+    id(Plugins.kotlinSerialization)
 }
 
 android {
@@ -110,6 +110,7 @@ dependencies {
         implementation(balloon)
         implementation(lottie)
         implementation(circleImageView)
+
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
         debugImplementation(flipperLeakCanary)

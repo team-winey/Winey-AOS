@@ -18,6 +18,16 @@ fun applyNumberFormat(view: TextView, amount: Long) {
     view.text = decimalFormat.format(amount)
 }
 
+@BindingAdapter("setAmount","setPrefix","setSuffix", requireAll = false)
+fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) {
+    val pre = prefix ?: ""
+    val suf = suffix ?: ""
+
+    val decimalFormat = DecimalFormat("#,###")
+    val formattedNumber = decimalFormat.format(amount)
+    text = "$pre$formattedNumber$suf"
+}
+
 @BindingAdapter("imageUrl")
 fun loadImager(view: ImageView, imageurl: String) {
     view.load(imageurl)
