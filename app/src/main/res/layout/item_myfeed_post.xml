@@ -71,7 +71,8 @@
 
         <TextView
             android:id="@+id/tv_myfeed_money"
-            moneyAmount="@{data.feedMoney}"
+            setAmount="@{data.feedMoney}"
+            setSuffix="@{@string/wineyfeed_money}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
