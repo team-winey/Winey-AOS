@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
+import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
@@ -56,24 +57,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 }
 
                 is UiState.Success -> {
-                    binding.data = state.data
-                    when (state.data.userLevel) {
-                        LEVEL_COMMON -> {
-                            binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
-                        }
-
-                        LEVEL_KNIGHT -> {
-                            binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv2_progressbar)
-                        }
-
-                        LEVEL_NOBLESS -> {
-                            binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv3_progressbar)
-                        }
-
-                        LEVEL_KING -> {
-                            binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
-                        }
-                    }
+                    handleSuccessState(state.data)
                 }
 
                 is UiState.Failure -> {
@@ -83,6 +67,27 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 is UiState.Empty -> {
 
                 }
+            }
+        }
+    }
+
+    private fun handleSuccessState(data: User) {
+        binding.data = data
+        when (data.userLevel) {
+            LEVEL_COMMON -> {
+                binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
+            }
+
+            LEVEL_KNIGHT -> {
+                binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv2_progressbar)
+            }
+
+            LEVEL_NOBLESS -> {
+                binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv3_progressbar)
+            }
+
+            LEVEL_KING -> {
+                binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
             }
         }
     }
