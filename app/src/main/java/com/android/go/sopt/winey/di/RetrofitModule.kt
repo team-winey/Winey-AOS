@@ -45,7 +45,7 @@ object RetrofitModule {
     @Provides
     @Singleton
     @Auth
-    fun provideAuthInterceptor(interceptor: AuthInterceptor): Interceptor = interceptor
+    fun provideAuthInterceptor (interceptor: AuthInterceptor): Interceptor = interceptor
 
     @Provides
     @Singleton

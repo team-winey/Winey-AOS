@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.android.go.sopt.winey.domain.entity.WineyFeedModel" />
+            type="com.android.go.sopt.winey.domain.entity.WineyFeed" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,7 +21,7 @@
             android:layout_marginStart="17dp"
             android:layout_marginTop="28dp"
             android:layout_marginBottom="10dp"
-            android:src="@{context.getDrawable(data.profile)}"
+            android:src="@drawable/img_wineyfeed_profile"
             app:civ_border_color="@color/gray_200"
             app:civ_border_width="1dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,9 +58,9 @@
             android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
-            android:scaleType="fitCenter"
-            android:src="@{context.getDrawable(data.feedImage)}"
             app:layout_constraintDimensionRatio="H,2:1"
+            android:scaleType="fitXY"
+            imageUrl="@{data.feedImage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_profilephoto"

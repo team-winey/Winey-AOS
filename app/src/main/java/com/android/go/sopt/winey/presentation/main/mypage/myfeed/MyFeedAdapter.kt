@@ -6,19 +6,19 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.databinding.ItemMyfeedPostBinding
-import com.android.go.sopt.winey.domain.entity.WineyFeedModel
+import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
 
 class MyFeedAdapter(private val fragmentManager: FragmentManager) :
-    ListAdapter<WineyFeedModel, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
+    ListAdapter<WineyFeed, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
 
     lateinit var myFeedDialogFragment: MyFeedDialogFragment
 
     class MyFeedViewHolder(
         private val binding: ItemMyfeedPostBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(data: WineyFeedModel) {
+        fun onBind(data: WineyFeed) {
             binding.data = data
             binding.executePendingBindings()
         }
@@ -46,7 +46,7 @@ class MyFeedAdapter(private val fragmentManager: FragmentManager) :
     }
 
     companion object {
-        private val diffUtil = ItemDiffCallback<WineyFeedModel>(
+        private val diffUtil = ItemDiffCallback<WineyFeed>(
             onItemsTheSame = { old, new -> old.feedId == new.feedId },
             onContentsTheSame = { old, new -> old == new }
         )
