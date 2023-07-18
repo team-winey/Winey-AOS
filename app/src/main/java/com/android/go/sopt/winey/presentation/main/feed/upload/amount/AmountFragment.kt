@@ -57,7 +57,9 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
             when (state) {
                 is UiState.Success -> {
                     snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
-                    // todo: 위니 피드로 전환하기
+
+                    // todo: 위니 피드로 돌아가기
+                    closeUploadScreen()
                 }
 
                 is UiState.Failure -> {
@@ -69,6 +71,10 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                 }
             }
         }
+    }
+
+    private fun closeUploadScreen() {
+        requireActivity().finish()
     }
 
     private fun initBackButtonClickListener() {
