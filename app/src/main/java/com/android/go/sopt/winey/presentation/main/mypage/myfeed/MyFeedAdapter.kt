@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemMyfeedPostBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
@@ -20,6 +21,9 @@ class MyFeedAdapter(private val fragmentManager: FragmentManager) :
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: WineyFeed) {
             binding.data = data
+            binding.ivMyfeedLike.setImageResource(
+                if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
+            )
             binding.executePendingBindings()
         }
     }

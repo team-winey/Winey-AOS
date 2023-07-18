@@ -12,9 +12,13 @@ class AuthDataSource @Inject constructor(
 ) {
     suspend fun getUser(): ResponseGetUserDto = authService.getUser()
 
-    suspend fun getWineyFeed(page: Int): ResponseGetWineyFeedDto =
+    suspend fun getWineyFeedList(page: Int): ResponseGetWineyFeedDto =
         authService.getWineyFeedList(page)
 
+    suspend fun getMyFeedList(page: Int): ResponseGetWineyFeed =
+        authService.getMyFeedList(page)
+        
     suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): ResponsePostLikeDto =
         authService.postFeedLike(feedId, requestPostLikeDto)
+
 }

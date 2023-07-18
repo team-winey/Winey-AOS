@@ -20,6 +20,11 @@ interface AuthService {
         @Query("page") page:Int
     ): ResponseGetWineyFeedDto
 
+    @GET("feed/myFeed")
+    suspend fun getMyFeedList(
+        @Query("page") page:Int
+    ): ResponseGetWineyFeedDto
+
     @POST("feedLike/{feedId}")
     suspend fun postFeedLike(
         @Path("feedId") feedId: Int,

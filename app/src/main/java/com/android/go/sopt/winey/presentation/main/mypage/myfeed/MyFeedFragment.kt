@@ -6,7 +6,12 @@ import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.view.UiState
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
+@AndroidEntryPoint
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
     private val viewModel by viewModels<MyFeedViewModel>()
     private lateinit var myFeedDialogFragment: MyFeedDialogFragment
@@ -15,8 +20,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
-       // getFeed()
         initDialog()
+        initGetFeedStateObserver()
     }
 
     private fun initAdapter() {
@@ -29,11 +34,22 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         myFeedDialogFragment.isCancelable = false
     }
 
-    private fun getFeed() {
-        /* 서버통신 구현*/
+    private fun initGetFeedStateObserver() {
+        viewModel.getMyFeedListState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Success -> {
+                    val myFeedList = state.data
+                    myFeedAdapter.submitList(myFeedList)
+                }
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+                else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
+            }
+        }
     }
 
     companion object {
-        private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
+        private const val MSG_MYFEED_ERROR = "ERROR"
     }
 }
