@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseGetWineyFeed(
+data class ResponseGetWineyFeedDto(
     @SerialName("code")
     val code: Int,
     @SerialName("data")
