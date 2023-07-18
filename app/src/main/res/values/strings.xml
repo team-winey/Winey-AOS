@@ -37,6 +37,8 @@
     <string name="mypage_accumulated_winey">누적 위니</string>
     <string name="mypage_winey_count">위니 횟수</string>
     <string name="mypage_myfeed">마이피드</string>
+    <string name="mypage_not_yet_set">아직 없어요</string>
+    <string name="mypage_d_day">D-DAY</string>
     <string name="mypage_amount">원</string>
     <string name="mypage_dday">D-</string>
     <string name="mypage_count">번</string>
@@ -76,4 +78,6 @@
     <string name="myfeed_dialog_sub">지금 게시물을 삭제하면\n누적 금액이 삭감되니 주의하세요!</string>
     <string name="myfeed_dialog_cancel">취소</string>
     <string name="myfeed_dialog_delete">삭제하기</string>
+    <string name="target_amount_warning_day">절약 일수를 5일 이상으로 설정해주세요</string>
+    <string name="target_amount_warning_amount">절약 금액을 3만원 이상으로 설정해주세요</string>
 </resources>

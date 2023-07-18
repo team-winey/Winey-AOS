@@ -7,6 +7,7 @@ data class User(
     val duringGoalCount: Int,
     val targetMoney: Int,
     val targetDay: Int,
+    val dday: Int,
     val isOver: Boolean,
     val isAttained: Boolean
 )

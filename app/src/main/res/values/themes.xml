@@ -38,6 +38,7 @@
         <item name="boxCornerRadiusBottomStart">5dp</item>
         <item name="boxCornerRadiusTopEnd">5dp</item>
         <item name="boxCornerRadiusTopStart">5dp</item>
+        <item name="colorError">@color/red_500</item>
     </style>
 
     <style name="ThemeOverlay.Winey.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
