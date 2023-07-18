@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
@@ -17,37 +19,75 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-
-    private val _WineyFeedListLiveData = MutableLiveData<List<WineyFeed>>()
-    val WineyFeedListLiveData: List<WineyFeed>?
-        get() = _WineyFeedListLiveData.value
+    var wineyFeedAdapter: WineyFeedAdapter
 
     private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
     val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
         get() = _getWineyFeedListState
 
+    private val _postWineyFeedLikeState = MutableLiveData<UiState<Like>>(UiState.Loading)
+    val postWineyFeedLikeState: LiveData<UiState<Like>>
+        get() = _postWineyFeedLikeState
+
     init {
         getWineyFeed()
+        wineyFeedAdapter = WineyFeedAdapter { feedId, isLiked ->
+            postLike(
+                feedId, RequestPostLikeDto(
+                    isLiked
+                )
+            )
+        }
     }
 
-    private fun getWineyFeed() {
+    fun likeFeed(feedId: Int, isLiked: Boolean) {
+        val requestPostLikeDto = RequestPostLikeDto(isLiked)
+        postLike(feedId, requestPostLikeDto)
+    }
+
+    private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
-            authRepository.getWineyFeedList(WINEY_FEED_PAGE)
-                .onSuccess { response ->
-                    _getWineyFeedListState.value = UiState.Success(response)
-                    _WineyFeedListLiveData.value = response
+            authRepository.postFeedLike(feedId, requestPostLikeDto)
+                .onSuccess { state ->
+                    _postWineyFeedLikeState.value = UiState.Success(state)
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        when (t.code()) {
-                            CODE_WINEYFEED_INVALID_USER -> _getWineyFeedListState.value =
-                                UiState.Failure(t.message())
+                        _postWineyFeedLikeState.value.apply {
+                            when (t.code()) {
+                                CODE_WINEYFEED_INVALID_USER ->
+                                    UiState.Failure(t.message())
 
-                            CODE_WINEYFEED_INVALID_REQUEST -> _getWineyFeedListState.value =
-                                UiState.Failure(t.message())
+                                CODE_WINEYFEED_INVALID_REQUEST ->
+                                    UiState.Failure(t.message())
 
-                            else -> _getWineyFeedListState.value =
-                                UiState.Failure(t.message())
+                                else -> UiState.Failure(t.message())
+                            }
+                        }
+                        Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
+                    }
+                }
+        }
+    }
+
+    fun getWineyFeed() {
+        viewModelScope.launch {
+            authRepository.getWineyFeedList(WINEY_FEED_PAGE)
+                .onSuccess { state ->
+                    _getWineyFeedListState.value = UiState.Success(state)
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        _getWineyFeedListState.value.apply {
+                            when (t.code()) {
+                                CODE_WINEYFEED_INVALID_USER ->
+                                    UiState.Failure(t.message())
+
+                                CODE_WINEYFEED_INVALID_REQUEST ->
+                                    UiState.Failure(t.message())
+
+                                else -> UiState.Failure(t.message())
+                            }
                         }
                         Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
                     }

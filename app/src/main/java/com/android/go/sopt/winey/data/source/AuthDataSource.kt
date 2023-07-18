@@ -1,7 +1,9 @@
 package com.android.go.sopt.winey.data.source
 
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import com.android.go.sopt.winey.data.service.AuthService
@@ -17,7 +19,13 @@ class AuthDataSource @Inject constructor(
     suspend fun getWineyFeedList(page: Int): ResponseGetWineyFeedListDto =
         authService.getWineyFeedList(page)
 
-    suspend fun postWineyFeed(
+    suspend fun getMyFeedList(page: Int): ResponseGetWineyFeedListDto =
+        authService.getMyFeedList(page)
+
+    suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): ResponsePostLikeDto =
+        authService.postFeedLike(feedId, requestPostLikeDto)
+
+    suspend fun postWineyFeedList(
         file: MultipartBody.Part?,
         requestMap: HashMap<String, RequestBody>
     ): BaseResponse<ResponsePostWineyFeedDto> =

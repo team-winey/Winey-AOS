@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
@@ -18,9 +17,6 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
-
-    private val _getUserResult = MutableLiveData<ResponseGetUserDto>()
-    val getUserResult: LiveData<ResponseGetUserDto> get() = _getUserResult
 
     private val _getUserState = MutableLiveData<UiState<User>>(UiState.Loading)
     val getUserState: LiveData<UiState<User>> get() = _getUserState

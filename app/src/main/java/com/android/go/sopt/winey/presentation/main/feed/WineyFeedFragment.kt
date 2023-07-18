@@ -23,8 +23,9 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         super.onViewCreated(view, savedInstanceState)
         initDialog()
         initAdapter()
-        getFeed()
         initFabClickListener()
+        initPostLikeStateObserver()
+        initGetFeedStateObserver()
     }
 
     private fun initDialog() {
@@ -33,22 +34,40 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initAdapter() {
-        wineyFeedAdapter = WineyFeedAdapter()
+        wineyFeedAdapter = WineyFeedAdapter { feedId, isLiked ->
+            viewModel.likeFeed(feedId,isLiked)
+        }
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
         binding.rvWineyfeedPost.adapter = ConcatAdapter(wineyFeedHeaderAdapter, wineyFeedAdapter)
     }
 
-    private fun getFeed() {
+    private fun initGetFeedStateObserver() {
         viewModel.getWineyFeedListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
                     val wineyFeedList = state.data
                     wineyFeedAdapter.submitList(wineyFeedList)
-                    Timber.tag("success").e(wineyFeedList.toString())
                 }
 
                 is UiState.Failure -> {
-                    snackBar(requireView()) { state.msg }
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+            }
+        }
+    }
+
+    private fun initPostLikeStateObserver(){
+        viewModel.postWineyFeedLikeState.observe(viewLifecycleOwner){ state ->
+            when(state){
+                is UiState.Success -> {
+                    viewModel.getWineyFeed()
+                    initGetFeedStateObserver()
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
                 }
 
                 else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)

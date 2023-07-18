@@ -5,9 +5,13 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.android.go.sopt.winey.presentation.main.mypage.TargetAmountViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_target_amount_touch_range"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/shape_gray0_fill_top10_rect">
@@ -36,8 +40,10 @@
             app:layout_constraintTop_toBottomOf="@id/btn_target_amount_cancel">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_target_amount_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:paddingBottom="100dp">
 
                 <TextView
                     android:id="@+id/tv_target_amount_set_amount"
@@ -59,8 +65,10 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
                     app:boxStrokeColor="@drawable/sel_target_amount_til_stroke_color"
+                    app:boxStrokeErrorColor="@color/red_500"
                     app:boxStrokeWidth="1dp"
                     app:errorEnabled="true"
+                    app:errorIconDrawable="@null"
                     app:errorTextAppearance="@style/TextAppearance.WINEY.detail_m_12"
                     app:errorTextColor="@drawable/sel_target_amount_til_stroke_color"
                     app:hintEnabled="false"
@@ -69,20 +77,33 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_target_amount_set_amount">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_target_amount_set_amount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:hint="30,000"
                         android:inputType="number"
+                        android:maxLength="@{data.MAX_AMOUNT_LENGTH}"
                         android:paddingTop="12dp"
                         android:paddingEnd="38dp"
                         android:paddingBottom="10dp"
                         android:singleLine="true"
+                        android:text="@={data._amount}"
                         android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
                         android:textColor="@drawable/sel_target_amount_til_stroke_color"
                         android:textColorHint="@color/gray_400" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_target_amount_warning_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/target_amount_warning_amount"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                    android:textColor="@color/gray_400"
+                    app:layout_constraintBottom_toBottomOf="@id/til_target_amount_set_amount"
+                    app:layout_constraintStart_toStartOf="@id/til_target_amount_set_amount" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,8 +135,10 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
                     app:boxStrokeColor="@drawable/sel_target_amount_til_stroke_color"
+                    app:boxStrokeErrorColor="@color/red_500"
                     app:boxStrokeWidth="1dp"
                     app:errorEnabled="true"
+                    app:errorIconDrawable="@null"
                     app:errorTextAppearance="@style/TextAppearance.WINEY.detail_m_12"
                     app:errorTextColor="@drawable/sel_target_amount_til_stroke_color"
                     app:hintEnabled="false"
@@ -124,20 +147,33 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_target_amount_set_day">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_target_amount_set_day"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="right"
                         android:hint="5"
                         android:inputType="number"
+                        android:maxLength="@{data.MAX_AMOUNT_LENGTH}"
                         android:paddingTop="12dp"
                         android:paddingEnd="38dp"
                         android:paddingBottom="10dp"
                         android:singleLine="true"
+                        android:text="@={data._day}"
                         android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
                         android:textColor="@drawable/sel_target_amount_til_stroke_color"
                         android:textColorHint="@color/gray_400" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_target_amount_warning_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/target_amount_warning_day"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                    android:textColor="@color/gray_400"
+                    app:layout_constraintBottom_toBottomOf="@id/til_target_amount_set_day"
+                    app:layout_constraintStart_toStartOf="@id/til_target_amount_set_day" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -149,9 +185,13 @@
                     app:layout_constraintEnd_toEndOf="@id/til_target_amount_set_day"
                     app:layout_constraintTop_toTopOf="@id/til_target_amount_set_day" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.core.widget.NestedScrollView>
-
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_target_amount_touch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/sv_target_amount_input"
+            app:layout_constraintBottom_toTopOf="@id/cl_target_amount_save"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_target_amount_save"
@@ -180,12 +220,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="15dp"
-                android:background="@drawable/shape_yellow_fill_10_rect"
-                android:backgroundTint="@color/gray_200"
+                android:background="@drawable/sel_upload_next_btn_bg_color"
                 android:enabled="false"
+                android:stateListAnimator="@null"
                 android:text="@string/target_amount_save"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
-                android:textColor="@color/gray_500"
+                android:textColor="@drawable/sel_upload_next_btn_text_color"
                 app:layout_constraintBottom_toBottomOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

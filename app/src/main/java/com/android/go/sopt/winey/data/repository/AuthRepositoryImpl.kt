@@ -1,9 +1,11 @@
 package com.android.go.sopt.winey.data.repository
 
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.source.AuthDataSource
-import com.android.go.sopt.winey.domain.entity.User
+import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
+import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -22,11 +24,25 @@ class AuthRepositoryImpl @Inject constructor(
             authDataSource.getWineyFeedList(page).toWineyFeed()
         }
 
+    override suspend fun getMyFeedList(page: Int): Result<List<WineyFeed>> =
+        runCatching {
+            val response = authDataSource.getMyFeedList(page)
+            response.toWineyFeed()
+        }
+
+    override suspend fun postFeedLike(
+        feedId: Int,
+        requestPostLikeDto: RequestPostLikeDto
+    ): Result<Like> =
+        runCatching {
+            authDataSource.postFeedLike(feedId, requestPostLikeDto).toLike()
+        }
+
     override suspend fun postWineyFeed(
         file: MultipartBody.Part?,
         requestMap: HashMap<String, RequestBody>
     ): Result<ResponsePostWineyFeedDto?> =
         runCatching {
-            authDataSource.postWineyFeed(file, requestMap).data
+            authDataSource.postWineyFeedList(file, requestMap).data
         }
 }
