@@ -72,7 +72,7 @@ class WineyFeedViewModel @Inject constructor(
 
     fun getWineyFeed() {
         viewModelScope.launch {
-            authRepository.getWineyFeed(WINEY_FEED_PAGE)
+            authRepository.getWineyFeedList(WINEY_FEED_PAGE)
                 .onSuccess { state ->
                     _getWineyFeedListState.value = UiState.Success(state)
                 }

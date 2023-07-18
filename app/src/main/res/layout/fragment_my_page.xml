@@ -352,17 +352,18 @@
                         android:src="@drawable/ic_mypage_next"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
                     android:id="@+id/v_mypage_space"
                     android:layout_width="match_parent"
                     android:layout_height="32dp"
-                    android:layout_marginTop="16dp"
                     android:background="@color/gray_50"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_mypage_1on1" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cl_mypage_to_1on1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>

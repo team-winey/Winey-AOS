@@ -15,7 +15,6 @@ import com.android.go.sopt.winey.util.binding.BindingFragment
 
 class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_photo) {
     private val viewModel by viewModels<PhotoViewModel>()
-    private lateinit var imageUriArg: String
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,15 +26,14 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
     }
 
     private fun initPhotoUploadButtonClickListener() {
-        val getContent =
+        val launcher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
                 if (imageUri == null) {
                     displayErrorImage()
                     return@registerForActivityResult
                 }
 
-                initImageUriString(imageUri)
-                displayImage()
+                displaySelectedImage(imageUri)
                 viewModel.apply {
                     updateImageUri(imageUri)
                     activateNextButton()
@@ -43,7 +41,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
             }
 
         binding.ivUploadPhoto.setOnClickListener {
-            getContent.launch("image/*")
+            launcher.launch("image/*")
         }
     }
 
@@ -51,12 +49,8 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         binding.ivUploadPhoto.setImageResource(R.drawable.ic_upload_image_error)
     }
 
-    private fun initImageUriString(imageUri: Uri) {
-        imageUriArg = imageUri.toString()
-    }
-
-    private fun displayImage() {
-        binding.ivUploadPhoto.load(imageUriArg) {
+    private fun displaySelectedImage(imageUri: Uri) {
+        binding.ivUploadPhoto.load(imageUri) {
             transformations(RoundedCornersTransformation(20f))
         }
     }
@@ -77,7 +71,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         parentFragmentManager.commit {
             val fragmentWithBundle = ContentFragment().apply {
                 arguments = Bundle().apply {
-                    putString(PHOTO_KEY, imageUriArg)
+                    putParcelable(PHOTO_KEY, viewModel.imageUri.value)
                 }
             }
             replace(R.id.fcv_upload, fragmentWithBundle)

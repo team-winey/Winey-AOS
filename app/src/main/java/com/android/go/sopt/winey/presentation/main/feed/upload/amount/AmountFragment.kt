@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.amount
 
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,35 +9,81 @@ import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.context.UriToRequestBody
 import com.android.go.sopt.winey.util.context.hideKeyboard
+import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
+import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.text.DecimalFormat
 
+@AndroidEntryPoint
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
     private val viewModel by viewModels<AmountViewModel>()
-    private val imageUriArg by lazy { requireArguments().getString(PHOTO_KEY, "") }
+    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(PHOTO_KEY) }
     private val contentArg by lazy { requireArguments().getString(CONTENT_KEY, "") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
+        setImageRequestBody()
+        initPostImageStateObserver()
+        initUploadButtonClickListener()
+
         initRootLayoutClickListener()
         initBackButtonClickListener()
-        initUploadButtonClickListener()
         initEditTextWatcher()
+    }
+
+    private fun setImageRequestBody() {
+        if (imageUriArg == null) {
+            Timber.e("Image Uri Argument is null")
+            return
+        }
+
+        viewModel.updateImageRequestBody(UriToRequestBody(requireContext(), imageUriArg!!))
+    }
+
+    private fun initUploadButtonClickListener() {
+        binding.btnAmountNext.setOnSingleClickListener {
+            val amountWithoutComma = viewModel.amount.replace(",", "")
+            viewModel.postWineyFeed(contentArg, amountWithoutComma)
+        }
+    }
+
+    private fun initPostImageStateObserver() {
+        viewModel.postWineyFeedState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    // todo: 입력된 금액 범위에 따라 텍스트 변경
+                }
+
+                is UiState.Success -> {
+                    snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
+                    closeUploadScreen()
+                }
+
+                is UiState.Failure -> {
+                    // todo: 서버에서 이미지 크기 설정 후 다시 시도해보기
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> {
+
+                }
+            }
+        }
+    }
+
+    private fun closeUploadScreen() {
+        requireActivity().finish()
     }
 
     private fun initBackButtonClickListener() {
         binding.ivAmountBack.setOnClickListener {
             parentFragmentManager.popBackStack()
-        }
-    }
-
-    // todo: imageUri, content, viewModel.amount -> 멀티파트 서버통신
-    private fun initUploadButtonClickListener() {
-        binding.btnAmountNext.setOnSingleClickListener {
-
         }
     }
 
