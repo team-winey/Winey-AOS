@@ -45,4 +45,9 @@ class AuthRepositoryImpl @Inject constructor(
         runCatching {
             authDataSource.postWineyFeedList(file, requestMap).data
         }
+        
+    override suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): Result<Like> =
+        runCatching {
+            authDataSource.postFeedLike(feedId,requestPostLikeDto).toLike()
+        }
 }
