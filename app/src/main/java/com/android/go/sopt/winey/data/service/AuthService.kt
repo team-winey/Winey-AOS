@@ -21,7 +21,7 @@ import retrofit2.http.Query
 
 interface AuthService {
     @GET("user")
-    suspend fun getUser(): ResponseGetUserDto
+    suspend fun getUser(): BaseResponse<ResponseGetUserDto>
 
     @GET("feed")
     suspend fun getWineyFeedList(

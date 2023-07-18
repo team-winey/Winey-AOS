@@ -18,7 +18,7 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
     override suspend fun getUser(): Result<User> =
         runCatching {
-            authDataSource.getUser().toUser()
+            authDataSource.getUser().data!!.toUser()
         }
 
     override suspend fun getWineyFeedList(page: Int): Result<List<WineyFeed>> =

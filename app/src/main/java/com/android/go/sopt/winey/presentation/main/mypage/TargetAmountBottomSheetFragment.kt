@@ -46,18 +46,20 @@ class TargetAmountBottomSheetFragment :
         initSaveButtonClickListener()
         initCreateGoalObserver()
     }
-    fun initSaveButtonClickListener(){
+
+    fun initSaveButtonClickListener() {
         binding.btnTargetAmountSave.setOnClickListener {
             viewModel.postCreateGoal()
         }
     }
 
-    fun initCreateGoalObserver(){
-        viewModel.createGoalState.observe(viewLifecycleOwner){
-            when(it){
+    fun initCreateGoalObserver() {
+        viewModel.createGoalState.observe(viewLifecycleOwner) {
+            when (it) {
                 is UiState.Loading -> {
 
                 }
+
                 is UiState.Success -> {
                     mainViewModel.getUser()
                     val fragmentManager = requireActivity().supportFragmentManager
@@ -68,15 +70,18 @@ class TargetAmountBottomSheetFragment :
                     }
                     this.dismiss()
                 }
+
                 is UiState.Failure -> {
 
                 }
+
                 is UiState.Empty -> {
 
                 }
             }
         }
     }
+
     fun initCancelButtonClickListener() {
         binding.btnTargetAmountCancel.setOnClickListener {
             this.dismiss()

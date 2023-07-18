@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.repository.AuthRepository
-import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class TargetAmountViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-): ViewModel() {
+) : ViewModel() {
     val _amount = MutableLiveData<String>()
     val amount: LiveData<String> = _amount
     val _day = MutableLiveData<String>()
@@ -40,7 +39,7 @@ class TargetAmountViewModel @Inject constructor(
     fun postCreateGoal() {
         val requestBody = RequestCreateGoalDto(
             targetMoney = _amount.value?.replace(",", "")!!.toInt(),
-            targetDay = _day.value?.replace(",","")!!.toInt()
+            targetDay = _day.value?.replace(",", "")!!.toInt()
         )
         viewModelScope.launch {
             _createGoalState.value = UiState.Loading
@@ -58,6 +57,7 @@ class TargetAmountViewModel @Inject constructor(
                 }
         }
     }
+
     fun checkDay(Day: String) {
         if (Day.toLong() >= 0 && Day.toLong() < 5 && !Day.isNullOrEmpty()) {
             _dayCheck.value = true
@@ -65,7 +65,7 @@ class TargetAmountViewModel @Inject constructor(
             _dayCheck.value = false
         }
 
-        if(Day.equals("1000000000")){
+        if (Day.equals("1000000000")) {
             _amountCheck.value = false
         }
     }
@@ -77,7 +77,7 @@ class TargetAmountViewModel @Inject constructor(
             _amountCheck.value = false
         }
 
-        if(Amount.equals("1000000000")){
+        if (Amount.equals("1000000000")) {
             _amountCheck.value = false
         }
     }

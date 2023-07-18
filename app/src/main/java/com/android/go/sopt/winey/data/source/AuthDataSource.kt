@@ -16,7 +16,7 @@ import javax.inject.Inject
 class AuthDataSource @Inject constructor(
     private val authService: AuthService
 ) {
-    suspend fun getUser(): ResponseGetUserDto = authService.getUser()
+    suspend fun getUser(): BaseResponse<ResponseGetUserDto> = authService.getUser()
 
     suspend fun getWineyFeedList(page: Int): ResponseGetWineyFeedListDto =
         authService.getWineyFeedList(page)
