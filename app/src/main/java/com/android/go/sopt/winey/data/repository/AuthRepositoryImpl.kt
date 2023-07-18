@@ -14,6 +14,13 @@ class AuthRepositoryImpl @Inject constructor(
             val response = authDataSource.getWineyFeed(page)
             response.toWineyFeed()
         }
+
+    override suspend fun getMyFeedList(page: Int): Result<List<WineyFeed>> =
+        runCatching {
+            val response = authDataSource.getMyFeedList(page)
+            response.toWineyFeed()
+        }
+
     override suspend fun getUser(): Result<User> =
         runCatching {
             authDataSource.getUser().convertToUser()
