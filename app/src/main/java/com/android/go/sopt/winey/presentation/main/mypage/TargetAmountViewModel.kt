@@ -4,7 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class TargetAmountViewModel : ViewModel() {
+@HiltViewModel
+class TargetAmountViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+): ViewModel() {
     val _amount = MutableLiveData<String>()
     val amount: LiveData<String> = _amount
     val _day = MutableLiveData<String>()
@@ -20,17 +23,25 @@ class TargetAmountViewModel : ViewModel() {
     val buttonStateCheck: LiveData<Boolean> = _buttonStatecheck
 
     fun checkDay(Day: String) {
-        if (Day.toLong() > 0 && Day.toLong() < 5 && !Day.isNullOrEmpty()) {
+        if (Day.toLong() >= 0 && Day.toLong() < 5 && !Day.isNullOrEmpty()) {
             _dayCheck.value = true
         } else {
             _dayCheck.value = false
         }
+
+        if(Day.equals("1000000000")){
+            _amountCheck.value = false
+        }
     }
 
     fun checkAmount(Amount: String) {
-        if (Amount.toLong() > 0 && Amount.toLong() < 30000 && !Amount.isNullOrEmpty()) {
+        if (Amount.toLong() >= 0 && Amount.toLong() < 30000 && !Amount.isNullOrEmpty()) {
             _amountCheck.value = true
         } else {
+            _amountCheck.value = false
+        }
+
+        if(Amount.equals("1000000000")){
             _amountCheck.value = false
         }
     }
