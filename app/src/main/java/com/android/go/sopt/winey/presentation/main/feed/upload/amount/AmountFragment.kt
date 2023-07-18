@@ -48,7 +48,8 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
-            viewModel.postWineyFeed(contentArg, viewModel.amount)
+            val amountWithoutComma = viewModel.amount.replace(",", "")
+            viewModel.postWineyFeed(contentArg, amountWithoutComma)
         }
     }
 
@@ -57,11 +58,10 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
             when (state) {
                 is UiState.Loading -> {
                     // todo: 입력된 금액 범위에 따라 텍스트 변경
-
                 }
 
                 is UiState.Success -> {
-                    //snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
+                    snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
                     closeUploadScreen()
                 }
 

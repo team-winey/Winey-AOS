@@ -56,5 +56,9 @@ class UriToRequestBody(
 
     override fun contentLength(): Long = size
 
-    fun toFormData() = MultipartBody.Part.createFormData("file", fileName, this)
+    fun toFormData() = MultipartBody.Part.createFormData(IMAGE_FILE_KEY, fileName, this)
+
+    companion object {
+        private const val IMAGE_FILE_KEY = "feedImage"
+    }
 }

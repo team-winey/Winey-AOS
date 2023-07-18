@@ -66,6 +66,7 @@ class AmountViewModel @Inject constructor(
                         Timber.tag("Multipart").e("${t.code()} ${t.message()}")
                     }
 
+                    _postWineyFeedState.value = UiState.Failure(t.message.toString())
                     Timber.tag("Multipart").e(t)
                 }
         }
@@ -73,7 +74,6 @@ class AmountViewModel @Inject constructor(
 
     companion object {
         const val MIN_AMOUNT_LENGTH = 1
-        const val MAX_AMOUNT_LENGTH = 10
-        private const val CODE_INVALID_USER = 404
+        const val MAX_AMOUNT_LENGTH = 13
     }
 }
