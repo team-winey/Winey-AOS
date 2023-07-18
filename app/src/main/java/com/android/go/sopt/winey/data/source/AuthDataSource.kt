@@ -12,4 +12,7 @@ class AuthDataSource @Inject constructor(
 
     suspend fun getWineyFeed(page: Int): ResponseGetWineyFeed =
         authService.getWineyFeedList(page)
+
+    suspend fun getMyFeedList(page: Int): ResponseGetWineyFeed =
+        authService.getMyFeedList(page)
 }

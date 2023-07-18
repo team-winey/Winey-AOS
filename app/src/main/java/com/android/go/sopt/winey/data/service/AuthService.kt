@@ -13,4 +13,9 @@ interface AuthService {
     suspend fun getWineyFeedList(
         @Query("page") page:Int
     ): ResponseGetWineyFeed
+
+    @GET("feed/myFeed")
+    suspend fun getMyFeedList(
+        @Query("page") page:Int
+    ): ResponseGetWineyFeed
 }
