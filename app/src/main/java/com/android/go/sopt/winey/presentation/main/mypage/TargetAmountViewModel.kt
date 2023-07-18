@@ -15,6 +15,10 @@ class TargetAmountViewModel : ViewModel() {
 
     private val _dayCheck = MutableLiveData<Boolean>()
     val dayCheck: LiveData<Boolean> = _dayCheck
+
+    private val _buttonStatecheck = MutableLiveData<Boolean>()
+    val buttonStateCheck: LiveData<Boolean> = _buttonStatecheck
+
     fun checkDay(Day: String) {
         if (Day.toLong() > 0 && Day.toLong() < 5 && !Day.isNullOrEmpty()) {
             _dayCheck.value = true
@@ -29,5 +33,17 @@ class TargetAmountViewModel : ViewModel() {
         } else {
             _amountCheck.value = false
         }
+    }
+
+    fun checkButtonState() {
+        if (!_amount.value.isNullOrEmpty() && !_day.value.isNullOrEmpty() && _dayCheck.value == false && _amountCheck.value == false) {
+            _buttonStatecheck.value = true
+        } else {
+            _buttonStatecheck.value = false
+        }
+    }
+
+    companion object {
+        const val MAX_AMOUNT_LENGTH = 12
     }
 }

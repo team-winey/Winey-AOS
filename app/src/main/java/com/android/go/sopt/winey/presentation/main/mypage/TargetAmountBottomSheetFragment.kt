@@ -2,14 +2,19 @@ package com.android.go.sopt.winey.presentation.main.mypage
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentTargetAmountBottomSheetBinding
 import com.android.go.sopt.winey.util.binding.BindingBottomSheetDialogFragment
+import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import java.text.DecimalFormat
 
 
 class TargetAmountBottomSheetFragment :
@@ -26,11 +31,13 @@ class TargetAmountBottomSheetFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.data = viewModel
+        initRootLayoutClickListener()
         initCancelButtonClickListener()
         initAmountEditTextWatcher()
         initDayEditTextWatcher()
         initAmountCheckObserver()
         initDayCheckObserver()
+        initButtonStateCheckObserver()
     }
 
 
@@ -175,6 +182,42 @@ class TargetAmountBottomSheetFragment :
             }
         }
     }
+
+    private fun initButtonStateCheckObserver() {
+        viewModel.buttonStateCheck.observe(viewLifecycleOwner) {
+            when (it) {
+                true -> {
+                    binding.btnTargetAmountSave.isEnabled = true
+                }
+
+                false -> {
+                    binding.btnTargetAmountSave.isEnabled = false
+                }
+            }
+        }
+    }
+
+    private fun makeCommaString(input: Long): String {
+        val formatter = DecimalFormat("#,###")
+        return formatter.format(input)
+    }
+
+    private fun initRootLayoutClickListener() {
+        binding.clTargetAmountInput.setOnClickListener {
+            requireContext().hideKeyboard(binding.root)
+            focusOutEditText()
+        }
+        binding.clTargetAmountTouchRange.setOnClickListener {
+            requireContext().hideKeyboard(binding.root)
+            focusOutEditText()
+        }
+    }
+
+    private fun focusOutEditText() {
+        binding.etTargetAmountSetAmount.clearFocus()
+        binding.etTargetAmountSetDay.clearFocus()
+    }
+
     fun initScreenHeight() {
         if (dialog != null) {
             val bottomSheet: View =
