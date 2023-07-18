@@ -43,4 +43,5 @@ interface AuthService {
         @Part file: MultipartBody.Part?,
         @PartMap requestMap: HashMap<String, RequestBody>
     ): BaseResponse<ResponsePostWineyFeedDto>
+
 }
