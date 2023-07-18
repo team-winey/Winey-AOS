@@ -48,21 +48,25 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
-            viewModel.postImage(contentArg, viewModel.amount)
+            viewModel.postWineyFeed(contentArg, viewModel.amount)
         }
     }
 
     private fun initPostImageStateObserver() {
         viewModel.postWineyFeedState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Success -> {
-                    snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
+                is UiState.Loading -> {
+                    // todo: 입력된 금액 범위에 따라 텍스트 변경
 
-                    // todo: 위니 피드로 돌아가기
+                }
+
+                is UiState.Success -> {
+                    //snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
                     closeUploadScreen()
                 }
 
                 is UiState.Failure -> {
+                    // todo: 서버에서 이미지 크기 설정 후 다시 시도해보기
                     snackBar(binding.root) { state.msg }
                 }
 

@@ -41,18 +41,20 @@ class AmountViewModel @Inject constructor(
         _imageRequestBody.value = requestBody
     }
 
-    fun postImage(content: String, amount: String) {
+    fun postWineyFeed(content: String, amount: String) {
         if (_imageRequestBody.value == null) {
             Timber.e("Image RequestBody is null")
             return
         }
 
-        val contentBody = content.toRequestBody("text/plain".toMediaTypeOrNull())
-        val amountBody = amount.toRequestBody("text/plain".toMediaTypeOrNull())
-        val stringRequestBodyMap = hashMapOf("feedTitle" to contentBody, "feedMoney" to amountBody)
-
         viewModelScope.launch {
+            _postWineyFeedState.value = UiState.Loading
+
+            val contentBody = content.toRequestBody("text/plain".toMediaTypeOrNull())
+            val amountBody = amount.toRequestBody("text/plain".toMediaTypeOrNull())
+            val stringRequestBodyMap = hashMapOf("feedTitle" to contentBody, "feedMoney" to amountBody)
             val imageRequestBody = imageRequestBody.value?.toFormData()
+
             authRepository.postWineyFeed(imageRequestBody, stringRequestBodyMap)
                 .onSuccess { response ->
                     _postWineyFeedState.value = UiState.Success(response)
