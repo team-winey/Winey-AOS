@@ -33,7 +33,9 @@ data class ResponseGetUserDto(
             @SerialName("targetDay")
             val targetDay: Int,
             @SerialName("targetMoney")
-            val targetMoney: Int
+            val targetMoney: Int,
+            @SerialName("dday")
+            val dday: Int
         )
 
         @Serializable
@@ -46,7 +48,6 @@ data class ResponseGetUserDto(
             val userLevel: String
         )
     }
-
     fun convertToUser(): User {
         val data = this.data
         val userResponseUserDto = data?.userResponseUserDto
@@ -58,7 +59,8 @@ data class ResponseGetUserDto(
             duringGoalCount = data?.userResponseGoalDto?.duringGoalCount ?: 0,
             targetMoney = data?.userResponseGoalDto?.targetMoney ?: 0,
             targetDay = data?.userResponseGoalDto?.targetDay ?: 0,
-            isOver = data?.userResponseGoalDto?.isOver ?: false,
+            dday = data?.userResponseGoalDto?.dday ?: 0,
+            isOver = data?.userResponseGoalDto?.isOver ?: true,
             isAttained = data?.userResponseGoalDto?.isAttained ?: false
         )
     }
