@@ -1,6 +1,7 @@
 package com.android.go.sopt.winey.presentation.main
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -11,13 +12,18 @@ import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
+    private val viewModel by viewModels<MainViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.tag("생명주기").d("onCreate()....")
 
         initBnvItemSelectedListener()
+        viewModel.getUser()
     }
 
     private fun initBnvItemSelectedListener() {

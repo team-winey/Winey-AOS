@@ -5,12 +5,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.domain.entity.User
+import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.view.UiState
@@ -19,7 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
-    private val viewModel by viewModels<MyPageViewModel>()
+    private val viewModel by activityViewModels<MainViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -90,6 +92,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun handleSuccessState(data: User) {
         binding.data = data
+
         when (data.isOver) {
             true -> {
                 binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
@@ -97,12 +100,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
 
             false -> {
-                if(data.targetDay == 0){
+                if(data.dday == 0){
                     binding.tvMypagePeriodValue.text = getString(R.string.mypage_d_day)
                     binding.targetMoney = data
                 }else{
                     binding.targetMoney = data
-                    binding.targetDay = data
+                    binding.dday = data
                 }
 
             }
