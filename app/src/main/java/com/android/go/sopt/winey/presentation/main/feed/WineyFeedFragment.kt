@@ -62,7 +62,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         viewModel.postWineyFeedLikeState.observe(viewLifecycleOwner){ state ->
             when(state){
                 is UiState.Success -> {
-                   viewModel.getWineyFeed()
+                    viewModel.getWineyFeed()
                     initGetFeedStateObserver()
                 }
 

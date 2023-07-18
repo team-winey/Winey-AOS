@@ -19,16 +19,13 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
+    var wineyFeedAdapter: WineyFeedAdapter
 
-    lateinit var wineyFeedAdapter: WineyFeedAdapter
-    private val _WineyFeedListLiveData = MutableLiveData<List<WineyFeed>>()
-    val WineyFeedListLiveData: List<WineyFeed>?
-        get() = _WineyFeedListLiveData.value
     private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
     val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
         get() = _getWineyFeedListState
 
-    private val _postWineyFeedLikeState = MutableLiveData<UiState<Like>>()
+    private val _postWineyFeedLikeState = MutableLiveData<UiState<Like>>(UiState.Loading)
     val postWineyFeedLikeState: LiveData<UiState<Like>>
         get() = _postWineyFeedLikeState
 
@@ -67,9 +64,7 @@ class WineyFeedViewModel @Inject constructor(
                                 else -> UiState.Failure(t.message())
                             }
                         }
-
                         Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
-
                     }
                 }
         }
@@ -78,9 +73,8 @@ class WineyFeedViewModel @Inject constructor(
     fun getWineyFeed() {
         viewModelScope.launch {
             authRepository.getWineyFeed(WINEY_FEED_PAGE)
-                .onSuccess { response ->
-                    _getWineyFeedListState.value = UiState.Success(response)
-                    _WineyFeedListLiveData.value = response
+                .onSuccess { state ->
+                    _getWineyFeedListState.value = UiState.Success(state)
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
@@ -95,7 +89,6 @@ class WineyFeedViewModel @Inject constructor(
                                 else -> UiState.Failure(t.message())
                             }
                         }
-
                         Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
                     }
                 }
