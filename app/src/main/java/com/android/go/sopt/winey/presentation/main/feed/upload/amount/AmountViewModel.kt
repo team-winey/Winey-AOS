@@ -7,7 +7,7 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
-import com.android.go.sopt.winey.util.context.UriToRequestBody
+import com.android.go.sopt.winey.util.BitmapRequestBody
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -26,8 +26,8 @@ class AmountViewModel @Inject constructor(
 
     val isValidAmount: LiveData<Boolean> = _amount.map { validateLength(it) }
 
-    private val _imageRequestBody = MutableLiveData<UriToRequestBody>()
-    val imageRequestBody: LiveData<UriToRequestBody>
+    private val _imageRequestBody = MutableLiveData<BitmapRequestBody>()
+    val imageRequestBody: LiveData<BitmapRequestBody>
         get() = _imageRequestBody
 
     private val _postWineyFeedState = MutableLiveData<UiState<ResponsePostWineyFeedDto?>>()
@@ -37,7 +37,7 @@ class AmountViewModel @Inject constructor(
     private fun validateLength(amount: String): Boolean =
         amount.length in MIN_AMOUNT_LENGTH..MAX_AMOUNT_LENGTH
 
-    fun updateImageRequestBody(requestBody: UriToRequestBody) {
+    fun setImageRequestBody(requestBody: BitmapRequestBody) {
         _imageRequestBody.value = requestBody
     }
 
