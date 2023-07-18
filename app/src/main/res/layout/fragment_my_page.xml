@@ -289,6 +289,7 @@
                     android:background="@color/gray_50"
                     app:layout_constraintTop_toBottomOf="@id/cl_mypage_detail" />
 
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_mypage_to_myfeed"
                     android:layout_width="match_parent"
@@ -307,8 +308,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/btn_mypage_myfeed"
+                    <ImageView
+                        android:id="@+id/iv_mypage_myfeed"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -316,7 +317,6 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
                 <View
                     android:id="@+id/v_mypage_line6"
@@ -344,8 +344,8 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/btn_mypage_1on1"
+                    <ImageView
+                        android:id="@+id/iv_mypage_1on1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
