@@ -8,26 +8,38 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyfeedPostBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
+import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
-class WineyFeedAdapter :
+class WineyFeedAdapter(
+    private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit
+) :
     ListAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
 
     class WineyFeedViewHolder(
-        private val binding: ItemWineyfeedPostBinding
+        private val binding: ItemWineyfeedPostBinding,
+        private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: WineyFeed) {
-            binding.data = data
-            binding.ivWineyfeedLike.setImageResource(
-                if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
-            )
-            binding.executePendingBindings()
+            binding.apply {
+                this.data = data
+                ivWineyfeedLike.setImageResource(
+                    if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
+                )
+                ivWineyfeedLike.setOnSingleClickListener {
+                    onLikeButtonClick(data.feedId, !data.isLiked)
+                }
+                executePendingBindings()
+            }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WineyFeedViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): WineyFeedAdapter.WineyFeedViewHolder {
         val binding =
             ItemWineyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return WineyFeedViewHolder(binding)
+        return WineyFeedAdapter.WineyFeedViewHolder(binding, likeButtonClick)
     }
 
     override fun onBindViewHolder(holder: WineyFeedViewHolder, position: Int) {

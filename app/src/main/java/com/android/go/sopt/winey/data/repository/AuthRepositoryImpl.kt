@@ -1,6 +1,8 @@
 package com.android.go.sopt.winey.data.repository
 
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.source.AuthDataSource
+import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.AuthRepository
@@ -24,5 +26,9 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun getUser(): Result<User> =
         runCatching {
             authDataSource.getUser().convertToUser()
+        }
+    override suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): Result<Like> =
+        runCatching {
+            authDataSource.postFeedLike(feedId,requestPostLikeDto).toLike()
         }
 }
