@@ -47,7 +47,7 @@ data class ResponseGetUserDto(
         )
     }
 
-    fun convertToUser(): User {
+    fun toUser(): User {
         val data = this.data
         val userResponseUserDto = data?.userResponseUserDto
 

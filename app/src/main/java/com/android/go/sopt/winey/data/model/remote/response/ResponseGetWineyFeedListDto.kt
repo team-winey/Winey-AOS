@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseGetWineyFeed(
+data class ResponseGetWineyFeedListDto(
     @SerialName("code")
     val code: Int,
     @SerialName("data")
@@ -43,6 +43,7 @@ data class ResponseGetWineyFeed(
             @SerialName("writerLevel")
             val writerLevel: Int
         )
+
         @Serializable
         data class PageResponseDto(
             @SerialName("currentPageIndex")

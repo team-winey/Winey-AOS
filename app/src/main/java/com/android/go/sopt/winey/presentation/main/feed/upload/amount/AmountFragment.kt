@@ -11,10 +11,14 @@ import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.UriToRequestBody
 import com.android.go.sopt.winey.util.context.hideKeyboard
+import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.text.DecimalFormat
 
+@AndroidEntryPoint
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
     private val viewModel by viewModels<AmountViewModel>()
     private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(PHOTO_KEY) }
@@ -25,30 +29,51 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         binding.vm = viewModel
 
         setImageRequestBody()
+        initPostImageStateObserver()
+        initUploadButtonClickListener()
+
         initRootLayoutClickListener()
         initBackButtonClickListener()
-        initUploadButtonClickListener()
         initEditTextWatcher()
     }
 
     private fun setImageRequestBody() {
-        if (imageUriArg != null) {
-            viewModel.updateImageRequestBody(UriToRequestBody(requireContext(), imageUriArg!!))
-        }else {
+        if (imageUriArg == null) {
             Timber.e("Image Uri Argument is null")
+            return
+        }
+
+        viewModel.updateImageRequestBody(UriToRequestBody(requireContext(), imageUriArg!!))
+    }
+
+    private fun initUploadButtonClickListener() {
+        binding.btnAmountNext.setOnSingleClickListener {
+            viewModel.postImage(contentArg, viewModel.amount)
+        }
+    }
+
+    private fun initPostImageStateObserver() {
+        viewModel.postWineyFeedState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Success -> {
+                    snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
+                    // todo: 위니 피드로 전환하기
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> {
+
+                }
+            }
         }
     }
 
     private fun initBackButtonClickListener() {
         binding.ivAmountBack.setOnClickListener {
             parentFragmentManager.popBackStack()
-        }
-    }
-
-    // todo: imageUri, content, viewModel.amount -> 멀티파트 서버통신
-    private fun initUploadButtonClickListener() {
-        binding.btnAmountNext.setOnSingleClickListener {
-            viewModel.postImage()
         }
     }
 

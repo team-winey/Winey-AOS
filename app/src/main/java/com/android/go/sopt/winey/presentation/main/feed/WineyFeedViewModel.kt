@@ -21,6 +21,7 @@ class WineyFeedViewModel @Inject constructor(
     private val _WineyFeedListLiveData = MutableLiveData<List<WineyFeed>>()
     val WineyFeedListLiveData: List<WineyFeed>?
         get() = _WineyFeedListLiveData.value
+
     private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
     val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
         get() = _getWineyFeedListState
@@ -31,7 +32,7 @@ class WineyFeedViewModel @Inject constructor(
 
     private fun getWineyFeed() {
         viewModelScope.launch {
-            authRepository.getWineyFeed(WINEY_FEED_PAGE)
+            authRepository.getWineyFeedList(WINEY_FEED_PAGE)
                 .onSuccess { response ->
                     _getWineyFeedListState.value = UiState.Success(response)
                     _WineyFeedListLiveData.value = response

@@ -6,7 +6,9 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityUploadBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.photo.PhotoFragment
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_upload) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
