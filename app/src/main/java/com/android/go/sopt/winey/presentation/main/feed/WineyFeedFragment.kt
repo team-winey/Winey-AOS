@@ -98,7 +98,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                     snackBar(binding.root) { state.msg }
                 }
 
-                else -> Timber.tag("failure").e(WineyFeedFragment.MSG_WINEYFEED_ERROR)
+                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
             }
         }
     }
