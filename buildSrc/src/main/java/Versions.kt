@@ -23,6 +23,7 @@ object Versions {
     const val ossVersion = "17.0.0"
     const val splashVersion = "1.0.1"
     const val workManagerVersion = "2.8.1"
+    const val exifVersion = "1.3.2"
 
     const val coilVersion = "2.4.0"
     const val retrofitVersion = "2.9.0"

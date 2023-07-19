@@ -29,6 +29,7 @@ object AndroidXDependencies {
     const val pagingRuntime = "androidx.paging:paging-runtime:${Versions.pagingVersion}"
     const val workManager = "androidx.work:work-runtime-ktx:${Versions.workManagerVersion}"
     const val hiltWorkManager = "androidx.hilt:hilt-work:1.0.0"
+    const val exif = "androidx.exifinterface:exifinterface:${Versions.exifVersion}"
 }
 
 object TestDependencies {
