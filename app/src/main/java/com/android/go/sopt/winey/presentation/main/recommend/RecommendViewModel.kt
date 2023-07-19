@@ -2,9 +2,7 @@ package com.android.go.sopt.winey.presentation.main.recommend
 
 import androidx.lifecycle.ViewModel
 import com.android.go.sopt.winey.domain.entity.Recommend
-import dagger.hilt.android.lifecycle.HiltViewModel
 
-@HiltViewModel
 class RecommendViewModel : ViewModel() {
     val recommendList = listOf(
         Recommend(
