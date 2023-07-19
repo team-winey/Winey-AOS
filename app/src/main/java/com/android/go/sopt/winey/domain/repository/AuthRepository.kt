@@ -28,4 +28,5 @@ interface AuthRepository {
     suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): Result<Goal>
 
     suspend fun getRecommendList(page: Int): Result<List<Recommend>>
+    suspend fun deleteFeed(feedId: Int): Result<Unit>
 }

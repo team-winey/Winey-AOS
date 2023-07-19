@@ -12,6 +12,7 @@ import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -56,4 +57,8 @@ interface AuthService {
     suspend fun getRecommendList(
         @Query("page") page:Int
     ): BaseResponse<ResponseGetRecommendListDto>
+    @DELETE("feed/{feedId}")
+    suspend fun deleteFeed(
+        @Path("feedId") feedId: Int
+    ): BaseResponse<Unit>
 }
