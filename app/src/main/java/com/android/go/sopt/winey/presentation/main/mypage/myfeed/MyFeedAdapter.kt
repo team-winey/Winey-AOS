@@ -51,8 +51,8 @@ class MyFeedAdapter(
         }
 
         private fun showDeleteDialog(feedId: Int) {
-            val myFeedDialogFragment = MyFeedDialogFragment(feedId)
-            myFeedDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
+            val myFeedDeleteDialogFragment = MyFeedDeleteDialogFragment(feedId)
+            myFeedDeleteDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
         }
     }
 

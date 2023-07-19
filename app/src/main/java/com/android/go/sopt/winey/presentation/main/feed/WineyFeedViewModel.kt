@@ -30,6 +30,10 @@ class WineyFeedViewModel @Inject constructor(
     val postWineyFeedLikeState: LiveData<UiState<Like>>
         get() = _postWineyFeedLikeState
 
+    val _deleteMyFeedState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val deleteMyFeedState: LiveData<UiState<Unit>>
+        get() = _deleteMyFeedState
+
     init {
         getWineyFeed()
         wineyFeedAdapter = WineyFeedAdapter(
@@ -49,6 +53,32 @@ class WineyFeedViewModel @Inject constructor(
     fun likeFeed(feedId: Int, isLiked: Boolean) {
         val requestPostLikeDto = RequestPostLikeDto(isLiked)
         postLike(feedId, requestPostLikeDto)
+    }
+
+    fun deleteFeed(feedId: Int) {
+        viewModelScope.launch {
+            authRepository.deleteFeed(feedId)
+                .onSuccess { state ->
+                    _deleteMyFeedState.value = UiState.Success(state)
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        _deleteMyFeedState.value.apply {
+                            when (t.code()) {
+                                CODE_WINEYFEED_INVALID_USER ->
+                                    UiState.Failure(t.message())
+
+                                CODE_WINEYFEED_INVALID_REQUEST ->
+                                    UiState.Failure(t.message())
+
+                                else -> _deleteMyFeedState.value =
+                                    UiState.Failure(t.message())
+                            }
+                        }
+                        Timber.e("$MSG_WINEYFEED_FAIL} : ${t.code()} : ${t.message()}")
+                    }
+                }
+        }
     }
 
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
