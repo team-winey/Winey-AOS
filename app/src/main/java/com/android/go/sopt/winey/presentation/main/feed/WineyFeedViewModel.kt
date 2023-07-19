@@ -46,6 +46,10 @@ class WineyFeedViewModel @Inject constructor(
 
     }
 
+    fun likeFeed(feedId: Int, isLiked: Boolean) {
+        val requestPostLikeDto = RequestPostLikeDto(isLiked)
+        postLike(feedId, requestPostLikeDto)
+    }
 
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {

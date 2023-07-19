@@ -44,7 +44,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private fun initAdapter() {
         wineyFeedAdapter = WineyFeedAdapter(
             likeButtonClick = { feedId, isLiked ->
-                // "좋아요" 버튼 클릭 이벤트 처리
+                viewModel.likeFeed(feedId,isLiked)
             },
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
