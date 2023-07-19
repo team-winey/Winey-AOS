@@ -9,22 +9,37 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemMyfeedPostBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
+import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 
-class MyFeedAdapter(private val fragmentManager: FragmentManager) :
+class MyFeedAdapter(
+    private val fragmentManager: FragmentManager,
+    private val deleteButtonClick: (feedId: Int) -> Unit
+) :
     ListAdapter<WineyFeed, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
 
-    lateinit var myFeedDialogFragment: MyFeedDialogFragment
-
     class MyFeedViewHolder(
-        private val binding: ItemMyfeedPostBinding
+        private val fragmentManager: FragmentManager,
+        private val binding: ItemMyfeedPostBinding,
+        private val deleteButtonClick: (feedId: Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: WineyFeed) {
-            binding.data = data
-            binding.ivMyfeedLike.setImageResource(
-                if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
-            )
-            binding.executePendingBindings()
+            binding.apply {
+                this.data = data
+                ivMyfeedLike.setImageResource(
+                    if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
+                )
+                tvMyfeedDelete.setOnSingleClickListener {
+                    showDeleteDialog(data.feedId)
+                    deleteButtonClick(data.feedId)
+                }
+                executePendingBindings()
+            }
+        }
+
+        private fun showDeleteDialog(feedId: Int) {
+            val myFeedDialogFragment = MyFeedDialogFragment(feedId)
+            myFeedDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
         }
     }
 
@@ -34,19 +49,11 @@ class MyFeedAdapter(private val fragmentManager: FragmentManager) :
     ): MyFeedViewHolder {
         val binding =
             ItemMyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        binding.tvMyfeedDelete.setOnClickListener {
-            showDeleteDialog()
-        }
-        return MyFeedViewHolder(binding)
+        return MyFeedViewHolder(fragmentManager, binding, deleteButtonClick)
     }
 
     override fun onBindViewHolder(holder: MyFeedViewHolder, position: Int) {
         holder.onBind(getItem(position))
-    }
-
-    private fun showDeleteDialog() {
-        myFeedDialogFragment = MyFeedDialogFragment()
-        myFeedDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
     }
 
     companion object {

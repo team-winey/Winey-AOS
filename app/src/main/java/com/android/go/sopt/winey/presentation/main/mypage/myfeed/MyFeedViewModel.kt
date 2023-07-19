@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,24 +17,26 @@ import javax.inject.Inject
 @HiltViewModel
 class MyFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository
-): ViewModel() {
-    private val _MyFeedListLiveData = MutableLiveData<List<WineyFeed>>()
-    val MyFeedListLiveData: List<WineyFeed>?
-        get() = _MyFeedListLiveData.value
+) : ViewModel() {
+
     private val _getMyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
     val getMyFeedListState: LiveData<UiState<List<WineyFeed>>>
         get() = _getMyFeedListState
+
+
+    val _deleteMyFeedState = MutableLiveData<UiState<Unit>>(UiState.Loading)
+    val deleteMyFeedState: LiveData<UiState<Unit>>
+        get() = _deleteMyFeedState
 
     init {
         getMyFeed()
     }
 
-    private fun getMyFeed() {
+    fun getMyFeed() {
         viewModelScope.launch {
             authRepository.getMyFeedList(MYFEED_FEED_PAGE)
                 .onSuccess { response ->
                     _getMyFeedListState.value = UiState.Success(response)
-                    _MyFeedListLiveData.value = response
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
@@ -47,16 +50,45 @@ class MyFeedViewModel @Inject constructor(
                             else -> _getMyFeedListState.value =
                                 UiState.Failure(t.message())
                         }
-                        Timber.e("$MSG_MYFEEDYFEED_FAIL : ${t.code()} : ${t.message()}")
+                        Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
                     }
                 }
         }
     }
 
+    fun deleteFeed(feedId: Int) {
+        viewModelScope.launch {
+            authRepository.deleteFeed(feedId)
+                .onSuccess { state ->
+                    _deleteMyFeedState.value = UiState.Success(state)
+                    Log.e("deleteSuccess", state.toString())
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Log.e("deleteFail", t.message())
+                        _deleteMyFeedState.value.apply {
+                            when (t.code()) {
+                                CODE_MYFEED_INVALID_USER ->
+                                    UiState.Failure(t.message())
+
+                                CODE_MYFEED_INVALID_REQUEST ->
+                                    UiState.Failure(t.message())
+
+                                else -> _deleteMyFeedState.value =
+                                    UiState.Failure(t.message())
+                            }
+                        }
+                        Timber.e("${MSG_MYFEED_FAIL} : ${t.code()} : ${t.message()}")
+                    }
+                }
+        }
+    }
+
+
     companion object {
         private const val CODE_MYFEED_INVALID_USER = 404
         private const val CODE_MYFEED_INVALID_REQUEST = 400
-        private const val MSG_MYFEEDYFEED_FAIL = "FAIL"
+        private const val MSG_MYFEED_FAIL = "FAIL"
         private const val MYFEED_FEED_PAGE = 1
     }
 }
