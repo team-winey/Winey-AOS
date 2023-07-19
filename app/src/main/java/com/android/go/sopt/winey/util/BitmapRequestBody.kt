@@ -11,7 +11,7 @@ import okhttp3.RequestBody
 import okio.BufferedSink
 import timber.log.Timber
 
-// todo: file name, resized bitmap -> request body
+/** file name, resized bitmap -> request body */
 class BitmapRequestBody(
     private val context: Context,
     private val uri: Uri,
