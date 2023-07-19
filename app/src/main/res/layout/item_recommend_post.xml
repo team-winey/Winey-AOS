@@ -49,7 +49,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="19dp"
                     android:stateListAnimator="@null"
-                    android:text="@{data.discount}"
+                    android:text="@{@string/recommend_discount(data.discount)}"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                     android:textColor="@color/purple_400"
                     app:layout_constraintStart_toEndOf="@id/iv_recommend_image"
