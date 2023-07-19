@@ -11,13 +11,12 @@ import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-) : ViewModel (){
+) : ViewModel() {
 
     private val _getUserState = MutableLiveData<UiState<User>>(UiState.Loading)
     val getUserState: LiveData<UiState<User>> get() = _getUserState

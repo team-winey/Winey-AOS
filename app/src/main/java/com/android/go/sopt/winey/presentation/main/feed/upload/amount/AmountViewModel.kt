@@ -48,8 +48,6 @@ class AmountViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            _postWineyFeedState.value = UiState.Loading
-
             val contentBody = content.toRequestBody("text/plain".toMediaTypeOrNull())
             val amountBody = amount.toRequestBody("text/plain".toMediaTypeOrNull())
             val stringRequestBodyMap = hashMapOf(

@@ -31,11 +31,13 @@
 
                 <ImageView
                     android:id="@+id/iv_recommend_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="59dp"
+                    android:layout_height="80dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
+                    android:scaleType="centerCrop"
                     android:paddingBottom="21dp"
+                    imageUrl="@{data.image}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:src="@drawable/ic_recommend_item_dummy" />
@@ -47,7 +49,7 @@
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="19dp"
                     android:stateListAnimator="@null"
-                    android:text="@{data.discount}"
+                    android:text="@{@string/recommend_discount(data.discount)}"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                     android:textColor="@color/purple_400"
                     app:layout_constraintStart_toEndOf="@id/iv_recommend_image"
