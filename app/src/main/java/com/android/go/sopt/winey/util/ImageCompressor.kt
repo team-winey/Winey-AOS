@@ -4,9 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import timber.log.Timber
 import java.io.ByteArrayOutputStream
-import kotlin.math.roundToInt
 
 /** context, uri -> bitmap resize */
 class ImageCompressor(
@@ -31,10 +29,7 @@ class ImageCompressor(
     private fun reduceImageSize(bitmap: Bitmap): Bitmap {
         val originalWidth = bitmap.width
         val originalHeight = bitmap.height
-        Timber.d("$originalHeight $originalHeight")
-
-        val aspectRatio = (originalWidth.toDouble() / originalHeight).roundToInt()
-        Timber.d(aspectRatio.toString())
+        val aspectRatio = originalWidth / originalHeight
 
         val compressedWidth = MAX_IMAGE_SIZE
         val compressedHeight = compressedWidth * aspectRatio
