@@ -82,6 +82,7 @@ dependencies {
         implementation(pagingRuntime)
         implementation(workManager)
         implementation(hiltWorkManager)
+        implementation(exif)
     }
 
     TestDependencies.run {

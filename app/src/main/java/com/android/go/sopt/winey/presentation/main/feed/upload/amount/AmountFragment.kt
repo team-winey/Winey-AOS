@@ -43,14 +43,13 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
             Timber.e("Image Uri Argument is null")
             return
         }
-
-        viewModel.setImageRequestBody(getResizedRequestBody())
+        viewModel.setImageRequestBody(getBitmapRequestBody())
     }
 
-    private fun getResizedRequestBody(): BitmapRequestBody {
+    private fun getBitmapRequestBody(): BitmapRequestBody {
         val compressor = ImageCompressor(requireContext(), imageUriArg!!)
-        val resizedImageBitmap = compressor.getResizedImageBitmap()
-        return BitmapRequestBody(requireContext(), imageUriArg!!, resizedImageBitmap)
+        val adjustedImageBitmap = compressor.adjustImageFormat()
+        return BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
     }
 
     private fun initUploadButtonClickListener() {
