@@ -60,7 +60,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_delete -> {
-                    Log.e("writerLevel", wineyFeed.writerLevel.toString())
                     if (wineyFeed.writerLevel <= 2) {
                         val wineyFeedDeleteDialogFragment =
                             WineyFeedDeleteDialogFragment(wineyFeed.feedId)
