@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="save_item_categories">
+        <item>계란빵</item>
+        <item>추파춥스</item>
+        <item>삼각김밥</item>
+        <item>음료수</item>
+        <item>샌드위치</item>
+        <item>스타벅스 커피</item>
+        <item>샐러드</item>
+        <item>국밦</item>
+        <item>야간 택시비</item>
+        <item>삼겹살</item>
+        <item>초밥</item>
+        <item>피자 한판</item>
+        <item>치킨</item>
+        <item>KTX 기차표</item>
+        <item>소고기</item>
+    </string-array>
+</resources>
