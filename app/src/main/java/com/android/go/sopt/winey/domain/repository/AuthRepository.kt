@@ -21,4 +21,6 @@ interface AuthRepository {
         file: MultipartBody.Part?,
         requestMap: HashMap<String, RequestBody>
     ): Result<ResponsePostWineyFeedDto?>
+
+    suspend fun deleteFeed(feedId: Int): Result<Unit>
 }
