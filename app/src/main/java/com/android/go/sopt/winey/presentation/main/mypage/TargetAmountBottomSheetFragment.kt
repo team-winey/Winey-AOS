@@ -8,18 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentTargetAmountBottomSheetBinding
+import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.util.binding.BindingBottomSheetDialogFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
+import com.android.go.sopt.winey.util.view.UiState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
 
-
+@AndroidEntryPoint
 class TargetAmountBottomSheetFragment :
     BindingBottomSheetDialogFragment<FragmentTargetAmountBottomSheetBinding>(R.layout.fragment_target_amount_bottom_sheet) {
     private val viewModel by viewModels<TargetAmountViewModel>()
+    private val mainViewModel by activityViewModels<MainViewModel>()
 
     override fun onStart() {
         super.onStart()
@@ -38,8 +43,44 @@ class TargetAmountBottomSheetFragment :
         initAmountCheckObserver()
         initDayCheckObserver()
         initButtonStateCheckObserver()
+        initSaveButtonClickListener()
+        initCreateGoalObserver()
     }
 
+    fun initSaveButtonClickListener() {
+        binding.btnTargetAmountSave.setOnClickListener {
+            viewModel.postCreateGoal()
+        }
+    }
+
+    fun initCreateGoalObserver() {
+        viewModel.createGoalState.observe(viewLifecycleOwner) {
+            when (it) {
+                is UiState.Loading -> {
+
+                }
+
+                is UiState.Success -> {
+                    mainViewModel.getUser()
+                    val fragmentManager = requireActivity().supportFragmentManager
+                    fragmentManager.beginTransaction().apply {
+                        val newFragment = MyPageFragment()
+                        replace(R.id.fcv_main, newFragment)
+                        commit()
+                    }
+                    this.dismiss()
+                }
+
+                is UiState.Failure -> {
+
+                }
+
+                is UiState.Empty -> {
+
+                }
+            }
+        }
+    }
 
     fun initCancelButtonClickListener() {
         binding.btnTargetAmountCancel.setOnClickListener {
@@ -56,7 +97,7 @@ class TargetAmountBottomSheetFragment :
                 val amount: String = if (input.isNotBlank()) {
                     input.replace(",", "")
                 } else {
-                    "0"
+                    "1000000000"
                 }
                 viewModel.checkAmount(amount)
                 viewModel.checkButtonState()
@@ -64,10 +105,8 @@ class TargetAmountBottomSheetFragment :
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val input = s.toString()
-
                 // 문자열이 비어있거나 이전과 변함 없으면 그대로 둔다.
                 if (input.isBlank() || input == temp) return
-
                 temp = makeCommaString(input.replace(",", "").toLong())
                 binding.etTargetAmountSetAmount.apply {
                     setText(temp)
@@ -86,7 +125,7 @@ class TargetAmountBottomSheetFragment :
                 val day: String = if (input.isNotBlank()) {
                     input.replace(",", "")
                 } else {
-                    "0"
+                    "1000000000"
                 }
                 viewModel.checkDay(day)
                 viewModel.checkButtonState()

@@ -14,7 +14,7 @@
             type="com.android.go.sopt.winey.domain.entity.User" />
 
         <variable
-            name="targetDay"
+            name="dday"
             type="com.android.go.sopt.winey.domain.entity.User" />
 
         <variable
@@ -195,7 +195,7 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_period_value"
-                        setAmount="@{targetDay.targetDay}"
+                        setAmount="@{dday.dday}"
                         setPrefix="@{@string/mypage_dday}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
