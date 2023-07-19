@@ -1,6 +1,8 @@
 package com.android.go.sopt.winey.data.service
 
+import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
@@ -19,7 +21,7 @@ import retrofit2.http.Query
 
 interface AuthService {
     @GET("user")
-    suspend fun getUser(): ResponseGetUserDto
+    suspend fun getUser(): BaseResponse<ResponseGetUserDto>
 
     @GET("feed")
     suspend fun getWineyFeedList(
@@ -44,4 +46,8 @@ interface AuthService {
         @PartMap requestMap: HashMap<String, RequestBody>
     ): BaseResponse<ResponsePostWineyFeedDto>
 
+    @POST("goal")
+    suspend fun postCreateGoal(
+        @Body requestCreateGoalDto: RequestCreateGoalDto
+    ): BaseResponse<ResponseCreateGoalDto>
 }
