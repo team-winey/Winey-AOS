@@ -30,7 +30,7 @@
             android:id="@+id/tv_mypage_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="17dp"
             android:text="@string/mypage_title"
             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +40,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="17dp"
             android:background="@color/gray_50"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_mypage_title">
@@ -63,12 +63,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="23dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="12dp"
                     android:background="@drawable/shape_yellow_fill_99_rect"
                     android:paddingHorizontal="10dp"
-                    android:paddingVertical="4dp"
+                    android:paddingVertical="3dp"
                     android:text="@{@string/mypage_level_token(data.userLevel)}"
-                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/v_mypage_line1"
                     tools:text="LV. 평민" />
@@ -86,16 +86,20 @@
                     android:id="@+id/tv_mypage_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="5dp"
                     android:text="@{data.nickname}"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
                     app:layout_constraintStart_toStartOf="@id/tv_mypage_level_token"
-                    app:layout_constraintTop_toBottomOf="@id/tv_mypage_level_token" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_mypage_level_token"
+                    tools:text = "식비낮춰"/>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/cv_mypage_profile"
+                <ImageView
+                    android:id="@+id/iv_mypage_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="212dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_mypage_lv1_profile"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="10dp"
                     android:backgroundTint="@color/purple_100"
@@ -110,19 +114,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="26dp"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="12dp"
                     android:adjustViewBounds="true"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_mypage_lv1_progressbar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cv_mypage_profile" />
+                    app:layout_constraintTop_toBottomOf="@id/iv_mypage_profile" />
 
                 <View
                     android:id="@+id/v_mypage_line2"
                     android:layout_width="match_parent"
                     android:layout_height="8dp"
-                    android:layout_marginTop="13dp"
+                    android:layout_marginTop="12dp"
                     android:background="@color/gray_50"
                     app:layout_constraintTop_toBottomOf="@id/iv_mypage_progressbar" />
 
@@ -131,7 +135,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="11dp"
+                    android:layout_marginTop="7dp"
                     android:backgroundTint="@color/gray_50"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="0dp"
@@ -144,9 +148,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="21dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="11dp"
                         android:text="@string/mypage_target_amount"
-                        android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                         android:textColor="@color/gray_600" />
 
                     <TextView
@@ -157,7 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
                         android:layout_marginStart="21dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginBottom="11dp"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         tools:text="10,000원" />
 
@@ -183,10 +187,10 @@
                         android:id="@+id/tv_mypage_period"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="11dp"
                         android:layout_marginBottom="6dp"
                         android:text="@string/mypage_period"
-                        android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                         android:textColor="@color/gray_600"
                         app:layout_constraintBottom_toTopOf="@id/tv_mypage_period_value"
                         app:layout_constraintEnd_toStartOf="@id/v_mypage_line3"
@@ -199,7 +203,7 @@
                         setPrefix="@{@string/mypage_dday}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
+                        android:layout_marginBottom="11dp"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -223,7 +227,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="13dp"
                         android:text="@string/mypage_accumulated_winey"
-                        android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                         android:textColor="@color/gray_600"
                         app:layout_constraintEnd_toStartOf="@id/v_mypage_line4"
                         app:layout_constraintStart_toEndOf="@id/v_mypage_line3"
@@ -259,7 +263,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="13dp"
                         android:text="@string/mypage_winey_count"
-                        android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                         android:textColor="@color/gray_600"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/v_mypage_line4"

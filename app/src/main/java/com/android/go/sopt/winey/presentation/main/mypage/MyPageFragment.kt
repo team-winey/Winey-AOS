@@ -77,11 +77,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun handleTargetModifyButtonState(data: User) {
         binding.btnMypageTargetModify.setOnSingleClickListener {
-            when(data.isOver){
+            when (data.isOver) {
                 true -> {
                     val bottomSheet = TargetAmountBottomSheetFragment()
                     bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
                 }
+
                 false -> {
                     val dialog = MyPageDialogFragment()
                     dialog.show(this.childFragmentManager, dialog.tag)
@@ -100,10 +101,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
 
             false -> {
-                if(data.dday == 0){
+                if (data.dday == 0) {
                     binding.tvMypagePeriodValue.text = getString(R.string.mypage_d_day)
                     binding.targetMoney = data
-                }else{
+                } else {
                     binding.targetMoney = data
                     binding.dday = data
                 }
@@ -113,18 +114,22 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         when (data.userLevel) {
             LEVEL_COMMON -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
+                binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv1_profile)
             }
 
             LEVEL_KNIGHT -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv2_progressbar)
+                binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv2_profile)
             }
 
             LEVEL_NOBLESS -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv3_progressbar)
+                binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv3_profile)
             }
 
             LEVEL_KING -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
+                binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv4_profile)
             }
         }
 
