@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.amount
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +9,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
+import com.android.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
 import com.android.go.sopt.winey.util.BitmapRequestBody
 import com.android.go.sopt.winey.util.ImageCompressor
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -54,13 +56,8 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun initPostImageStateObserver() {
         viewModel.postWineyFeedState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Loading -> {
-                    // todo: 입력된 금액 범위에 따라 텍스트 변경
-                }
-
                 is UiState.Success -> {
-                    snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
-                    closeUploadScreen()
+                    navigateLoadingScreen()
                 }
 
                 is UiState.Failure -> {
@@ -74,8 +71,11 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         }
     }
 
-    private fun closeUploadScreen() {
-        requireActivity().finish()
+    private fun navigateLoadingScreen() {
+        Intent(requireContext(), LoadingActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
+        }
     }
 
     private fun initBackButtonClickListener() {
