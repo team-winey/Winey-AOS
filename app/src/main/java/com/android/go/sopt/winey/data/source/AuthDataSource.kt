@@ -35,4 +35,7 @@ class AuthDataSource @Inject constructor(
 
     suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): BaseResponse<ResponseCreateGoalDto> =
         authService.postCreateGoal(requestCreateGoalDto)
+
+    suspend fun deleteFeed(feedId: Int): BaseResponse<Unit> =
+        authService.deleteFeed(feedId)
 }
