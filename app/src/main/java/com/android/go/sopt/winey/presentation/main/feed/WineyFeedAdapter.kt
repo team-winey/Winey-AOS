@@ -36,10 +36,10 @@ class WineyFeedAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): WineyFeedAdapter.WineyFeedViewHolder {
+    ): WineyFeedViewHolder {
         val binding =
             ItemWineyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return WineyFeedAdapter.WineyFeedViewHolder(binding, likeButtonClick)
+        return WineyFeedViewHolder(binding, likeButtonClick)
     }
 
     override fun onBindViewHolder(holder: WineyFeedViewHolder, position: Int) {

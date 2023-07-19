@@ -25,4 +25,6 @@ interface AuthRepository {
     ): Result<ResponsePostWineyFeedDto?>
 
     suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): Result<Goal>
+
+    suspend fun deleteFeed(feedId: Int): Result<Unit>
 }

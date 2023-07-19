@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.data.service
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseDeleteWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
@@ -11,6 +12,7 @@ import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -50,4 +52,9 @@ interface AuthService {
     suspend fun postCreateGoal(
         @Body requestCreateGoalDto: RequestCreateGoalDto
     ): BaseResponse<ResponseCreateGoalDto>
+
+    @DELETE("feed/{feedId}")
+    suspend fun deleteFeed(
+        @Path("feedId") feedId: Int
+    ): BaseResponse<Unit>
 }
