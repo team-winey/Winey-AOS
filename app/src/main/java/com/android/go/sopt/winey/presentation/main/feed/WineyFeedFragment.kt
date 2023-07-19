@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
@@ -29,22 +30,16 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initDialog()
         initAdapter()
         initFabClickListener()
         initPostLikeStateObserver()
         initGetFeedStateObserver()
     }
 
-    private fun initDialog() {
-        wineyFeedDialogFragment = WineyFeedDialogFragment()
-        wineyFeedDialogFragment.isCancelable = false
-    }
-
     private fun initAdapter() {
         wineyFeedAdapter = WineyFeedAdapter(
             likeButtonClick = { feedId, isLiked ->
-                viewModel.likeFeed(feedId,isLiked)
+                viewModel.likeFeed(feedId, isLiked)
             },
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
@@ -57,13 +52,22 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.menu_wineyfeed, popupMenu.menu)
+        val menuDelete = popupMenu.menu.findItem(R.id.menu_delete)
+        val menuReport = popupMenu.menu.findItem(R.id.menu_report)
+        if (wineyFeed.userId == 1) {
+            menuReport.isVisible = false
+        } else menuDelete.isVisible = false
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_delete -> {
-                    /* 삭제 구현 : 레벨 가져와서 레벨별 삭제다이얼로그 뜨게 한 다음,
-                     삭제하기 누르면 삭제하기 서버통신,
-                     피드 다시 불러오기
-                     */
+                    if (wineyFeed.writerLevel <= 2) {
+                        val wineyFeedDeleteDialogFragment =
+                            WineyFeedDeleteDialogFragment(wineyFeed.feedId)
+                        wineyFeedDeleteDialogFragment.show(parentFragmentManager, "delete")
+                    } else {
+                        //TODO : 높은레벨 다른 다이얼로그
+                    }
+
                     true
                 }
 

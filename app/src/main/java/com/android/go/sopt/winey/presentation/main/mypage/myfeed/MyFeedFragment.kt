@@ -18,7 +18,7 @@ import timber.log.Timber
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
     private val viewModel by viewModels<MyFeedViewModel>()
     private val myFeedDialogViewModel by viewModels<MyFeedDialogViewModel>()
-    private lateinit var myFeedDialogFragment: MyFeedDialogFragment
+    private lateinit var myFeedDeleteDialogFragment: MyFeedDeleteDialogFragment
     private lateinit var myFeedAdapter: MyFeedAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,8 +39,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initDialog(feedId: Int) {
-        myFeedDialogFragment = MyFeedDialogFragment(feedId)
-        myFeedDialogFragment.isCancelable = false
+        myFeedDeleteDialogFragment = MyFeedDeleteDialogFragment(feedId)
+        myFeedDeleteDialogFragment.isCancelable = false
     }
 
     private fun initButtonClickListener() {

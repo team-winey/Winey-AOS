@@ -2,16 +2,11 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyfeedNoGoalDialogBinding
-import com.android.go.sopt.winey.domain.entity.User
-import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
-import com.android.go.sopt.winey.util.view.UiState
-import timber.log.Timber
 
 class WineyFeedDialogFragment :
     BindingDialogFragment<FragmentWineyfeedNoGoalDialogBinding>(R.layout.fragment_wineyfeed_no_goal_dialog) {
