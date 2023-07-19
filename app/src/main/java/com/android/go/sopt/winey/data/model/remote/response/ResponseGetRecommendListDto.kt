@@ -24,28 +24,28 @@ data class ResponseGetRecommendListDto(
     @Serializable
     data class RecommendsResponseDto(
         @SerialName("recommendId")
-        val recommendId : Int,
+        val recommendId : Int?,
         @SerialName("recommendLink")
         val recommendLink : String?,
         @SerialName("recommendTitle")
-        val recommendTitle : String,
+        val recommendTitle : String?,
         @SerialName("recommendSubTitle")
-        val recommendSubTitle : String,
+        val recommendSubTitle : String?,
         @SerialName("recommendDiscount")
-        val recommendDiscount : String,
+        val recommendDiscount : String?,
         @SerialName("recommendImage")
-        val recommendImage : String,
+        val recommendImage : String?,
         @SerialName("createdAt")
-        val createdAt : String
+        val createdAt : String?
     )
     fun convertToRecommend() = this.recommendsResponseDto.map {
         Recommend(
-            id = it.recommendId,
+            id = it.recommendId ?: 0,
             link = it.recommendLink ?: "null",
-            title = it.recommendTitle,
-            subtitle = it.recommendSubTitle,
-            discount = it.recommendDiscount,
-            image = it.recommendImage,
+            title = it.recommendTitle ?: "",
+            subtitle = it.recommendSubTitle ?: "",
+            discount = it.recommendDiscount ?: "",
+            image = it.recommendImage ?: "",
         )
     }
 }
