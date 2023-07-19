@@ -29,7 +29,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         val launcher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
                 if (imageUri == null) {
-                    displayErrorImage()
+                    displayDefaultImage()
                     return@registerForActivityResult
                 }
 
@@ -45,8 +45,8 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         }
     }
 
-    private fun displayErrorImage() {
-        binding.ivUploadPhoto.setImageResource(R.drawable.ic_upload_image_error)
+    private fun displayDefaultImage() {
+        binding.ivUploadPhoto.setImageResource(R.drawable.img_upload_photo)
     }
 
     private fun displaySelectedImage(imageUri: Uri) {

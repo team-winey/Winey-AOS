@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.amount
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +9,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
+import com.android.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
 import com.android.go.sopt.winey.util.BitmapRequestBody
 import com.android.go.sopt.winey.util.ImageCompressor
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -21,8 +23,8 @@ import java.text.DecimalFormat
 @AndroidEntryPoint
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
     private val viewModel by viewModels<AmountViewModel>()
-    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(PHOTO_KEY) }
-    private val contentArg by lazy { requireArguments().getString(CONTENT_KEY, "") }
+    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(ARGS_PHOTO_KEY) }
+    private val contentArg by lazy { requireArguments().getString(ARGS_CONTENT_KEY, "") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,27 +42,22 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun updateRequestBody() {
         val compressor = ImageCompressor(requireContext(), imageUriArg!!)
         val adjustedImageBitmap = compressor.adjustImageFormat()
-        val bitmapRequestBody = BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
+        val bitmapRequestBody =
+            BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
         viewModel.updateRequestBody(bitmapRequestBody)
     }
 
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
-            val amountWithoutComma = viewModel.amount.replace(",", "")
-            viewModel.postWineyFeed(contentArg, amountWithoutComma)
+            viewModel.postWineyFeed(contentArg, viewModel.amount.removeComma())
         }
     }
 
     private fun initPostImageStateObserver() {
         viewModel.postWineyFeedState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Loading -> {
-                    // todo: 입력된 금액 범위에 따라 텍스트 변경
-                }
-
                 is UiState.Success -> {
-                    snackBar(binding.root) { "${state.data?.feedId} ${state.data?.createdAt}" }
-                    closeUploadScreen()
+                    navigateLoadingScreen()
                 }
 
                 is UiState.Failure -> {
@@ -74,9 +71,15 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         }
     }
 
-    private fun closeUploadScreen() {
-        requireActivity().finish()
+    private fun navigateLoadingScreen() {
+        Intent(requireContext(), LoadingActivity::class.java).apply {
+            putExtra(EXTRA_AMOUNT_KEY, viewModel.amount.removeComma())
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
+        }
     }
+
+    private fun String.removeComma() = replace(",", "")
 
     private fun initBackButtonClickListener() {
         binding.ivAmountBack.setOnClickListener {
@@ -121,7 +124,8 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val PHOTO_KEY = "photo"
-        private const val CONTENT_KEY = "content"
+        private const val ARGS_PHOTO_KEY = "photo"
+        private const val ARGS_CONTENT_KEY = "content"
+        private const val EXTRA_AMOUNT_KEY = "amount"
     }
 }

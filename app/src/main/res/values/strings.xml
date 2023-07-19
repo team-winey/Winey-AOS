@@ -29,6 +29,7 @@
     <string name="upload_amount_unit_text">원</string>
     <string name="upload_last_btn_text">업로드</string>
     <string name="upload_content_counter_preview">(0/36)</string>
+    <string name="upload_loading_title">오늘은\n %s 값을 \n절약했어요</string>
 
     <!-- mypage -->
     <string name="mypage_title">마이페이지</string>
@@ -46,6 +47,7 @@
     <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
     <string name="impossible_dialog_close">닫기</string>
     <string name="mypage_1on1">1:1 문의</string>
+
     <string name="target_amount_cancel">취소</string>
     <string name="target_amount_set_amount">목표 절약 금액을 설정해주세요</string>
     <string name="target_amount_won">원</string>
@@ -53,6 +55,9 @@
     <string name="target_amount_day">일</string>
     <string name="target_amount_warning">설정한 목표는 목표 절약 일수 전까지 변경이 불가능합니다.\n신중하게 작성해주세요!</string>
     <string name="target_amount_save">저장하기</string>
+    <string name="target_amount_warning_day">절약 일수를 5일 이상으로 설정해주세요</string>
+    <string name="target_amount_warning_amount">절약 금액을 3만원 이상으로 설정해주세요</string>
+
     <string name="help_title">더 즐거운 위니 사용법</string>
     <string name="help_how">캐릭터를 레벨업해\n더 즐겁게 위니를 사용해보세요!</string>
     <string name="help_levelup">레벨업을 어떻게 하나요?</string>
@@ -78,8 +83,6 @@
     <string name="myfeed_dialog_sub">지금 게시물을 삭제하면\n누적 금액이 삭감되니 주의하세요!</string>
     <string name="myfeed_dialog_cancel">취소</string>
     <string name="myfeed_dialog_delete">삭제하기</string>
-    <string name="target_amount_warning_day">절약 일수를 5일 이상, 365일 이하로 설정해주세요</string>
-    <string name="target_amount_warning_amount">절약 금액을 3만원 이상으로 설정해주세요</string>
 
     <!-- recommend -->
     <string name="recommend_discount">%s 절약</string>
