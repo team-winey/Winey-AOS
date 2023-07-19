@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="14dp"
-        android:background="@drawable/shape_gray_fill_5_rect"
+        android:background="@drawable/shape_gray100_fill_5_fect"
         android:paddingStart="16dp"
         android:paddingTop="19dp"
         android:paddingBottom="18dp"
@@ -29,4 +29,15 @@
         android:textColor="@color/gray_600"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_head" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/img_wineyfeed_saver"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="22dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
