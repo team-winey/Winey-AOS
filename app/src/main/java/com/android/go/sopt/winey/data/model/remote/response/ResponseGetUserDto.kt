@@ -41,18 +41,18 @@ data class ResponseGetUserDto(
 
     fun toUser(): User {
         val data = this
-        val userResponseUserDto = data?.userResponseUserDto
+        val userResponseUserDto = data.userResponseUserDto
 
         return User(
             nickname = userResponseUserDto?.nickname.orEmpty(),
             userLevel = userResponseUserDto?.userLevel.orEmpty(),
-            duringGoalAmount = data?.userResponseGoalDto?.duringGoalAmount ?: 0,
-            duringGoalCount = data?.userResponseGoalDto?.duringGoalCount ?: 0,
-            targetMoney = data?.userResponseGoalDto?.targetMoney ?: 0,
-            targetDay = data?.userResponseGoalDto?.targetDay ?: 0,
-            dday = data?.userResponseGoalDto?.dday ?: 0,
-            isOver = data?.userResponseGoalDto?.isOver ?: true,
-            isAttained = data?.userResponseGoalDto?.isAttained ?: false
+            duringGoalAmount = data.userResponseGoalDto?.duringGoalAmount ?: 0,
+            duringGoalCount = data.userResponseGoalDto?.duringGoalCount ?: 0,
+            targetMoney = data.userResponseGoalDto?.targetMoney ?: 0,
+            targetDay = data.userResponseGoalDto?.targetDay ?: 0,
+            dday = data.userResponseGoalDto?.dday ?: 0,
+            isOver = data.userResponseGoalDto?.isOver ?: true,
+            isAttained = data.userResponseGoalDto?.isAttained ?: false
         )
     }
 }

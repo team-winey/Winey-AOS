@@ -115,7 +115,6 @@ dependencies {
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
         debugImplementation(flipperLeakCanary)
-        debugImplementation(leakCanary)
         debugImplementation(soloader)
     }
 }
