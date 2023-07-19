@@ -2,12 +2,15 @@ package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
+import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
+import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -23,6 +26,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         initAdapter()
         initGetFeedStateObserver()
         initPostLikeStateObserver()
+        initButtonClickListener()
     }
 
     private fun initAdapter() {
@@ -37,6 +41,12 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private fun initDialog(feedId: Int) {
         myFeedDialogFragment = MyFeedDialogFragment(feedId)
         myFeedDialogFragment.isCancelable = false
+    }
+
+    private fun initButtonClickListener() {
+        binding.imgMyfeedBack.setOnSingleClickListener {
+            navigateToMyPage()
+        }
     }
 
     fun initGetFeedStateObserver() {
@@ -70,6 +80,13 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
+        }
+    }
+
+    private fun navigateToMyPage() {
+        parentFragmentManager.commit {
+            replace(R.id.fcv_main, MyPageFragment())
+            addToBackStack(null)
         }
     }
 
