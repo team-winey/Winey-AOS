@@ -8,6 +8,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentRecommendBinding
 import com.android.go.sopt.winey.presentation.main.feed.RecommendHeaderAdapter
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,9 +21,30 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
         super.onViewCreated(view, savedInstanceState)
 
         recommendAdapter = RecommendAdapter()
-        recommendAdapter.submitList(viewModel.recommendList)
 
         recommendHeaderAdapter = RecommendHeaderAdapter()
-        binding.rvRecommendPost.adapter = ConcatAdapter(recommendHeaderAdapter, recommendAdapter)
+
+
+        viewModel.getRecommendListState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+
+                }
+
+                is UiState.Success -> {
+                    recommendAdapter.submitList(state.data)
+                    binding.rvRecommendPost.adapter =
+                        ConcatAdapter(recommendHeaderAdapter, recommendAdapter)
+                }
+
+                is UiState.Failure -> {
+
+                }
+
+                is UiState.Empty -> {
+
+                }
+            }
+        }
     }
 }

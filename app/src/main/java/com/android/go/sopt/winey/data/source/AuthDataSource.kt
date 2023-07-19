@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.data.source
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseGetRecommendListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
@@ -36,6 +37,8 @@ class AuthDataSource @Inject constructor(
     suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): BaseResponse<ResponseCreateGoalDto> =
         authService.postCreateGoal(requestCreateGoalDto)
 
+    suspend fun getRecommendList(page: Int) : BaseResponse<ResponseGetRecommendListDto> =
+        authService.getRecommendList(page)
     suspend fun deleteFeed(feedId: Int): BaseResponse<Unit> =
         authService.deleteFeed(feedId)
 }

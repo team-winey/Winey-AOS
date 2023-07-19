@@ -3,7 +3,7 @@ package com.android.go.sopt.winey.data.service
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
-import com.android.go.sopt.winey.data.model.remote.response.ResponseDeleteWineyFeedDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseGetRecommendListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
@@ -53,6 +53,10 @@ interface AuthService {
         @Body requestCreateGoalDto: RequestCreateGoalDto
     ): BaseResponse<ResponseCreateGoalDto>
 
+    @GET("recommend")
+    suspend fun getRecommendList(
+        @Query("page") page:Int
+    ): BaseResponse<ResponseGetRecommendListDto>
     @DELETE("feed/{feedId}")
     suspend fun deleteFeed(
         @Path("feedId") feedId: Int
