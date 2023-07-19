@@ -37,7 +37,7 @@ class AmountViewModel @Inject constructor(
     private fun validateLength(amount: String): Boolean =
         amount.length in MIN_AMOUNT_LENGTH..MAX_AMOUNT_LENGTH
 
-    fun setImageRequestBody(requestBody: BitmapRequestBody) {
+    fun updateRequestBody(requestBody: BitmapRequestBody) {
         _imageRequestBody.value = requestBody
     }
 

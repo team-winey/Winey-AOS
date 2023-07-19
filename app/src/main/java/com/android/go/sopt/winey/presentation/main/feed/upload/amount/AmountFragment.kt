@@ -16,7 +16,6 @@ import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.text.DecimalFormat
 
 @AndroidEntryPoint
@@ -29,7 +28,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
-        setImageRequestBody()
+        updateRequestBody()
         initPostImageStateObserver()
         initUploadButtonClickListener()
 
@@ -38,18 +37,11 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         initEditTextWatcher()
     }
 
-    private fun setImageRequestBody() {
-        if (imageUriArg == null) {
-            Timber.e("Image Uri Argument is null")
-            return
-        }
-        viewModel.setImageRequestBody(getBitmapRequestBody())
-    }
-
-    private fun getBitmapRequestBody(): BitmapRequestBody {
+    private fun updateRequestBody() {
         val compressor = ImageCompressor(requireContext(), imageUriArg!!)
         val adjustedImageBitmap = compressor.adjustImageFormat()
-        return BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
+        val bitmapRequestBody = BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
+        viewModel.updateRequestBody(bitmapRequestBody)
     }
 
     private fun initUploadButtonClickListener() {
