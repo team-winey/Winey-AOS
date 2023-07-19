@@ -80,4 +80,5 @@
     <string name="myfeed_dialog_delete">삭제하기</string>
     <string name="target_amount_warning_day">절약 일수를 5일 이상으로 설정해주세요</string>
     <string name="target_amount_warning_amount">절약 금액을 3만원 이상으로 설정해주세요</string>
+    <string name="upload_loading_title_preview">오늘은\n 추파춥스 값을 \n절약했어요</string>
 </resources>

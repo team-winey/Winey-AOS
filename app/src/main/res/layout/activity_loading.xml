@@ -12,5 +12,48 @@
         android:layout_height="match_parent"
         tools:context=".presentation.main.feed.upload.loading.LoadingActivity">
 
+        <ImageView
+            android:id="@+id/iv_loading_down_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:src="@drawable/img_loading_down_arrow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_loading_down_arrow">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:layout_marginTop="34dp"
+                android:src="@drawable/shape_yellow_fill_rect"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/upload_loading_title_preview" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -9,6 +9,5 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
     }
 }
