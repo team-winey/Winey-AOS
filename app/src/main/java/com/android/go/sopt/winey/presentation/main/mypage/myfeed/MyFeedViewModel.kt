@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
@@ -23,6 +25,9 @@ class MyFeedViewModel @Inject constructor(
     val getMyFeedListState: LiveData<UiState<List<WineyFeed>>>
         get() = _getMyFeedListState
 
+    private val _postMyFeedLikeState = MutableLiveData<UiState<Like>>(UiState.Loading)
+    val postMyFeedLikeState: LiveData<UiState<Like>>
+        get() = _postMyFeedLikeState
 
     val _deleteMyFeedState = MutableLiveData<UiState<Unit>>(UiState.Loading)
     val deleteMyFeedState: LiveData<UiState<Unit>>
@@ -30,6 +35,36 @@ class MyFeedViewModel @Inject constructor(
 
     init {
         getMyFeed()
+    }
+
+    fun likeFeed(feedId: Int, isLiked: Boolean) {
+        val requestPostLikeDto = RequestPostLikeDto(isLiked)
+        postLike(feedId, requestPostLikeDto)
+    }
+
+    private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
+        viewModelScope.launch {
+            authRepository.postFeedLike(feedId, requestPostLikeDto)
+                .onSuccess { state ->
+                    _postMyFeedLikeState.value = UiState.Success(state)
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        _postMyFeedLikeState.value.apply {
+                            when (t.code()) {
+                                CODE_MYFEED_INVALID_USER ->
+                                    UiState.Failure(t.message())
+
+                                CODE_MYFEED_INVALID_REQUEST ->
+                                    UiState.Failure(t.message())
+
+                                else -> UiState.Failure(t.message())
+                            }
+                        }
+                        Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
+                    }
+                }
+        }
     }
 
     fun getMyFeed() {

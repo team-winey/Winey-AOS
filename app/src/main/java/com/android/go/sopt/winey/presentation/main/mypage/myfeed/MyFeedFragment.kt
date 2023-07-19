@@ -22,12 +22,15 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initGetFeedStateObserver()
+        initPostLikeStateObserver()
     }
 
     private fun initAdapter() {
-        myFeedAdapter = MyFeedAdapter(parentFragmentManager) { feedId ->
+        myFeedAdapter = MyFeedAdapter(deleteButtonClick = { feedId ->
             initDialog(feedId)
-        }
+        }, fragmentManager = parentFragmentManager, likeButtonClick = { feedId, isLiked ->
+            viewModel.likeFeed(feedId, isLiked)
+        })
         binding.rvMyfeedPost.adapter = myFeedAdapter
     }
 
@@ -53,9 +56,24 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
+    private fun initPostLikeStateObserver() {
+        viewModel.postMyFeedLikeState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Success -> {
+                    viewModel.getMyFeed()
+                    initGetFeedStateObserver()
+                }
 
-    override fun onResume() {
-        /* dimsiss 후 다시불러올수있도록 */
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
+            }
+        }
+    }
+
+    override fun onResume() {/* dimsiss 후 다시불러올수있도록 */
         super.onResume()
         viewModel.getMyFeed()
         initGetFeedStateObserver()
