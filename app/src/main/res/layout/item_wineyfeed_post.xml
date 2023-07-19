@@ -60,6 +60,7 @@
             android:layout_marginTop="10dp"
             app:layout_constraintDimensionRatio="H,2:1"
             android:scaleType="fitXY"
+            android:elevation="1dp"
             imageUrl="@{data.feedImage}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

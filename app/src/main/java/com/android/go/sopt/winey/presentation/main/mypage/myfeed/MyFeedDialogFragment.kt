@@ -40,15 +40,7 @@ class MyFeedDialogFragment(private val feedId: Int) :
             when (state) {
                 is UiState.Success -> {
                     this.dismiss()
-                    /* 그리고 viewmodel 각각 만들었는데 onPause될때 viewmodel detach되므로
-                    공유하려고 같이쓰는형태*/
-                    /* 재생성ver */
-                    val fragmentManager = requireActivity().supportFragmentManager
-                    fragmentManager.beginTransaction().apply {
-                        myFeedFragment = MyFeedFragment()
-                        replace(R.id.fcv_main, myFeedFragment)
-                        commit()
-                    }
+                    refreshMyFeed()
                     snackBar(binding.root) { state.toString() }
                 }
 
@@ -61,7 +53,14 @@ class MyFeedDialogFragment(private val feedId: Int) :
         }
     }
 
-
+    private fun refreshMyFeed(){
+        val fragmentManager = requireActivity().supportFragmentManager
+        fragmentManager.beginTransaction().apply {
+            myFeedFragment = MyFeedFragment()
+            replace(R.id.fcv_main, myFeedFragment)
+            commit()
+        }
+    }
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
     }

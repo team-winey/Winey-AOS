@@ -4,6 +4,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import java.text.DecimalFormat
 
 @BindingAdapter("likedAmount")
@@ -30,5 +31,7 @@ fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) 
 
 @BindingAdapter("imageUrl")
 fun loadImager(view: ImageView, imageurl: String) {
-    view.load(imageurl)
+    view.load(imageurl) {
+        transformations(RoundedCornersTransformation(10F))
+    }
 }

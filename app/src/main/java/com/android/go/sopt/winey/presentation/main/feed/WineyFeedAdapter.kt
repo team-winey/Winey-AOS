@@ -22,6 +22,7 @@ class WineyFeedAdapter(
         fun onBind(data: WineyFeed) {
             binding.apply {
                 this.data = data
+                ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
                 ivWineyfeedLike.setImageResource(
                     if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
                 )
@@ -31,7 +32,20 @@ class WineyFeedAdapter(
                 executePendingBindings()
             }
         }
+
+        private fun setUserProfile(userLevel: Int): Int {
+            return when (userLevel) {
+                1 -> R.drawable.img_wineyfeed_profile_1
+                2 -> R.drawable.img_wineyfeed_profile_2
+                3 -> R.drawable.img_wineyfeed_profile_3
+                4 -> R.drawable.img_wineyfeed_profile_4
+                else -> {
+                    R.drawable.img_wineyfeed_profile
+                }
+            }
+        }
     }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
