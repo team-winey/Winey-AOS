@@ -1,6 +1,8 @@
 package com.android.go.sopt.winey.data.source
 
+import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseDeleteWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
@@ -30,4 +32,7 @@ class AuthDataSource @Inject constructor(
         requestMap: HashMap<String, RequestBody>
     ): BaseResponse<ResponsePostWineyFeedDto> =
         authService.postWineyFeed(file, requestMap)
+
+    suspend fun deleteFeed(feedId: Int): BaseResponse<Unit> =
+        authService.deleteFeed(feedId)
 }
