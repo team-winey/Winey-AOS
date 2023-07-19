@@ -23,8 +23,8 @@ import java.text.DecimalFormat
 @AndroidEntryPoint
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
     private val viewModel by viewModels<AmountViewModel>()
-    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(PHOTO_KEY) }
-    private val contentArg by lazy { requireArguments().getString(CONTENT_KEY, "") }
+    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(ARGS_PHOTO_KEY) }
+    private val contentArg by lazy { requireArguments().getString(ARGS_CONTENT_KEY, "") }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,14 +42,14 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun updateRequestBody() {
         val compressor = ImageCompressor(requireContext(), imageUriArg!!)
         val adjustedImageBitmap = compressor.adjustImageFormat()
-        val bitmapRequestBody = BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
+        val bitmapRequestBody =
+            BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
         viewModel.updateRequestBody(bitmapRequestBody)
     }
 
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
-            val amountWithoutComma = viewModel.amount.replace(",", "")
-            viewModel.postWineyFeed(contentArg, amountWithoutComma)
+            viewModel.postWineyFeed(contentArg, viewModel.amount.removeComma())
         }
     }
 
@@ -73,10 +73,13 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
     private fun navigateLoadingScreen() {
         Intent(requireContext(), LoadingActivity::class.java).apply {
+            putExtra(EXTRA_AMOUNT_KEY, viewModel.amount.removeComma())
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
     }
+
+    private fun String.removeComma() = replace(",", "")
 
     private fun initBackButtonClickListener() {
         binding.ivAmountBack.setOnClickListener {
@@ -121,7 +124,8 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val PHOTO_KEY = "photo"
-        private const val CONTENT_KEY = "content"
+        private const val ARGS_PHOTO_KEY = "photo"
+        private const val ARGS_CONTENT_KEY = "content"
+        private const val EXTRA_AMOUNT_KEY = "amount"
     }
 }

@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="saveItem"
+            type="String" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,12 +48,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="@string/upload_loading_title_preview"
+                android:text="@{@string/upload_loading_title(saveItem)}"
                 android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="오늘은\n 추파춥스 값을 \n절약했어요" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
