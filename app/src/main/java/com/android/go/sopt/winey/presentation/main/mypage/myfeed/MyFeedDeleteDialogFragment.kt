@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MyFeedDialogFragment(private val feedId: Int) :
+class MyFeedDeleteDialogFragment(private val feedId: Int) :
     BindingDialogFragment<FragmentMyfeedLowlevelDeleteDialogBinding>(R.layout.fragment_myfeed_lowlevel_delete_dialog) {
     lateinit var myFeedFragment: MyFeedFragment
     private val myFeedViewModel by viewModels<MyFeedViewModel>()
@@ -21,7 +21,6 @@ class MyFeedDialogFragment(private val feedId: Int) :
         super.onViewCreated(view, savedInstanceState)
         initButtonClickListener()
         initDeleteFeedStateObserver()
-
     }
 
     private fun initButtonClickListener() {
@@ -53,7 +52,7 @@ class MyFeedDialogFragment(private val feedId: Int) :
         }
     }
 
-    private fun refreshMyFeed(){
+    private fun refreshMyFeed() {
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction().apply {
             myFeedFragment = MyFeedFragment()
@@ -61,6 +60,7 @@ class MyFeedDialogFragment(private val feedId: Int) :
             commit()
         }
     }
+
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
     }
