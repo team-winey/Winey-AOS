@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,19 +32,20 @@ class WineyFeedViewModel @Inject constructor(
 
     init {
         getWineyFeed()
-        wineyFeedAdapter = WineyFeedAdapter { feedId, isLiked ->
-            postLike(
-                feedId, RequestPostLikeDto(
-                    isLiked
-                )
-            )
-        }
+        wineyFeedAdapter = WineyFeedAdapter(
+            likeButtonClick = { feedId, isLiked ->
+                postLike(feedId, RequestPostLikeDto(isLiked))
+            },
+            showPopupMenu = { view, wineyFeed ->
+                showPopupMenu(view, wineyFeed)
+            }
+        )
     }
 
-    fun likeFeed(feedId: Int, isLiked: Boolean) {
-        val requestPostLikeDto = RequestPostLikeDto(isLiked)
-        postLike(feedId, requestPostLikeDto)
+    private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
+
     }
+
 
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {

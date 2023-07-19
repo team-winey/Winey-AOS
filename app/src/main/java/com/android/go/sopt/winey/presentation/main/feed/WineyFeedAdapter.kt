@@ -1,6 +1,9 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
+import android.view.ContextMenu
 import android.view.LayoutInflater
+import android.view.MenuInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,14 +14,17 @@ import com.android.go.sopt.winey.util.view.ItemDiffCallback
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class WineyFeedAdapter(
-    private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit
+    private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
+    private val showPopupMenu: (View, WineyFeed) -> Unit
 ) :
     ListAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
 
     class WineyFeedViewHolder(
         private val binding: ItemWineyfeedPostBinding,
-        private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit
+        private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
+        private val showPopupMenu: (View, WineyFeed) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun onBind(data: WineyFeed) {
             binding.apply {
                 this.data = data
@@ -28,6 +34,10 @@ class WineyFeedAdapter(
                 )
                 ivWineyfeedLike.setOnSingleClickListener {
                     onLikeButtonClick(data.feedId, !data.isLiked)
+                }
+
+                btnWineyfeedMore.setOnClickListener { view ->
+                    showPopupMenu(view, data)
                 }
                 executePendingBindings()
             }
@@ -39,9 +49,7 @@ class WineyFeedAdapter(
                 2 -> R.drawable.img_wineyfeed_profile_2
                 3 -> R.drawable.img_wineyfeed_profile_3
                 4 -> R.drawable.img_wineyfeed_profile_4
-                else -> {
-                    R.drawable.img_wineyfeed_profile
-                }
+                else -> R.drawable.img_wineyfeed_profile
             }
         }
     }
@@ -53,7 +61,7 @@ class WineyFeedAdapter(
     ): WineyFeedViewHolder {
         val binding =
             ItemWineyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return WineyFeedViewHolder(binding, likeButtonClick)
+        return WineyFeedViewHolder(binding, likeButtonClick, showPopupMenu)
     }
 
     override fun onBindViewHolder(holder: WineyFeedViewHolder, position: Int) {

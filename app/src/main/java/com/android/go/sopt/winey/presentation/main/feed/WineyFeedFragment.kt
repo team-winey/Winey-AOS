@@ -3,12 +3,14 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
+import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -40,11 +42,37 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initAdapter() {
-        wineyFeedAdapter = WineyFeedAdapter { feedId, isLiked ->
-            viewModel.likeFeed(feedId, isLiked)
-        }
+        wineyFeedAdapter = WineyFeedAdapter(
+            likeButtonClick = { feedId, isLiked ->
+                // "좋아요" 버튼 클릭 이벤트 처리
+            },
+            showPopupMenu = { view, wineyFeed ->
+                showPopupMenu(view, wineyFeed)
+            }
+        )
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
         binding.rvWineyfeedPost.adapter = ConcatAdapter(wineyFeedHeaderAdapter, wineyFeedAdapter)
+    }
+
+    private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(R.menu.menu_wineyfeed, popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_delete -> {
+                    /* 삭제 구현 : 레벨 가져와서 레벨별 삭제다이얼로그 뜨게 한 다음,
+                     삭제하기 누르면 삭제하기 서버통신,
+                     피드 다시 불러오기
+                     */
+                    true
+                }
+
+                else -> false
+                /* 신고 구현 : 앱잼 내에서는 없음
+                    */
+            }
+        }
+        popupMenu.show()
     }
 
     private fun initGetFeedStateObserver() {
