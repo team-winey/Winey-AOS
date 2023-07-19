@@ -8,14 +8,14 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
+import com.android.go.sopt.winey.util.BitmapRequestBody
+import com.android.go.sopt.winey.util.ImageCompressor
 import com.android.go.sopt.winey.util.binding.BindingFragment
-import com.android.go.sopt.winey.util.context.UriToRequestBody
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.text.DecimalFormat
 
 @AndroidEntryPoint
@@ -28,7 +28,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         super.onViewCreated(view, savedInstanceState)
         binding.vm = viewModel
 
-        setImageRequestBody()
+        updateRequestBody()
         initPostImageStateObserver()
         initUploadButtonClickListener()
 
@@ -37,13 +37,11 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         initEditTextWatcher()
     }
 
-    private fun setImageRequestBody() {
-        if (imageUriArg == null) {
-            Timber.e("Image Uri Argument is null")
-            return
-        }
-
-        viewModel.updateImageRequestBody(UriToRequestBody(requireContext(), imageUriArg!!))
+    private fun updateRequestBody() {
+        val compressor = ImageCompressor(requireContext(), imageUriArg!!)
+        val adjustedImageBitmap = compressor.adjustImageFormat()
+        val bitmapRequestBody = BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
+        viewModel.updateRequestBody(bitmapRequestBody)
     }
 
     private fun initUploadButtonClickListener() {
@@ -66,7 +64,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                 }
 
                 is UiState.Failure -> {
-                    // todo: 서버에서 이미지 크기 설정 후 다시 시도해보기
                     snackBar(binding.root) { state.msg }
                 }
 
