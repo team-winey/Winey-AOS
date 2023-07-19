@@ -14,42 +14,55 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
     private val viewModel by viewModels<MyFeedViewModel>()
+    private val myFeedDialogViewModel by viewModels<MyFeedDialogViewModel>()
     private lateinit var myFeedDialogFragment: MyFeedDialogFragment
     private lateinit var myFeedAdapter: MyFeedAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
-        initDialog()
         initGetFeedStateObserver()
     }
 
     private fun initAdapter() {
-        myFeedAdapter = MyFeedAdapter(parentFragmentManager)
+        myFeedAdapter = MyFeedAdapter(parentFragmentManager) { feedId ->
+            initDialog(feedId)
+        }
         binding.rvMyfeedPost.adapter = myFeedAdapter
     }
 
-    private fun initDialog() {
-        myFeedDialogFragment = MyFeedDialogFragment()
+    private fun initDialog(feedId: Int) {
+        myFeedDialogFragment = MyFeedDialogFragment(feedId)
         myFeedDialogFragment.isCancelable = false
     }
 
-    private fun initGetFeedStateObserver() {
+    fun initGetFeedStateObserver() {
         viewModel.getMyFeedListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
                     val myFeedList = state.data
                     myFeedAdapter.submitList(myFeedList)
                 }
+
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
                 }
+
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
         }
     }
 
+
+    override fun onResume() {
+        /* dimsiss 후 다시불러올수있도록 */
+        super.onResume()
+        viewModel.getMyFeed()
+        initGetFeedStateObserver()
+    }
+
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
     }
+
 }
