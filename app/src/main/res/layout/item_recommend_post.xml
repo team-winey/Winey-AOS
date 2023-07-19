@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="data"
             type="com.android.go.sopt.winey.domain.entity.Recommend" />
@@ -35,9 +36,9 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:paddingBottom="21dp"
-                    tools:src="@drawable/ic_recommend_item_dummy"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/ic_recommend_item_dummy" />
 
                 <TextView
                     android:id="@+id/tv_recommend_amount"
@@ -47,11 +48,11 @@
                     android:layout_marginTop="19dp"
                     android:stateListAnimator="@null"
                     android:text="@{data.discount}"
-                    tools:text="5,000,000원 절약"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                     android:textColor="@color/purple_400"
                     app:layout_constraintStart_toEndOf="@id/iv_recommend_image"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="5,000,000원 절약" />
 
                 <TextView
                     android:id="@+id/tv_recommend_info"
@@ -61,12 +62,12 @@
                     android:layout_marginEnd="15dp"
                     android:paddingBottom="16dp"
                     android:text="@{data.title}"
-                    tools:text="배달팁도 없고, 첫 주문시 5,000원 할인되는 배달서비스 두잇 사용하기"
                     android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                     android:textColor="@color/gray_900"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@id/tv_recommend_amount"
-                    app:layout_constraintTop_toBottomOf="@id/tv_recommend_amount" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_recommend_amount"
+                    tools:text="배달팁도 없고, 첫 주문시 5,000원 할인되는 배달서비스 두잇 사용하기" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -85,43 +86,42 @@
                 android:layout_marginTop="12dp"
                 android:paddingBottom="13dp"
                 android:text="@{data.subtitle}"
-                tools:text="캐리비안베이 홈페이지 신규가입 우대"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_600"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_recommend_line2" />
+                app:layout_constraintTop_toBottomOf="@id/v_recommend_line2"
+                tools:text="캐리비안베이 홈페이지 신규가입 우대" />
 
 
-            
             <TextView
                 android:id="@+id/tv_recommend_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="보러가기"
-                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
+                android:text="보러가기"
+                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_500"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_recommend_line2"/>
+                app:layout_constraintTop_toBottomOf="@id/v_recommend_line2" />
 
             <ImageView
                 android:id="@+id/iv_recommend_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_recommend_item_link"
                 android:layout_margin="1dp"
+                android:src="@drawable/ic_recommend_item_link"
                 app:layout_constraintEnd_toStartOf="@id/tv_recommend_link"
-                app:layout_constraintTop_toTopOf="@id/tv_recommend_link"/>
+                app:layout_constraintTop_toTopOf="@id/tv_recommend_link" />
 
             <Button
                 android:id="@+id/btn_recommend_link"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:elevation="0dp"
-                android:stateListAnimator="@null"
                 android:backgroundTint="@drawable/sel_recommend_link_btn_bg_color"
+                android:elevation="0dp"
                 android:enabled="false"
+                android:stateListAnimator="@null"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_recommend_line2" />

@@ -23,6 +23,6 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
         recommendAdapter.submitList(viewModel.recommendList)
 
         recommendHeaderAdapter = RecommendHeaderAdapter()
-        binding.rvRecommendPost.adapter = ConcatAdapter(recommendHeaderAdapter,recommendAdapter)
+        binding.rvRecommendPost.adapter = ConcatAdapter(recommendHeaderAdapter, recommendAdapter)
     }
 }
