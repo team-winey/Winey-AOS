@@ -16,66 +16,15 @@ import javax.inject.Inject
 @HiltViewModel
 class RecommendViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-): ViewModel() {
-    val recommendList = listOf(
-        Recommend(
-            id = 1,
-            link = "asd",
-            title = "asdf",
-            subtitle = "asdasd",
-            discount = "asdasdasd",
-            image = "asdasdasd",
-        ),
-        Recommend(
-            id = 2,
-            link = "asd",
-            title = "asdf",
-            subtitle = "asdasd",
-            discount = "asdasdasd",
-            image = "asdasdasd",
-        ),
-        Recommend(
-            id = 3,
-            link = "asd",
-            title = "asdf",
-            subtitle = "asdasd",
-            discount = "asdasdasd",
-            image = "asdasdasd",
-        ),
-        Recommend(
-            id = 4,
-            link = "asd",
-            title = "asdf",
-            subtitle = "asdasd",
-            discount = "asdasdasd",
-            image = "asdasdasd",
-        ),
-        Recommend(
-            id = 5,
-            link = "asd",
-            title = "asdf",
-            subtitle = "asdasd",
-            discount = "asdasdasd",
-            image = "asdasdasd",
-        ),
-        Recommend(
-            id = 6,
-            link = "asd",
-            title = "asdf",
-            subtitle = "asdasd",
-            discount = "asdasdasd",
-            image = "asdasdasd",
-        ),
-    )
+) : ViewModel() {
+    private val _getRecommendListState = MutableLiveData<UiState<List<Recommend>>>(UiState.Loading)
+    val getRecommendListState: LiveData<UiState<List<Recommend>>> = _getRecommendListState
 
     init {
         getRecommendList()
     }
 
-    private val _getRecommendListState = MutableLiveData<UiState<List<Recommend>>>(UiState.Loading)
-    val getRecommendListState : LiveData<UiState<List<Recommend>>> = _getRecommendListState
-
-    fun getRecommendList(){
+    fun getRecommendList() {
         viewModelScope.launch {
             authRepository.getRecommendList(1)
                 .onSuccess { response ->
