@@ -14,9 +14,9 @@ data class ResponseGetUserDto(
     @Serializable
     data class UserResponseGoalDto(
         @SerialName("duringGoalAmount")
-        val duringGoalAmount: Int,
+        val duringGoalAmount: Long,
         @SerialName("duringGoalCount")
-        val duringGoalCount: Int,
+        val duringGoalCount: Long,
         @SerialName("isAttained")
         val isAttained: Boolean,
         @SerialName("isOver")

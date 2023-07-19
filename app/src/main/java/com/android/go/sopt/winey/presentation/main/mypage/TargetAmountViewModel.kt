@@ -59,7 +59,7 @@ class TargetAmountViewModel @Inject constructor(
     }
 
     fun checkDay(Day: String) {
-        if (Day.toLong() >= 0 && Day.toLong() < 5 && !Day.isNullOrEmpty()) {
+        if (Day.toLong() >= 0 && Day.toLong() < 5 && !Day.isNullOrEmpty() || Day.toLong()>365) {
             _dayCheck.value = true
         } else {
             _dayCheck.value = false
