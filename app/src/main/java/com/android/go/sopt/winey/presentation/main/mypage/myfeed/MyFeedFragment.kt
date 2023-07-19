@@ -2,12 +2,15 @@ package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
+import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
+import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
@@ -22,18 +25,28 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initGetFeedStateObserver()
+        initPostLikeStateObserver()
+        initButtonClickListener()
     }
 
     private fun initAdapter() {
-        myFeedAdapter = MyFeedAdapter(parentFragmentManager) { feedId ->
+        myFeedAdapter = MyFeedAdapter(deleteButtonClick = { feedId ->
             initDialog(feedId)
-        }
+        }, fragmentManager = parentFragmentManager, likeButtonClick = { feedId, isLiked ->
+            viewModel.likeFeed(feedId, isLiked)
+        })
         binding.rvMyfeedPost.adapter = myFeedAdapter
     }
 
     private fun initDialog(feedId: Int) {
         myFeedDeleteDialogFragment = MyFeedDeleteDialogFragment(feedId)
         myFeedDeleteDialogFragment.isCancelable = false
+    }
+
+    private fun initButtonClickListener() {
+        binding.imgMyfeedBack.setOnSingleClickListener {
+            navigateToMyPage()
+        }
     }
 
     fun initGetFeedStateObserver() {
@@ -53,9 +66,31 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
+    private fun initPostLikeStateObserver() {
+        viewModel.postMyFeedLikeState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Success -> {
+                    viewModel.getMyFeed()
+                    initGetFeedStateObserver()
+                }
 
-    override fun onResume() {
-        /* dimsiss 후 다시불러올수있도록 */
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
+            }
+        }
+    }
+
+    private fun navigateToMyPage() {
+        parentFragmentManager.commit {
+            replace(R.id.fcv_main, MyPageFragment())
+            addToBackStack(null)
+        }
+    }
+
+    override fun onResume() {/* dimsiss 후 다시불러올수있도록 */
         super.onResume()
         viewModel.getMyFeed()
         initGetFeedStateObserver()

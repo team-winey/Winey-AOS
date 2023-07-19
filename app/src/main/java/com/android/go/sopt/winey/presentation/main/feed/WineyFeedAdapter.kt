@@ -1,8 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
-import android.view.ContextMenu
 import android.view.LayoutInflater
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter

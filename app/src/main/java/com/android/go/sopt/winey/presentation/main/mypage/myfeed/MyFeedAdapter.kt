@@ -13,6 +13,7 @@ import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 
 class MyFeedAdapter(
+    private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
     private val fragmentManager: FragmentManager,
     private val deleteButtonClick: (feedId: Int) -> Unit
 ) :
@@ -21,6 +22,7 @@ class MyFeedAdapter(
     class MyFeedViewHolder(
         private val fragmentManager: FragmentManager,
         private val binding: ItemMyfeedPostBinding,
+        private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
         private val deleteButtonClick: (feedId: Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: WineyFeed) {
@@ -30,6 +32,9 @@ class MyFeedAdapter(
                 ivMyfeedLike.setImageResource(
                     if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
                 )
+                ivMyfeedLike.setOnSingleClickListener {
+                    onLikeButtonClick(data.feedId, !data.isLiked)
+                }
                 tvMyfeedDelete.setOnSingleClickListener {
                     showDeleteDialog(data.feedId)
                     deleteButtonClick(data.feedId)
@@ -62,7 +67,7 @@ class MyFeedAdapter(
     ): MyFeedViewHolder {
         val binding =
             ItemMyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyFeedViewHolder(fragmentManager, binding, deleteButtonClick)
+        return MyFeedViewHolder(fragmentManager, binding, likeButtonClick, deleteButtonClick)
     }
 
     override fun onBindViewHolder(holder: MyFeedViewHolder, position: Int) {
