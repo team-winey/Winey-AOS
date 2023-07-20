@@ -10,34 +10,35 @@ data class ResponseGetRecommendListDto(
     val pageResponseDto: PageResponseDto,
     @SerialName("recommendsResponseDto")
     val recommendsResponseDto: List<RecommendsResponseDto>
-){
+) {
     @Serializable
     data class PageResponseDto(
         @SerialName("totalPageSize")
-        val totalPageSize : Int,
+        val totalPageSize: Int,
         @SerialName("currentPageIndex")
-        val currentPageIndex : Int,
+        val currentPageIndex: Int,
         @SerialName("isEnd")
-        val isEnd : Boolean,
+        val isEnd: Boolean,
     )
 
     @Serializable
     data class RecommendsResponseDto(
         @SerialName("recommendId")
-        val recommendId : Int?,
+        val recommendId: Int?,
         @SerialName("recommendLink")
-        val recommendLink : String?,
+        val recommendLink: String?,
         @SerialName("recommendTitle")
-        val recommendTitle : String?,
+        val recommendTitle: String?,
         @SerialName("recommendSubTitle")
-        val recommendSubTitle : String?,
+        val recommendSubTitle: String?,
         @SerialName("recommendDiscount")
-        val recommendDiscount : String?,
+        val recommendDiscount: String?,
         @SerialName("recommendImage")
-        val recommendImage : String?,
+        val recommendImage: String?,
         @SerialName("createdAt")
-        val createdAt : String?
+        val createdAt: String?
     )
+
     fun convertToRecommend() = this.recommendsResponseDto.map {
         Recommend(
             id = it.recommendId ?: 0,
