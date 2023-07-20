@@ -55,17 +55,18 @@ data class ResponseGetWineyFeedListDto(
         )
     }
 
-    fun toWineyFeed() = data.getFeedResponseDtoList.map { feed ->
+    fun toWineyFeed(): List<WineyFeed> = data.getFeedResponseDtoList.map { feed ->
         WineyFeed(
-            feedTitle = feed.feedTitle,
-            feedMoney = feed.feedMoney,
-            feedImage = feed.feedImage,
             feedId = feed.feedId,
+            feedImage = feed.feedImage,
+            feedMoney = feed.feedMoney,
+            feedTitle = feed.feedTitle,
             isLiked = feed.isLiked,
             likes = feed.likes,
             nickName = feed.nickName,
             userId = feed.userId,
-            writerLevel = feed.writerLevel
+            writerLevel = feed.writerLevel,
+            totalPageSize = data.pageResponseDto.totalPageSize
         )
     }
 }

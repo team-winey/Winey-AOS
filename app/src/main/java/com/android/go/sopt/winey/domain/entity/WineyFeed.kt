@@ -10,5 +10,6 @@ data class WineyFeed (
     val likes: Int,
     val nickName: String,
     val userId: Int,
-    val writerLevel: Int
+    val writerLevel: Int,
+    val totalPageSize: Int
 )

@@ -22,6 +22,11 @@ class WineyFeedViewModel @Inject constructor(
 ) : ViewModel() {
     var wineyFeedAdapter: WineyFeedAdapter
 
+    private var currentPage = 0
+    private var isPagingFinished = false
+    private var totalPage = Int.MAX_VALUE
+    var currentMutableList = mutableListOf<WineyFeed>()
+
     private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
     val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
         get() = _getWineyFeedListState
@@ -107,27 +112,34 @@ class WineyFeedViewModel @Inject constructor(
     }
 
     fun getWineyFeed() {
-        viewModelScope.launch {
-            authRepository.getWineyFeedList(WINEY_FEED_PAGE)
-                .onSuccess { state ->
-                    _getWineyFeedListState.value = UiState.Success(state)
-                }
-                .onFailure { t ->
-                    if (t is HttpException) {
-                        _getWineyFeedListState.value.apply {
-                            when (t.code()) {
-                                CODE_WINEYFEED_INVALID_USER ->
-                                    UiState.Failure(t.message())
-
-                                CODE_WINEYFEED_INVALID_REQUEST ->
-                                    UiState.Failure(t.message())
-
-                                else -> UiState.Failure(t.message())
-                            }
-                        }
-                        Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
+        if (isPagingFinished || currentPage > totalPage) {
+            return
+        } else {
+            viewModelScope.launch {
+                authRepository.getWineyFeedList(++currentPage)
+                    .onSuccess { state ->
+                        currentMutableList.addAll(state)
+                        totalPage = currentMutableList[0].totalPageSize
+                        val updatedList = currentMutableList.toList()
+                        _getWineyFeedListState.value = UiState.Success(updatedList)
                     }
-                }
+                    .onFailure { t ->
+                        if (t is HttpException) {
+                            _getWineyFeedListState.value.apply {
+                                when (t.code()) {
+                                    CODE_WINEYFEED_INVALID_USER ->
+                                        UiState.Failure(t.message())
+
+                                    CODE_WINEYFEED_INVALID_REQUEST ->
+                                        UiState.Failure(t.message())
+
+                                    else -> UiState.Failure(t.message())
+                                }
+                            }
+                            Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
+                        }
+                    }
+            }
         }
     }
 

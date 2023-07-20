@@ -2,12 +2,13 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
@@ -31,6 +32,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
+        setListWithInfinityScroll()
         initFabClickListener()
         initPostLikeStateObserver()
         initGetFeedStateObserver()
@@ -141,6 +143,24 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         } else navigateToUpload()
     }
 
+    private fun setListWithInfinityScroll() {
+        binding.rvWineyfeedPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    var itemCount = wineyFeedAdapter.itemCount
+                    var lastVisibleItemPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    if (binding.rvWineyfeedPost.canScrollVertically(1) && lastVisibleItemPosition == itemCount) {
+                        lastVisibleItemPosition += MAX_FEED_VER_PAGE
+                        itemCount += MAX_FEED_VER_PAGE
+                        viewModel.getWineyFeed()
+                        initGetFeedStateObserver()
+                    }
+                }
+            }
+        })
+    }
 
     private fun navigateToUpload() {
         val intent = Intent(requireContext(), UploadActivity::class.java)
@@ -150,5 +170,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     companion object {
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
         private const val MSG_WINEYFEED_ERROR = "ERROR"
+        private const val MAX_FEED_VER_PAGE = 10
     }
 }
