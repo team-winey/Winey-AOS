@@ -6,17 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class PhotoViewModel : ViewModel() {
+    private val _photoSelected = MutableLiveData<Boolean>()
+    val photoSelected: LiveData<Boolean> get() = _photoSelected
+
     private val _imageUri = MutableLiveData<Uri>()
     val imageUri: LiveData<Uri> get() = _imageUri
 
-    private val _isUploaded = MutableLiveData<Boolean>()
-    val isUploaded: LiveData<Boolean> get() = _isUploaded
-
-    fun updateImageUri(imageUri: Uri){
-        _imageUri.value = imageUri
+    fun updatePhotoSelectState() {
+        _photoSelected.value = true
     }
 
-    fun activateNextButton() {
-        _isUploaded.value = true
+    fun updateImageUri(imageUri: Uri) {
+        _imageUri.value = imageUri
     }
 }

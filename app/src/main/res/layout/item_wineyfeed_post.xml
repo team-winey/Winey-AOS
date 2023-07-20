@@ -65,7 +65,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_profilephoto"
-            tools:src="@drawable/img_wineyfeed_default" />
+            tools:src="@drawable/img_feed_default" />
 
         <TextView
             android:id="@+id/tv_wineyfeed_money"

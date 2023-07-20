@@ -89,4 +89,5 @@
 
     <!-- recommend -->
     <string name="recommend_discount">%s 절약</string>
+    <string name="upload_amount_hint_text">0</string>
 </resources>

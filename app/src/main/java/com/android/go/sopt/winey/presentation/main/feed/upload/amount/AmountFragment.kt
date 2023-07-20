@@ -10,8 +10,7 @@ import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
-import com.android.go.sopt.winey.util.BitmapRequestBody
-import com.android.go.sopt.winey.util.ImageCompressor
+import com.android.go.sopt.winey.util.UriToRequestBody
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -40,11 +39,13 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     private fun updateRequestBody() {
-        val compressor = ImageCompressor(requireContext(), imageUriArg!!)
-        val adjustedImageBitmap = compressor.adjustImageFormat()
-        val bitmapRequestBody =
-            BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
-        viewModel.updateRequestBody(bitmapRequestBody)
+//        val compressor = ImageCompressor(requireContext(), imageUriArg!!)
+//        val adjustedImageBitmap = compressor.adjustImageFormat()
+//        val bitmapRequestBody =
+//            BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
+
+        val requestBody = UriToRequestBody(requireContext(), imageUriArg!!)
+        viewModel.updateRequestBody(requestBody)
     }
 
     private fun initUploadButtonClickListener() {
