@@ -51,7 +51,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
 
     private fun displaySelectedImage(imageUri: Uri) {
         binding.ivUploadPhoto.load(imageUri) {
-            transformations(RoundedCornersTransformation(20f))
+            transformations(RoundedCornersTransformation(10f))
         }
     }
 
