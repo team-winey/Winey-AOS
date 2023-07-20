@@ -22,7 +22,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         navigateTo<WineyFeedFragment>()
         initBnvItemSelectedListener()
-        viewModel.getUser()
     }
 
     private fun initBnvItemSelectedListener() {
