@@ -12,7 +12,6 @@ import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -20,15 +19,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Timber.tag("생명주기").d("onCreate()....")
 
+        navigateTo<WineyFeedFragment>()
         initBnvItemSelectedListener()
         viewModel.getUser()
     }
 
     private fun initBnvItemSelectedListener() {
-        navigateTo<WineyFeedFragment>()
-
         binding.bnvMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_feed -> navigateTo<WineyFeedFragment>()
