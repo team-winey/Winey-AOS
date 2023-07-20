@@ -15,7 +15,7 @@ class ContentViewModel : ViewModel() {
         content.length in MIN_CONTENT_LENGTH..MAX_CONTENT_LENGTH
 
     companion object {
-        const val MIN_CONTENT_LENGTH = 1
+        const val MIN_CONTENT_LENGTH = 6
         const val MAX_CONTENT_LENGTH = 36
     }
 }
