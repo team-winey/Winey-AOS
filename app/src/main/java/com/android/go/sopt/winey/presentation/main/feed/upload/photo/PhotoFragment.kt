@@ -1,13 +1,10 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.photo
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
-import coil.load
-import coil.transform.RoundedCornersTransformation
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentPhotoBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.content.ContentFragment
@@ -33,10 +30,9 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
                     return@registerForActivityResult
                 }
 
-                displaySelectedImage(imageUri)
                 viewModel.apply {
-                    updateImageUri(imageUri)
-                    activateNextButton()
+                    updatePhotoSelectState() // 버튼 활성화를 위해서
+                    updateImageUri(imageUri) // 바인딩 어댑터 적용
                 }
             }
 
@@ -47,12 +43,6 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
 
     private fun displayDefaultImage() {
         binding.ivUploadPhoto.setImageResource(R.drawable.img_upload_photo)
-    }
-
-    private fun displaySelectedImage(imageUri: Uri) {
-        binding.ivUploadPhoto.load(imageUri) {
-            transformations(RoundedCornersTransformation(10f))
-        }
     }
 
     private fun initNextButtonClickListener() {

@@ -1,5 +1,7 @@
 package com.android.go.sopt.winey.util.binding
 
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -20,7 +22,7 @@ fun applyNumberFormat(view: TextView, amount: Long) {
     view.text = formattedValue
 }
 
-@BindingAdapter("setAmount","setPrefix","setSuffix", requireAll = false)
+@BindingAdapter("setAmount", "setPrefix", "setSuffix", requireAll = false)
 fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) {
     val pre = prefix ?: ""
     val suf = suffix ?: ""
@@ -37,3 +39,17 @@ fun loadImager(view: ImageView, imageurl: String) {
         transformations(RoundedCornersTransformation(10F))
     }
 }
+
+@BindingAdapter("setImageUriWithCoil", "setDefaultDrawable")
+fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
+    if (imageUri == null) {
+        this.setImageDrawable(drawable)
+        return
+    }
+
+    load(imageUri) {
+        transformations(RoundedCornersTransformation(10f))
+    }
+}
+
+
