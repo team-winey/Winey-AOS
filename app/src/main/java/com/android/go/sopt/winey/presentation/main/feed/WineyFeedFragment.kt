@@ -139,6 +139,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun isGoalValid(data: User) {
         if (data.isOver) {
+            wineyFeedDialogFragment = WineyFeedDialogFragment()
             wineyFeedDialogFragment.show(parentFragmentManager, TAG_WINEYFEED_DIALOG)
         } else navigateToUpload()
     }

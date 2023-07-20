@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -46,6 +47,14 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         myFeedDeleteDialogFragment.isCancelable = false
     }
 
+    private fun initEmptyItemLayout(totalPage: Int) {
+        if (totalPage == 0) {
+            binding.rvMyfeedPost.isVisible = false
+        } else {
+            binding.layoutMyfeedEmpty.isVisible = false
+        }
+    }
+
     private fun initButtonClickListener() {
         binding.imgMyfeedBack.setOnSingleClickListener {
             navigateToMyPage()
@@ -56,6 +65,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.getMyFeedListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
+                    initEmptyItemLayout(state.data[0].totalPageSize)
                     val myFeedList = state.data
                     myFeedAdapter.submitList(myFeedList)
                 }
@@ -85,6 +95,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             }
         }
     }
+
     private fun setListWithInfiniteScroll() {
         binding.rvMyfeedPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -103,6 +114,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             }
         })
     }
+
     private fun navigateToMyPage() {
         parentFragmentManager.commit {
             replace(R.id.fcv_main, MyPageFragment())
