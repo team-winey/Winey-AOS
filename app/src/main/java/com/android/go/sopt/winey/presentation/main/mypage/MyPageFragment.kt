@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.presentation.main.mypage
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,7 +20,7 @@ import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
+class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page), MypageFragmentCallback {
     private val viewModel by activityViewModels<MainViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -30,6 +31,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         setupGetUserState()
     }
 
+    override fun onBottomSheetDismissed() {
+        viewModel.getUser()
+        Log.e("test log","떴냐?")
+    }
+    override fun onResume() {
+        super.onResume()
+        viewModel.getUser()
+    }
     private fun initToMyFeedButtonClickListener() {
         binding.clMypageToMyfeed.setOnSingleClickListener {
             navigateTo<MyFeedFragment>()
@@ -53,6 +62,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setupGetUserState() {
         viewModel.getUserState.observe(viewLifecycleOwner) { state ->
+
             when (state) {
                 is UiState.Loading -> {
 
@@ -73,10 +83,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
         }
     }
-
     private fun handleTargetModifyButtonState(data: User) {
         binding.btnMypageTargetModify.setOnSingleClickListener {
             val bottomSheet = TargetAmountBottomSheetFragment()
+            bottomSheet.setCallback(this)
             bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
             /*when (data.isOver) {
             true -> {

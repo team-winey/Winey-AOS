@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.mypage
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -25,7 +26,7 @@ class TargetAmountBottomSheetFragment :
     BindingBottomSheetDialogFragment<FragmentTargetAmountBottomSheetBinding>(R.layout.fragment_target_amount_bottom_sheet) {
     private val viewModel by viewModels<TargetAmountViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
-
+    private var mypageFragmentCallback: MypageFragmentCallback? = null
     override fun onStart() {
         super.onStart()
 
@@ -33,6 +34,10 @@ class TargetAmountBottomSheetFragment :
 
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        mypageFragmentCallback?.onBottomSheetDismissed()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.data = viewModel
@@ -46,7 +51,9 @@ class TargetAmountBottomSheetFragment :
         initSaveButtonClickListener()
         initCreateGoalObserver()
     }
-
+    fun setCallback(callback: MypageFragmentCallback) {
+        mypageFragmentCallback = callback
+    }
     fun initSaveButtonClickListener() {
         binding.btnTargetAmountSave.setOnClickListener {
             viewModel.postCreateGoal()
@@ -61,13 +68,6 @@ class TargetAmountBottomSheetFragment :
                 }
 
                 is UiState.Success -> {
-                    mainViewModel.getUser()
-                    val fragmentManager = requireActivity().supportFragmentManager
-                    fragmentManager.beginTransaction().apply {
-                        val newFragment = MyPageFragment()
-                        replace(R.id.fcv_main, newFragment)
-                        commit()
-                    }
                     this.dismiss()
                 }
 
