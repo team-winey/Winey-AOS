@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
@@ -27,6 +29,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         initButtonClickListener()
+        setListWithInfiniteScroll()
     }
 
     private fun initAdapter() {
@@ -82,7 +85,24 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             }
         }
     }
-
+    private fun setListWithInfiniteScroll() {
+        binding.rvMyfeedPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    var itemCount = myFeedAdapter.itemCount
+                    var lastVisibleItemPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    if (binding.rvMyfeedPost.canScrollVertically(1) && lastVisibleItemPosition == itemCount) {
+                        lastVisibleItemPosition += MAX_FEED_VER_PAGE
+                        itemCount += MAX_FEED_VER_PAGE
+                        viewModel.getMyFeed()
+                        initGetFeedStateObserver()
+                    }
+                }
+            }
+        })
+    }
     private fun navigateToMyPage() {
         parentFragmentManager.commit {
             replace(R.id.fcv_main, MyPageFragment())
@@ -98,6 +118,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
+        private const val MAX_FEED_VER_PAGE = 10
     }
 
 }

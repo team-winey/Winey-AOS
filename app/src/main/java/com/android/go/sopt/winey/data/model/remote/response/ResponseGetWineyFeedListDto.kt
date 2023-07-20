@@ -29,7 +29,7 @@ data class ResponseGetWineyFeedListDto(
             @SerialName("feedImage")
             val feedImage: String,
             @SerialName("feedMoney")
-            val feedMoney: Int,
+            val feedMoney: Long,
             @SerialName("feedTitle")
             val feedTitle: String,
             @SerialName("isLiked")

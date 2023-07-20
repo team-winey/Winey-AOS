@@ -32,7 +32,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
-        setListWithInfinityScroll()
+        setListWithInfiniteScroll()
         initFabClickListener()
         initPostLikeStateObserver()
         initGetFeedStateObserver()
@@ -143,7 +143,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         } else navigateToUpload()
     }
 
-    private fun setListWithInfinityScroll() {
+    private fun setListWithInfiniteScroll() {
         binding.rvWineyfeedPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
