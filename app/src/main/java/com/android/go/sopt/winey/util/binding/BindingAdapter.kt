@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.util.binding
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.widget.ImageView
+import android.widget.ImageView.ScaleType
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import coil.load
@@ -47,6 +48,7 @@ fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
         return
     }
 
+    scaleType = ScaleType.CENTER_CROP
     load(imageUri) {
         transformations(RoundedCornersTransformation(10f))
     }
