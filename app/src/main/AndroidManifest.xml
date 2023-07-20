@@ -37,8 +37,8 @@
 
         <activity
             android:name=".presentation.main.feed.upload.loading.LoadingActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".presentation.main.mypage.MypageHelpActivity"
