@@ -72,6 +72,7 @@ class MyFeedViewModel @Inject constructor(
     }
 
     fun getMyFeed() {
+        isPagingFinished = false
         if (isPagingFinished || currentPage > totalPage) {
             return
         } else {
@@ -79,7 +80,10 @@ class MyFeedViewModel @Inject constructor(
                 authRepository.getMyFeedList(++currentPage)
                     .onSuccess { state ->
                         currentMutableList.addAll(state)
-                        totalPage = currentMutableList[0].totalPageSize
+                        if (state.isEmpty()) {
+                            totalPage = 0
+                            isPagingFinished = true
+                        } else totalPage = currentMutableList[0].totalPageSize
                         val updatedList = currentMutableList.toList()
                         _getMyFeedListState.value = UiState.Success(updatedList)
                     }

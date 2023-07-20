@@ -112,6 +112,7 @@ class WineyFeedViewModel @Inject constructor(
     }
 
     fun getWineyFeed() {
+        isPagingFinished = false
         if (isPagingFinished || currentPage > totalPage) {
             return
         } else {
@@ -119,7 +120,10 @@ class WineyFeedViewModel @Inject constructor(
                 authRepository.getWineyFeedList(++currentPage)
                     .onSuccess { state ->
                         currentMutableList.addAll(state)
-                        totalPage = currentMutableList[0].totalPageSize
+                        if (state.isEmpty()) {
+                            totalPage = 0
+                            isPagingFinished = true
+                        } else totalPage = currentMutableList[0].totalPageSize
                         val updatedList = currentMutableList.toList()
                         _getWineyFeedListState.value = UiState.Success(updatedList)
                     }

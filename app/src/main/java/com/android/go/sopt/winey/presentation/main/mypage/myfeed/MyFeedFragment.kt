@@ -23,7 +23,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private lateinit var myFeedDeleteLowDialogFragment: MyFeedDeleteLowDialogFragment
     private lateinit var myFeedDeleteHighDialogFragment: MyFeedDeleteHighDialogFragment
     private lateinit var myFeedAdapter: MyFeedAdapter
-
+    private var totalPage = Int.MAX_VALUE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
@@ -68,7 +68,9 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.getMyFeedListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
-                    initEmptyItemLayout(state.data[0].totalPageSize)
+                    if (state.data.isEmpty()) {
+                        totalPage = 0
+                    } else initEmptyItemLayout(state.data[0].totalPageSize)
                     val myFeedList = state.data
                     myFeedAdapter.submitList(myFeedList)
                 }
@@ -125,11 +127,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    override fun onResume() {/* dimsiss 후 다시불러올수있도록 */
-        super.onResume()
-        viewModel.getMyFeed()
-        initGetFeedStateObserver()
-    }
 
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
