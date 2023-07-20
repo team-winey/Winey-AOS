@@ -37,7 +37,6 @@ class MyFeedAdapter(
                     onLikeButtonClick(data.feedId, !data.isLiked)
                 }
                 tvMyfeedDelete.setOnSingleClickListener {
-                    Log.e("writer", data.writerLevel.toString())
                     if (data.writerLevel <= 2) {
                         Log.e("check", data.writerLevel.toString())
                         showLowDeleteDialog(data.feedId)

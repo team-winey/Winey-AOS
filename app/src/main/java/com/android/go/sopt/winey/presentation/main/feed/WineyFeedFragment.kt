@@ -63,22 +63,30 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             when (menuItem.itemId) {
                 R.id.menu_delete -> {
                     if (wineyFeed.writerLevel <= 2) {
-                        val wineyFeedDeleteDialogFragment =
-                            WineyFeedDeleteDialogFragment(wineyFeed.feedId)
-                        wineyFeedDeleteDialogFragment.show(parentFragmentManager, "delete")
+                        showLowDeleteDialog(wineyFeed.feedId)
                     } else {
-                        //TODO : 높은레벨 다른 다이얼로그
+                        showHighDeleteDialog(wineyFeed.feedId)
                     }
-
                     true
                 }
 
                 else -> false
-                /* 신고 구현 : 앱잼 내에서는 없음
-                    */
+                /* 신고 구현 : 앱잼 내에서는 없음 */
             }
         }
         popupMenu.show()
+    }
+
+    private fun showLowDeleteDialog(feedId: Int) {
+        val wineyFeedLowDeleteDialogFragment =
+            WineyFeedLowDeleteDialogFragment(feedId)
+        wineyFeedLowDeleteDialogFragment.show(parentFragmentManager, "delete")
+    }
+
+    private fun showHighDeleteDialog(feedId: Int) {
+        val wineyFeedHighDeleteDialogFragment =
+            WineyFeedHighDeleteDialogFragment(feedId)
+        wineyFeedHighDeleteDialogFragment.show(parentFragmentManager, "delete")
     }
 
     private fun initGetFeedStateObserver() {
