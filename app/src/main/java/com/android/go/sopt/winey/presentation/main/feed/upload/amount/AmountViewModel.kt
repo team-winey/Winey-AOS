@@ -24,7 +24,7 @@ class AmountViewModel @Inject constructor(
     val _amount = MutableLiveData<String>()
     val amount: String get() = _amount.value ?: ""
 
-    val isValidAmount: LiveData<Boolean> = _amount.map { validateAmount(it.removeComma()) }
+    val isValidAmount: LiveData<Boolean> = _amount.map { validateAmount(it) }
 
     private val _imageRequestBody = MutableLiveData<UriToRequestBody>()
     val imageRequestBody: LiveData<UriToRequestBody>
@@ -34,9 +34,15 @@ class AmountViewModel @Inject constructor(
     val postWineyFeedState: LiveData<UiState<ResponsePostWineyFeedDto?>>
         get() = _postWineyFeedState
 
-    private fun String.removeComma(): Long = replace(",", "").toLong()
+    private fun validateAmount(amount: String): Boolean {
+        if(amount.isBlank()) return false
+        if(!amount.contains(",")) return true // 최대 999
 
-    private fun validateAmount(amount: Long): Boolean = amount in MIN_AMOUNT..MAX_AMOUNT
+        val amountNumber = amount.removeComma().toLong()
+        return amountNumber in MIN_AMOUNT..MAX_AMOUNT
+    }
+
+    private fun String.removeComma() = replace(",", "")
 
     fun updateRequestBody(requestBody: UriToRequestBody) {
         _imageRequestBody.value = requestBody
@@ -75,7 +81,7 @@ class AmountViewModel @Inject constructor(
     }
 
     companion object {
-        const val MIN_AMOUNT = 1
+        const val MIN_AMOUNT = 1000
         const val MAX_AMOUNT = 9999999
         private const val FEED_TITLE_KEY = "feedTitle"
         private const val FEED_MONEY_KEY = "feedMoney"
