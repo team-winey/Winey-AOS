@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MyFeedDeleteDialogFragment(private val feedId: Int) :
+class MyFeedDeleteLowDialogFragment(private val feedId: Int) :
     BindingDialogFragment<FragmentMyfeedLowlevelDeleteDialogBinding>(R.layout.fragment_myfeed_lowlevel_delete_dialog) {
     lateinit var myFeedFragment: MyFeedFragment
     private val myFeedViewModel by viewModels<MyFeedViewModel>()
