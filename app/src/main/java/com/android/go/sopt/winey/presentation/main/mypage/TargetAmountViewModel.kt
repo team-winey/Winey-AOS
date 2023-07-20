@@ -34,8 +34,6 @@ class TargetAmountViewModel @Inject constructor(
 
     private val _createGoalState = MutableLiveData<UiState<Goal>>()
     val createGoalState: LiveData<UiState<Goal>> = _createGoalState
-
-    private val _requestBody = MutableLiveData<RequestCreateGoalDto>()
     fun postCreateGoal() {
         val requestBody = RequestCreateGoalDto(
             targetMoney = _amount.value?.replace(",", "")!!.toInt(),
@@ -58,36 +56,29 @@ class TargetAmountViewModel @Inject constructor(
         }
     }
 
-    fun checkDay(Day: String) {
-        if (Day.toLong() >= 0 && Day.toLong() < 5 && !Day.isNullOrEmpty() || Day.toLong()>365) {
-            _dayCheck.value = true
-        } else {
+    fun checkDay(day: String) {
+        if (day == "1000000000") {
             _dayCheck.value = false
-        }
-
-        if (Day.equals("1000000000")) {
-            _amountCheck.value = false
+        } else {
+            val dayValue = day.toLongOrNull()
+            _dayCheck.value = dayValue != null && (dayValue in 0..5 || dayValue > 365)
         }
     }
 
-    fun checkAmount(Amount: String) {
-        if (Amount.toLong() >= 0 && Amount.toLong() < 30000 && !Amount.isNullOrEmpty()) {
-            _amountCheck.value = true
+    fun checkAmount(amount: String) {
+        if (amount == "1000000000") {
+            _amountCheck.value = false
         } else {
-            _amountCheck.value = false
-        }
-
-        if (Amount.equals("1000000000")) {
-            _amountCheck.value = false
+            val amountValue = amount.toLongOrNull()
+            _amountCheck.value = amountValue != null && amountValue in 0 until 30000
         }
     }
 
     fun checkButtonState() {
-        if (!_amount.value.isNullOrEmpty() && !_day.value.isNullOrEmpty() && _dayCheck.value == false && _amountCheck.value == false) {
-            _buttonStatecheck.value = true
-        } else {
-            _buttonStatecheck.value = false
-        }
+        val day = _day.value
+        val amount = _amount.value
+        _buttonStatecheck.value =
+            !day.isNullOrEmpty() && !amount.isNullOrEmpty() && !(_dayCheck.value!!) && !(_amountCheck.value!!)
     }
 
     companion object {

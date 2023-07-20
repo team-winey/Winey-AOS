@@ -133,10 +133,8 @@ class TargetAmountBottomSheetFragment :
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val input = s.toString()
-
                 // 문자열이 비어있거나 이전과 변함 없으면 그대로 둔다.
                 if (input.isBlank() || input == temp) return
-
                 temp = makeCommaString(input.replace(",", "").toLong())
                 binding.etTargetAmountSetDay.apply {
                     setText(temp)
