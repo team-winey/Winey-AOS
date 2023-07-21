@@ -95,6 +95,7 @@
             android:inputType="numberDecimal"
             android:hint="@string/upload_amount_hint_text"
             android:maxLines="1"
+            android:maxLength="@{vm.MAX_AMOUNT_LENGTH}"
             android:paddingEnd="38dp"
             android:text="@={vm._amount}"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
