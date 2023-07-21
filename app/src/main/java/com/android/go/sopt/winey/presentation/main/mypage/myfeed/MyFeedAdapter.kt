@@ -50,6 +50,7 @@ class MyFeedAdapter(
             }
         }
 
+
         private fun setUserProfile(userLevel: Int): Int {
             return when (userLevel) {
                 1 -> R.drawable.img_wineyfeed_profile_1
@@ -85,10 +86,18 @@ class MyFeedAdapter(
     override fun onBindViewHolder(holder: MyFeedViewHolder, position: Int) {
         holder.onBind(getItem(position))
     }
-
+    fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
+        val index = currentList.indexOfFirst { it.feedId == feedId }
+        if (index != -1) {
+            currentList[index].isLiked = isLiked
+            if (isLiked) currentList[index].likes++
+            else currentList[index].likes--
+            notifyItemChanged(index)
+        }
+    }
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
-            onItemsTheSame = { old, new -> old.feedId == new.feedId },
+            onItemsTheSame = { old, new -> old.isLiked == new.isLiked },
             onContentsTheSame = { old, new -> old == new }
         )
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"

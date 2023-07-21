@@ -88,8 +88,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.postMyFeedLikeState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
-                    viewModel.getMyFeed()
                     initGetFeedStateObserver()
+                    myFeedAdapter.updateLikeStatus(state.data.data.feedId, state.data.data.isLiked)
                 }
 
                 is UiState.Failure -> {
