@@ -54,9 +54,9 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     private fun initEmptyItemLayout(totalPage: Int) {
         if (totalPage == 0) {
-            binding.rvMyfeedPost.isVisible = false
+
         } else {
-            binding.layoutMyfeedEmpty.isVisible = false
+            binding.rvMyfeedPost.isVisible = true
         }
     }
 
@@ -71,12 +71,16 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             when (state) {
                 is UiState.Success -> {
                     if (state.data.isEmpty()) {
-                        totalPage = 0
-                    } else initEmptyItemLayout(state.data[0].totalPageSize)
+                        binding.rvMyfeedPost.isVisible = false
+                        binding.layoutMyfeedEmpty.isVisible = true
+                    } else  binding.rvMyfeedPost.isVisible = true
                     val myFeedList = state.data
                     myFeedAdapter.submitList(myFeedList)
                 }
-
+                is UiState.Loading -> {
+                    binding.rvMyfeedPost.isVisible = false
+                    binding.layoutMyfeedEmpty.isVisible = false
+                }
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
                 }
