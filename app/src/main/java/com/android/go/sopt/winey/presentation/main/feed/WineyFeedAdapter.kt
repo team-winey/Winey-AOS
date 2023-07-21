@@ -1,6 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +63,7 @@ class WineyFeedAdapter(
     override fun onBindViewHolder(holder: WineyFeedViewHolder, position: Int) {
         holder.onBind(getItem(position))
     }
+
     fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
         val index = currentList.indexOfFirst { it.feedId == feedId }
         if (index != -1) {

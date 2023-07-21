@@ -44,6 +44,8 @@
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
                 android:overScrollMode="never"
+                android:paddingBottom="50dp"
+                android:clipToPadding="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

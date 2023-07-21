@@ -129,7 +129,5 @@
             android:background="@color/gray_50"
             app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title" />
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
