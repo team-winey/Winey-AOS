@@ -20,11 +20,18 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initAdapter()
+        getRecommendListStateObserver()
+    }
+
+    private fun initAdapter() {
         recommendAdapter = RecommendAdapter()
-
         recommendHeaderAdapter = RecommendHeaderAdapter()
+        binding.rvRecommendPost.adapter =
+            ConcatAdapter(recommendHeaderAdapter, recommendAdapter)
+    }
 
-
+    private fun getRecommendListStateObserver() {
         viewModel.getRecommendListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
@@ -33,8 +40,7 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
 
                 is UiState.Success -> {
                     recommendAdapter.submitList(state.data)
-                    binding.rvRecommendPost.adapter =
-                        ConcatAdapter(recommendHeaderAdapter, recommendAdapter)
+
                 }
 
                 is UiState.Failure -> {

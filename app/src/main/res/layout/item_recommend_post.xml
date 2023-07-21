@@ -29,18 +29,36 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/iv_recommend_image"
-                    android:layout_width="59dp"
-                    android:layout_height="80dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
-                    android:scaleType="centerCrop"
                     android:paddingBottom="21dp"
-                    imageUrl="@{data.image}"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:src="@drawable/ic_recommend_item_dummy" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:elevation="0dp"
+                        android:paddingBottom="21dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="@color/gray_200"
+                        app:strokeWidth="1dp">
+
+                        <ImageView
+                            imageUrl="@{data.image}"
+                            android:layout_width="59dp"
+                            android:layout_height="59dp"
+                            android:scaleType="centerCrop"
+                            tools:src="@drawable/ic_recommend_item_dummy" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <TextView
                     android:id="@+id/tv_recommend_amount"
@@ -106,6 +124,7 @@
                 android:textColor="@color/gray_500"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_recommend_line2" />
+
 
             <ImageView
                 android:id="@+id/iv_recommend_link"

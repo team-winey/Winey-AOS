@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.Winey" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -25,30 +25,14 @@
         <item name="bottomSheetStyle">@style/Widget.Winey.BottomSheet.Modal</item>
     </style>
 
-    <style name="Widget.Winey.EditText" parent="Widget.AppCompat.EditText">
-        <item name="android:textColorHint">@color/gray_400</item>
-        <item name="android:textColorHighlight">@color/purple_200</item>
-        <item name="android:textCursorDrawable">@drawable/shape_purple_line_cursor</item>
-    </style>
+    <style name="Theme.Winey.SplashScreen" parent="Theme.Winey">
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/black</item>
+        <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">
+            @android:color/transparent
+        </item>
+        <item name="postSplashScreenTheme">@style/Theme.Winey</item>
 
-    <style name="Widget.Winey.TextInputLayout.OutlineBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxBackgroundMode">outline</item>
-        <item name="boxBackgroundColor">@color/gray_0</item>
-        <item name="boxCornerRadiusBottomEnd">5dp</item>
-        <item name="boxCornerRadiusBottomStart">5dp</item>
-        <item name="boxCornerRadiusTopEnd">5dp</item>
-        <item name="boxCornerRadiusTopStart">5dp</item>
-        <item name="colorError">@color/red_500</item>
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
-
-    <style name="ThemeOverlay.Winey.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/Widget.Winey.BottomSheet.Modal</item>
-        <item name="android:colorBackground">@color/gray_0</item>
-        <item name="android:windowSoftInputMode">adjustResize</item>
-    </style>
-
-    <style name="Widget.Winey.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
-        <item name="backgroundTint">@android:color/transparent</item>
-    </style>
-
 </resources>

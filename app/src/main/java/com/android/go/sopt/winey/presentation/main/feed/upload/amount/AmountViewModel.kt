@@ -7,7 +7,7 @@ import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
-import com.android.go.sopt.winey.util.BitmapRequestBody
+import com.android.go.sopt.winey.util.UriToRequestBody
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,24 +24,33 @@ class AmountViewModel @Inject constructor(
     val _amount = MutableLiveData<String>()
     val amount: String get() = _amount.value ?: ""
 
-    val isValidAmount: LiveData<Boolean> = _amount.map { validateLength(it) }
+    val isValidAmount: LiveData<Boolean> = _amount.map { validateAmount(it) }
 
-    private val _imageRequestBody = MutableLiveData<BitmapRequestBody>()
-    val imageRequestBody: LiveData<BitmapRequestBody>
+    private val _imageRequestBody = MutableLiveData<UriToRequestBody>()
+    val imageRequestBody: LiveData<UriToRequestBody>
         get() = _imageRequestBody
 
     private val _postWineyFeedState = MutableLiveData<UiState<ResponsePostWineyFeedDto?>>()
     val postWineyFeedState: LiveData<UiState<ResponsePostWineyFeedDto?>>
         get() = _postWineyFeedState
 
-    private fun validateLength(amount: String): Boolean =
-        amount.length in MIN_AMOUNT_LENGTH..MAX_AMOUNT_LENGTH
+    private fun validateAmount(amount: String): Boolean {
+        if(amount.isBlank()) return false
+        if(!amount.contains(",")) return true // 최대 999
 
-    fun updateRequestBody(requestBody: BitmapRequestBody) {
+        val amountNumber = amount.removeComma().toLong()
+        return amountNumber in MIN_AMOUNT..MAX_AMOUNT
+    }
+
+    private fun String.removeComma() = replace(",", "")
+
+    fun updateRequestBody(requestBody: UriToRequestBody) {
         _imageRequestBody.value = requestBody
     }
 
     fun postWineyFeed(content: String, amount: String) {
+        _postWineyFeedState.value = UiState.Loading
+
         if (_imageRequestBody.value == null) {
             Timber.e("Image RequestBody is null")
             return
@@ -74,8 +83,8 @@ class AmountViewModel @Inject constructor(
     }
 
     companion object {
-        const val MIN_AMOUNT_LENGTH = 1
-        const val MAX_AMOUNT_LENGTH = 13
+        const val MIN_AMOUNT = 1000
+        const val MAX_AMOUNT = 9999999
         private const val FEED_TITLE_KEY = "feedTitle"
         private const val FEED_MONEY_KEY = "feedMoney"
     }

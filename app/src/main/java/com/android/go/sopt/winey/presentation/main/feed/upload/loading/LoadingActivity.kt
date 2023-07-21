@@ -1,11 +1,13 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.loading
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityLoadingBinding
+import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
-import timber.log.Timber
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,13 +26,11 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
 
         for (idx in amountRange.indices) {
             if (idx == amountRange.size - 1) {
-                Timber.e("last: ${itemCategories[idx]}")
                 binding.saveItem = itemCategories[idx]
                 return
             }
 
             if (amount >= amountRange[idx] && amount < amountRange[idx + 1]) {
-                Timber.e(itemCategories[idx])
                 binding.saveItem = itemCategories[idx]
                 return
             }
@@ -38,9 +38,16 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     }
 
     private fun delayMillis() {
-        Handler().postDelayed({
-            finish()
+        Handler(Looper.getMainLooper()).postDelayed({
+            navigateMainScreen()
         }, DELAY_TIME)
+    }
+
+    private fun navigateMainScreen() {
+        Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
+        }
     }
 
     companion object {

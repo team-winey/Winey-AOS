@@ -8,7 +8,6 @@ import com.android.go.sopt.winey.util.binding.BindingActivity
 
 class MypageHelpActivity :
     BindingActivity<ActivityMypageHelpBinding>(R.layout.activity_mypage_help) {
-    private val viewModel by viewModels<MyPageViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

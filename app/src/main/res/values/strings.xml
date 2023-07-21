@@ -57,7 +57,7 @@
     <string name="target_amount_day">일</string>
     <string name="target_amount_warning">설정한 목표는 목표 절약 일수 전까지 변경이 불가능합니다.\n신중하게 작성해주세요!</string>
     <string name="target_amount_save">저장하기</string>
-    <string name="target_amount_warning_day">절약 일수를 5일 이상으로 설정해주세요</string>
+    <string name="target_amount_warning_day">절약 일수를 5일 이상 365일 이하로 설정해주세요</string>
     <string name="target_amount_warning_amount">절약 금액을 3만원 이상으로 설정해주세요</string>
 
     <string name="help_title">더 즐거운 위니 사용법</string>
@@ -89,4 +89,5 @@
 
     <!-- recommend -->
     <string name="recommend_discount">%s 절약</string>
+    <string name="upload_amount_hint_text">0</string>
 </resources>
