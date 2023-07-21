@@ -85,7 +85,7 @@ class AmountViewModel @Inject constructor(
     companion object {
         const val MIN_AMOUNT = 1000
         const val MAX_AMOUNT = 9999999
-        const val MAX_AMOUNT_LENGTH = 10
+        const val MAX_AMOUNT_LENGTH = 9
         private const val FEED_TITLE_KEY = "feedTitle"
         private const val FEED_MONEY_KEY = "feedMoney"
     }
