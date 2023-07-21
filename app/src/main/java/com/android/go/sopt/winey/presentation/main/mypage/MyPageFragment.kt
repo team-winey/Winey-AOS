@@ -149,7 +149,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         parentFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
-            addToBackStack(currentFragment?.javaClass?.simpleName)
+            addToBackStack(null)
         }
     }
 
