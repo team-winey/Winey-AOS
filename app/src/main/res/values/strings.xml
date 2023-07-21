@@ -48,7 +48,7 @@
     <string name="mypage_level_token">LV. %s</string>
     <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
     <string name="impossible_dialog_close">닫기</string>
-    <string name="mypage_1on1">1:1 문의</string>
+    <string name="mypage_1on1"><u>1:1 문의</u></string>
 
     <string name="target_amount_cancel">취소</string>
     <string name="target_amount_set_amount">목표 절약 금액을 설정해주세요</string>
