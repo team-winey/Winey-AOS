@@ -33,9 +33,6 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
     private fun initBackButtonClickListener() {
         binding.ivContentBack.setOnClickListener {
             parentFragmentManager.popBackStack()
-
-            // todo: 이전 버튼 눌러서 포토 프래그먼트로 돌아가는 순간에
-            //  생명주기 함수에서 이미지 뷰의 스케일 타입을 조정하는 건 어떨까.
         }
     }
 
