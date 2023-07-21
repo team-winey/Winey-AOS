@@ -23,7 +23,7 @@ class WineyFeedViewModel @Inject constructor(
     lateinit var wineyFeedAdapter: WineyFeedAdapter
 
     private var currentPage = 0
-    private var isPagingFinished = false
+    var isPagingFinished = false
     private var totalPage = Int.MAX_VALUE
     var currentMutableList = mutableListOf<WineyFeed>()
 

@@ -2,7 +2,6 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
@@ -22,6 +21,8 @@ import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -115,7 +116,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    wineyFeedAdapter.updateLikeStatus(state.data.data.feedId, state.data.data.isLiked)
+                    wineyFeedAdapter.updateLikeStatus(
+                        state.data.data.feedId,
+                        state.data.data.isLiked
+                    )
                 }
 
                 is UiState.Failure -> {
@@ -167,8 +171,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                     if (binding.rvWineyfeedPost.canScrollVertically(1) && lastVisibleItemPosition == itemCount) {
                         lastVisibleItemPosition += MAX_FEED_VER_PAGE
                         itemCount += MAX_FEED_VER_PAGE
-                        viewModel.getWineyFeed()
-                        initGetFeedStateObserver()
+                        runBlocking {
+                            viewModel.getWineyFeed()
+                            delay(100)
+                        }
                     }
                 }
             }
