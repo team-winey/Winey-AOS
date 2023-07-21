@@ -131,8 +131,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private fun navigateToMyPage() {
         parentFragmentManager.commit {
             replace(R.id.fcv_main, MyPageFragment())
-            addToBackStack(null)
         }
+        parentFragmentManager.popBackStack()
     }
 
 
