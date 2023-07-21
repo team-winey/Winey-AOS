@@ -55,9 +55,19 @@ GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
 <img src="https://github.com/team-winey/Winey-AOS/assets/68090939/a13bdf85-dd7f-48e0-ae00-3fdd038da1ed" width="250" alt="image14">
 <img src="https://github.com/team-winey/Winey-AOS/assets/68090939/778a0d07-5ffc-4577-9ec2-d05892933adc" width="250" alt="image7">
 
-## 🛠 Tech Stack
+## 🛠 Tech Stack 
+| Architecture | Clean Architecture, MVVM |
+| ------------ | ------------------------ |
+| `Design Pattern` | Observer Pattern, Repository Pattern, State Pattern |
+| `JetPack Components` | LiveData, LifeCycle, ViewModel, DataBinding |
+| `Dependency Injections` | Hilt |
+| `NetWork` | Retrofit, OkHttp |
+| `Asynchronous Processing` | Coroutine |
+| `Third Party Library` | Coil, Lottie, Timber, CircleImageView |
+| `Strategy` | Git Flow |
+| `Communication Tool` | Notion, Slack, Figma, Swagger |
 
-## 📌 Convention
+## 📌 Convention 
 
 - [Git Convention](https://www.notion.so/Git-Convention-8b890a83aed94c9fbf727b4088bc2670?pvs=4)
 - [Code Convention](https://www.notion.so/Code-Convention-d39ec34c2d1240f297f6027b8f9839c3?pvs=4)
