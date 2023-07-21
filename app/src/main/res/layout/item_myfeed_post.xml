@@ -112,14 +112,14 @@
 
         <TextView
             android:id="@+id/tv_myfeed_title"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
             android:layout_marginTop="8dp"
             android:text="@{data.feedTitle}"
             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
             android:textColor="@color/gray_900"
-            app:layout_constraintStart_toStartOf="@id/tv_myfeed_money"
-            app:layout_constraintEnd_toStartOf="@id/tv_myfeed_like"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_myfeed_money"
             tools:text="@string/myfeed_title" />
 
