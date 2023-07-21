@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.presentation.main.feed.upload.loading
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityLoadingBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
@@ -37,7 +38,7 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     }
 
     private fun delayMillis() {
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             navigateMainScreen()
         }, DELAY_TIME)
     }
