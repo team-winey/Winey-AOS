@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
+import com.android.go.sopt.winey.data.interceptor.AuthInterceptor
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -59,7 +60,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         popupMenu.menuInflater.inflate(R.menu.menu_wineyfeed, popupMenu.menu)
         val menuDelete = popupMenu.menu.findItem(R.id.menu_delete)
         val menuReport = popupMenu.menu.findItem(R.id.menu_report)
-        if (wineyFeed.userId == 1) {
+        if (wineyFeed.userId == AuthInterceptor.USER_ID.toInt()) {
             menuReport.isVisible = false
         } else menuDelete.isVisible = false
         popupMenu.setOnMenuItemClickListener { menuItem ->
