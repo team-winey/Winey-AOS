@@ -57,6 +57,10 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun initPostImageStateObserver() {
         viewModel.postWineyFeedState.observe(viewLifecycleOwner) { state ->
             when (state) {
+                is UiState.Loading -> {
+                    preventUploadButtonClick()
+                }
+
                 is UiState.Success -> {
                     navigateLoadingScreen()
                 }
@@ -70,6 +74,10 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                 }
             }
         }
+    }
+
+    private fun preventUploadButtonClick() {
+        binding.btnAmountNext.isClickable = false
     }
 
     private fun navigateLoadingScreen() {
