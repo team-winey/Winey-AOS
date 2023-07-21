@@ -1,7 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.mypage
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityMypageHelpBinding
 import com.android.go.sopt.winey.util.binding.BindingActivity
