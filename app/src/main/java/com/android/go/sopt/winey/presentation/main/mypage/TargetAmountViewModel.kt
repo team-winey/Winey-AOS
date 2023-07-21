@@ -61,7 +61,7 @@ class TargetAmountViewModel @Inject constructor(
             _dayCheck.value = false
         } else {
             val dayValue = day.toLongOrNull()
-            _dayCheck.value = dayValue != null && (dayValue in 0..5 || dayValue > 365)
+            _dayCheck.value = dayValue != null && (dayValue in 0..4 || dayValue > 365)
         }
     }
 
