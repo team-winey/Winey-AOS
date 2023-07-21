@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.main.mypage.myfeed
+package com.android.go.sopt.winey.presentation.main.feed
 
 import android.os.Bundle
 import android.view.View
@@ -12,10 +12,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MyFeedDeleteDialogFragment(private val feedId: Int) :
+class WineyFeedLowDeleteDialogFragment(private val feedId: Int) :
     BindingDialogFragment<FragmentMyfeedLowlevelDeleteDialogBinding>(R.layout.fragment_myfeed_lowlevel_delete_dialog) {
-    lateinit var myFeedFragment: MyFeedFragment
-    private val myFeedViewModel by viewModels<MyFeedViewModel>()
+    lateinit var wineyFeedFragment: WineyFeedFragment
+    private val wineyFeedViewModel by viewModels<WineyFeedViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,18 +28,18 @@ class MyFeedDeleteDialogFragment(private val feedId: Int) :
             this.dismiss()
         }
         binding.btnDialogDelete.setOnClickListener {
-            myFeedViewModel.deleteFeed(feedId)
+            wineyFeedViewModel.deleteFeed(feedId)
             initDeleteFeedStateObserver()
         }
     }
 
     private fun initDeleteFeedStateObserver() {
-        myFeedFragment = MyFeedFragment()
-        myFeedViewModel.deleteMyFeedState.observe(viewLifecycleOwner) { state ->
+        wineyFeedFragment = WineyFeedFragment()
+        wineyFeedViewModel.deleteMyFeedState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
                     this.dismiss()
-                    refreshMyFeed()
+                    refreshWineyFeed()
                     snackBar(binding.root) { state.toString() }
                 }
 
@@ -52,11 +52,11 @@ class MyFeedDeleteDialogFragment(private val feedId: Int) :
         }
     }
 
-    private fun refreshMyFeed() {
+    private fun refreshWineyFeed() {
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction().apply {
-            myFeedFragment = MyFeedFragment()
-            replace(R.id.fcv_main, myFeedFragment)
+            wineyFeedFragment = WineyFeedFragment()
+            replace(R.id.fcv_main, wineyFeedFragment)
             commit()
         }
     }

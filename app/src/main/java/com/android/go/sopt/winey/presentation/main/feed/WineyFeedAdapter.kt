@@ -16,7 +16,6 @@ class WineyFeedAdapter(
     private val showPopupMenu: (View, WineyFeed) -> Unit
 ) :
     ListAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
-
     class WineyFeedViewHolder(
         private val binding: ItemWineyfeedPostBinding,
         private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
@@ -52,7 +51,6 @@ class WineyFeedAdapter(
         }
     }
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -66,9 +64,19 @@ class WineyFeedAdapter(
         holder.onBind(getItem(position))
     }
 
+    fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
+        val index = currentList.indexOfFirst { it.feedId == feedId }
+        if (index != -1) {
+            currentList[index].isLiked = isLiked
+            if (isLiked) currentList[index].likes++
+            else currentList[index].likes--
+            notifyItemChanged(index)
+        }
+    }
+
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
-            onItemsTheSame = { old, new -> old.feedId == new.feedId },
+            onItemsTheSame = { old, new -> old.isLiked == new.isLiked },
             onContentsTheSame = { old, new -> old == new }
         )
     }

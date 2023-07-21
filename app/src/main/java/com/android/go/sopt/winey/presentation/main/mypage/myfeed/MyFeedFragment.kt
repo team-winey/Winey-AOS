@@ -2,8 +2,11 @@ package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
@@ -12,35 +15,49 @@ import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
     private val viewModel by viewModels<MyFeedViewModel>()
-    private val myFeedDialogViewModel by viewModels<MyFeedDialogViewModel>()
-    private lateinit var myFeedDeleteDialogFragment: MyFeedDeleteDialogFragment
+    private lateinit var myFeedDeleteLowDialogFragment: MyFeedDeleteLowDialogFragment
+    private lateinit var myFeedDeleteHighDialogFragment: MyFeedDeleteHighDialogFragment
     private lateinit var myFeedAdapter: MyFeedAdapter
-
+    private var totalPage = Int.MAX_VALUE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         initButtonClickListener()
+        setListWithInfiniteScroll()
     }
 
     private fun initAdapter() {
-        myFeedAdapter = MyFeedAdapter(deleteButtonClick = { feedId ->
-            initDialog(feedId)
+        myFeedAdapter = MyFeedAdapter(deleteButtonClick = { feedId, writerLevel ->
+            initDialog(feedId, writerLevel)
         }, fragmentManager = parentFragmentManager, likeButtonClick = { feedId, isLiked ->
             viewModel.likeFeed(feedId, isLiked)
         })
         binding.rvMyfeedPost.adapter = myFeedAdapter
     }
 
-    private fun initDialog(feedId: Int) {
-        myFeedDeleteDialogFragment = MyFeedDeleteDialogFragment(feedId)
-        myFeedDeleteDialogFragment.isCancelable = false
+    private fun initDialog(feedId: Int, writerLevel: Int) {
+        myFeedDeleteLowDialogFragment = MyFeedDeleteLowDialogFragment(feedId)
+        myFeedDeleteLowDialogFragment.isCancelable = false
+
+        myFeedDeleteHighDialogFragment = MyFeedDeleteHighDialogFragment(feedId)
+        myFeedDeleteHighDialogFragment.isCancelable = false
+    }
+
+    private fun initEmptyItemLayout(totalPage: Int) {
+        if (totalPage == 0) {
+
+        } else {
+            binding.rvMyfeedPost.isVisible = true
+        }
     }
 
     private fun initButtonClickListener() {
@@ -53,10 +70,17 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.getMyFeedListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
+                    if (state.data.isEmpty()) {
+                        binding.rvMyfeedPost.isVisible = false
+                        binding.layoutMyfeedEmpty.isVisible = true
+                    } else  binding.rvMyfeedPost.isVisible = true
                     val myFeedList = state.data
                     myFeedAdapter.submitList(myFeedList)
                 }
-
+                is UiState.Loading -> {
+                    binding.rvMyfeedPost.isVisible = false
+                    binding.layoutMyfeedEmpty.isVisible = false
+                }
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
                 }
@@ -70,8 +94,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.postMyFeedLikeState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
-                    viewModel.getMyFeed()
                     initGetFeedStateObserver()
+                    myFeedAdapter.updateLikeStatus(state.data.data.feedId, state.data.data.isLiked)
                 }
 
                 is UiState.Failure -> {
@@ -83,6 +107,27 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
+    private fun setListWithInfiniteScroll() {
+        binding.rvMyfeedPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    var itemCount = myFeedAdapter.itemCount
+                    var lastVisibleItemPosition =
+                        (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    if (binding.rvMyfeedPost.canScrollVertically(1) && lastVisibleItemPosition == itemCount) {
+                        lastVisibleItemPosition += MAX_FEED_VER_PAGE
+                        itemCount += MAX_FEED_VER_PAGE
+                        runBlocking {
+                            viewModel.getMyFeed()
+                            delay(100)
+                        }
+                    }
+                }
+            }
+        })
+    }
+
     private fun navigateToMyPage() {
         parentFragmentManager.commit {
             replace(R.id.fcv_main, MyPageFragment())
@@ -90,14 +135,10 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    override fun onResume() {/* dimsiss 후 다시불러올수있도록 */
-        super.onResume()
-        viewModel.getMyFeed()
-        initGetFeedStateObserver()
-    }
 
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
+        private const val MAX_FEED_VER_PAGE = 10
     }
 
 }

@@ -20,7 +20,12 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    var wineyFeedAdapter: WineyFeedAdapter
+    lateinit var wineyFeedAdapter: WineyFeedAdapter
+
+    private var currentPage = 0
+    var isPagingFinished = false
+    private var totalPage = Int.MAX_VALUE
+    var currentMutableList = mutableListOf<WineyFeed>()
 
     private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
     val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
@@ -36,14 +41,7 @@ class WineyFeedViewModel @Inject constructor(
 
     init {
         getWineyFeed()
-        wineyFeedAdapter = WineyFeedAdapter(
-            likeButtonClick = { feedId, isLiked ->
-                postLike(feedId, RequestPostLikeDto(isLiked))
-            },
-            showPopupMenu = { view, wineyFeed ->
-                showPopupMenu(view, wineyFeed)
-            }
-        )
+
     }
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
@@ -107,27 +105,38 @@ class WineyFeedViewModel @Inject constructor(
     }
 
     fun getWineyFeed() {
-        viewModelScope.launch {
-            authRepository.getWineyFeedList(WINEY_FEED_PAGE)
-                .onSuccess { state ->
-                    _getWineyFeedListState.value = UiState.Success(state)
-                }
-                .onFailure { t ->
-                    if (t is HttpException) {
-                        _getWineyFeedListState.value.apply {
-                            when (t.code()) {
-                                CODE_WINEYFEED_INVALID_USER ->
-                                    UiState.Failure(t.message())
-
-                                CODE_WINEYFEED_INVALID_REQUEST ->
-                                    UiState.Failure(t.message())
-
-                                else -> UiState.Failure(t.message())
-                            }
-                        }
-                        Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
+        isPagingFinished = false
+        if (isPagingFinished || currentPage > totalPage) {
+            return
+        } else {
+            viewModelScope.launch {
+                authRepository.getWineyFeedList(++currentPage)
+                    .onSuccess { state ->
+                        currentMutableList.addAll(state)
+                        if (state.isEmpty()) {
+                            totalPage = 0
+                            isPagingFinished = true
+                        } else totalPage = currentMutableList[0].totalPageSize
+                        val updatedList = currentMutableList.toList()
+                        _getWineyFeedListState.value = UiState.Success(updatedList)
                     }
-                }
+                    .onFailure { t ->
+                        if (t is HttpException) {
+                            _getWineyFeedListState.value.apply {
+                                when (t.code()) {
+                                    CODE_WINEYFEED_INVALID_USER ->
+                                        UiState.Failure(t.message())
+
+                                    CODE_WINEYFEED_INVALID_REQUEST ->
+                                        UiState.Failure(t.message())
+
+                                    else -> UiState.Failure(t.message())
+                                }
+                            }
+                            Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
+                        }
+                    }
+            }
         }
     }
 
@@ -135,6 +144,5 @@ class WineyFeedViewModel @Inject constructor(
         private const val CODE_WINEYFEED_INVALID_USER = 404
         private const val CODE_WINEYFEED_INVALID_REQUEST = 400
         private const val MSG_WINEYFEED_FAIL = "FAIL"
-        private const val WINEY_FEED_PAGE = 1
     }
 }

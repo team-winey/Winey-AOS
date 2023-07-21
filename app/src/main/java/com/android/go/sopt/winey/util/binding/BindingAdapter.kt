@@ -36,7 +36,7 @@ fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) 
 @BindingAdapter("imageUrl")
 fun loadImager(view: ImageView, imageurl: String) {
     view.load(imageurl) {
-        placeholder(R.drawable.img_feed_default)
+        placeholder(R.drawable.img_wineyfeed_default)
         transformations(RoundedCornersTransformation(10F))
     }
 }

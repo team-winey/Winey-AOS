@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
@@ -15,7 +16,7 @@ import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 class MyFeedAdapter(
     private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
     private val fragmentManager: FragmentManager,
-    private val deleteButtonClick: (feedId: Int) -> Unit
+    private val deleteButtonClick: (feedId: Int, writerLevel: Int) -> Unit
 ) :
     ListAdapter<WineyFeed, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
 
@@ -23,7 +24,7 @@ class MyFeedAdapter(
         private val fragmentManager: FragmentManager,
         private val binding: ItemMyfeedPostBinding,
         private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
-        private val deleteButtonClick: (feedId: Int) -> Unit
+        private val deleteButtonClick: (feedId: Int, writerLevel: Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: WineyFeed) {
             binding.apply {
@@ -36,12 +37,19 @@ class MyFeedAdapter(
                     onLikeButtonClick(data.feedId, !data.isLiked)
                 }
                 tvMyfeedDelete.setOnSingleClickListener {
-                    showDeleteDialog(data.feedId)
-                    deleteButtonClick(data.feedId)
+                    if (data.writerLevel <= 2) {
+                        Log.e("check", data.writerLevel.toString())
+                        showLowDeleteDialog(data.feedId)
+                        deleteButtonClick(data.feedId, data.writerLevel)
+                    } else {
+                        showHighDeleteDialog(data.feedId)
+                        deleteButtonClick(data.feedId, data.writerLevel)
+                    }
                 }
                 executePendingBindings()
             }
         }
+
 
         private fun setUserProfile(userLevel: Int): Int {
             return when (userLevel) {
@@ -55,9 +63,14 @@ class MyFeedAdapter(
             }
         }
 
-        private fun showDeleteDialog(feedId: Int) {
-            val myFeedDeleteDialogFragment = MyFeedDeleteDialogFragment(feedId)
-            myFeedDeleteDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
+        private fun showLowDeleteDialog(feedId: Int) {
+            val myFeedDeleteLowDialogFragment = MyFeedDeleteLowDialogFragment(feedId)
+            myFeedDeleteLowDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
+        }
+
+        private fun showHighDeleteDialog(feedId: Int) {
+            val myFeedDeleteHighDialogFragment = MyFeedDeleteHighDialogFragment(feedId)
+            myFeedDeleteHighDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
         }
     }
 
@@ -73,10 +86,18 @@ class MyFeedAdapter(
     override fun onBindViewHolder(holder: MyFeedViewHolder, position: Int) {
         holder.onBind(getItem(position))
     }
-
+    fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
+        val index = currentList.indexOfFirst { it.feedId == feedId }
+        if (index != -1) {
+            currentList[index].isLiked = isLiked
+            if (isLiked) currentList[index].likes++
+            else currentList[index].likes--
+            notifyItemChanged(index)
+        }
+    }
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
-            onItemsTheSame = { old, new -> old.feedId == new.feedId },
+            onItemsTheSame = { old, new -> old.isLiked == new.isLiked },
             onContentsTheSame = { old, new -> old == new }
         )
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
