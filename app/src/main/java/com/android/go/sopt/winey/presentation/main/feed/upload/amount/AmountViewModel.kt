@@ -49,6 +49,8 @@ class AmountViewModel @Inject constructor(
     }
 
     fun postWineyFeed(content: String, amount: String) {
+        _postWineyFeedState.value = UiState.Loading
+
         if (_imageRequestBody.value == null) {
             Timber.e("Image RequestBody is null")
             return
