@@ -26,11 +26,9 @@ class MyFeedDialogViewModel @Inject constructor(
             authRepository.deleteFeed(feedId)
                 .onSuccess { state ->
                     _deleteMyFeedState.value = UiState.Success(state)
-                    Log.e("deleteSuccess", state.toString())
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        Log.e("deleteFail", t.message())
                         _deleteMyFeedState.value.apply {
                             when (t.code()) {
                                 CODE_MYFEED_INVALID_USER ->

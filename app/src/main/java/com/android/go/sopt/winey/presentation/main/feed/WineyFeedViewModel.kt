@@ -20,7 +20,7 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    var wineyFeedAdapter: WineyFeedAdapter
+    lateinit var wineyFeedAdapter: WineyFeedAdapter
 
     private var currentPage = 0
     private var isPagingFinished = false
@@ -41,14 +41,7 @@ class WineyFeedViewModel @Inject constructor(
 
     init {
         getWineyFeed()
-        wineyFeedAdapter = WineyFeedAdapter(
-            likeButtonClick = { feedId, isLiked ->
-                postLike(feedId, RequestPostLikeDto(isLiked))
-            },
-            showPopupMenu = { view, wineyFeed ->
-                showPopupMenu(view, wineyFeed)
-            }
-        )
+
     }
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {

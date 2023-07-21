@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
@@ -48,6 +49,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                 showPopupMenu(view, wineyFeed)
             }
         )
+        viewModel.wineyFeedAdapter = wineyFeedAdapter
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
         binding.rvWineyfeedPost.adapter = ConcatAdapter(wineyFeedHeaderAdapter, wineyFeedAdapter)
     }
@@ -111,8 +113,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         viewModel.postWineyFeedLikeState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {
-                    viewModel.getWineyFeed()
                     initGetFeedStateObserver()
+                    wineyFeedAdapter.updateLikeStatus(state.data.data.feedId, state.data.data.isLiked)
                 }
 
                 is UiState.Failure -> {
