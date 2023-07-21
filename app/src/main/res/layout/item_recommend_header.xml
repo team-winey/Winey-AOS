@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="11dp"
             android:layout_marginTop="16dp"
-            android:text="예비 황제를 위한 추천 절약법"
+            android:text="@string/recommend_header_title"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="19dp"
                     android:layout_marginBottom="18dp"
-                    android:text="쉿, 그대를 위한 절약방법이 도착했어.\n황실 내에서도 비밀인데 특별히 알려줄게:)"
+                    android:text="@string/recommend_header_text"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
