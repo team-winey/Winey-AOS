@@ -26,14 +26,14 @@ GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
 ## 🛠 Tech Stack 
 | Architecture | Clean Architecture, MVVM |
 | ------------ | ------------------------ |
-| 'Design Pattern' | Observer Pattern, Repository Pattern, State Pattern |
-| 'JetPack Components' | LiveData, LifeCycle, ViewModel, DataBinding |
-| 'Dependency Injections' | Hilt |
-| 'NetWork' | Retrofit, OkHttp |
-| 'Asynchronous Processing' | Coroutine |
-| 'Third Party Library' | Coil, Lottie, Timber, CircleImageView |
-| 'Strategy' | Git Flow |
-| 'Communication Tool' | Notion, Slack, Figma, Swagger |
+| `Design Pattern` | Observer Pattern, Repository Pattern, State Pattern |
+| `JetPack Components` | LiveData, LifeCycle, ViewModel, DataBinding |
+| `Dependency Injections` | Hilt |
+| `NetWork` | Retrofit, OkHttp |
+| `Asynchronous Processing` | Coroutine |
+| `Third Party Library` | Coil, Lottie, Timber, CircleImageView |
+| `Strategy` | Git Flow |
+| `Communication Tool` | Notion, Slack, Figma, Swagger |
 
 ## 📌 Convention 
 
