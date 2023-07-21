@@ -8,6 +8,8 @@
         android:id="@+id/tv_wineyfeed_head"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="27dp"
         android:text="@string/wineyfeed_head"
         android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
