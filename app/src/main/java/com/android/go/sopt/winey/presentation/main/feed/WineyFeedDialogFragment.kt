@@ -29,7 +29,6 @@ class WineyFeedDialogFragment :
     private fun navigateToMyPage() {
         parentFragmentManager.commit {
             replace(R.id.fcv_main, MyPageFragment())
-            addToBackStack(null)
         }
     }
 
