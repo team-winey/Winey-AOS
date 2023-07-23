@@ -24,15 +24,36 @@ GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
 
 ## 📸 Screenshot
 
+### Splash
+
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/eae3ccb6-7094-46de-ae3d-479a5b9cfac8" width="250">
+
+### Winey Feed
+
 <img src="https://github.com/team-winey/Winey-AOS/assets/68090939/e9555ea3-d4b9-4d45-8248-9092e5cb44cd" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/f5dc5912-32f9-4a37-bf03-7b40a863bb95" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/72fb6b57-d58a-433e-a241-1ed475bd1964" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/bdb92229-52af-4fae-8748-8fc5933fcd34" width="250">
+
+### Winey Upload
 
 <img src="https://github.com/team-winey/Winey-AOS/assets/68090939/7e4b673e-f7a8-411f-80fb-676318dbbf25" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/dec1fa6c-fb48-4964-beaf-79703b0bfaa7" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/e3c3459b-26f8-4b2e-bbaf-a6b0e4962021" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/ee2e1100-4086-4d6b-aead-088164f3ed65" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/671d45b6-4522-45bf-a7a6-e71d3949c9fe" width="250">
 
-<br>
-
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/a13bdf85-dd7f-48e0-ae00-3fdd038da1ed" width="250">
+### My Page
 
 <img src="https://github.com/team-winey/Winey-AOS/assets/68090939/44abdfa5-f5d0-4c83-94e1-5d313703e091" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/abf27e26-4fcc-47c6-9698-eacfe22436d0" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/0f3a6394-a1c1-4eb4-b15a-a2579065bd85" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/93a10820-8354-4962-aec1-29b35daa8def" width="250">
+
+### Recommend Feed
+
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/a13bdf85-dd7f-48e0-ae00-3fdd038da1ed" width="250">
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/778a0d07-5ffc-4577-9ec2-d05892933adc" width="250">
 
 ## 🛠 Tech Stack 
 | Architecture | Clean Architecture, MVVM |
