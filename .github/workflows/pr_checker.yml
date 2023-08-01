@@ -46,6 +46,9 @@ jobs:
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace
 
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck
+
       - name: On Success, Notify in Slack
         if: ${{ success() }}
         uses: rtCamp/action-slack-notify@v2
@@ -68,4 +71,4 @@ jobs:
           SLACK_TITLE: 'Winey checks have failed 🚫'
           MSG_MINIMAL: true
           SLACK_USERNAME: Winey Android
-          SLACK_MESSAGE: '버그 잡자 ㅋㅅㅋ'
+          SLACK_MESSAGE: '버그 잡자 🐛'
