@@ -4,8 +4,7 @@ object Plugins {
     const val kotlinKapt = "kotlin-kapt"
     const val kotlinParcelize = "kotlin-parcelize"
     const val kotlinSerialization = "kotlinx-serialization"
-
-    // classpath plugin
-    const val hiltPlugin = "dagger.hilt.android.plugin"
-    const val ossLicensesPlugin = "com.google.android.gms.oss-licenses-plugin"
+    const val hilt = "dagger.hilt.android.plugin"
+    const val oss = "com.google.android.gms.oss-licenses-plugin"
+    const val ktlint = "org.jlleitschuh.gradle.ktlint"
 }

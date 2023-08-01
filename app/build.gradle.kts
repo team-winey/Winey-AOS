@@ -5,9 +5,10 @@ plugins {
     id(Plugins.kotlinAndroid)
     id(Plugins.kotlinParcelize)
     id(Plugins.kotlinKapt)
-    id(Plugins.hiltPlugin)
-    id(Plugins.ossLicensesPlugin)
     id(Plugins.kotlinSerialization)
+    id(Plugins.hilt)
+    id(Plugins.oss)
+    id(Plugins.ktlint) version Versions.ktlintVersion
 }
 
 android {
