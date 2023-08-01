@@ -111,6 +111,7 @@ dependencies {
         implementation(balloon)
         implementation(lottie)
         implementation(circleImageView)
+        implementation(kakao)
 
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)

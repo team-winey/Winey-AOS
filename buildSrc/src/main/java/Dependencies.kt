@@ -74,6 +74,7 @@ object ThirdPartyDependencies {
         "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanaryVersion}"
     const val soloader = "com.facebook.soloader:soloader:${Versions.soloaderVersion}"
     const val circleImageView = "de.hdodenhof:circleimageview:${Versions.circleImageViewVersion}"
+    const val kakao = "com.kakao.sdk:v2-user:${Versions.kakao}"
 }
 
 object FirebaseDependencies {

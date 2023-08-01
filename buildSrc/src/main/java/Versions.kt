@@ -40,6 +40,7 @@ object Versions {
     const val leakCanaryVersion = "2.11"
 
     const val circleImageViewVersion = "3.1.0"
+    const val kakao = "2.10.0"
 
     val javaVersion = JavaVersion.VERSION_17
     const val jvmVersion = "17"
