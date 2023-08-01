@@ -9,6 +9,9 @@ import com.android.go.sopt.winey.domain.entity.Recommend
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -17,8 +20,8 @@ import javax.inject.Inject
 class RecommendViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    private val _getRecommendListState = MutableLiveData<UiState<List<Recommend>>>(UiState.Loading)
-    val getRecommendListState: LiveData<UiState<List<Recommend>>> = _getRecommendListState
+    private val _getRecommendListState = MutableStateFlow<UiState<List<Recommend>>>(UiState.Loading)
+    val getRecommendListState: StateFlow<UiState<List<Recommend>>> = _getRecommendListState.asStateFlow()
 
     init {
         getRecommendList()
