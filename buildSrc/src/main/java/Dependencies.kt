@@ -77,6 +77,9 @@ object ThirdPartyDependencies {
 }
 
 object ClassPathPlugins {
+    const val gradle = "com.android.tools.build:gradle:${Versions.gradleVersion}"
+    const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlinVersion}"
+    const val kotlinSerialization = "org.jetbrains.kotlin:kotlin-serialization:${Versions.kotlinVersion}"
     const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltVersion}"
     const val oss = "com.google.android.gms:oss-licenses-plugin:${Versions.ossPluginVersion}"
 }
