@@ -34,6 +34,9 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
       - name: Change gradlew permissions
         run: chmod +x ./gradlew
 
@@ -43,9 +46,9 @@ jobs:
         run: |
           echo auth.base.url=$AUTH_BASE_URL >> ./local.properties
 
-#      - name: Build debug APK
-#        run: bash ./gradlew assembleDebug --stacktrace
-#
+      - name: Build debug APK
+        run: bash ./gradlew assembleDebug --stacktrace
+
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
 #        with:
