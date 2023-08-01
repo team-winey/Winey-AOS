@@ -9,6 +9,9 @@ import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -17,8 +20,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    private val _getUserState = MutableLiveData<UiState<User>>(UiState.Loading)
-    val getUserState: LiveData<UiState<User>> get() = _getUserState
+    private val _getUserState = MutableStateFlow<UiState<User>>(UiState.Loading)
+    val getUserState: StateFlow<UiState<User>> get() = _getUserState.asStateFlow()
 
     init {
         getUser()
