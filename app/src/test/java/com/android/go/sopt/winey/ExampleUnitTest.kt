@@ -1,7 +1,6 @@
 package com.android.go.sopt.winey
 
 import org.junit.Test
-
 import org.junit.Assert.*
 
 /**
