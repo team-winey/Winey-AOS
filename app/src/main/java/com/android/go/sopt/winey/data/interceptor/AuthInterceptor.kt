@@ -21,6 +21,6 @@ class AuthInterceptor @Inject constructor(
 
     companion object {
         private const val HEADER_TOKEN = "userId"
-        const val USER_ID = "24"
+        const val USER_ID = "1"
     }
 }
