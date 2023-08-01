@@ -12,7 +12,6 @@ import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.domain.entity.User
-import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
