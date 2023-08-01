@@ -83,5 +83,6 @@ class TargetAmountViewModel @Inject constructor(
 
     companion object {
         const val MAX_AMOUNT_LENGTH = 12
+        const val MAX_DAY_LENGTH = 3
     }
 }
