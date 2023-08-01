@@ -25,7 +25,7 @@ android {
         buildConfigField(
             "String",
             "AUTH_BASE_URL",
-            gradleLocalProperties(rootDir).getProperty("auth.base.url"),
+            gradleLocalProperties(rootDir).getProperty("auth.base.url")
         )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
