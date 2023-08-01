@@ -8,8 +8,8 @@ import com.android.go.sopt.winey.databinding.ItemRecommendHeaderBinding
 class RecommendHeaderAdapter : RecyclerView.Adapter<RecommendHeaderAdapter.HeaderViewHolder>() {
 
     class HeaderViewHolder(
-        private val binding: ItemRecommendHeaderBinding,
-    ) : RecyclerView.ViewHolder(binding.root) {}
+        private val binding: ItemRecommendHeaderBinding
+    ) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         val binding =

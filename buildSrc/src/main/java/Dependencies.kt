@@ -44,7 +44,7 @@ object MaterialDesignDependencies {
 }
 
 object KaptDependencies {
-    const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltVersion}"
+    const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hiltVersion}"
     const val hiltWorkManagerCompiler = "androidx.hilt:hilt-compiler:1.0.0"
 }
 
@@ -74,11 +74,6 @@ object ThirdPartyDependencies {
         "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanaryVersion}"
     const val soloader = "com.facebook.soloader:soloader:${Versions.soloaderVersion}"
     const val circleImageView = "de.hdodenhof:circleimageview:${Versions.circleImageViewVersion}"
-}
-
-object ClassPathPlugins {
-    const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hiltVersion}"
-    const val oss = "com.google.android.gms:oss-licenses-plugin:${Versions.ossPluginVersion}"
 }
 
 object FirebaseDependencies {

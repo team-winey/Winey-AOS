@@ -18,7 +18,7 @@ data class ResponseGetRecommendListDto(
         @SerialName("currentPageIndex")
         val currentPageIndex: Int,
         @SerialName("isEnd")
-        val isEnd: Boolean,
+        val isEnd: Boolean
     )
 
     @Serializable
@@ -46,7 +46,7 @@ data class ResponseGetRecommendListDto(
             title = it.recommendTitle ?: "",
             subtitle = it.recommendSubTitle ?: "",
             discount = it.recommendDiscount ?: "",
-            image = it.recommendImage ?: "",
+            image = it.recommendImage ?: ""
         )
     }
 }

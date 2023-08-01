@@ -33,7 +33,6 @@ class AuthRepositoryImpl @Inject constructor(
             response.toWineyFeed()
         }
 
-
     override suspend fun postWineyFeed(
         file: MultipartBody.Part?,
         requestMap: HashMap<String, RequestBody>
@@ -49,7 +48,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): Result<Like> =
         runCatching {
-            authDataSource.postFeedLike(feedId,requestPostLikeDto).toLike()
+            authDataSource.postFeedLike(feedId, requestPostLikeDto).toLike()
         }
 
     override suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): Result<Goal> =
@@ -61,5 +60,4 @@ class AuthRepositoryImpl @Inject constructor(
         runCatching {
             authDataSource.getRecommendList(page).data!!.convertToRecommend()
         }
-
 }

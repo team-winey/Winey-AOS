@@ -1,13 +1,13 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    id(Plugins.androidApplication)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinParcelize)
-    id(Plugins.kotlinKapt)
-    id(Plugins.hiltPlugin)
-    id(Plugins.ossLicensesPlugin)
-    id(Plugins.kotlinSerialization)
+    id(ModulePlugins.androidApplication)
+    id(ModulePlugins.kotlinAndroid)
+    id(ModulePlugins.kotlinParcelize)
+    id(ModulePlugins.kotlinKapt)
+    id(ModulePlugins.kotlinSerialization)
+    id(ModulePlugins.hilt)
+    id(ModulePlugins.oss)
 }
 
 android {
@@ -24,7 +24,7 @@ android {
         buildConfigField(
             "String",
             "AUTH_BASE_URL",
-            gradleLocalProperties(rootDir).getProperty("auth.base.url"),
+            gradleLocalProperties(rootDir).getProperty("auth.base.url")
         )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -94,7 +94,7 @@ dependencies {
     implementation(MaterialDesignDependencies.materialDesign)
 
     KaptDependencies.run {
-        kapt(hiltCompiler)
+        kapt(hiltAndroidCompiler)
         kapt(hiltWorkManagerCompiler)
     }
 

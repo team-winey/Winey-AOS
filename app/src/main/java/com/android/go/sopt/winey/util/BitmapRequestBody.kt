@@ -33,13 +33,16 @@ class BitmapRequestBody(
         val filePathColumn = arrayOf(MediaStore.Images.Media.DISPLAY_NAME)
 
         try {
-            if(uri == null){
+            if (uri == null) {
                 throw IllegalArgumentException()
             }
 
             context.contentResolver.query(
-                uri, filePathColumn,
-                null, null, null
+                uri,
+                filePathColumn,
+                null,
+                null,
+                null
             )?.use { cursor ->
                 if (cursor.moveToFirst()) {
                     val columnIndex: Int = cursor.getColumnIndexOrThrow(filePathColumn[0])

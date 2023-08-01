@@ -63,7 +63,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
             when (state) {
                 is UiState.Loading -> {
-
                 }
 
                 is UiState.Success -> {
@@ -72,11 +71,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 }
 
                 is UiState.Failure -> {
-
                 }
 
                 is UiState.Empty -> {
-
                 }
             }
         }
@@ -117,7 +114,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     binding.targetMoney = data
                     binding.dday = data
                 }
-
             }
         }
         when (data.userLevel) {
@@ -141,7 +137,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv4_profile)
             }
         }
-
     }
 
     private inline fun <reified T : Fragment> navigateTo() {

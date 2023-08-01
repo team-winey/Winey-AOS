@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RequestPostLikeDto(
     @SerialName("feedLike")
-    val feedLike : Boolean
+    val feedLike: Boolean
 )

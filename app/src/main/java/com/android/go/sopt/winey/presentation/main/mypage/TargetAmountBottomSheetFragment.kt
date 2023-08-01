@@ -22,7 +22,9 @@ import java.text.DecimalFormat
 
 @AndroidEntryPoint
 class TargetAmountBottomSheetFragment :
-    BindingBottomSheetDialogFragment<FragmentTargetAmountBottomSheetBinding>(R.layout.fragment_target_amount_bottom_sheet) {
+    BindingBottomSheetDialogFragment<FragmentTargetAmountBottomSheetBinding>(
+        R.layout.fragment_target_amount_bottom_sheet
+    ) {
     private val viewModel by viewModels<TargetAmountViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     override fun onStart() {
@@ -54,7 +56,6 @@ class TargetAmountBottomSheetFragment :
         viewModel.createGoalState.observe(viewLifecycleOwner) {
             when (it) {
                 is UiState.Loading -> {
-
                 }
 
                 is UiState.Success -> {
@@ -63,11 +64,9 @@ class TargetAmountBottomSheetFragment :
                 }
 
                 is UiState.Failure -> {
-
                 }
 
                 is UiState.Empty -> {
-
                 }
             }
         }
@@ -75,7 +74,6 @@ class TargetAmountBottomSheetFragment :
 
     fun initCancelButtonClickListener() {
         binding.btnTargetAmountCancel.setOnClickListener {
-
             this.dismiss()
         }
     }
