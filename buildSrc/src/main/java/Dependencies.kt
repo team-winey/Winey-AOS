@@ -44,7 +44,7 @@ object MaterialDesignDependencies {
 }
 
 object KaptDependencies {
-    const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltVersion}"
+    const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hiltVersion}"
     const val hiltWorkManagerCompiler = "androidx.hilt:hilt-compiler:1.0.0"
 }
 

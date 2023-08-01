@@ -94,7 +94,7 @@ dependencies {
     implementation(MaterialDesignDependencies.materialDesign)
 
     KaptDependencies.run {
-        kapt(hiltCompiler)
+        kapt(hiltAndroidCompiler)
         kapt(hiltWorkManagerCompiler)
     }
 
