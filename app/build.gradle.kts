@@ -1,13 +1,13 @@
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 
 plugins {
-    id(Plugins.androidApplication)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinParcelize)
-    id(Plugins.kotlinKapt)
-    id(Plugins.kotlinSerialization)
-    id(Plugins.hilt)
-    id(Plugins.oss)
+    id(ModulePlugins.androidApplication)
+    id(ModulePlugins.kotlinAndroid)
+    id(ModulePlugins.kotlinParcelize)
+    id(ModulePlugins.kotlinKapt)
+    id(ModulePlugins.kotlinSerialization)
+    id(ModulePlugins.hilt)
+    id(ModulePlugins.oss)
 }
 
 android {

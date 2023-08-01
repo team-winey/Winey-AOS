@@ -7,19 +7,20 @@ buildscript {
     dependencies {
         classpath(ClassPathPlugins.gradle)
         classpath(ClassPathPlugins.kotlinGradlePlugin)
-        classpath(ClassPathPlugins.kotlinSerialization)
+//        classpath(ClassPathPlugins.kotlinSerialization)
         classpath(ClassPathPlugins.hilt)
         classpath(ClassPathPlugins.oss)
     }
 }
 
 plugins {
-    id(Plugins.ktlint) version Versions.ktlintVersion
+    id(ProjectPlugins.ktlint) version Versions.ktlintVersion
+    id(ProjectPlugins.kotlinSerialization) version Versions.kotlinVersion
 }
 
 allprojects {
     apply {
-        plugin(Plugins.ktlint)
+        plugin(ProjectPlugins.ktlint)
     }
 }
 
