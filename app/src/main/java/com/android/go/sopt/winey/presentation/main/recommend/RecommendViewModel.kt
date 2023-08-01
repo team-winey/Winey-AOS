@@ -1,8 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.recommend
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.domain.entity.Recommend

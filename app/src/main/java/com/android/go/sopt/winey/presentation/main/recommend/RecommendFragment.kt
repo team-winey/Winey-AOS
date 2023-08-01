@@ -34,7 +34,7 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
     }
 
     private fun getRecommendListStateObserver() {
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             viewModel.getRecommendListState.collect { state ->
                 when (state) {
                     is UiState.Loading -> {
