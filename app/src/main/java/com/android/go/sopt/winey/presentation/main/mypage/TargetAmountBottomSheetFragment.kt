@@ -10,6 +10,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentTargetAmountBottomSheetBinding
 import com.android.go.sopt.winey.presentation.main.MainViewModel
@@ -18,6 +19,7 @@ import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.view.UiState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
 @AndroidEntryPoint
@@ -53,20 +55,22 @@ class TargetAmountBottomSheetFragment :
     }
 
     fun initCreateGoalObserver() {
-        viewModel.createGoalState.observe(viewLifecycleOwner) {
-            when (it) {
-                is UiState.Loading -> {
-                }
+        lifecycleScope.launch {
+            viewModel.createGoalState.collect {
+                when (it) {
+                    is UiState.Loading -> {
+                    }
 
-                is UiState.Success -> {
-                    mainViewModel.getUser()
-                    this.dismiss()
-                }
+                    is UiState.Success -> {
+                        mainViewModel.getUser()
+                        this@TargetAmountBottomSheetFragment.dismiss()
+                    }
 
-                is UiState.Failure -> {
-                }
+                    is UiState.Failure -> {
+                    }
 
-                is UiState.Empty -> {
+                    is UiState.Empty -> {
+                    }
                 }
             }
         }
@@ -135,90 +139,96 @@ class TargetAmountBottomSheetFragment :
     }
 
     private fun initAmountCheckObserver() {
-        viewModel.amountCheck.observe(viewLifecycleOwner) {
-            when (it) {
-                true -> {
-                    binding.tilTargetAmountSetAmount.error = " "
-                    binding.etTargetAmountSetAmount.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.red_500
+        lifecycleScope.launch {
+            viewModel.amountCheck.collect {
+                when (it) {
+                    true -> {
+                        binding.tilTargetAmountSetAmount.error = " "
+                        binding.etTargetAmountSetAmount.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.red_500
+                            )
                         )
-                    )
-                    binding.tvTargetAmountWarningAmount.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.red_500
+                        binding.tvTargetAmountWarningAmount.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.red_500
+                            )
                         )
-                    )
-                }
+                    }
 
-                false -> {
-                    binding.tilTargetAmountSetAmount.error = null
-                    binding.etTargetAmountSetAmount.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.purple_400
+                    false -> {
+                        binding.tilTargetAmountSetAmount.error = null
+                        binding.etTargetAmountSetAmount.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.purple_400
+                            )
                         )
-                    )
-                    binding.tvTargetAmountWarningAmount.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.gray_400
+                        binding.tvTargetAmountWarningAmount.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.gray_400
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
     }
 
     private fun initDayCheckObserver() {
-        viewModel.dayCheck.observe(viewLifecycleOwner) {
-            when (it) {
-                true -> {
-                    binding.tilTargetAmountSetDay.error = " "
-                    binding.etTargetAmountSetDay.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.red_500
+        lifecycleScope.launch {
+            viewModel.dayCheck.collect {
+                when (it) {
+                    true -> {
+                        binding.tilTargetAmountSetDay.error = " "
+                        binding.etTargetAmountSetDay.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.red_500
+                            )
                         )
-                    )
-                    binding.tvTargetAmountWarningDay.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.red_500
+                        binding.tvTargetAmountWarningDay.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.red_500
+                            )
                         )
-                    )
-                }
+                    }
 
-                false -> {
-                    binding.tilTargetAmountSetDay.error = null
-                    binding.etTargetAmountSetDay.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.purple_400
+                    false -> {
+                        binding.tilTargetAmountSetDay.error = null
+                        binding.etTargetAmountSetDay.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.purple_400
+                            )
                         )
-                    )
-                    binding.tvTargetAmountWarningDay.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.gray_400
+                        binding.tvTargetAmountWarningDay.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.gray_400
+                            )
                         )
-                    )
+                    }
                 }
             }
         }
     }
 
     private fun initButtonStateCheckObserver() {
-        viewModel.buttonStateCheck.observe(viewLifecycleOwner) {
-            when (it) {
-                true -> {
-                    binding.btnTargetAmountSave.isEnabled = true
-                }
+        lifecycleScope.launch {
+            viewModel.buttonStateCheck.collect {
+                when (it) {
+                    true -> {
+                        binding.btnTargetAmountSave.isEnabled = true
+                    }
 
-                false -> {
-                    binding.btnTargetAmountSave.isEnabled = false
+                    false -> {
+                        binding.btnTargetAmountSave.isEnabled = false
+                    }
                 }
             }
         }

@@ -10,6 +10,9 @@ import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -19,21 +22,23 @@ class TargetAmountViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
     val _amount = MutableLiveData<String>()
-    val amount: LiveData<String> = _amount
+    val amount: LiveData<String> get() = _amount
+
     val _day = MutableLiveData<String>()
-    val day: LiveData<String> = _day
+    val day: LiveData<String> get() = _day
 
-    private val _amountCheck = MutableLiveData<Boolean>()
-    val amountCheck: LiveData<Boolean> = _amountCheck
+    private val _amountCheck = MutableStateFlow<Boolean>(false)
+    val amountCheck: StateFlow<Boolean> get() = _amountCheck.asStateFlow()
 
-    private val _dayCheck = MutableLiveData<Boolean>()
-    val dayCheck: LiveData<Boolean> = _dayCheck
+    private val _dayCheck = MutableStateFlow<Boolean>(false)
+    val dayCheck: StateFlow<Boolean> get() = _dayCheck.asStateFlow()
 
-    private val _buttonStatecheck = MutableLiveData<Boolean>()
-    val buttonStateCheck: LiveData<Boolean> = _buttonStatecheck
+    private val _buttonStatecheck = MutableStateFlow<Boolean>(false)
+    val buttonStateCheck: StateFlow<Boolean> get() = _buttonStatecheck.asStateFlow()
 
-    private val _createGoalState = MutableLiveData<UiState<Goal>>()
-    val createGoalState: LiveData<UiState<Goal>> = _createGoalState
+    private val _createGoalState = MutableStateFlow<UiState<Goal>>(UiState.Empty)
+    val createGoalState: StateFlow<UiState<Goal>> get() = _createGoalState.asStateFlow()
+
     fun postCreateGoal() {
         val requestBody = RequestCreateGoalDto(
             targetMoney = _amount.value?.replace(",", "")!!.toInt(),
@@ -41,6 +46,7 @@ class TargetAmountViewModel @Inject constructor(
         )
         viewModelScope.launch {
             _createGoalState.value = UiState.Loading
+
             authRepository.postCreateGoal(requestBody)
                 .onSuccess { response ->
                     _createGoalState.value = UiState.Success(response)
@@ -78,7 +84,7 @@ class TargetAmountViewModel @Inject constructor(
         val day = _day.value
         val amount = _amount.value
         _buttonStatecheck.value =
-            !day.isNullOrEmpty() && !amount.isNullOrEmpty() && !(_dayCheck.value!!) && !(_amountCheck.value!!)
+            !day.isNullOrEmpty() && !amount.isNullOrEmpty() && _dayCheck.value && _amountCheck.value
     }
 
     companion object {
