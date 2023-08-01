@@ -1,6 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -41,11 +40,6 @@ class WineyFeedViewModel @Inject constructor(
 
     init {
         getWineyFeed()
-
-    }
-
-    private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
-
     }
 
     fun likeFeed(feedId: Int, isLiked: Boolean) {
@@ -106,10 +100,12 @@ class WineyFeedViewModel @Inject constructor(
 
     fun getWineyFeed() {
         isPagingFinished = false
-        if (isPagingFinished || currentPage > totalPage) {
+        if (currentPage > totalPage) {
             return
         } else {
+            _getWineyFeedListState.value = UiState.Empty
             viewModelScope.launch {
+                _getWineyFeedListState.value = UiState.Loading
                 authRepository.getWineyFeedList(++currentPage)
                     .onSuccess { state ->
                         currentMutableList.addAll(state)
