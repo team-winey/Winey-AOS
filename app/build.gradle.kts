@@ -8,7 +8,6 @@ plugins {
     id(Plugins.kotlinSerialization)
     id(Plugins.hilt)
     id(Plugins.oss)
-    id(Plugins.ktlint) version Versions.ktlintVersion
 }
 
 android {

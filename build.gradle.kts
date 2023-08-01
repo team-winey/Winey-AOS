@@ -13,6 +13,16 @@ buildscript {
     }
 }
 
+plugins {
+    id(Plugins.ktlint) version Versions.ktlintVersion
+}
+
+allprojects {
+    apply {
+        plugin(Plugins.ktlint)
+    }
+}
+
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
