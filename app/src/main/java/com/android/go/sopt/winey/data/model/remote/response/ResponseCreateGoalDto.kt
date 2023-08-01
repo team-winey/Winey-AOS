@@ -7,14 +7,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResponseCreateGoalDto(
     @SerialName("userId")
-    val userId : Int,
+    val userId: Int,
     @SerialName("targetMoney")
-    val targetMoney : Long,
+    val targetMoney: Long,
     @SerialName("targetDate")
     val targetDate: String,
     @SerialName("createdAt")
-    val createdAt: String,
-){
+    val createdAt: String
+) {
     fun toGoal(): Goal {
         val data = this
 

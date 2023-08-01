@@ -53,5 +53,3 @@ fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
         transformations(RoundedCornersTransformation(10f))
     }
 }
-
-

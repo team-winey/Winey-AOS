@@ -4,8 +4,8 @@ import javax.inject.Qualifier
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class  Logger
+annotation class Logger
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class  Auth
+annotation class Auth

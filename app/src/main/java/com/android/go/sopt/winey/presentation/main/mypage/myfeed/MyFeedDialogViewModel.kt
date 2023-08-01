@@ -1,6 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,11 +36,12 @@ class MyFeedDialogViewModel @Inject constructor(
                                 CODE_MYFEED_INVALID_REQUEST ->
                                     UiState.Failure(t.message())
 
-                                else -> _deleteMyFeedState.value =
-                                    UiState.Failure(t.message())
+                                else ->
+                                    _deleteMyFeedState.value =
+                                        UiState.Failure(t.message())
                             }
                         }
-                        Timber.e("${MSG_MYFEED_FAIL} : ${t.code()} : ${t.message()}")
+                        Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
                     }
                 }
         }

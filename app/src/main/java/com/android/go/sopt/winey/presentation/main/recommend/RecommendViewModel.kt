@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecommendViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     private val _getRecommendListState = MutableLiveData<UiState<List<Recommend>>>(UiState.Loading)
     val getRecommendListState: LiveData<UiState<List<Recommend>>> = _getRecommendListState

@@ -8,8 +8,8 @@ import com.android.go.sopt.winey.databinding.ItemWineyfeedHeaderBinding
 class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
 
     class HeaderViewHolder(
-        private val binding: ItemWineyfeedHeaderBinding,
-    ) : RecyclerView.ViewHolder(binding.root) {}
+        private val binding: ItemWineyfeedHeaderBinding
+    ) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         val binding =
@@ -21,7 +21,7 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
         return
     }
 
-    override fun getItemCount():Int = HEADER_COUNT
+    override fun getItemCount(): Int = HEADER_COUNT
 
     companion object {
         private const val HEADER_COUNT = 1

@@ -68,8 +68,11 @@ class WineyFeedAdapter(
         val index = currentList.indexOfFirst { it.feedId == feedId }
         if (index != -1) {
             currentList[index].isLiked = isLiked
-            if (isLiked) currentList[index].likes++
-            else currentList[index].likes--
+            if (isLiked) {
+                currentList[index].likes++
+            } else {
+                currentList[index].likes--
+            }
             notifyItemChanged(index)
         }
     }

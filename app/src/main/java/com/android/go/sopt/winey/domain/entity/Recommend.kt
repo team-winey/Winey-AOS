@@ -6,5 +6,5 @@ data class Recommend(
     val title: String,
     val subtitle: String,
     val discount: String,
-    val image: String,
+    val image: String
 )

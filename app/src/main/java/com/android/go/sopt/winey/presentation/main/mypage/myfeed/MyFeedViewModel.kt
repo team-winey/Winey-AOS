@@ -83,21 +83,26 @@ class MyFeedViewModel @Inject constructor(
                         if (state.isEmpty()) {
                             totalPage = 0
                             isPagingFinished = true
-                        } else totalPage = currentMutableList[0].totalPageSize
+                        } else {
+                            totalPage = currentMutableList[0].totalPageSize
+                        }
                         val updatedList = currentMutableList.toList()
                         _getMyFeedListState.value = UiState.Success(updatedList)
                     }
                     .onFailure { t ->
                         if (t is HttpException) {
                             when (t.code()) {
-                                CODE_MYFEED_INVALID_USER -> _getMyFeedListState.value =
-                                    UiState.Failure(t.message())
+                                CODE_MYFEED_INVALID_USER ->
+                                    _getMyFeedListState.value =
+                                        UiState.Failure(t.message())
 
-                                CODE_MYFEED_INVALID_REQUEST -> _getMyFeedListState.value =
-                                    UiState.Failure(t.message())
+                                CODE_MYFEED_INVALID_REQUEST ->
+                                    _getMyFeedListState.value =
+                                        UiState.Failure(t.message())
 
-                                else -> _getMyFeedListState.value =
-                                    UiState.Failure(t.message())
+                                else ->
+                                    _getMyFeedListState.value =
+                                        UiState.Failure(t.message())
                             }
                             Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
                         }
@@ -122,16 +127,16 @@ class MyFeedViewModel @Inject constructor(
                                 CODE_MYFEED_INVALID_REQUEST ->
                                     UiState.Failure(t.message())
 
-                                else -> _deleteMyFeedState.value =
-                                    UiState.Failure(t.message())
+                                else ->
+                                    _deleteMyFeedState.value =
+                                        UiState.Failure(t.message())
                             }
                         }
-                        Timber.e("${MSG_MYFEED_FAIL} : ${t.code()} : ${t.message()}")
+                        Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
                     }
                 }
         }
     }
-
 
     companion object {
         private const val CODE_MYFEED_INVALID_USER = 404

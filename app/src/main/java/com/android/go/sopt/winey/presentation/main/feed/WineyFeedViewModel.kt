@@ -41,11 +41,9 @@ class WineyFeedViewModel @Inject constructor(
 
     init {
         getWineyFeed()
-
     }
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
-
     }
 
     fun likeFeed(feedId: Int, isLiked: Boolean) {
@@ -69,8 +67,9 @@ class WineyFeedViewModel @Inject constructor(
                                 CODE_WINEYFEED_INVALID_REQUEST ->
                                     UiState.Failure(t.message())
 
-                                else -> _deleteMyFeedState.value =
-                                    UiState.Failure(t.message())
+                                else ->
+                                    _deleteMyFeedState.value =
+                                        UiState.Failure(t.message())
                             }
                         }
                         Timber.e("$MSG_WINEYFEED_FAIL} : ${t.code()} : ${t.message()}")
@@ -116,7 +115,9 @@ class WineyFeedViewModel @Inject constructor(
                         if (state.isEmpty()) {
                             totalPage = 0
                             isPagingFinished = true
-                        } else totalPage = currentMutableList[0].totalPageSize
+                        } else {
+                            totalPage = currentMutableList[0].totalPageSize
+                        }
                         val updatedList = currentMutableList.toList()
                         _getWineyFeedListState.value = UiState.Success(updatedList)
                     }

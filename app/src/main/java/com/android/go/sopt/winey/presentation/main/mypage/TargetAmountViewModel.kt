@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TargetAmountViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     val _amount = MutableLiveData<String>()
     val amount: LiveData<String> = _amount

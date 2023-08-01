@@ -35,8 +35,8 @@ class AmountViewModel @Inject constructor(
         get() = _postWineyFeedState
 
     private fun validateAmount(amount: String): Boolean {
-        if(amount.isBlank()) return false
-        if(!amount.contains(",")) return true // 최대 999
+        if (amount.isBlank()) return false
+        if (!amount.contains(",")) return true // 최대 999
 
         val amountNumber = amount.removeComma().toLong()
         return amountNumber in MIN_AMOUNT..MAX_AMOUNT

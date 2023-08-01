@@ -63,7 +63,9 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         val menuReport = popupMenu.menu.findItem(R.id.menu_report)
         if (wineyFeed.userId == AuthInterceptor.USER_ID.toInt()) {
             menuReport.isVisible = false
-        } else menuDelete.isVisible = false
+        } else {
+            menuDelete.isVisible = false
+        }
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_delete -> {
@@ -157,7 +159,9 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         if (data.isOver) {
             wineyFeedDialogFragment = WineyFeedDialogFragment()
             wineyFeedDialogFragment.show(parentFragmentManager, TAG_WINEYFEED_DIALOG)
-        } else navigateToUpload()
+        } else {
+            navigateToUpload()
+        }
     }
 
     private fun setListWithInfiniteScroll() {

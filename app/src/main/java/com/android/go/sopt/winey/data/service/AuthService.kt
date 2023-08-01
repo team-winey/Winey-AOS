@@ -32,7 +32,7 @@ interface AuthService {
 
     @GET("feed/myFeed")
     suspend fun getMyFeedList(
-        @Query("page") page:Int
+        @Query("page") page: Int
     ): ResponseGetWineyFeedListDto
 
     @POST("feedLike/{feedId}")
@@ -55,8 +55,9 @@ interface AuthService {
 
     @GET("recommend")
     suspend fun getRecommendList(
-        @Query("page") page:Int
+        @Query("page") page: Int
     ): BaseResponse<ResponseGetRecommendListDto>
+
     @DELETE("feed/{feedId}")
     suspend fun deleteFeed(
         @Path("feedId") feedId: Int

@@ -35,20 +35,16 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
         viewModel.getRecommendListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-
                 }
 
                 is UiState.Success -> {
                     recommendAdapter.submitList(state.data)
-
                 }
 
                 is UiState.Failure -> {
-
                 }
 
                 is UiState.Empty -> {
-
                 }
             }
         }

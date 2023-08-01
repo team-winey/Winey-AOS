@@ -9,7 +9,7 @@ class ContentViewModel : ViewModel() {
     val _content = MutableLiveData<String>()
     val content: String get() = _content.value ?: ""
 
-    val isValidContent : LiveData<Boolean> = _content.map { validateLength(it) }
+    val isValidContent: LiveData<Boolean> = _content.map { validateLength(it) }
 
     private fun validateLength(content: String): Boolean =
         content.length in MIN_CONTENT_LENGTH..MAX_CONTENT_LENGTH
