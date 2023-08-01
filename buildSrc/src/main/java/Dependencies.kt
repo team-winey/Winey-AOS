@@ -12,6 +12,7 @@ object AndroidXDependencies {
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompatVersion}"
     const val constraintLayout =
         "androidx.constraintlayout:constraintlayout:${Versions.constraintLayoutVersion}"
+    const val swipeRefreshLayout = "androidx.swiperefreshlayout:${Versions.swipeRefreshLayoutVersion}"
     const val startup = "androidx.startup:startup-runtime:${Versions.appStartUpVersion}"
     const val hilt = "com.google.dagger:hilt-android:${Versions.hiltVersion}"
     const val activity = "androidx.activity:activity-ktx:${Versions.activityKtxVersion}"

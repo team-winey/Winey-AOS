@@ -10,6 +10,7 @@ object Versions {
     const val appCompatVersion = "1.6.1"
     const val materialDesignVersion = "1.6.1"
     const val constraintLayoutVersion = "2.1.4"
+    const val swipeRefreshLayoutVersion = "1.1.0"
     const val appStartUpVersion = "1.1.1"
     const val legacySupportVersion = "1.0.0"
     const val hiltVersion = "2.46.1"
