@@ -16,6 +16,7 @@ import com.android.go.sopt.winey.databinding.FragmentTargetAmountBottomSheetBind
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.util.binding.BindingBottomSheetDialogFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
+import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,6 +68,7 @@ class TargetAmountBottomSheetFragment :
                     }
 
                     is UiState.Failure -> {
+                        snackBar(binding.root) { it.msg }
                     }
 
                     is UiState.Empty -> {
