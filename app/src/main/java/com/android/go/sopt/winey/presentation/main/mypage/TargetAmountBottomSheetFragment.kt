@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +15,6 @@ import com.android.go.sopt.winey.databinding.FragmentTargetAmountBottomSheetBind
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.util.binding.BindingBottomSheetDialogFragment
 import com.android.go.sopt.winey.util.context.colorOf
-import com.android.go.sopt.winey.util.context.drawableOf
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
@@ -154,7 +152,6 @@ class TargetAmountBottomSheetFragment :
                         binding.tvTargetAmountWarningAmount.setTextColor(
                             requireContext().colorOf(R.color.red_500)
                         )
-
                     }
 
                     false -> {
@@ -256,7 +253,7 @@ class TargetAmountBottomSheetFragment :
         }
     }
 
-    companion object{
+    companion object {
         const val MAX = "1000000000"
     }
 }
