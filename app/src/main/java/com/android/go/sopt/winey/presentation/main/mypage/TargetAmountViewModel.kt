@@ -40,10 +40,17 @@ class TargetAmountViewModel @Inject constructor(
     val createGoalState: StateFlow<UiState<Goal>> get() = _createGoalState.asStateFlow()
 
     fun postCreateGoal() {
-        val requestBody = RequestCreateGoalDto(
-            targetMoney = _amount.value?.replace(",", "")!!.toInt(),
-            targetDay = _day.value?.replace(",", "")!!.toInt()
-        )
+        val money: Any? = amount.value
+        val day: Any? = day.value
+        val requestBody: RequestCreateGoalDto
+        if (money is String && day is String) {
+            requestBody = RequestCreateGoalDto(
+                targetMoney = money.replace(",", "").toInt(),
+                targetDay = day.replace(",", "").toInt()
+            )
+        } else {
+            return
+        }
         viewModelScope.launch {
             _createGoalState.value = UiState.Loading
 
@@ -63,21 +70,23 @@ class TargetAmountViewModel @Inject constructor(
     }
 
     fun checkDay(day: String) {
-        if (day == "1000000000") {
+        if (day == MAX) {
             _dayCheck.value = false
-        } else {
-            val dayValue = day.toLongOrNull()
-            _dayCheck.value = dayValue != null && (dayValue in 0..4 || dayValue > 365)
+            return
         }
+        val dayValue = day.toLongOrNull()
+        _dayCheck.value =
+            dayValue != null && (dayValue in BASE_VALUE until MIN_DAY_VALUE || dayValue > MAX_DAY_VALUE)
     }
 
     fun checkAmount(amount: String) {
-        if (amount == "1000000000") {
+        if (amount == MAX) {
             _amountCheck.value = false
-        } else {
-            val amountValue = amount.toLongOrNull()
-            _amountCheck.value = amountValue != null && amountValue in 0 until 30000
+            return
         }
+        val amountValue = amount.toLongOrNull()
+        _amountCheck.value =
+            amountValue != null && amountValue in BASE_VALUE until MIN_AMOUNT_VALUE
     }
 
     fun checkButtonState() {
@@ -90,5 +99,10 @@ class TargetAmountViewModel @Inject constructor(
     companion object {
         const val MAX_AMOUNT_LENGTH = 12
         const val MAX_DAY_LENGTH = 3
+        const val MIN_AMOUNT_VALUE = 30000
+        const val MIN_DAY_VALUE = 5
+        const val MAX_DAY_VALUE = 365
+        const val BASE_VALUE = 0
+        const val MAX = "1000000000"
     }
 }
