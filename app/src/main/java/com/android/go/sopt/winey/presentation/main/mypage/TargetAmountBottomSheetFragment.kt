@@ -15,6 +15,8 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentTargetAmountBottomSheetBinding
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.util.binding.BindingBottomSheetDialogFragment
+import com.android.go.sopt.winey.util.context.colorOf
+import com.android.go.sopt.winey.util.context.drawableOf
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
@@ -93,7 +95,7 @@ class TargetAmountBottomSheetFragment :
                 val amount: String = if (input.isNotBlank()) {
                     input.replace(",", "")
                 } else {
-                    "1000000000"
+                    MAX
                 }
                 viewModel.checkAmount(amount)
                 viewModel.checkButtonState()
@@ -121,7 +123,7 @@ class TargetAmountBottomSheetFragment :
                 val day: String = if (input.isNotBlank()) {
                     input.replace(",", "")
                 } else {
-                    "1000000000"
+                    MAX
                 }
                 viewModel.checkDay(day)
                 viewModel.checkButtonState()
@@ -147,32 +149,21 @@ class TargetAmountBottomSheetFragment :
                     true -> {
                         binding.tilTargetAmountSetAmount.error = " "
                         binding.etTargetAmountSetAmount.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.red_500
-                            )
+                            requireContext().colorOf(R.color.red_500)
                         )
                         binding.tvTargetAmountWarningAmount.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.red_500
-                            )
+                            requireContext().colorOf(R.color.red_500)
                         )
+
                     }
 
                     false -> {
                         binding.tilTargetAmountSetAmount.error = null
                         binding.etTargetAmountSetAmount.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.purple_400
-                            )
+                            requireContext().colorOf(R.color.purple_400)
                         )
                         binding.tvTargetAmountWarningAmount.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.gray_400
-                            )
+                            requireContext().colorOf(R.color.gray_400)
                         )
                     }
                 }
@@ -187,32 +178,20 @@ class TargetAmountBottomSheetFragment :
                     true -> {
                         binding.tilTargetAmountSetDay.error = " "
                         binding.etTargetAmountSetDay.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.red_500
-                            )
+                            requireContext().colorOf(R.color.red_500)
                         )
                         binding.tvTargetAmountWarningDay.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.red_500
-                            )
+                            requireContext().colorOf(R.color.red_500)
                         )
                     }
 
                     false -> {
                         binding.tilTargetAmountSetDay.error = null
                         binding.etTargetAmountSetDay.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.purple_400
-                            )
+                            requireContext().colorOf(R.color.purple_400)
                         )
                         binding.tvTargetAmountWarningDay.setTextColor(
-                            ContextCompat.getColor(
-                                requireContext(),
-                                R.color.gray_400
-                            )
+                            requireContext().colorOf(R.color.gray_400)
                         )
                     }
                 }
@@ -275,5 +254,9 @@ class TargetAmountBottomSheetFragment :
             bottomSheetBehavior.maxHeight = maxHeight
             parent.setBackgroundColor(Color.TRANSPARENT)
         }
+    }
+
+    companion object{
+        const val MAX = "1000000000"
     }
 }
