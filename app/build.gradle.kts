@@ -32,7 +32,7 @@ android {
             gradleLocalProperties(rootDir).getProperty("kakao.native.key"),
         )
 
-        manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir).getProperty("kakao.native.key")
+        manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir).getProperty("kakao.native.key.quote")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
