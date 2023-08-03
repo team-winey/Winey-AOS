@@ -37,6 +37,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
         setListWithInfiniteScroll()
+        setSwipeRefreshListener()
         initFabClickListener()
         initPostLikeStateObserver()
         initGetFeedStateObserver()
@@ -183,6 +184,13 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                 }
             }
         })
+    }
+
+    private fun setSwipeRefreshListener() {
+        binding.layoutWineyfeedRefresh.setOnRefreshListener {
+            viewModel.getWineyFeed()
+            binding.layoutWineyfeedRefresh.isRefreshing = false
+        }
     }
 
     private fun navigateToUpload() {
