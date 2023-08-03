@@ -35,11 +35,15 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initAdapter() {
-        myFeedAdapter = MyFeedAdapter(deleteButtonClick = { feedId, writerLevel ->
-            initDialog(feedId, writerLevel)
-        }, fragmentManager = parentFragmentManager, likeButtonClick = { feedId, isLiked ->
-            viewModel.likeFeed(feedId, isLiked)
-        })
+        myFeedAdapter = MyFeedAdapter(
+            deleteButtonClick = { feedId, writerLevel ->
+                initDialog(feedId, writerLevel)
+            },
+            fragmentManager = parentFragmentManager,
+            likeButtonClick = { feedId, isLiked ->
+                viewModel.likeFeed(feedId, isLiked)
+            }
+        )
         binding.rvMyfeedPost.adapter = myFeedAdapter
     }
 

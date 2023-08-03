@@ -58,7 +58,6 @@ class MyFeedAdapter(
             val myFeedDeleteDialogFragment = MyFeedDeleteDialogFragment(feedId, userLevel)
             myFeedDeleteDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
         }
-
     }
 
     override fun onCreateViewHolder(

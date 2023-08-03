@@ -28,7 +28,9 @@ class MyFeedDeleteDialogFragment(private val feedId: Int, private val userLevel:
         binding.tvDialogSub.text.apply {
             if (userLevel <= 2) {
                 getString(R.string.myfeed_dialog_lowlevel_sub)
-            } else getString(R.string.myfeed_dialog_highlevel_sub)
+            } else {
+                getString(R.string.myfeed_dialog_highlevel_sub)
+            }
         }
     }
 

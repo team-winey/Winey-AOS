@@ -1,7 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
@@ -84,7 +82,9 @@ class WineyFeedViewModel @Inject constructor(
                         if (state.isEmpty()) {
                             totalPage = 0
                             isPagingFinished = true
-                        } else totalPage = currentMutableList[0].totalPageSize
+                        } else {
+                            totalPage = currentMutableList[0].totalPageSize
+                        }
                         val updatedList = currentMutableList.toList()
                         _getWineyFeedListState.value = UiState.Success(updatedList)
                     }
