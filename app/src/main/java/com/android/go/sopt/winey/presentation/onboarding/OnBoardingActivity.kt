@@ -20,7 +20,8 @@ class OnBoardingActivity: BindingActivity<ActivityOnBoardingBinding>(R.layout.ac
                 if (error != null) {
                     Log.e("LOGIN", "카카오계정으로 로그인 실패", error)
                 } else if (token != null) {
-                    Log.i("LOGIN", "카카오계정으로 로그인 성공 ${token.accessToken}")
+                    Log.i("LOGIN", "카카오계정으로 로그인 성공 액세스토큰 ${token.accessToken}")
+                    Log.i("LOGIN", "카카오계정으로 로그인 성공 리프레시토큰 ${token.refreshToken}")
                 }
             }
             if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
@@ -33,7 +34,8 @@ class OnBoardingActivity: BindingActivity<ActivityOnBoardingBinding>(R.layout.ac
                         }
                         UserApiClient.instance.loginWithKakaoAccount(this, callback = callback)
                     } else if (token != null) {
-                        Log.i("LOGIN", "카카오톡으로 로그인 성공 ${token.accessToken}")
+                        Log.i("LOGIN", "카카오톡으로 로그인 성공 액세스토큰 ${token.accessToken}")
+                        Log.i("LOGIN", "카카오톡으로 로그인 성공 리프레시토큰 ${token.refreshToken}")
 
                         finish()
                     }
