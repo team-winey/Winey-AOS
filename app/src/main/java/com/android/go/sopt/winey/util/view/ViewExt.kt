@@ -22,10 +22,12 @@ class ItemDiffCallback<T : Any>(
     val onContentsTheSame: (T, T) -> Boolean
 ) : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(
-        oldItem: T, newItem: T
+        oldItem: T,
+        newItem: T
     ): Boolean = onItemsTheSame(oldItem, newItem)
 
     override fun areContentsTheSame(
-        oldItem: T, newItem: T
+        oldItem: T,
+        newItem: T
     ): Boolean = onContentsTheSame(oldItem, newItem)
 }

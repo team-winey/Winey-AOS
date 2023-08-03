@@ -28,8 +28,11 @@ fun boolExtra(defaultValue: Boolean = false) =
 
 fun stringExtra(defaultValue: String? = null) =
     ReadOnlyProperty<Activity, String?> { thisRef, property ->
-        if (defaultValue == null) thisRef.intent.extras?.getString(property.name)
-        else thisRef.intent.extras?.getString(property.name, defaultValue)
+        if (defaultValue == null) {
+            thisRef.intent.extras?.getString(property.name)
+        } else {
+            thisRef.intent.extras?.getString(property.name, defaultValue)
+        }
     }
 
 fun <P : Parcelable> parcelableExtra(defaultValue: P? = null) =

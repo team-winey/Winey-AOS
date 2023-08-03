@@ -39,8 +39,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         myFeedAdapter = MyFeedAdapter(deleteButtonClick = { feedId, writerLevel ->
             initDialog(feedId, writerLevel)
         }, fragmentManager = parentFragmentManager, likeButtonClick = { feedId, isLiked ->
-            viewModel.likeFeed(feedId, isLiked)
-        })
+                viewModel.likeFeed(feedId, isLiked)
+            })
         binding.rvMyfeedPost.adapter = myFeedAdapter
     }
 
@@ -54,7 +54,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     private fun initEmptyItemLayout(totalPage: Int) {
         if (totalPage == 0) {
-
         } else {
             binding.rvMyfeedPost.isVisible = true
         }
@@ -73,7 +72,9 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                     if (state.data.isEmpty()) {
                         binding.rvMyfeedPost.isVisible = false
                         binding.layoutMyfeedEmpty.isVisible = true
-                    } else  binding.rvMyfeedPost.isVisible = true
+                    } else {
+                        binding.rvMyfeedPost.isVisible = true
+                    }
                     val myFeedList = state.data
                     myFeedAdapter.submitList(myFeedList)
                 }
@@ -135,10 +136,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         parentFragmentManager.popBackStack()
     }
 
-
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
         private const val MAX_FEED_VER_PAGE = 10
     }
-
 }

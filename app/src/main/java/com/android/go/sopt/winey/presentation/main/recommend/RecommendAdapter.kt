@@ -11,11 +11,10 @@ import com.android.go.sopt.winey.domain.entity.Recommend
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
-class RecommendAdapter(
-) : ListAdapter<Recommend, RecommendAdapter.RecommendViewHolder>(diffUtil) {
+class RecommendAdapter() : ListAdapter<Recommend, RecommendAdapter.RecommendViewHolder>(diffUtil) {
 
     class RecommendViewHolder(
-        private val binding: ItemRecommendPostBinding,
+        private val binding: ItemRecommendPostBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: Recommend) {
             binding.apply {

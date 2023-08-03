@@ -70,7 +70,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                 }
 
                 else -> {
-
                 }
             }
         }

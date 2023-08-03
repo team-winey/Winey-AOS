@@ -12,7 +12,6 @@ import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
-
 class MyFeedAdapter(
     private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
     private val fragmentManager: FragmentManager,
@@ -49,7 +48,6 @@ class MyFeedAdapter(
                 executePendingBindings()
             }
         }
-
 
         private fun setUserProfile(userLevel: Int): Int {
             return when (userLevel) {
@@ -90,8 +88,11 @@ class MyFeedAdapter(
         val index = currentList.indexOfFirst { it.feedId == feedId }
         if (index != -1) {
             currentList[index].isLiked = isLiked
-            if (isLiked) currentList[index].likes++
-            else currentList[index].likes--
+            if (isLiked) {
+                currentList[index].likes++
+            } else {
+                currentList[index].likes--
+            }
             notifyItemChanged(index)
         }
     }
@@ -102,5 +103,4 @@ class MyFeedAdapter(
         )
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
     }
-
 }

@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -85,7 +86,7 @@ class WineyFeedViewModel @Inject constructor(
                         val updatedList = currentMutableList.toList()
                         _getWineyFeedListState.value = UiState.Success(updatedList)
                     }
-                    .onFailure { t -> handleFailureState(_postWineyFeedLikeState, t) }
+                    .onFailure { t -> handleFailureState(_getWineyFeedListState, t) }
             }
         }
     }

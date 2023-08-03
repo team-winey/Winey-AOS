@@ -5,6 +5,7 @@ object Versions {
     const val kotlinVersion = "1.8.20"
     const val kotlinSerializationJsonVersion = "1.5.1"
     const val kotlinDateTimeVersion = "0.4.0"
+    const val ktlintVersion = "11.5.0"
 
     const val coreKtxVersion = "1.10.1"
     const val appCompatVersion = "1.6.1"

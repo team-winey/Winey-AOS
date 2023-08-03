@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
-) : ViewModel(){
+    private val authRepository: AuthRepository
+) : ViewModel() {
     private val _getUserState = MutableLiveData<UiState<User>>(UiState.Loading)
     val getUserState: LiveData<UiState<User>> get() = _getUserState
 
