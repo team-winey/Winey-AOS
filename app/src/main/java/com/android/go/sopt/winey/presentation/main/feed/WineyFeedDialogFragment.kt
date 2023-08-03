@@ -35,7 +35,7 @@ class WineyFeedDialogFragment :
     }
 
     private fun syncMyPage() {
-        val bottomNav : BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
+        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
         bottomNav.selectedItemId = R.id.menu_mypage
     }
 
