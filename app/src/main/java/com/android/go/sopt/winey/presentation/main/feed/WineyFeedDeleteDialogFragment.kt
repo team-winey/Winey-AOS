@@ -1,26 +1,39 @@
-package com.android.go.sopt.winey.presentation.main.mypage.myfeed
+package com.android.go.sopt.winey.presentation.main.feed
 
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
-import com.android.go.sopt.winey.databinding.FragmentMyfeedHighlevelDeleteDialogBinding
+import com.android.go.sopt.winey.databinding.FragmentFeedDeleteDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MyFeedDeleteHighDialogFragment(private val feedId: Int) :
-    BindingDialogFragment<FragmentMyfeedHighlevelDeleteDialogBinding>(R.layout.fragment_myfeed_highlevel_delete_dialog) {
-    lateinit var myFeedFragment: MyFeedFragment
-    private val myFeedViewModel by viewModels<MyFeedViewModel>()
+class WineyFeedDeleteDialogFragment(private val feedId: Int, private val userLevel: Int) :
+    BindingDialogFragment<FragmentFeedDeleteDialogBinding>(R.layout.fragment_feed_delete_dialog) {
+    lateinit var wineyFeedFragment: WineyFeedFragment
+    private val wineyFeedViewModel by viewModels<WineyFeedViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initButtonClickListener()
         initDeleteFeedStateObserver()
+        setDialogSubByLevel()
+    }
+
+    private fun setDialogSubByLevel() {
+        binding.tvDialogSub.text.apply {
+            if (userLevel <= 2) {
+                getString(R.string.myfeed_dialog_lowlevel_sub)
+            } else getString(R.string.myfeed_dialog_highlevel_sub)
+        }
     }
 
     private fun initButtonClickListener() {
@@ -28,18 +41,18 @@ class MyFeedDeleteHighDialogFragment(private val feedId: Int) :
             this.dismiss()
         }
         binding.btnDialogDelete.setOnClickListener {
-            myFeedViewModel.deleteFeed(feedId)
+            wineyFeedViewModel.deleteFeed(feedId)
             initDeleteFeedStateObserver()
         }
     }
 
     private fun initDeleteFeedStateObserver() {
-        myFeedFragment = MyFeedFragment()
-        myFeedViewModel.deleteMyFeedState.observe(viewLifecycleOwner) { state ->
+        wineyFeedFragment = WineyFeedFragment()
+        wineyFeedViewModel.deleteMyFeedState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     this.dismiss()
-                    refreshMyFeed()
+                    refreshWineyFeed()
                     snackBar(binding.root) { state.toString() }
                 }
 
@@ -49,14 +62,14 @@ class MyFeedDeleteHighDialogFragment(private val feedId: Int) :
 
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
-    private fun refreshMyFeed() {
+    private fun refreshWineyFeed() {
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager.beginTransaction().apply {
-            myFeedFragment = MyFeedFragment()
-            replace(R.id.fcv_main, myFeedFragment)
+            wineyFeedFragment = WineyFeedFragment()
+            replace(R.id.fcv_main, wineyFeedFragment)
             commit()
         }
     }

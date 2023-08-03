@@ -66,6 +66,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         popupMenu.menuInflater.inflate(R.menu.menu_wineyfeed, popupMenu.menu)
         val menuDelete = popupMenu.menu.findItem(R.id.menu_delete)
         val menuReport = popupMenu.menu.findItem(R.id.menu_report)
+        //TODO: 로그인 완료되면 리팩토링
         if (wineyFeed.userId == AuthInterceptor.USER_ID.toInt()) {
             menuReport.isVisible = false
         } else {
@@ -74,11 +75,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_delete -> {
-                    if (wineyFeed.writerLevel <= 2) {
-                        showLowDeleteDialog(wineyFeed.feedId)
-                    } else {
-                        showHighDeleteDialog(wineyFeed.feedId)
-                    }
+                    showDeleteDialog(wineyFeed.feedId, wineyFeed.writerLevel)
                     true
                 }
 
@@ -89,16 +86,9 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         popupMenu.show()
     }
 
-    private fun showLowDeleteDialog(feedId: Int) {
-        val wineyFeedLowDeleteDialogFragment =
-            WineyFeedLowDeleteDialogFragment(feedId)
-        wineyFeedLowDeleteDialogFragment.show(parentFragmentManager, "delete")
-    }
-
-    private fun showHighDeleteDialog(feedId: Int) {
-        val wineyFeedHighDeleteDialogFragment =
-            WineyFeedHighDeleteDialogFragment(feedId)
-        wineyFeedHighDeleteDialogFragment.show(parentFragmentManager, "delete")
+    private fun showDeleteDialog(feedId: Int, userLevel: Int) {
+        val wineyFeedDeleteDialogFragment = WineyFeedDeleteDialogFragment(feedId, userLevel)
+        wineyFeedDeleteDialogFragment.show(parentFragmentManager, "delete")
     }
 
     private fun initGetFeedStateObserver() {
