@@ -10,6 +10,9 @@ import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -26,16 +29,16 @@ class WineyFeedViewModel @Inject constructor(
     private var totalPage = Int.MAX_VALUE
     var currentMutableList = mutableListOf<WineyFeed>()
 
-    private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
-    val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
-        get() = _getWineyFeedListState
+    private val _getWineyFeedListState = MutableStateFlow<UiState<List<WineyFeed>>>(UiState.Loading)
+    val getWineyFeedListState: StateFlow<UiState<List<WineyFeed>>>
+        get() = _getWineyFeedListState.asStateFlow()
 
-    private val _postWineyFeedLikeState = MutableLiveData<UiState<Like>>(UiState.Loading)
-    val postWineyFeedLikeState: LiveData<UiState<Like>>
+    private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
+    val postWineyFeedLikeState: StateFlow<UiState<Like>>
         get() = _postWineyFeedLikeState
 
-    val _deleteMyFeedState = MutableLiveData<UiState<Unit>>(UiState.Loading)
-    val deleteMyFeedState: LiveData<UiState<Unit>>
+    val _deleteMyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val deleteMyFeedState: StateFlow<UiState<Unit>>
         get() = _deleteMyFeedState
 
     init {
@@ -90,7 +93,7 @@ class WineyFeedViewModel @Inject constructor(
         }
     }
 
-    private fun <T> handleFailureState(loadingState: MutableLiveData<UiState<T>>, t: Throwable) {
+    private fun <T> handleFailureState(loadingState: MutableStateFlow<UiState<T>>, t: Throwable) {
         if (t is HttpException) {
             val errorMessage = when (t.code()) {
                 CODE_WINEYFEED_INVALID_USER -> t.message()

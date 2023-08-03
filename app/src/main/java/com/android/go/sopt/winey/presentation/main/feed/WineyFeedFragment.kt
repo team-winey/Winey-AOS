@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,8 @@ import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
@@ -98,7 +102,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initGetFeedStateObserver() {
-        viewModel.getWineyFeedListState.observe(viewLifecycleOwner) { state ->
+        viewModel.getWineyFeedListState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     val wineyFeedList = state.data
@@ -111,11 +115,11 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
                 else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun initPostLikeStateObserver() {
-        viewModel.postWineyFeedLikeState.observe(viewLifecycleOwner) { state ->
+        viewModel.postWineyFeedLikeState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
@@ -131,7 +135,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
                 else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun initFabClickListener() {

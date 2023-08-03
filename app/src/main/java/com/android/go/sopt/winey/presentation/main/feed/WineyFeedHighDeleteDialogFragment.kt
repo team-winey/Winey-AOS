@@ -3,12 +3,16 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedHighlevelDeleteDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -35,7 +39,7 @@ class WineyFeedHighDeleteDialogFragment(private val feedId: Int) :
 
     private fun initDeleteFeedStateObserver() {
         wineyFeedFragment = WineyFeedFragment()
-        wineyFeedViewModel.deleteMyFeedState.observe(viewLifecycleOwner) { state ->
+        wineyFeedViewModel.deleteMyFeedState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     this.dismiss()
@@ -49,7 +53,7 @@ class WineyFeedHighDeleteDialogFragment(private val feedId: Int) :
 
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun refreshWineyFeed() {
