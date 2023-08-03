@@ -3,21 +3,23 @@ package com.android.go.sopt.winey.presentation.main.mypage
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
@@ -33,7 +35,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     override fun onResume() {
         super.onResume()
-        Log.e("test log", "이게 실행되니")
         viewModel.getUser()
     }
 
@@ -59,21 +60,24 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun setupGetUserState() {
-        viewModel.getUserState.observe(viewLifecycleOwner) { state ->
+        lifecycleScope.launch {
+            viewModel.getUserState.collect { state ->
 
-            when (state) {
-                is UiState.Loading -> {
-                }
+                when (state) {
+                    is UiState.Loading -> {
+                    }
 
-                is UiState.Success -> {
-                    handleSuccessState(state.data)
-                    handleTargetModifyButtonState(state.data)
-                }
+                    is UiState.Success -> {
+                        handleSuccessState(state.data)
+                        handleTargetModifyButtonState(state.data)
+                    }
 
-                is UiState.Failure -> {
-                }
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
 
-                is UiState.Empty -> {
+                    is UiState.Empty -> {
+                    }
                 }
             }
         }

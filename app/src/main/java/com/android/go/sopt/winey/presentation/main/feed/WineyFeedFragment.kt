@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
@@ -26,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
@@ -135,17 +137,19 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initGetUserStateObserver() {
-        mainViewModel.getUserState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Success -> {
-                    isGoalValid(state.data)
-                }
+        lifecycleScope.launch {
+            mainViewModel.getUserState.collect { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        isGoalValid(state.data)
+                    }
 
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
-                }
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
 
-                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+                    else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+                }
             }
         }
     }
