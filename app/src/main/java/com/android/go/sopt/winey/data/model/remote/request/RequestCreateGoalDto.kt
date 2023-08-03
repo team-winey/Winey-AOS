@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RequestCreateGoalDto(
     @SerialName("targetMoney")
-    val targetMoney: Int,
+    val targetMoney: Int?,
     @SerialName("targetDay")
-    val targetDay: Int
+    val targetDay: Int?
 )
