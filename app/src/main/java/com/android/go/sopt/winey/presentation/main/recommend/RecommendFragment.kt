@@ -9,6 +9,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentRecommendBinding
 import com.android.go.sopt.winey.presentation.main.feed.RecommendHeaderAdapter
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -34,7 +35,7 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
     }
 
     private fun getRecommendListStateObserver() {
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             viewModel.getRecommendListState.collect { state ->
                 when (state) {
                     is UiState.Loading -> {
@@ -45,6 +46,7 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
                     }
 
                     is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
                     }
 
                     is UiState.Empty -> {

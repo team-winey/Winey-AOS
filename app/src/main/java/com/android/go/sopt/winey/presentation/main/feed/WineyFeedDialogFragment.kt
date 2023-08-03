@@ -11,7 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class WineyFeedDialogFragment :
     BindingDialogFragment<FragmentWineyfeedNoGoalDialogBinding>(R.layout.fragment_wineyfeed_no_goal_dialog) {
-    private lateinit var bottomNav: BottomNavigationView
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initButtonClickListener()
@@ -31,7 +31,11 @@ class WineyFeedDialogFragment :
         parentFragmentManager.commit {
             replace(R.id.fcv_main, MyPageFragment())
         }
-        bottomNav = requireActivity().findViewById(R.id.bnv_main)
+        syncMyPage()
+    }
+
+    private fun syncMyPage() {
+        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
         bottomNav.selectedItemId = R.id.menu_mypage
     }
 
