@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,13 +58,13 @@ class TargetAmountViewModel @Inject constructor(
             authRepository.postCreateGoal(requestBody)
                 .onSuccess { response ->
                     _createGoalState.value = UiState.Success(response)
-                    Log.e("test log", "목표설정 성공")
+                    Timber.e("목표설정 성공")
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        Log.e("test log", "HTTP 실패")
+                        Timber.e("HTTP 실패")
                     }
-                    Log.e("test log", "${t.message}")
+                    Timber.e("${t.message}")
                     _createGoalState.value = UiState.Failure("${t.message}")
                 }
         }

@@ -1,6 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.recommend
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.domain.entity.Recommend
@@ -12,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,13 +31,13 @@ class RecommendViewModel @Inject constructor(
             authRepository.getRecommendList(1)
                 .onSuccess { response ->
                     _getRecommendListState.value = UiState.Success(response)
-                    Log.e("test log", "성공")
+                    Timber.e("성공")
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        Log.e("test log", "HTTP 실패")
+                        Timber.e("HTTP 실패")
                     }
-                    Log.e("test log", "${t.message}")
+                    Timber.e("${t.message}")
                     _getRecommendListState.value = UiState.Failure("${t.message}")
                 }
         }
