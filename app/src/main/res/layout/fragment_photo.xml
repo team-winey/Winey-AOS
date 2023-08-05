@@ -103,7 +103,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="14dp"
             android:background="@drawable/sel_upload_next_btn_bg_color"
-            android:enabled="@{vm.photoSelected ? true : false, default=false}"
+            android:enabled="@{vm.photoUploadState, default=false}"
             android:stateListAnimator="@null"
             android:text="@string/upload_next_btn_text"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
