@@ -30,7 +30,7 @@ class WineyFeedDeleteDialogFragment(private val feedId: Int, private val userLev
 
     private fun setDialogSubByLevel() {
         binding.tvDialogSub.text.apply {
-            if (userLevel <= 2) {
+            if (userLevel <= LV_KNIGHT) {
                 getString(R.string.myfeed_dialog_lowlevel_sub)
             } else {
                 getString(R.string.myfeed_dialog_highlevel_sub)
@@ -78,5 +78,6 @@ class WineyFeedDeleteDialogFragment(private val feedId: Int, private val userLev
 
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
+        private const val LV_KNIGHT = 2
     }
 }
