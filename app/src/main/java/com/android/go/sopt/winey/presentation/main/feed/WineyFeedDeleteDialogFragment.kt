@@ -8,6 +8,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentFeedDeleteDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +50,7 @@ class WineyFeedDeleteDialogFragment(private val feedId: Int, private val userLev
     }
 
     private fun initDeleteFeedStateObserver() {
-        wineyFeedViewModel.deleteMyFeedState.flowWithLifecycle(this.lifecycle).onEach { state ->
+        wineyFeedViewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     this.dismiss()
