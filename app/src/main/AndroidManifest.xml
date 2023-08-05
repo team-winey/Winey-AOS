@@ -24,7 +24,7 @@
         </activity>
 
         <activity
-            android:name=".presentation.onboarding.GuideActivity"
+            android:name=".presentation.onboarding.guide.GuideActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

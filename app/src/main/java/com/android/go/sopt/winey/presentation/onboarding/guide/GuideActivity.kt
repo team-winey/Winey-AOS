@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.onboarding
+package com.android.go.sopt.winey.presentation.onboarding.guide
 
 import android.os.Bundle
 import com.android.go.sopt.winey.R
