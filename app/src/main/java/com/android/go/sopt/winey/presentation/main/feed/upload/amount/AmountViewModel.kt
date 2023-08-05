@@ -10,8 +10,13 @@ import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.UriToRequestBody
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 import timber.log.Timber
@@ -23,49 +28,32 @@ class AmountViewModel @Inject constructor(
 ) : ViewModel() {
     val _amount = MutableLiveData<String>()
     val amount: String get() = _amount.value ?: ""
-
     val isValidAmount: LiveData<Boolean> = _amount.map { validateAmount(it) }
 
-    private val _imageRequestBody = MutableLiveData<UriToRequestBody>()
-    val imageRequestBody: LiveData<UriToRequestBody>
-        get() = _imageRequestBody
+    private var imageRequestBody: UriToRequestBody? = null
 
-    private val _postWineyFeedState = MutableLiveData<UiState<ResponsePostWineyFeedDto?>>()
-    val postWineyFeedState: LiveData<UiState<ResponsePostWineyFeedDto?>>
-        get() = _postWineyFeedState
+    private val _postWineyFeedState =
+        MutableStateFlow<UiState<ResponsePostWineyFeedDto?>>(UiState.Loading)
+    val postWineyFeedState: StateFlow<UiState<ResponsePostWineyFeedDto?>> =
+        _postWineyFeedState.asStateFlow()
 
     private fun validateAmount(amount: String): Boolean {
         if (amount.isBlank()) return false
-        if (!amount.contains(",")) return true // 최대 999
-
+        if (!amount.contains(COMMA)) return true
         val amountNumber = amount.removeComma().toLong()
         return amountNumber in MIN_AMOUNT..MAX_AMOUNT
     }
 
-    private fun String.removeComma() = replace(",", "")
-
     fun updateRequestBody(requestBody: UriToRequestBody) {
-        _imageRequestBody.value = requestBody
+        this.imageRequestBody = requestBody
     }
 
     fun postWineyFeed(content: String, amount: String) {
-        _postWineyFeedState.value = UiState.Loading
-
-        if (_imageRequestBody.value == null) {
-            Timber.e("Image RequestBody is null")
-            return
-        }
+        if (!validateRequestBody()) return
 
         viewModelScope.launch {
-            val contentBody = content.toRequestBody("text/plain".toMediaTypeOrNull())
-            val amountBody = amount.toRequestBody("text/plain".toMediaTypeOrNull())
-            val stringRequestBodyMap = hashMapOf(
-                FEED_TITLE_KEY to contentBody,
-                FEED_MONEY_KEY to amountBody
-            )
-            val imageRequestBody = imageRequestBody.value?.toFormData()
-
-            authRepository.postWineyFeed(imageRequestBody, stringRequestBodyMap)
+            val (file, requestMap) = createRequestBody(content, amount)
+            authRepository.postWineyFeed(file, requestMap)
                 .onSuccess { response ->
                     _postWineyFeedState.value = UiState.Success(response)
                     Timber.d("${response?.feedId} ${response?.createdAt}")
@@ -74,13 +62,40 @@ class AmountViewModel @Inject constructor(
                     if (t is HttpException) {
                         _postWineyFeedState.value = UiState.Failure(t.message())
                         Timber.e("${t.code()} ${t.message()}")
+                        return@onFailure
                     }
-
                     _postWineyFeedState.value = UiState.Failure(t.message.toString())
-                    Timber.e(t)
+                    Timber.e(t.message)
                 }
         }
     }
+
+    private fun createRequestBody(
+        content: String,
+        amount: String
+    ): Pair<MultipartBody.Part?, HashMap<String, RequestBody>> {
+        val imageRequestBody = imageRequestBody?.toFormData()
+        val contentBody = content.toPlainTextRequestBody()
+        val amountBody = amount.toPlainTextRequestBody()
+        val plainTextRequestBodyMap = hashMapOf(
+            FEED_TITLE_KEY to contentBody,
+            FEED_MONEY_KEY to amountBody
+        )
+        return Pair(imageRequestBody, plainTextRequestBodyMap)
+    }
+
+    private fun validateRequestBody(): Boolean {
+        if (imageRequestBody == null) {
+            _postWineyFeedState.value = UiState.Failure(REQUEST_BODY_ERR_MSG)
+            Timber.e(REQUEST_BODY_ERR_MSG)
+            return false
+        }
+        return true
+    }
+
+    private fun String.removeComma() = replace(COMMA, "")
+
+    private fun String.toPlainTextRequestBody() = toRequestBody(CONTENT_TYPE.toMediaTypeOrNull())
 
     companion object {
         const val MIN_AMOUNT = 1000
@@ -88,5 +103,8 @@ class AmountViewModel @Inject constructor(
         const val MAX_AMOUNT_LENGTH = 9
         private const val FEED_TITLE_KEY = "feedTitle"
         private const val FEED_MONEY_KEY = "feedMoney"
+        private const val REQUEST_BODY_ERR_MSG = "Image RequestBody is null"
+        private const val COMMA = ","
+        private const val CONTENT_TYPE = "text/plain"
     }
 }
