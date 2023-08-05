@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentFeedDeleteDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -49,8 +49,7 @@ class WineyFeedDeleteDialogFragment(private val feedId: Int, private val userLev
     }
 
     private fun initDeleteFeedStateObserver() {
-        wineyFeedFragment = WineyFeedFragment()
-        wineyFeedViewModel.deleteMyFeedState.flowWithLifecycle(lifecycle).onEach { state ->
+        wineyFeedViewModel.deleteMyFeedState.flowWithLifecycle(this.lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     this.dismiss()
@@ -64,11 +63,11 @@ class WineyFeedDeleteDialogFragment(private val feedId: Int, private val userLev
 
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun refreshWineyFeed() {
-        val fragmentManager = requireActivity().supportFragmentManager
+        val fragmentManager = parentFragmentManager
         fragmentManager.beginTransaction().apply {
             wineyFeedFragment = WineyFeedFragment()
             replace(R.id.fcv_main, wineyFeedFragment)

@@ -45,7 +45,6 @@ class MyFeedDeleteDialogFragment(private val feedId: Int, private val userLevel:
     }
 
     private fun initDeleteFeedStateObserver() {
-        myFeedFragment = MyFeedFragment()
         myFeedViewModel.deleteMyFeedState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Success -> {

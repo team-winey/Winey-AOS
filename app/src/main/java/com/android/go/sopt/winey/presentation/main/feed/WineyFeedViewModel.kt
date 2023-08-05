@@ -10,7 +10,6 @@ import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -29,7 +28,7 @@ class WineyFeedViewModel @Inject constructor(
 
     private val _getWineyFeedListState = MutableStateFlow<UiState<List<WineyFeed>>>(UiState.Loading)
     val getWineyFeedListState: StateFlow<UiState<List<WineyFeed>>>
-        get() = _getWineyFeedListState.asStateFlow()
+        get() = _getWineyFeedListState
 
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postWineyFeedLikeState: StateFlow<UiState<Like>>

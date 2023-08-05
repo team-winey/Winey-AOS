@@ -20,6 +20,8 @@ import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.viewLifeCycle
+import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,7 +95,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initGetFeedStateObserver() {
-        viewModel.getWineyFeedListState.flowWithLifecycle(lifecycle).onEach { state ->
+        viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     val wineyFeedList = state.data
@@ -106,11 +108,11 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
                 else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initPostLikeStateObserver() {
-        viewModel.postWineyFeedLikeState.flowWithLifecycle(lifecycle).onEach { state ->
+        viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
@@ -126,7 +128,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
                 else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
             }
-        }.launchIn(lifecycleScope)
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initFabClickListener() {
