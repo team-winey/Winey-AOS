@@ -11,7 +11,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
-import com.android.go.sopt.winey.util.UriToRequestBody
+import com.android.go.sopt.winey.util.multipart.UriToRequestBody
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.fragment.snackBar
