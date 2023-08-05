@@ -89,7 +89,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun showDeleteDialog(feedId: Int, userLevel: Int) {
         val wineyFeedDeleteDialogFragment = WineyFeedDeleteDialogFragment(feedId, userLevel)
-        wineyFeedDeleteDialogFragment.show(parentFragmentManager, "delete")
+        wineyFeedDeleteDialogFragment.show(parentFragmentManager, TAG_DELETE_DIALOG)
     }
 
     private fun initGetFeedStateObserver() {
@@ -199,5 +199,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val MAX_FEED_VER_PAGE = 10
+        private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
     }
 }
