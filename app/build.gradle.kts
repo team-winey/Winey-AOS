@@ -68,6 +68,7 @@ dependencies {
         implementation(coreKtx)
         implementation(appCompat)
         implementation(constraintLayout)
+        implementation(swipeRefreshLayout)
         implementation(startup)
         implementation(hilt)
         implementation(activity)

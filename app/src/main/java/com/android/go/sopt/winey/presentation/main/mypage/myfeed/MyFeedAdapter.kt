@@ -1,6 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
@@ -36,14 +35,8 @@ class MyFeedAdapter(
                     onLikeButtonClick(data.feedId, !data.isLiked)
                 }
                 tvMyfeedDelete.setOnSingleClickListener {
-                    if (data.writerLevel <= 2) {
-                        Log.e("check", data.writerLevel.toString())
-                        showLowDeleteDialog(data.feedId)
-                        deleteButtonClick(data.feedId, data.writerLevel)
-                    } else {
-                        showHighDeleteDialog(data.feedId)
-                        deleteButtonClick(data.feedId, data.writerLevel)
-                    }
+                    showDeleteDialog(data.feedId, data.writerLevel)
+                    deleteButtonClick(data.feedId, data.writerLevel)
                 }
                 executePendingBindings()
             }
@@ -61,14 +54,9 @@ class MyFeedAdapter(
             }
         }
 
-        private fun showLowDeleteDialog(feedId: Int) {
-            val myFeedDeleteLowDialogFragment = MyFeedDeleteLowDialogFragment(feedId)
-            myFeedDeleteLowDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
-        }
-
-        private fun showHighDeleteDialog(feedId: Int) {
-            val myFeedDeleteHighDialogFragment = MyFeedDeleteHighDialogFragment(feedId)
-            myFeedDeleteHighDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
+        private fun showDeleteDialog(feedId: Int, userLevel: Int) {
+            val myFeedDeleteDialogFragment = MyFeedDeleteDialogFragment(feedId, userLevel)
+            myFeedDeleteDialogFragment.show(fragmentManager, TAG_WINEYFEED_DIALOG)
         }
     }
 
@@ -84,6 +72,7 @@ class MyFeedAdapter(
     override fun onBindViewHolder(holder: MyFeedViewHolder, position: Int) {
         holder.onBind(getItem(position))
     }
+
     fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
         val index = currentList.indexOfFirst { it.feedId == feedId }
         if (index != -1) {
@@ -93,9 +82,10 @@ class MyFeedAdapter(
             } else {
                 currentList[index].likes--
             }
-            notifyItemChanged(index)
+            submitList(currentList)
         }
     }
+
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
             onItemsTheSame = { old, new -> old.isLiked == new.isLiked },

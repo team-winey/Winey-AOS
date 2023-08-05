@@ -1,8 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
-import android.view.View
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
@@ -11,6 +8,8 @@ import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -27,23 +26,20 @@ class WineyFeedViewModel @Inject constructor(
     private var totalPage = Int.MAX_VALUE
     var currentMutableList = mutableListOf<WineyFeed>()
 
-    private val _getWineyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
-    val getWineyFeedListState: LiveData<UiState<List<WineyFeed>>>
+    private val _getWineyFeedListState = MutableStateFlow<UiState<List<WineyFeed>>>(UiState.Loading)
+    val getWineyFeedListState: StateFlow<UiState<List<WineyFeed>>>
         get() = _getWineyFeedListState
 
-    private val _postWineyFeedLikeState = MutableLiveData<UiState<Like>>(UiState.Loading)
-    val postWineyFeedLikeState: LiveData<UiState<Like>>
+    private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
+    val postWineyFeedLikeState: StateFlow<UiState<Like>>
         get() = _postWineyFeedLikeState
 
-    val _deleteMyFeedState = MutableLiveData<UiState<Unit>>(UiState.Loading)
-    val deleteMyFeedState: LiveData<UiState<Unit>>
+    val _deleteMyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val deleteMyFeedState: StateFlow<UiState<Unit>>
         get() = _deleteMyFeedState
 
     init {
         getWineyFeed()
-    }
-
-    private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
     }
 
     fun likeFeed(feedId: Int, isLiked: Boolean) {
@@ -57,24 +53,7 @@ class WineyFeedViewModel @Inject constructor(
                 .onSuccess { state ->
                     _deleteMyFeedState.value = UiState.Success(state)
                 }
-                .onFailure { t ->
-                    if (t is HttpException) {
-                        _deleteMyFeedState.value.apply {
-                            when (t.code()) {
-                                CODE_WINEYFEED_INVALID_USER ->
-                                    UiState.Failure(t.message())
-
-                                CODE_WINEYFEED_INVALID_REQUEST ->
-                                    UiState.Failure(t.message())
-
-                                else ->
-                                    _deleteMyFeedState.value =
-                                        UiState.Failure(t.message())
-                            }
-                        }
-                        Timber.e("$MSG_WINEYFEED_FAIL} : ${t.code()} : ${t.message()}")
-                    }
-                }
+                .onFailure { t -> handleFailureState(_deleteMyFeedState, t) }
         }
     }
 
@@ -84,60 +63,43 @@ class WineyFeedViewModel @Inject constructor(
                 .onSuccess { state ->
                     _postWineyFeedLikeState.value = UiState.Success(state)
                 }
-                .onFailure { t ->
-                    if (t is HttpException) {
-                        _postWineyFeedLikeState.value.apply {
-                            when (t.code()) {
-                                CODE_WINEYFEED_INVALID_USER ->
-                                    UiState.Failure(t.message())
-
-                                CODE_WINEYFEED_INVALID_REQUEST ->
-                                    UiState.Failure(t.message())
-
-                                else -> UiState.Failure(t.message())
-                            }
-                        }
-                        Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
-                    }
-                }
+                .onFailure { t -> handleFailureState(_postWineyFeedLikeState, t) }
         }
     }
 
     fun getWineyFeed() {
         isPagingFinished = false
-        if (isPagingFinished || currentPage > totalPage) {
+        if (currentPage > totalPage) {
             return
-        } else {
-            viewModelScope.launch {
-                authRepository.getWineyFeedList(++currentPage)
-                    .onSuccess { state ->
-                        currentMutableList.addAll(state)
-                        if (state.isEmpty()) {
-                            totalPage = 0
-                            isPagingFinished = true
-                        } else {
-                            totalPage = currentMutableList[0].totalPageSize
-                        }
-                        val updatedList = currentMutableList.toList()
-                        _getWineyFeedListState.value = UiState.Success(updatedList)
+        }
+        _getWineyFeedListState.value = UiState.Empty
+        viewModelScope.launch {
+            _getWineyFeedListState.value = UiState.Loading
+            authRepository.getWineyFeedList(++currentPage)
+                .onSuccess { state ->
+                    currentMutableList.addAll(state)
+                    if (state.isEmpty()) {
+                        totalPage = 0
+                        isPagingFinished = true
+                    } else {
+                        totalPage = currentMutableList[0].totalPageSize
                     }
-                    .onFailure { t ->
-                        if (t is HttpException) {
-                            _getWineyFeedListState.value.apply {
-                                when (t.code()) {
-                                    CODE_WINEYFEED_INVALID_USER ->
-                                        UiState.Failure(t.message())
+                    val updatedList = currentMutableList.toList()
+                    _getWineyFeedListState.value = UiState.Success(updatedList)
+                }
+                .onFailure { t -> handleFailureState(_getWineyFeedListState, t) }
+        }
+    }
 
-                                    CODE_WINEYFEED_INVALID_REQUEST ->
-                                        UiState.Failure(t.message())
-
-                                    else -> UiState.Failure(t.message())
-                                }
-                            }
-                            Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
-                        }
-                    }
+    private fun <T> handleFailureState(loadingState: MutableStateFlow<UiState<T>>, t: Throwable) {
+        if (t is HttpException) {
+            val errorMessage = when (t.code()) {
+                CODE_WINEYFEED_INVALID_USER -> t.message()
+                CODE_WINEYFEED_INVALID_REQUEST -> t.message()
+                else -> t.message()
             }
+            loadingState.value = UiState.Failure(errorMessage)
+            Timber.e("$MSG_WINEYFEED_FAIL : ${t.code()} : ${t.message()}")
         }
     }
 
