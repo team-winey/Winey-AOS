@@ -71,24 +71,23 @@ class WineyFeedViewModel @Inject constructor(
         isPagingFinished = false
         if (currentPage > totalPage) {
             return
-        } else {
-            _getWineyFeedListState.value = UiState.Empty
-            viewModelScope.launch {
-                _getWineyFeedListState.value = UiState.Loading
-                authRepository.getWineyFeedList(++currentPage)
-                    .onSuccess { state ->
-                        currentMutableList.addAll(state)
-                        if (state.isEmpty()) {
-                            totalPage = 0
-                            isPagingFinished = true
-                        } else {
-                            totalPage = currentMutableList[0].totalPageSize
-                        }
-                        val updatedList = currentMutableList.toList()
-                        _getWineyFeedListState.value = UiState.Success(updatedList)
+        }
+        _getWineyFeedListState.value = UiState.Empty
+        viewModelScope.launch {
+            _getWineyFeedListState.value = UiState.Loading
+            authRepository.getWineyFeedList(++currentPage)
+                .onSuccess { state ->
+                    currentMutableList.addAll(state)
+                    if (state.isEmpty()) {
+                        totalPage = 0
+                        isPagingFinished = true
+                    } else {
+                        totalPage = currentMutableList[0].totalPageSize
                     }
-                    .onFailure { t -> handleFailureState(_getWineyFeedListState, t) }
-            }
+                    val updatedList = currentMutableList.toList()
+                    _getWineyFeedListState.value = UiState.Success(updatedList)
+                }
+                .onFailure { t -> handleFailureState(_getWineyFeedListState, t) }
         }
     }
 

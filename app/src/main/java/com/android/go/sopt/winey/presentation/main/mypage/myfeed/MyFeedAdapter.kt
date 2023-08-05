@@ -82,7 +82,7 @@ class MyFeedAdapter(
             } else {
                 currentList[index].likes--
             }
-            notifyItemChanged(index)
+            submitList(currentList)
         }
     }
 
