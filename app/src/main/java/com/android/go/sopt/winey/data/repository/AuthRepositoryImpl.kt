@@ -1,11 +1,13 @@
 package com.android.go.sopt.winey.data.repository
 
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
+import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.source.AuthDataSource
 import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.entity.Like
+import com.android.go.sopt.winey.domain.entity.Login
 import com.android.go.sopt.winey.domain.entity.Recommend
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -46,7 +48,10 @@ class AuthRepositoryImpl @Inject constructor(
             authDataSource.deleteFeed(feedId)
         }
 
-    override suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): Result<Like> =
+    override suspend fun postFeedLike(
+        feedId: Int,
+        requestPostLikeDto: RequestPostLikeDto
+    ): Result<Like> =
         runCatching {
             authDataSource.postFeedLike(feedId, requestPostLikeDto).toLike()
         }
@@ -59,5 +64,13 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun getRecommendList(page: Int): Result<List<Recommend>> =
         runCatching {
             authDataSource.getRecommendList(page).data!!.convertToRecommend()
+        }
+
+    override suspend fun postLogin(
+        accessToken: String,
+        requestLoginDto: RequestLoginDto
+    ): Result<Login> =
+        kotlin.runCatching {
+            authDataSource.postLogin(accessToken, requestLoginDto).data!!.toLogin()
         }
 }
