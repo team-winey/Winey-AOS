@@ -2,22 +2,24 @@ package com.android.go.sopt.winey.presentation.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
+import com.android.go.sopt.winey.databinding.ActivitySplashBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
+import com.android.go.sopt.winey.util.binding.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
 
-        Handler(Looper.getMainLooper()).postDelayed({
+        lifecycleScope.launch {
+            delay(DELAY_TIME)
             navigateToMainScreen()
-        }, DELAY_TIME)
+        }
     }
 
     private fun navigateToMainScreen() {

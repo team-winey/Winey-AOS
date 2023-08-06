@@ -2,12 +2,13 @@ package com.android.go.sopt.winey.presentation.main.feed.upload.loading
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityLoadingBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +21,6 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     private fun classifySaveItemCategory() {
         val amountString = intent.extras?.getString(EXTRA_AMOUNT_KEY, "") ?: return
         val amount = amountString.toLong()
-
         val amountRange = resources.getIntArray(R.array.save_amount_range)
         val itemCategories = resources.getStringArray(R.array.save_item_categories)
 
@@ -38,12 +38,13 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     }
 
     private fun delayMillis() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            navigateMainScreen()
-        }, DELAY_TIME)
+        lifecycleScope.launch {
+            delay(DELAY_TIME)
+            navigateToMainScreen()
+        }
     }
 
-    private fun navigateMainScreen() {
+    private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
