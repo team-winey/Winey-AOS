@@ -10,6 +10,7 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeed
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueToken
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import com.android.go.sopt.winey.data.service.AuthService
 import okhttp3.MultipartBody
@@ -53,4 +54,9 @@ class AuthDataSource @Inject constructor(
         requestLoginDto: RequestLoginDto
     ): BaseResponse<ResponseLoginDto> =
         authService.postLogin(accessToken, requestLoginDto)
+
+    suspend fun postReIssueToken(
+        refreshToken: String
+    ): BaseResponse<ResponseReIssueToken> =
+        authService.postReIssueToken(refreshToken)
 }
