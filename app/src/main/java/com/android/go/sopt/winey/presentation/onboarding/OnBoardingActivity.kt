@@ -8,6 +8,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityOnBoardingBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
