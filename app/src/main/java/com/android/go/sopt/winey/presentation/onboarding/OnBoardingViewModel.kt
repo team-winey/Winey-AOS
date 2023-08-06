@@ -39,7 +39,7 @@ class OnBoardingViewModel @Inject constructor(
             Timber.d("액세스토큰 ${token?.accessToken}")
             Timber.d("리프레시토큰 ${token?.refreshToken}")
             saveSocialToken(token!!.accessToken, token!!.refreshToken)
-            login(token!!.accessToken, "KAKAO")
+            login(runBlocking { getSocialToken() }!!, "KAKAO")
         }.handleResult(token, error)
     }
 

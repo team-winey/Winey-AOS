@@ -44,7 +44,7 @@ class OnBoardingActivity :
                     }
 
                     is UiState.Failure -> {
-
+                        snackBar(binding.root) { state.msg }
                     }
 
                     is UiState.Empty -> {

@@ -70,7 +70,7 @@ class AuthRepositoryImpl @Inject constructor(
         accessToken: String,
         requestLoginDto: RequestLoginDto
     ): Result<Login> =
-        kotlin.runCatching {
+        runCatching {
             authDataSource.postLogin(accessToken, requestLoginDto).data!!.toLogin()
         }
 }

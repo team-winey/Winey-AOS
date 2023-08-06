@@ -20,14 +20,7 @@ import javax.inject.Inject
 class DataStoreRepositoryImpl @Inject constructor(
     val datastore: DataStore<Preferences>
 ) : DataStoreRepository {
-    private object PreferencesKeys {
-        val SOCIAL_ACCESS_TOKEN: Preferences.Key<String> =
-            stringPreferencesKey("social_access_token")
-        val SOCIAL_REFRESH_TOKEN: Preferences.Key<String> =
-            stringPreferencesKey("social_refresh_token")
-        val ACCESS_TOKEN: Preferences.Key<String> = stringPreferencesKey("access_token")
-        val REFRESH_TOKEN: Preferences.Key<String> = stringPreferencesKey("refresh_token")
-    }
+
 
     override suspend fun saveSocialToken(socialAccessToken: String, socialRefreshToken: String) {
         datastore.edit {
@@ -94,5 +87,14 @@ class DataStoreRepositoryImpl @Inject constructor(
 
     override suspend fun getUserInfo(): Flow<User> {
         TODO("Not yet implemented")
+    }
+
+    private object PreferencesKeys {
+        val SOCIAL_ACCESS_TOKEN: Preferences.Key<String> =
+            stringPreferencesKey("social_access_token")
+        val SOCIAL_REFRESH_TOKEN: Preferences.Key<String> =
+            stringPreferencesKey("social_refresh_token")
+        val ACCESS_TOKEN: Preferences.Key<String> = stringPreferencesKey("access_token")
+        val REFRESH_TOKEN: Preferences.Key<String> = stringPreferencesKey("refresh_token")
     }
 }
