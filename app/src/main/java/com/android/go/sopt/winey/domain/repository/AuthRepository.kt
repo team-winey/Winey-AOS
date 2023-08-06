@@ -7,6 +7,7 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFee
 import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.Login
+import com.android.go.sopt.winey.domain.entity.ReIssueToken
 import com.android.go.sopt.winey.domain.entity.Recommend
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -33,4 +34,6 @@ interface AuthRepository {
     suspend fun deleteFeed(feedId: Int): Result<Unit>
 
     suspend fun postLogin(accessToken: String, requestLoginDto: RequestLoginDto): Result<Login>
+
+    suspend fun postReIssueToken(refreshToken: String): Result<ReIssueToken>
 }

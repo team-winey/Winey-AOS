@@ -8,6 +8,7 @@ import com.android.go.sopt.winey.data.source.AuthDataSource
 import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.Login
+import com.android.go.sopt.winey.domain.entity.ReIssueToken
 import com.android.go.sopt.winey.domain.entity.Recommend
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -72,5 +73,10 @@ class AuthRepositoryImpl @Inject constructor(
     ): Result<Login> =
         runCatching {
             authDataSource.postLogin(accessToken, requestLoginDto).data!!.toLogin()
+        }
+
+    override suspend fun postReIssueToken(refreshToken: String): Result<ReIssueToken> =
+        runCatching {
+            authDataSource.postReIssueToken(refreshToken).data!!.toReIssueToken()
         }
 }
