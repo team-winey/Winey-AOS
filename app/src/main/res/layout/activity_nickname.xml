@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.onboarding.nickname.NicknameActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.onboarding.nickname.NicknameActivity">
+
+        <TextView
+            android:id="@+id/tv_nickname_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="82dp"
+            android:text="위니제국에 들어온 당신,\n어떤 닉네임으로 불리고 싶나요?"
+            android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_nickname_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="공백 또는 특수문자는 사용할 수 없습니다"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toStartOf="@id/tv_nickname_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_nickname_title"
+            android:layout_marginTop="7dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -86,7 +86,7 @@
             android:id="@+id/et_upload_content"
             style="?editTextStyle"
             android:layout_width="0dp"
-            android:layout_height="89dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
             android:background="@drawable/sel_upload_content_edittext_stroke_color"
