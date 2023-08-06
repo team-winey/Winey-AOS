@@ -90,6 +90,8 @@ dependencies {
         implementation(workManager)
         implementation(hiltWorkManager)
         implementation(exif)
+        implementation(dataStore)
+        implementation(dataStoreCore)
     }
 
     TestDependencies.run {
