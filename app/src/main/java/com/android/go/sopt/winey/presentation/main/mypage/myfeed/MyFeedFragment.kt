@@ -22,8 +22,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
     private val viewModel by viewModels<MyFeedViewModel>()
-    private lateinit var myFeedDeleteLowDialogFragment: MyFeedDeleteLowDialogFragment
-    private lateinit var myFeedDeleteHighDialogFragment: MyFeedDeleteHighDialogFragment
+    private lateinit var myFeedDeleteDialogFragment: MyFeedDeleteDialogFragment
     private lateinit var myFeedAdapter: MyFeedAdapter
     private var totalPage = Int.MAX_VALUE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,27 +35,21 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initAdapter() {
-        myFeedAdapter = MyFeedAdapter(deleteButtonClick = { feedId, writerLevel ->
-            initDialog(feedId, writerLevel)
-        }, fragmentManager = parentFragmentManager, likeButtonClick = { feedId, isLiked ->
+        myFeedAdapter = MyFeedAdapter(
+            deleteButtonClick = { feedId, writerLevel ->
+                initDialog(feedId, writerLevel)
+            },
+            fragmentManager = parentFragmentManager,
+            likeButtonClick = { feedId, isLiked ->
                 viewModel.likeFeed(feedId, isLiked)
-            })
+            }
+        )
         binding.rvMyfeedPost.adapter = myFeedAdapter
     }
 
-    private fun initDialog(feedId: Int, writerLevel: Int) {
-        myFeedDeleteLowDialogFragment = MyFeedDeleteLowDialogFragment(feedId)
-        myFeedDeleteLowDialogFragment.isCancelable = false
-
-        myFeedDeleteHighDialogFragment = MyFeedDeleteHighDialogFragment(feedId)
-        myFeedDeleteHighDialogFragment.isCancelable = false
-    }
-
-    private fun initEmptyItemLayout(totalPage: Int) {
-        if (totalPage == 0) {
-        } else {
-            binding.rvMyfeedPost.isVisible = true
-        }
+    private fun initDialog(feedId: Int, userLevel: Int) {
+        myFeedDeleteDialogFragment = MyFeedDeleteDialogFragment(feedId, userLevel)
+        myFeedDeleteDialogFragment.isCancelable = false
     }
 
     private fun initButtonClickListener() {
@@ -78,10 +71,12 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                     val myFeedList = state.data
                     myFeedAdapter.submitList(myFeedList)
                 }
+
                 is UiState.Loading -> {
                     binding.rvMyfeedPost.isVisible = false
                     binding.layoutMyfeedEmpty.isVisible = false
                 }
+
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
                 }
