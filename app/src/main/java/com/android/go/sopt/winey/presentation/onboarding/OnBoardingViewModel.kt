@@ -5,14 +5,18 @@ import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import com.android.go.sopt.winey.domain.entity.Login
 import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.domain.repository.KakaoLoginRepository
 import com.android.go.sopt.winey.util.view.UiState
 import com.kakao.sdk.auth.model.OAuthToken
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -21,6 +25,8 @@ import javax.inject.Inject
 class OnBoardingViewModel @Inject constructor(
     private val kakaoLoginRepository: KakaoLoginRepository,
     private val authRepository: AuthRepository,
+    private val dataStoreRepository: DataStoreRepository
+) : ViewModel() {
     private val _isKakaoLogin = MutableStateFlow(false)
     val isKakaoLogin = _isKakaoLogin.asStateFlow()
 
@@ -32,6 +38,7 @@ class OnBoardingViewModel @Inject constructor(
             _isKakaoLogin.value = true
             Timber.d("액세스토큰 ${token?.accessToken}")
             Timber.d("리프레시토큰 ${token?.refreshToken}")
+            saveSocialToken(token!!.accessToken, token!!.refreshToken)
             login(token!!.accessToken, "KAKAO")
         }.handleResult(token, error)
     }
@@ -47,6 +54,7 @@ class OnBoardingViewModel @Inject constructor(
             authRepository.postLogin(socialToken, RequestLoginDto(socialType))
                 .onSuccess { response ->
                     Timber.e("로그인 성공")
+                    saveAccessToken(response.accessToken, response.refreshToken)
                     _loginState.value = UiState.Success(response)
                 }
                 .onFailure { t ->
@@ -59,4 +67,25 @@ class OnBoardingViewModel @Inject constructor(
         }
     }
 
+    fun saveSocialToken(socialAccessToken: String, socialRefreshToken: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.saveSocialToken(socialAccessToken, socialRefreshToken)
+        }
+
+    suspend fun getSocialToken() = withContext(Dispatchers.IO) {
+        dataStoreRepository.getSocialToken().first()
+    }
+
+    fun saveAccessToken(accessToken: String, refreshToken: String) =
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.saveAccessToken(accessToken, refreshToken)
+        }
+
+    suspend fun getAccessToken() = withContext(Dispatchers.IO) {
+        dataStoreRepository.getAccessToken().first()
+    }
+
+    suspend fun getRefreshToken() = withContext(Dispatchers.IO) {
+        dataStoreRepository.getRefreshToken().first()
+    }
 }
