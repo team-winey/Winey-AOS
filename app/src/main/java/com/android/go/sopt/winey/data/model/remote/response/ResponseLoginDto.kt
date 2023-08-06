@@ -15,14 +15,14 @@ data class ResponseLoginDto(
     @SerialName("isRegistered")
     val isRegistered: Boolean
 ){
-    fun toLogin(): Login{
+    fun toLogin(): Login {
         val data = this
 
         return Login(
-            userId = this.userId,
-            accessToken = this.accessToken,
-            refreshToken = this.refreshToken,
-            isRegistered = this.isRegistered
+            userId = data.userId,
+            accessToken = data.accessToken,
+            refreshToken = data.refreshToken,
+            isRegistered = data.isRegistered
         )
     }
 }
