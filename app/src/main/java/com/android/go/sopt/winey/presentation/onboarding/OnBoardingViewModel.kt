@@ -31,7 +31,7 @@ class OnBoardingViewModel @Inject constructor(
     private val _isKakaoLogin = MutableStateFlow(false)
     val isKakaoLogin = _isKakaoLogin.asStateFlow()
 
-    private val _loginState = MutableStateFlow<UiState<Login>>(UiState.Loading)
+    private val _loginState = MutableStateFlow<UiState<Login>>(UiState.Empty)
     val loginState: StateFlow<UiState<Login>> get() = _loginState.asStateFlow()
 
     val kakaoLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
@@ -56,6 +56,7 @@ class OnBoardingViewModel @Inject constructor(
                 .onSuccess { response ->
                     Timber.e("로그인 성공")
                     saveAccessToken(response.accessToken, response.refreshToken)
+                    saveUserId(response.userId)
                     _loginState.value = UiState.Success(response)
                 }
                 .onFailure { t ->
@@ -80,6 +81,11 @@ class OnBoardingViewModel @Inject constructor(
     fun saveAccessToken(accessToken: String, refreshToken: String) =
         viewModelScope.launch(Dispatchers.IO) {
             dataStoreRepository.saveAccessToken(accessToken, refreshToken)
+        }
+
+    fun saveUserId(userId: Int) =
+        viewModelScope.launch(Dispatchers.IO) {
+            dataStoreRepository.saveUserId(userId)
         }
 
     suspend fun getAccessToken() = withContext(Dispatchers.IO) {
