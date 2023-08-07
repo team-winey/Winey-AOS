@@ -10,9 +10,13 @@ interface DataStoreRepository {
 
     suspend fun saveAccessToken(accessToken: String, refreshToken: String)
 
+    suspend fun saveUserId(userId: Int)
+
     suspend fun getAccessToken(): Flow<String?>
 
     suspend fun getRefreshToken(): Flow<String?>
+
+    suspend fun getUserId(): Flow<Int?>
 
     suspend fun saveUserInfo(userInfo: User)
 

@@ -2,13 +2,12 @@ package com.android.go.sopt.winey.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.android.go.sopt.winey.data.repository.DataStoreRepositoryImpl.PreferencesKeys.ACCESS_TOKEN
-import com.android.go.sopt.winey.data.repository.DataStoreRepositoryImpl.PreferencesKeys.REFRESH_TOKEN
-import com.android.go.sopt.winey.data.repository.DataStoreRepositoryImpl.PreferencesKeys.SOCIAL_ACCESS_TOKEN
-import com.android.go.sopt.winey.data.repository.DataStoreRepositoryImpl.PreferencesKeys.SOCIAL_REFRESH_TOKEN
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import kotlinx.coroutines.flow.Flow
@@ -51,6 +50,12 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveUserId(userId: Int) {
+        datastore.edit {
+            it[USER_ID] = userId
+        }
+    }
+
     override suspend fun getAccessToken(): Flow<String?> {
         return datastore.data
             .catch { exception ->
@@ -81,20 +86,77 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
     }
 
+    override suspend fun getUserId(): Flow<Int?> {
+        return datastore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+            }
+            .map {
+                it[USER_ID]
+            }
+    }
+
     override suspend fun saveUserInfo(userInfo: User) {
-        TODO("Not yet implemented")
+        datastore.edit {
+            it[NICK_NAME] = userInfo.nickname
+            it[USER_LEVEL] = userInfo.userLevel
+            it[DURING_GOAL_AMOUNT] = userInfo.duringGoalAmount
+            it[DURING_GOAL_COUNT] = userInfo.duringGoalCount
+            it[TARGET_MONEY] = userInfo.targetMoney
+            it[TARGET_DAY] = userInfo.targetDay
+            it[D_DAY] = userInfo.dday
+            it[IS_OVER] = userInfo.isOver
+            it[IS_ATTAINED] = userInfo.isAttained
+        }
     }
 
     override suspend fun getUserInfo(): Flow<User> {
-        TODO("Not yet implemented")
+        return datastore.data
+            .catch { exception ->
+                if (exception is IOException) {
+                    exception.printStackTrace()
+                    emit(emptyPreferences())
+                } else {
+                    throw exception
+                }
+
+            }
+            .map {
+                User(
+                    nickname = it[NICK_NAME] ?: "",
+                    userLevel = it[USER_LEVEL] ?: "",
+                    duringGoalAmount = it[DURING_GOAL_AMOUNT] ?: 0,
+                    duringGoalCount = it[DURING_GOAL_COUNT] ?: 0,
+                    targetMoney = it[TARGET_MONEY] ?: 0,
+                    targetDay = it[TARGET_DAY] ?: 0,
+                    dday = it[D_DAY] ?: 0,
+                    isOver = it[IS_OVER] ?: true,
+                    isAttained = it[IS_ATTAINED] ?: false
+                )
+            }
     }
 
-    private object PreferencesKeys {
-        val SOCIAL_ACCESS_TOKEN: Preferences.Key<String> =
+    companion object PreferencesKeys {
+        private val SOCIAL_ACCESS_TOKEN: Preferences.Key<String> =
             stringPreferencesKey("social_access_token")
-        val SOCIAL_REFRESH_TOKEN: Preferences.Key<String> =
+        private val SOCIAL_REFRESH_TOKEN: Preferences.Key<String> =
             stringPreferencesKey("social_refresh_token")
-        val ACCESS_TOKEN: Preferences.Key<String> = stringPreferencesKey("access_token")
-        val REFRESH_TOKEN: Preferences.Key<String> = stringPreferencesKey("refresh_token")
+        private val ACCESS_TOKEN: Preferences.Key<String> = stringPreferencesKey("access_token")
+        private val REFRESH_TOKEN: Preferences.Key<String> = stringPreferencesKey("refresh_token")
+        private val USER_ID: Preferences.Key<Int> = intPreferencesKey("user_id")
+        private val NICK_NAME: Preferences.Key<String> = stringPreferencesKey("nick_name")
+        private val USER_LEVEL: Preferences.Key<String> = stringPreferencesKey("user_level")
+        private val DURING_GOAL_AMOUNT: Preferences.Key<Long> = longPreferencesKey("during_goal_amount")
+        private val DURING_GOAL_COUNT: Preferences.Key<Long> = longPreferencesKey("during_goal_count")
+        private val TARGET_MONEY: Preferences.Key<Int> = intPreferencesKey("target_money")
+        private val TARGET_DAY: Preferences.Key<Int> = intPreferencesKey("target_day")
+        private val D_DAY: Preferences.Key<Int> = intPreferencesKey("d_day")
+        private val IS_OVER: Preferences.Key<Boolean> = booleanPreferencesKey("is_over")
+        private val IS_ATTAINED: Preferences.Key<Boolean> = booleanPreferencesKey("is_attained")
     }
 }
