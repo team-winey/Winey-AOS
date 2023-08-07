@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.domain.entity.User
+import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -19,23 +20,27 @@ import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val viewModel by activityViewModels<MainViewModel>()
 
+    @Inject
+    lateinit var dataStoreRepository: DataStoreRepository
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init1On1ButtonClickListener()
         initLevelHelpButtonClickListener()
         initToMyFeedButtonClickListener()
         setupGetUserState()
+        viewModel.getUser()
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.getUser()
     }
 
     private fun initToMyFeedButtonClickListener() {
@@ -68,8 +73,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     }
 
                     is UiState.Success -> {
-                        handleSuccessState(state.data)
-                        handleTargetModifyButtonState(state.data)
+                        val data = dataStoreRepository.getUserInfo().firstOrNull()
+                        handleSuccessState(data)
+                        handleTargetModifyButtonState(data)
                     }
 
                     is UiState.Failure -> {
@@ -83,7 +89,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun handleTargetModifyButtonState(data: User) {
+    private fun handleTargetModifyButtonState(data: User?) {
         binding.btnMypageTargetModify.setOnSingleClickListener {
             val bottomSheet = TargetAmountBottomSheetFragment()
             bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
@@ -101,10 +107,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun handleSuccessState(data: User) {
+    private fun handleSuccessState(data: User?) {
         binding.data = data
 
-        when (data.isOver) {
+        when (data?.isOver) {
             true -> {
                 binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
                 binding.tvMypagePeriodValue.text = getString(R.string.mypage_not_yet_set)
@@ -119,8 +125,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     binding.dday = data
                 }
             }
+
+            null -> {
+
+            }
         }
-        when (data.userLevel) {
+        when (data?.userLevel) {
             LEVEL_COMMON -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
                 binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv1_profile)
