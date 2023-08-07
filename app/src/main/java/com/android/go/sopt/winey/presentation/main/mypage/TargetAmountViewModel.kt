@@ -93,7 +93,7 @@ class TargetAmountViewModel @Inject constructor(
         val day = _day.value
         val amount = _amount.value
         _buttonStatecheck.value =
-            !day.isNullOrEmpty() && !amount.isNullOrEmpty() && _dayCheck.value && _amountCheck.value
+            !day.isNullOrEmpty() && !amount.isNullOrEmpty() && !_dayCheck.value && !_amountCheck.value
     }
 
     companion object {
