@@ -74,14 +74,14 @@ class AmountViewModel @Inject constructor(
         content: String,
         amount: String
     ): Pair<MultipartBody.Part?, HashMap<String, RequestBody>> {
-        val imageRequestBody = imageRequestBody?.toFormData()
+        val imageFormData = imageRequestBody?.toFormData()
         val contentBody = content.toPlainTextRequestBody()
         val amountBody = amount.toPlainTextRequestBody()
         val plainTextRequestBodyMap = hashMapOf(
             FEED_TITLE_KEY to contentBody,
             FEED_MONEY_KEY to amountBody
         )
-        return Pair(imageRequestBody, plainTextRequestBodyMap)
+        return Pair(imageFormData, plainTextRequestBodyMap)
     }
 
     private fun validateRequestBody(): Boolean {
