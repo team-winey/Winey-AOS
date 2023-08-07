@@ -43,12 +43,12 @@ jobs:
       - name: Add Local Properties
         env:
           AUTH_BASE_URL: ${{ secrets.AUTH_BASE_URL }}
-          NATIVE_APP_KEY: ${{ secrets.NATIVE_APP_KEY }}
-          NATIVE_APP_KEY_QUOTE: ${{ secrets.NATIVE_APP_KEY_QUOTE }}
+          KAKAO_NATIVE_KEY: ${{ secrets.KAKAO_NATIVE_KEY }}
+          KAKAO_NATIVE_KEY_QUOTE: ${{ secrets.KAKAO_NATIVE_KEY_QUOTE }}
         run: |
           echo auth.base.url=$AUTH_BASE_URL >> ./local.properties
-          echo kakao.native.key=$NATIVE_APP_KEY >> ./local.properties
-          echo kakao.native.key.quote=$NATIVE_APP_KEY_QUOTE >> ./local.properties
+          echo kakao.native.key=$KAKAO_NATIVE_KEY >> ./local.properties
+          echo kakao.native.key.quote=$KAKAO_NATIVE_KEY_QUOTE >> ./local.properties
 
 #      - name: Access Firebase Service
 #        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
