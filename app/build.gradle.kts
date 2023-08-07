@@ -24,12 +24,12 @@ android {
         buildConfigField(
             "String",
             "AUTH_BASE_URL",
-            gradleLocalProperties(rootDir).getProperty("auth.base.url"),
+            gradleLocalProperties(rootDir).getProperty("auth.base.url")
         )
         buildConfigField(
             "String",
             "KAKAO_NATIVE_KEY",
-            gradleLocalProperties(rootDir).getProperty("kakao.native.key"),
+            gradleLocalProperties(rootDir).getProperty("kakao.native.key")
         )
 
         manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir).getProperty("kakao.native.key.quote")
