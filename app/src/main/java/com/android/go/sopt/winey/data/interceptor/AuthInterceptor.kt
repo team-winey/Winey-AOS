@@ -84,6 +84,5 @@ class AuthInterceptor @Inject constructor(
         private const val HEADER_TOKEN = "accessToken"
         private const val INVALID_TOKEN = 401
         private const val VALID_TOKEN = 200
-        const val USER_ID = "1"
     }
 }
