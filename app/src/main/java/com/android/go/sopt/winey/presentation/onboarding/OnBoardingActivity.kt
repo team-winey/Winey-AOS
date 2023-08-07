@@ -36,12 +36,20 @@ class OnBoardingActivity :
 
                 when (state) {
                     is UiState.Loading -> {
+                        binding.btnOnboardingKakao.isEnabled = false
                     }
-
                     is UiState.Success -> {
-                        val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        if(state.data.isRegistered){
+                            val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }else{
+                            //TODO : isRegistered false일경우 닉네임 설정화면으로
+                            val intent = Intent(this@OnBoardingActivity,MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+
                     }
 
                     is UiState.Failure -> {
