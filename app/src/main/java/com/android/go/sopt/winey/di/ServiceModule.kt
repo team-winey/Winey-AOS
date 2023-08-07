@@ -42,14 +42,14 @@ object ServiceModule {
                     KAKAO_APP_LOGIN -> {
                         client.loginWithKakaoTalk(
                             context,
-                            callback = kakaoLoginCallBack,
+                            callback = kakaoLoginCallBack
                         )
                     }
 
                     KAKAO_ACCOUNT_LOGIN -> {
                         client.loginWithKakaoAccount(
                             context,
-                            callback = kakaoLoginCallBack,
+                            callback = kakaoLoginCallBack
                         )
                     }
                 }
@@ -64,5 +64,4 @@ object ServiceModule {
             }
         }
     }
-
 }

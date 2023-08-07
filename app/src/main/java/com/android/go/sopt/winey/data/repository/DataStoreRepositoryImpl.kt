@@ -20,7 +20,6 @@ class DataStoreRepositoryImpl @Inject constructor(
     val datastore: DataStore<Preferences>
 ) : DataStoreRepository {
 
-
     override suspend fun saveSocialToken(socialAccessToken: String, socialRefreshToken: String) {
         datastore.edit {
             it[SOCIAL_ACCESS_TOKEN] = socialAccessToken
@@ -124,7 +123,6 @@ class DataStoreRepositoryImpl @Inject constructor(
                 } else {
                     throw exception
                 }
-
             }
             .map {
                 User(

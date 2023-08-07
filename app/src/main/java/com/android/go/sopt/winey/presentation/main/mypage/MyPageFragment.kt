@@ -127,7 +127,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
 
             null -> {
-
             }
         }
         when (data?.userLevel) {

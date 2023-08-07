@@ -14,7 +14,7 @@ data class ResponseLoginDto(
     val refreshToken: String,
     @SerialName("isRegistered")
     val isRegistered: Boolean
-){
+) {
     fun toLogin(): Login {
         val data = this
 

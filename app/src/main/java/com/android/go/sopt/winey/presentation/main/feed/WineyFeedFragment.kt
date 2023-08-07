@@ -41,8 +41,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private lateinit var wineyFeedDialogFragment: WineyFeedDialogFragment
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
+
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
+
     private var totalPage = Int.MAX_VALUE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,7 +76,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         val menuDelete = popupMenu.menu.findItem(R.id.menu_delete)
         val menuReport = popupMenu.menu.findItem(R.id.menu_report)
         //TODO: 로그인 완료되면 리팩토링
-        if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() } ) {
+        if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() }) {
             menuReport.isVisible = false
         } else {
             menuDelete.isVisible = false

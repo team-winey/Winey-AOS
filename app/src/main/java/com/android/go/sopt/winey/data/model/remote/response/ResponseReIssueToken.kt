@@ -10,7 +10,7 @@ data class ResponseReIssueToken(
     val accessToken: String,
     @SerialName("refreshToken")
     val refreshToken: String
-){
+) {
     fun toReIssueToken(): ReIssueToken {
         val data = this
 
