@@ -9,6 +9,7 @@
             name="vm"
             type="com.android.go.sopt.winey.presentation.main.feed.upload.content.ContentViewModel" />
 
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/sel_upload_content_edittext_stroke_color"
+            android:background="@{vm.isValidContent ? @drawable/sel_upload_edittext_focus_color : @drawable/shape_red_line_10_rect}"
             android:gravity="top"
             android:hint="@string/upload_content_edittext_hint"
             android:importantForAutofill="no"
@@ -101,6 +102,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_content_detail" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:text="@string/upload_content_error_text"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+            android:textColor="?colorError"
+            android:visibility="@{vm.isValidContent ? View.GONE : View.VISIBLE}"
+            app:layout_constraintStart_toStartOf="@id/et_upload_content"
+            app:layout_constraintTop_toBottomOf="@id/et_upload_content" />
 
         <TextView
             android:id="@+id/tv_content_counter"

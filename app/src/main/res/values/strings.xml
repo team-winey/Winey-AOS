@@ -92,4 +92,5 @@
     <string name="upload_amount_hint_text">0</string>
     <string name="recommend_header_title">위니가 알려주는 추천 절약법</string>
     <string name="recommend_header_text">쉿, 그대를 위한 절약방법이 도착했어.\n황실 내에서도 비밀인데 특별히 알려줄게:)</string>
+    <string name="upload_content_error_text">6자 이상 작성해주세요</string>
 </resources>

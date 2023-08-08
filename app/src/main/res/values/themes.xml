@@ -18,6 +18,8 @@
         <item name="colorOnSurface">@color/purple_400</item>
         <!-- Navigation Bar Icon/Text Inactive color -->
         <item name="colorOnSurfaceVariant">@color/gray_300</item>
+        <!-- Semantic Color  -->
+        <item name="colorError">@color/red_500</item>
 
         <item name="editTextStyle">@style/Widget.Winey.EditText</item>
         <item name="textInputOutlinedStyle">@style/Widget.Winey.TextInputLayout.OutlineBox</item>

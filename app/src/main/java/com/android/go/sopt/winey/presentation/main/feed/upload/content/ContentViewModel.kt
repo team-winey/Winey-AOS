@@ -20,7 +20,7 @@ class ContentViewModel : ViewModel() {
         )
 
     private fun validateContent(content: String): Boolean =
-        content.length in MIN_CONTENT_LENGTH..MAX_CONTENT_LENGTH
+        content.isEmpty() || content.length in MIN_CONTENT_LENGTH..MAX_CONTENT_LENGTH
 
     companion object {
         private const val MIN_CONTENT_LENGTH = 6
