@@ -30,6 +30,16 @@ class AmountViewModel @Inject constructor(
     val amount: String get() = _amount.value ?: ""
     val isValidAmount: LiveData<Boolean> = _amount.map { validateAmount(it) }
 
+//    val _amount = MutableStateFlow("")
+//    val amount: String get() = _amount.value
+//
+//    val isValidAmount: StateFlow<Boolean> = _amount.map { validateAmount(it) }
+//        .stateIn(
+//            initialValue = false,
+//            scope = viewModelScope,
+//            started = WhileSubscribed(PRODUCE_STOP_TIMEOUT)
+//        )
+
     private var imageRequestBody: UriToRequestBody? = null
 
     private val _postWineyFeedState =
@@ -39,10 +49,15 @@ class AmountViewModel @Inject constructor(
 
     private fun validateAmount(amount: String): Boolean {
         if (amount.isBlank()) return false
-        if (!amount.contains(COMMA)) return true
-        val amountNumber = amount.removeComma().toLong()
-        return amountNumber in MIN_AMOUNT..MAX_AMOUNT
+
+        var temp = amount
+        if (amount.contains(COMMA)) {
+            temp = amount.removeComma()
+        }
+        return checkAmountRange(temp.toLong())
     }
+
+    private fun checkAmountRange(amountNumber: Long) = amountNumber in MIN_AMOUNT..MAX_AMOUNT
 
     fun updateRequestBody(requestBody: UriToRequestBody) {
         this.imageRequestBody = requestBody
@@ -98,13 +113,14 @@ class AmountViewModel @Inject constructor(
     private fun String.toPlainTextRequestBody() = toRequestBody(CONTENT_TYPE.toMediaTypeOrNull())
 
     companion object {
-        const val MIN_AMOUNT = 1000
-        const val MAX_AMOUNT = 9999999
         const val MAX_AMOUNT_LENGTH = 9
+        private const val MIN_AMOUNT = 1L
+        private const val MAX_AMOUNT = 9999999L
         private const val FEED_TITLE_KEY = "feedTitle"
         private const val FEED_MONEY_KEY = "feedMoney"
         private const val REQUEST_BODY_ERR_MSG = "Image RequestBody is null"
         private const val COMMA = ","
         private const val CONTENT_TYPE = "text/plain"
+        private const val PRODUCE_STOP_TIMEOUT = 5000L
     }
 }
