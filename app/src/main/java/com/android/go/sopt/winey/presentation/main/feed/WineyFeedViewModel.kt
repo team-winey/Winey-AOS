@@ -2,6 +2,8 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -10,6 +12,8 @@ import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -26,9 +30,10 @@ class WineyFeedViewModel @Inject constructor(
     private var totalPage = Int.MAX_VALUE
     var currentMutableList = mutableListOf<WineyFeed>()
 
-    private val _getWineyFeedListState = MutableStateFlow<UiState<List<WineyFeed>>>(UiState.Loading)
-    val getWineyFeedListState: StateFlow<UiState<List<WineyFeed>>>
-        get() = _getWineyFeedListState
+    private val _getWineyFeedListState =
+        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
+    val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
+        _getWineyFeedListState.asStateFlow()
 
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postWineyFeedLikeState: StateFlow<UiState<Like>>
@@ -75,19 +80,24 @@ class WineyFeedViewModel @Inject constructor(
         _getWineyFeedListState.value = UiState.Empty
         viewModelScope.launch {
             _getWineyFeedListState.value = UiState.Loading
-            authRepository.getWineyFeedList(++currentPage)
-                .onSuccess { state ->
-                    currentMutableList.addAll(state)
-                    if (state.isEmpty()) {
-                        totalPage = 0
-                        isPagingFinished = true
-                    } else {
-                        totalPage = currentMutableList[0].totalPageSize
-                    }
-                    val updatedList = currentMutableList.toList()
-                    _getWineyFeedListState.value = UiState.Success(updatedList)
+//            authRepository.getWineyFeedList(++currentPage)
+//                .onSuccess { state ->
+//                    currentMutableList.addAll(state)
+//                    if (state.isEmpty()) {
+//                        totalPage = 0
+//                        isPagingFinished = true
+//                    } else {
+//                        totalPage = currentMutableList[0].totalPageSize
+//                    }
+//                    val updatedList = currentMutableList.toList()
+//                    _getWineyFeedListState.value = UiState.Success(updatedList)
+//                }
+//                .onFailure { t -> handleFailureState(_getWineyFeedListState, t) }
+
+            val pagingData = authRepository.getWineyFeedList().cachedIn(viewModelScope)
+                .collectLatest { data ->
+                    _getWineyFeedListState.value = UiState.Success(data)
                 }
-                .onFailure { t -> handleFailureState(_getWineyFeedListState, t) }
         }
     }
 
