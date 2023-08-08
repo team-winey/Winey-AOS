@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
@@ -15,26 +16,28 @@ class WineyFeedAdapter(
     private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
     private val showPopupMenu: (View, WineyFeed) -> Unit
 ) :
-    ListAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
+    PagingDataAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
     class WineyFeedViewHolder(
         private val binding: ItemWineyfeedPostBinding,
         private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
         private val showPopupMenu: (View, WineyFeed) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun onBind(data: WineyFeed) {
+        fun onBind(data: WineyFeed?) {
             binding.apply {
                 this.data = data
-                ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
-                ivWineyfeedLike.setImageResource(
-                    if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
-                )
-                ivWineyfeedLike.setOnSingleClickListener {
-                    onLikeButtonClick(data.feedId, !data.isLiked)
-                }
+                if(data != null){
+                    ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
+                    ivWineyfeedLike.setImageResource(
+                        if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
+                    )
+                    ivWineyfeedLike.setOnSingleClickListener {
+                        onLikeButtonClick(data.feedId, !data.isLiked)
+                    }
 
-                btnWineyfeedMore.setOnClickListener { view ->
-                    showPopupMenu(view, data)
+                    btnWineyfeedMore.setOnClickListener { view ->
+                        showPopupMenu(view, data)
+                    }
                 }
                 executePendingBindings()
             }
@@ -64,18 +67,18 @@ class WineyFeedAdapter(
         holder.onBind(getItem(position))
     }
 
-    fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
-        val index = currentList.indexOfFirst { it.feedId == feedId }
-        if (index != -1) {
-            currentList[index].isLiked = isLiked
-            if (isLiked) {
-                currentList[index].likes++
-            } else {
-                currentList[index].likes--
-            }
-            notifyItemChanged(index)
-        }
-    }
+//    fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
+//        val index = currentList.indexOfFirst { it.feedId == feedId }
+//        if (index != -1) {
+//            currentList[index].isLiked = isLiked
+//            if (isLiked) {
+//                currentList[index].likes++
+//            } else {
+//                currentList[index].likes--
+//            }
+//            notifyItemChanged(index)
+//        }
+//    }
 
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(

@@ -30,10 +30,14 @@ class WineyFeedViewModel @Inject constructor(
     private var totalPage = Int.MAX_VALUE
     var currentMutableList = mutableListOf<WineyFeed>()
 
-    private val _getWineyFeedListState =
-        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
-    val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
-        _getWineyFeedListState.asStateFlow()
+    private val _getWineyFeedListState = MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
+    val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> = _getWineyFeedListState.asStateFlow()
+
+
+    private val _feedList =
+        MutableStateFlow<PagingData<WineyFeed>>(PagingData.empty())
+    val feedList: StateFlow<PagingData<WineyFeed>> =
+        _feedList.asStateFlow()
 
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postWineyFeedLikeState: StateFlow<UiState<Like>>
@@ -94,9 +98,9 @@ class WineyFeedViewModel @Inject constructor(
 //                }
 //                .onFailure { t -> handleFailureState(_getWineyFeedListState, t) }
 
-            val pagingData = authRepository.getWineyFeedList().cachedIn(viewModelScope)
+            authRepository.getWineyFeedList().cachedIn(viewModelScope)
                 .collectLatest { data ->
-                    _getWineyFeedListState.value = UiState.Success(data)
+                    _feedList.emit(data)
                 }
         }
     }

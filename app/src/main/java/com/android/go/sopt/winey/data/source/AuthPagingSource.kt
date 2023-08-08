@@ -6,11 +6,12 @@ import com.android.go.sopt.winey.data.service.AuthService
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import kotlinx.coroutines.delay
 import java.io.IOException
+import javax.inject.Inject
 
 const val STARTING_KEY = 1
 private const val DELAY_MILLIS = 1_000L
 
-class AuthPagingSource(
+class AuthPagingSource @Inject constructor(
     private val authService: AuthService
 ) : PagingSource<Int, WineyFeed>() {
 

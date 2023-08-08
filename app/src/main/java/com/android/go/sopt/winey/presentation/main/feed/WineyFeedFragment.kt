@@ -6,8 +6,11 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +19,7 @@ import com.android.go.sopt.winey.data.interceptor.AuthInterceptor
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
+import com.android.go.sopt.winey.presentation.LoadingDialog
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -26,6 +30,7 @@ import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -39,11 +44,11 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private lateinit var wineyFeedDialogFragment: WineyFeedDialogFragment
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
+    private lateinit var dialog: LoadingDialog
     private var totalPage = Int.MAX_VALUE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
-        setListWithInfiniteScroll()
         setSwipeRefreshListener()
         initFabClickListener()
         initPostLikeStateObserver()
@@ -95,20 +100,39 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initGetFeedStateObserver() {
-        viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    val wineyFeedList = state.data
-                    wineyFeedAdapter.submitList(wineyFeedList)
+        dialog = LoadingDialog(requireContext())
+//        viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+//            when (state) {
+//                is UiState.Success -> {
+//                    val wineyFeedList = state.data
+//                    wineyFeedAdapter.submitData(wineyFeedList)
+//                }
+//
+//                is UiState.Failure -> {
+//                    snackBar(binding.root) { state.msg }
+//                }
+//
+//                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+//            }
+//        }.launchIn(viewLifeCycleScope)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.feedList.collectLatest { data ->
+                        wineyFeedAdapter.submitData(data)
+                    }
                 }
 
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
+                launch {
+                    wineyFeedAdapter.loadStateFlow
+                        .collectLatest {
+                            if (it.source.append is LoadState.Loading) dialog.show()
+                            else dialog.dismiss()
+                        }
                 }
-
-                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
             }
-        }.launchIn(viewLifeCycleScope)
+        }
     }
 
     private fun initPostLikeStateObserver() {
@@ -116,10 +140,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    wineyFeedAdapter.updateLikeStatus(
-                        state.data.data.feedId,
-                        state.data.data.isLiked
-                    )
+//                    wineyFeedAdapter.updateLikeStatus(
+//                        state.data.data.feedId,
+//                        state.data.data.isLiked
+//                    )
                 }
 
                 is UiState.Failure -> {
