@@ -26,22 +26,22 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         val launcher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
                 if (imageUri == null) {
-                    displayDefaultImage()
+                    showDefaultImage()
                     return@registerForActivityResult
                 }
 
                 viewModel.apply {
-                    updatePhotoSelectState() // 버튼 활성화를 위해서
-                    updateImageUri(imageUri) // 바인딩 어댑터 적용
+                    showSelectedImage(imageUri)
+                    activateNextButton()
                 }
             }
 
         binding.ivUploadPhoto.setOnClickListener {
-            launcher.launch("image/*")
+            launcher.launch(IMAGE_FILE)
         }
     }
 
-    private fun displayDefaultImage() {
+    private fun showDefaultImage() {
         binding.ivUploadPhoto.setImageResource(R.drawable.img_upload_photo)
     }
 
@@ -71,5 +71,6 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
 
     companion object {
         private const val PHOTO_KEY = "photo"
+        private const val IMAGE_FILE = "image/*"
     }
 }

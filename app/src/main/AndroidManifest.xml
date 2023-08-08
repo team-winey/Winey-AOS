@@ -30,6 +30,19 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
 
+        </activity>
+
+        <activity
+            android:name=".presentation.main.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".presentation.main.feed.upload.UploadActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,18 +52,10 @@
         </activity>
 
         <activity
-            android:name=".presentation.main.MainActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".presentation.main.feed.upload.UploadActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".presentation.main.feed.upload.loading.LoadingActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".presentation.main.mypage.MypageHelpActivity"
             android:exported="false"

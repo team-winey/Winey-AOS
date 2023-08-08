@@ -89,7 +89,7 @@
             android:layout_height="56dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/sel_upload_edittext_stroke_color"
+            android:background="@drawable/sel_upload_edittext_focus_color"
             android:gravity="center_vertical|end"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"

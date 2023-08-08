@@ -26,6 +26,7 @@
     <string name="upload_content_detail">적어주신 글을 썸네일과 함께 표시합니다 :)</string>
     <string name="upload_content_edittext_hint">Ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!\n</string>
     <string name="upload_content_counter">(%d/36)</string>
+    <string name="upload_content_error_text">6자 이상 작성해주세요</string>
     <string name="upload_amount_title">얼마나 절약했나요?</string>
     <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
     <string name="upload_amount_unit_text">원</string>

@@ -44,7 +44,7 @@ jobs:
         env:
           AUTH_BASE_URL: ${{ secrets.AUTH_BASE_URL }}
         run: |
-          echo auth.base.url=$AUTH_BASE_URL >> ./local.properties
+          echo auth.base.url=\"$AUTH_BASE_URL\" >> ./local.properties
 
 #      - name: Access Firebase Service
 #        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
