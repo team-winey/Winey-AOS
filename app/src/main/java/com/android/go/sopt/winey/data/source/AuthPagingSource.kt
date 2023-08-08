@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.data.source
 
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.android.go.sopt.winey.data.service.AuthService
@@ -30,11 +31,10 @@ class AuthPagingSource @Inject constructor(
             LoadResult.Page(
                 data = feedData,
                 prevKey = if (position == STARTING_KEY) null else position - 1,
-                nextKey = if (feedData.isEmpty()) null else position + 1
+                nextKey = if (feedData.isEmpty() || feedData.first().isEnd) null else position + 1
             )
         } catch (e: IOException) {
             return PagingSource.LoadResult.Error(e)
         }
     }
-
 }
