@@ -1,9 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.amount
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
@@ -11,8 +8,11 @@ import com.android.go.sopt.winey.util.multipart.UriToRequestBody
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -26,19 +26,15 @@ import javax.inject.Inject
 class AmountViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    val _amount = MutableLiveData<String>()
-    val amount: String get() = _amount.value ?: ""
-    val isValidAmount: LiveData<Boolean> = _amount.map { validateAmount(it) }
+    val _amount = MutableStateFlow("")
+    val amount: String get() = _amount.value
 
-//    val _amount = MutableStateFlow("")
-//    val amount: String get() = _amount.value
-//
-//    val isValidAmount: StateFlow<Boolean> = _amount.map { validateAmount(it) }
-//        .stateIn(
-//            initialValue = false,
-//            scope = viewModelScope,
-//            started = WhileSubscribed(PRODUCE_STOP_TIMEOUT)
-//        )
+    val isValidAmount: StateFlow<Boolean> = _amount.map { validateAmount(it) }
+        .stateIn(
+            initialValue = false,
+            scope = viewModelScope,
+            started = WhileSubscribed(PRODUCE_STOP_TIMEOUT)
+        )
 
     private var imageRequestBody: UriToRequestBody? = null
 
