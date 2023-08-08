@@ -66,16 +66,16 @@ class AmountViewModel @Inject constructor(
             val (file, requestMap) = createRequestBody(content, amount)
             authRepository.postWineyFeed(file, requestMap)
                 .onSuccess { response ->
-                    _postWineyFeedState.value = UiState.Success(response)
+                    _postWineyFeedState.emit(UiState.Success(response))
                     Timber.d("${response?.feedId} ${response?.createdAt}")
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        _postWineyFeedState.value = UiState.Failure(t.message())
+                        _postWineyFeedState.emit(UiState.Failure(t.message()))
                         Timber.e("${t.code()} ${t.message()}")
                         return@onFailure
                     }
-                    _postWineyFeedState.value = UiState.Failure(t.message.toString())
+                    _postWineyFeedState.emit(UiState.Failure(t.message.toString()))
                     Timber.e(t.message)
                 }
         }
