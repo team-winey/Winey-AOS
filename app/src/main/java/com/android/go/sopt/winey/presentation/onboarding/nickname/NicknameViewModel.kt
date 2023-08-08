@@ -18,20 +18,28 @@ class NicknameViewModel : ViewModel() {
     val _nickname = MutableStateFlow("")
     val nickname: String get() = _nickname.value
 
-    private val _inputUiState = MutableStateFlow<InputUiState>(Empty)
-    val inputUiState: StateFlow<InputUiState> = _nickname.map { checkNickname(it) }
+    val inputUiState: StateFlow<InputUiState> = _nickname.map { updateInputUiState(it) }
         .stateIn(
             initialValue = Empty,
             scope = viewModelScope,
             started = WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
 
-    private fun checkNickname(nickname: String): InputUiState {
+    val isValidNickname: StateFlow<Boolean> = _nickname.map { validateNickname(it) }
+        .stateIn(
+            initialValue = false,
+            scope = viewModelScope,
+            started = WhileSubscribed(PRODUCE_STOP_TIMEOUT)
+        )
+
+    private fun updateInputUiState(nickname: String): InputUiState {
         if (nickname.isEmpty()) return Empty
         if (!checkLength(nickname)) return Failure(CODE_INVALID_LENGTH)
         if (containsSpaceOrSpecialChar(nickname)) return Failure(CODE_SPACE_SPECIAL_CHAR)
         return Success
     }
+
+    private fun validateNickname(nickname: String) = updateInputUiState(nickname) == Success
 
     private fun checkLength(nickname: String) = nickname.length in MIN_LENGTH..MAX_LENGTH
 
