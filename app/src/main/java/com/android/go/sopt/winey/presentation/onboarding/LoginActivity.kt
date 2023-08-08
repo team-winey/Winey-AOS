@@ -14,9 +14,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class OnBoardingActivity :
+class LoginActivity :
     BindingActivity<ActivityOnBoardingBinding>(R.layout.activity_on_boarding) {
-    val viewModel: OnBoardingViewModel by viewModels()
+    val viewModel: LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -40,12 +40,12 @@ class OnBoardingActivity :
                     }
                     is UiState.Success -> {
                         if (state.data.isRegistered) {
-                            val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         } else {
                             //TODO : isRegistered false일경우 닉네임 설정화면으로
-                            val intent = Intent(this@OnBoardingActivity, MainActivity::class.java)
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()
                         }

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
-import com.android.go.sopt.winey.presentation.onboarding.OnBoardingActivity
+import com.android.go.sopt.winey.presentation.onboarding.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.runBlocking
@@ -36,7 +36,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun navigateToOnBoardingScreen() {
-        Intent(this@SplashActivity, OnBoardingActivity::class.java).apply {
+        Intent(this@SplashActivity, LoginActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(this)
         }

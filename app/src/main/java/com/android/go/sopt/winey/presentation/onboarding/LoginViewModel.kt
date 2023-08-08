@@ -23,7 +23,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class OnBoardingViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val kakaoLoginRepository: KakaoLoginRepository,
     private val authRepository: AuthRepository,
     private val dataStoreRepository: DataStoreRepository
