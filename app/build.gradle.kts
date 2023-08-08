@@ -32,7 +32,7 @@ android {
             gradleLocalProperties(rootDir).getProperty("kakao.native.key")
         )
 
-        manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir).getProperty("kakao.native.key.quote")
+        manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir).getProperty("kakaoNativeKey")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -121,7 +121,7 @@ dependencies {
         implementation(balloon)
         implementation(lottie)
         implementation(circleImageView)
-        implementation(kakao)
+        implementation(kakaoLogin)
 
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
