@@ -6,8 +6,13 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueToken
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -34,7 +39,7 @@ class AuthInterceptor @Inject constructor(
                 try {
                     val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
                         .url("$AUTH_BASE_URL/auth/token")
-                        .addHeader(REFRESH_TOKEN, runBlocking { getRefreshToken() })
+                        .addHeader(REFRESH_TOKEN, runBlocking(Dispatchers.IO) { getRefreshToken() })
                         .build()
                     val refreshTokenResponse = chain.proceed(refreshTokenRequest)
                     Timber.e("리프레시 토큰 : $refreshTokenResponse")
@@ -65,7 +70,7 @@ class AuthInterceptor @Inject constructor(
     }
 
     private fun Request.newAuthBuilder() =
-        this.newBuilder().addHeader(HEADER_TOKEN, runBlocking { getAccessToken() })
+        this.newBuilder().addHeader(HEADER_TOKEN, runBlocking(Dispatchers.IO) { getAccessToken() })
 
     private suspend fun getAccessToken(): String {
         return dataStoreRepository.getAccessToken().first() ?: ""
