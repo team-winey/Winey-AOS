@@ -18,8 +18,8 @@ import javax.inject.Inject
 class RecommendViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    private val _getRecommendListState = MutableStateFlow<UiState<List<Recommend>>>(UiState.Loading)
-    val getRecommendListState: StateFlow<UiState<List<Recommend>>> =
+    private val _getRecommendListState = MutableStateFlow<UiState<List<Recommend>?>>(UiState.Loading)
+    val getRecommendListState: StateFlow<UiState<List<Recommend>?>> =
         _getRecommendListState.asStateFlow()
 
     init {

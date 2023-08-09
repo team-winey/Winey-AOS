@@ -44,7 +44,7 @@ fun loadImager(view: ImageView, imageurl: String) {
 @BindingAdapter("setImageUriWithCoil", "setDefaultDrawable")
 fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
     if (imageUri == null) {
-        this.setImageDrawable(drawable)
+        setImageDrawable(drawable)
         return
     }
 

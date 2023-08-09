@@ -26,6 +26,7 @@ object Versions {
     const val splashVersion = "1.0.1"
     const val workManagerVersion = "2.8.1"
     const val exifVersion = "1.3.2"
+    const val dataStoreVersion = "1.0.0"
 
     const val coilVersion = "2.4.0"
     const val retrofitVersion = "2.9.0"
@@ -41,6 +42,7 @@ object Versions {
     const val leakCanaryVersion = "2.11"
 
     const val circleImageViewVersion = "3.1.0"
+    const val kakaoLoginVersion = "2.10.0"
 
     val javaVersion = JavaVersion.VERSION_17
     const val jvmVersion = "17"

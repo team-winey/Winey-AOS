@@ -4,9 +4,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
+import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
-import com.android.go.sopt.winey.data.service.AuthService
+import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.source.AuthDataSource
 import com.android.go.sopt.winey.data.source.AuthPagingSource
 import com.android.go.sopt.winey.domain.entity.Goal
@@ -24,9 +26,9 @@ class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
     private val authService: AuthService
 ) : AuthRepository {
-    override suspend fun getUser(): Result<User> =
+    override suspend fun getUser(): Result<User?> =
         runCatching {
-            authDataSource.getUser().data!!.toUser()
+            authDataSource.getUser().data?.toUser()
         }
 
     override suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>> =
@@ -61,14 +63,27 @@ class AuthRepositoryImpl @Inject constructor(
             authDataSource.postFeedLike(feedId, requestPostLikeDto).toLike()
         }
 
-    override suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): Result<Goal> =
+    override suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): Result<Goal?> =
+        runCatching {
+            authDataSource.postCreateGoal(requestCreateGoalDto).data?.toGoal()
+        }
+
+    override suspend fun getRecommendList(page: Int): Result<List<Recommend>?> =
         runCatching {
             authDataSource.postCreateGoal(requestCreateGoalDto).data!!.toGoal()
         }
 
-    override suspend fun getRecommendList(page: Int): Result<List<Recommend>> =
+    override suspend fun postLogin(
+        socialAccessToken: String,
+        requestLoginDto: RequestLoginDto
+    ): Result<ResponseLoginDto?> =
         runCatching {
-            authDataSource.getRecommendList(page).data!!.convertToRecommend()
+            authDataSource.postLogin(socialAccessToken, requestLoginDto).data
+        }
+
+    override suspend fun postReIssueToken(refreshToken: String): Result<ResponseReIssueTokenDto?> =
+        runCatching {
+            authDataSource.postReIssueToken(refreshToken).data
         }
 
     companion object {
