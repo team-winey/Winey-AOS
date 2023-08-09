@@ -27,7 +27,7 @@ class LoginActivity :
     }
 
     private fun initKakaoLoginButtonClickListener() {
-        binding.btnOnboardingKakao.setOnClickListener {
+        binding.btnLoginKakao.setOnClickListener {
             viewModel.loginKakao(this)
         }
     }
@@ -36,7 +36,7 @@ class LoginActivity :
         viewModel.loginState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
-                    binding.btnOnboardingKakao.isEnabled = false
+                    binding.btnLoginKakao.isEnabled = false
                 }
 
                 is UiState.Success -> {

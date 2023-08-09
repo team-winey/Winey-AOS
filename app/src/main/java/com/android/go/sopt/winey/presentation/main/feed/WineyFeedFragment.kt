@@ -27,6 +27,7 @@ import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -148,7 +149,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             mainViewModel.getUserState.collect { state ->
                 when (state) {
                     is UiState.Success -> {
-                        isGoalValid(state.data)
+                        val data = dataStoreRepository.getUserInfo().firstOrNull()
+                        isGoalValid(data)
                     }
 
                     is UiState.Failure -> {
@@ -161,8 +163,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         }
     }
 
-    private fun isGoalValid(data: User) {
-        if (data.isOver) {
+    private fun isGoalValid(data: User?) {
+        if (data?.isOver == true) {
             wineyFeedDialogFragment = WineyFeedDialogFragment()
             wineyFeedDialogFragment.show(parentFragmentManager, TAG_WINEYFEED_DIALOG)
         } else {
