@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.onboarding.login
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -8,12 +9,14 @@ import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityLoginBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
+import com.android.go.sopt.winey.presentation.onboarding.nickname.NicknameActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class LoginActivity :
@@ -40,15 +43,15 @@ class LoginActivity :
                 }
 
                 is UiState.Success -> {
+                    Timber.e("${state.data?.userId}")
+                    Timber.e("${state.data?.accessToken}")
+                    Timber.e("${state.data?.refreshToken}")
+                    Timber.e("${state.data?.isRegistered}")
+
                     if (state.data?.isRegistered == true) {
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        navigateTo<MainActivity>()
                     } else {
-                        //TODO : isRegistered false일경우 닉네임 설정화면으로
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        navigateTo<NicknameActivity>()
                     }
                 }
 
@@ -60,5 +63,12 @@ class LoginActivity :
                 }
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private inline fun <reified T : Activity> navigateTo() {
+        Intent(this@LoginActivity, T::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
+        }
     }
 }

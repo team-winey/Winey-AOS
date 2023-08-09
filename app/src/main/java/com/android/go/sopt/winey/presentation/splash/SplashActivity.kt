@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.splash
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
@@ -32,26 +33,17 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     private fun checkAutoLogin() {
         val accessToken = runBlocking { dataStoreRepository.getAccessToken().firstOrNull() }
         if (accessToken.isNullOrBlank()) {
-            navigateToOnBoardingScreen()
+            navigateTo<LoginActivity>()
         } else {
-            navigateToMainScreen()
+            navigateTo<MainActivity>()
         }
     }
 
-    private fun navigateToOnBoardingScreen() {
-        Intent(this@SplashActivity, LoginActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    private inline fun <reified T : Activity> navigateTo() {
+        Intent(this@SplashActivity, T::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
-        finish()
-    }
-
-    private fun navigateToMainScreen() {
-        Intent(this@SplashActivity, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(this)
-        }
-        finish()
     }
 
     companion object {
