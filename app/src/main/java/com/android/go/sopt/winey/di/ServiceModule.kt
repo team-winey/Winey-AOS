@@ -1,13 +1,17 @@
 package com.android.go.sopt.winey.di
 
+import android.app.Activity
 import android.content.Context
 import com.android.go.sopt.winey.data.service.AuthService
 import com.android.go.sopt.winey.data.service.KakaoLoginService
+import com.android.go.sopt.winey.presentation.onboarding.LoginActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
@@ -16,8 +20,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
-    const val KAKAO_APP_LOGIN = 0
-    const val KAKAO_ACCOUNT_LOGIN = 1
+    private const val KAKAO_TALK_LOGIN = 0
+    private const val KAKAO_ACCOUNT_LOGIN = 1
 
     @Provides
     @Singleton
@@ -26,20 +30,19 @@ object ServiceModule {
 
     @Provides
     fun provideKakaoLoginService(
-        @ApplicationContext context: Context,
         client: UserApiClient
     ): KakaoLoginService {
         return object : KakaoLoginService {
-            override fun startKakaoLogin(kakaoLoginCallBack: (OAuthToken?, Throwable?) -> Unit) {
+            override fun loginKakao(kakaoLoginCallBack: (OAuthToken?, Throwable?) -> Unit, context: Context ) {
                 val kakaoLoginState =
                     if (client.isKakaoTalkLoginAvailable(context)) {
-                        KAKAO_APP_LOGIN
+                        KAKAO_TALK_LOGIN
                     } else {
                         KAKAO_ACCOUNT_LOGIN
                     }
 
                 when (kakaoLoginState) {
-                    KAKAO_APP_LOGIN -> {
+                    KAKAO_TALK_LOGIN -> {
                         client.loginWithKakaoTalk(
                             context,
                             callback = kakaoLoginCallBack
@@ -55,11 +58,11 @@ object ServiceModule {
                 }
             }
 
-            override fun kakaoLogout(kakaoLogoutCallBack: (Throwable?) -> Unit) {
+            override fun logoutKakao(kakaoLogoutCallBack: (Throwable?) -> Unit) {
                 client.logout(kakaoLogoutCallBack)
             }
 
-            override fun kakaoDeleteAccount(kakaoLogoutCallBack: (Throwable?) -> Unit) {
+            override fun deleteKakaoAccount(kakaoLogoutCallBack: (Throwable?) -> Unit) {
                 client.unlink(kakaoLogoutCallBack)
             }
         }
