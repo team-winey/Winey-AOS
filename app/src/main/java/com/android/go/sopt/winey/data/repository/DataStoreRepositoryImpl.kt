@@ -10,8 +10,10 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
@@ -27,19 +29,8 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSocialToken(): Flow<String?> {
-        return datastore.data
-            .catch { exception ->
-                if (exception is IOException) {
-                    exception.printStackTrace()
-                    emit(emptyPreferences())
-                } else {
-                    throw exception
-                }
-            }
-            .map {
-                it[SOCIAL_ACCESS_TOKEN]
-            }
+    override suspend fun getSocialAccessToken(): Flow<String?> {
+        return getStringValue(SOCIAL_ACCESS_TOKEN)
     }
 
     override suspend fun saveAccessToken(accessToken: String, refreshToken: String) {
@@ -55,22 +46,16 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+
     override suspend fun getAccessToken(): Flow<String?> {
-        return datastore.data
-            .catch { exception ->
-                if (exception is IOException) {
-                    exception.printStackTrace()
-                    emit(emptyPreferences())
-                } else {
-                    throw exception
-                }
-            }
-            .map {
-                it[ACCESS_TOKEN]
-            }
+        return getStringValue(ACCESS_TOKEN)
     }
 
     override suspend fun getRefreshToken(): Flow<String?> {
+        return getStringValue(REFRESH_TOKEN)
+    }
+
+    override suspend fun getStringValue(key: Preferences.Key<String>): Flow<String?> {
         return datastore.data
             .catch { exception ->
                 if (exception is IOException) {
@@ -81,7 +66,7 @@ class DataStoreRepositoryImpl @Inject constructor(
                 }
             }
             .map {
-                it[REFRESH_TOKEN]
+                it[key]
             }
     }
 
@@ -100,17 +85,10 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun saveUserInfo(userInfo: User) {
+    override suspend fun saveUserInfo(userInfo: User?) {
         datastore.edit {
-            it[NICK_NAME] = userInfo.nickname
-            it[USER_LEVEL] = userInfo.userLevel
-            it[DURING_GOAL_AMOUNT] = userInfo.duringGoalAmount
-            it[DURING_GOAL_COUNT] = userInfo.duringGoalCount
-            it[TARGET_MONEY] = userInfo.targetMoney
-            it[TARGET_DAY] = userInfo.targetDay
-            it[D_DAY] = userInfo.dday
-            it[IS_OVER] = userInfo.isOver
-            it[IS_ATTAINED] = userInfo.isAttained
+            val json = Gson().toJson(userInfo)
+            it[USER_INFO] = json
         }
     }
 
@@ -125,17 +103,12 @@ class DataStoreRepositoryImpl @Inject constructor(
                 }
             }
             .map {
-                User(
-                    nickname = it[NICK_NAME] ?: "",
-                    userLevel = it[USER_LEVEL] ?: "",
-                    duringGoalAmount = it[DURING_GOAL_AMOUNT] ?: 0,
-                    duringGoalCount = it[DURING_GOAL_COUNT] ?: 0,
-                    targetMoney = it[TARGET_MONEY] ?: 0,
-                    targetDay = it[TARGET_DAY] ?: 0,
-                    dday = it[D_DAY] ?: 0,
-                    isOver = it[IS_OVER] ?: true,
-                    isAttained = it[IS_ATTAINED] ?: false
-                )
+                val json = it[USER_INFO]
+                try {
+                    Gson().fromJson(json, User::class.java)
+                } catch (e: Exception) {
+                    User()
+                }
             }
     }
 
@@ -147,14 +120,6 @@ class DataStoreRepositoryImpl @Inject constructor(
         private val ACCESS_TOKEN: Preferences.Key<String> = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN: Preferences.Key<String> = stringPreferencesKey("refresh_token")
         private val USER_ID: Preferences.Key<Int> = intPreferencesKey("user_id")
-        private val NICK_NAME: Preferences.Key<String> = stringPreferencesKey("nick_name")
-        private val USER_LEVEL: Preferences.Key<String> = stringPreferencesKey("user_level")
-        private val DURING_GOAL_AMOUNT: Preferences.Key<Long> = longPreferencesKey("during_goal_amount")
-        private val DURING_GOAL_COUNT: Preferences.Key<Long> = longPreferencesKey("during_goal_count")
-        private val TARGET_MONEY: Preferences.Key<Int> = intPreferencesKey("target_money")
-        private val TARGET_DAY: Preferences.Key<Int> = intPreferencesKey("target_day")
-        private val D_DAY: Preferences.Key<Int> = intPreferencesKey("d_day")
-        private val IS_OVER: Preferences.Key<Boolean> = booleanPreferencesKey("is_over")
-        private val IS_ATTAINED: Preferences.Key<Boolean> = booleanPreferencesKey("is_attained")
+        private val USER_INFO: Preferences.Key<String> = stringPreferencesKey("user_info")
     }
 }
