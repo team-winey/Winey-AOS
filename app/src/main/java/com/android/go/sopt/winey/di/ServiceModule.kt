@@ -1,18 +1,13 @@
 package com.android.go.sopt.winey.di
 
-import android.app.Activity
 import android.content.Context
 import com.android.go.sopt.winey.data.service.AuthService
 import com.android.go.sopt.winey.data.service.KakaoLoginService
-import com.android.go.sopt.winey.presentation.onboarding.LoginActivity
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -33,7 +28,10 @@ object ServiceModule {
         client: UserApiClient
     ): KakaoLoginService {
         return object : KakaoLoginService {
-            override fun loginKakao(kakaoLoginCallBack: (OAuthToken?, Throwable?) -> Unit, context: Context ) {
+            override fun loginKakao (
+                kakaoLoginCallBack: (OAuthToken?, Throwable?) -> Unit,
+                context: Context
+            ) {
                 val kakaoLoginState =
                     if (client.isKakaoTalkLoginAvailable(context)) {
                         KAKAO_TALK_LOGIN

@@ -39,7 +39,7 @@ class LoginViewModel @Inject constructor(
             _isKakaoLogin.value = true
             Timber.d("액세스토큰 ${token?.accessToken}")
             Timber.d("리프레시토큰 ${token?.refreshToken}")
-            if(token != null){
+            if (token != null) {
                 saveSocialToken(token.accessToken, token.refreshToken)
                 postLogin(token.accessToken, KAKAO)
             } else {
@@ -59,7 +59,7 @@ class LoginViewModel @Inject constructor(
             authRepository.postLogin(socialToken, RequestLoginDto(socialType))
                 .onSuccess { response ->
                     Timber.e("로그인 성공")
-                    if(response != null) {
+                    if (response != null) {
                         saveAccessToken(response.accessToken, response.refreshToken)
                         saveUserId(response.userId)
                         _loginState.value = UiState.Success(response)
@@ -104,7 +104,7 @@ class LoginViewModel @Inject constructor(
         dataStoreRepository.getRefreshToken().first()
     }
 
-    companion object{
+    companion object {
         private const val KAKAO = "KAKAO"
     }
 }

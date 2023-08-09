@@ -2,18 +2,15 @@ package com.android.go.sopt.winey.data.repository
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
-import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
@@ -45,7 +42,6 @@ class DataStoreRepositoryImpl @Inject constructor(
             it[USER_ID] = userId
         }
     }
-
 
     override suspend fun getAccessToken(): Flow<String?> {
         return getStringValue(ACCESS_TOKEN)

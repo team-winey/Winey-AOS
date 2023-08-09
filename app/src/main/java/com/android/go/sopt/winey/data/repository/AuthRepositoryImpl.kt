@@ -9,8 +9,6 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueToken
 import com.android.go.sopt.winey.data.source.AuthDataSource
 import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.entity.Like
-import com.android.go.sopt.winey.domain.entity.Login
-import com.android.go.sopt.winey.domain.entity.ReIssueToken
 import com.android.go.sopt.winey.domain.entity.Recommend
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed

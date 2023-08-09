@@ -55,7 +55,7 @@ class KakaoLoginCallback(private val onSuccess: (accessToken: String) -> Unit) {
             onSuccess(token.accessToken)
         }
     }
-    companion object{
+    companion object {
         private const val ACCESS_DENIED = "접근이 거부 됨(동의 취소)"
         private const val INVALID_CLIENT = "유효하지 않은 앱"
         private const val INVALID_GRANT = "인증 수단이 유효하지 않아 인증할 수 없는 상태"

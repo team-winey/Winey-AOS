@@ -33,7 +33,10 @@ interface AuthRepository {
     suspend fun getRecommendList(page: Int): Result<List<Recommend>?>
     suspend fun deleteFeed(feedId: Int): Result<Unit>
 
-    suspend fun postLogin(accessToken: String, requestLoginDto: RequestLoginDto): Result<ResponseLoginDto?>
+    suspend fun postLogin(
+        accessToken: String,
+        requestLoginDto: RequestLoginDto
+    ): Result<ResponseLoginDto?>
 
     suspend fun postReIssueToken(refreshToken: String): Result<ResponseReIssueTokenDto?>
 }
