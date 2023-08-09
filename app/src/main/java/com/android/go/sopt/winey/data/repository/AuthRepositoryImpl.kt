@@ -3,7 +3,9 @@ package com.android.go.sopt.winey.data.repository
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.source.AuthDataSource
 import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.entity.Like
@@ -20,9 +22,9 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource
 ) : AuthRepository {
-    override suspend fun getUser(): Result<User> =
+    override suspend fun getUser(): Result<User?> =
         runCatching {
-            authDataSource.getUser().data!!.toUser()
+            authDataSource.getUser().data?.toUser()
         }
 
     override suspend fun getWineyFeedList(page: Int): Result<List<WineyFeed>> =
@@ -57,26 +59,26 @@ class AuthRepositoryImpl @Inject constructor(
             authDataSource.postFeedLike(feedId, requestPostLikeDto).toLike()
         }
 
-    override suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): Result<Goal> =
+    override suspend fun postCreateGoal(requestCreateGoalDto: RequestCreateGoalDto): Result<Goal?> =
         runCatching {
-            authDataSource.postCreateGoal(requestCreateGoalDto).data!!.toGoal()
+            authDataSource.postCreateGoal(requestCreateGoalDto).data?.toGoal()
         }
 
-    override suspend fun getRecommendList(page: Int): Result<List<Recommend>> =
+    override suspend fun getRecommendList(page: Int): Result<List<Recommend>?> =
         runCatching {
-            authDataSource.getRecommendList(page).data!!.convertToRecommend()
+            authDataSource.getRecommendList(page).data?.convertToRecommend()
         }
 
     override suspend fun postLogin(
         accessToken: String,
         requestLoginDto: RequestLoginDto
-    ): Result<Login> =
+    ): Result<ResponseLoginDto?> =
         runCatching {
-            authDataSource.postLogin(accessToken, requestLoginDto).data!!.toLogin()
+            authDataSource.postLogin(accessToken, requestLoginDto).data
         }
 
-    override suspend fun postReIssueToken(refreshToken: String): Result<ReIssueToken> =
+    override suspend fun postReIssueToken(refreshToken: String): Result<ResponseReIssueTokenDto?> =
         runCatching {
-            authDataSource.postReIssueToken(refreshToken).data!!.toReIssueToken()
+            authDataSource.postReIssueToken(refreshToken).data
         }
 }
