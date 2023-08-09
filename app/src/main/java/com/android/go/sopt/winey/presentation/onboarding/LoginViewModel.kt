@@ -1,9 +1,10 @@
 package com.android.go.sopt.winey.presentation.onboarding
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
-import com.android.go.sopt.winey.domain.entity.Login
+import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.domain.repository.KakaoLoginRepository
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import timber.log.Timber
@@ -31,37 +31,45 @@ class LoginViewModel @Inject constructor(
     private val _isKakaoLogin = MutableStateFlow(false)
     val isKakaoLogin = _isKakaoLogin.asStateFlow()
 
-    private val _loginState = MutableStateFlow<UiState<Login>>(UiState.Empty)
-    val loginState: StateFlow<UiState<Login>> get() = _loginState.asStateFlow()
+    private val _loginState = MutableStateFlow<UiState<ResponseLoginDto?>>(UiState.Empty)
+    val loginState: StateFlow<UiState<ResponseLoginDto?>> = _loginState.asStateFlow()
 
     val kakaoLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
         KakaoLoginCallback {
             _isKakaoLogin.value = true
             Timber.d("액세스토큰 ${token?.accessToken}")
             Timber.d("리프레시토큰 ${token?.refreshToken}")
-            saveSocialToken(token!!.accessToken, token!!.refreshToken)
-            login(runBlocking { getSocialToken() }!!, "KAKAO")
+            if(token != null){
+                saveSocialToken(token.accessToken, token.refreshToken)
+                postLogin(token.accessToken, KAKAO)
+            } else {
+                Timber.e("token is null")
+            }
         }.handleResult(token, error)
     }
 
-    fun kakaoLogin() = viewModelScope.launch {
-        kakaoLoginRepository.startKakaoLogin(kakaoLoginCallback)
+    fun loginKakao(context: Context) = viewModelScope.launch {
+        kakaoLoginRepository.loginKakao(kakaoLoginCallback, context)
     }
 
-    fun login(socialToken: String, socialType: String) {
+    fun postLogin(socialToken: String, socialType: String) {
         viewModelScope.launch {
             _loginState.value = UiState.Loading
 
             authRepository.postLogin(socialToken, RequestLoginDto(socialType))
                 .onSuccess { response ->
                     Timber.e("로그인 성공")
-                    saveAccessToken(response.accessToken, response.refreshToken)
-                    saveUserId(response.userId)
-                    _loginState.value = UiState.Success(response)
+                    if(response != null) {
+                        saveAccessToken(response.accessToken, response.refreshToken)
+                        saveUserId(response.userId)
+                        _loginState.value = UiState.Success(response)
+                    } else {
+                        Timber.e("response is null")
+                    }
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        Timber.e("HTTP 실패")
+                        Timber.e("HTTP 실패 ${t.code()}, ${t.message()}")
                     }
                     Timber.e("${t.message}")
                     _loginState.value = UiState.Failure("${t.message}")
@@ -75,7 +83,7 @@ class LoginViewModel @Inject constructor(
         }
 
     suspend fun getSocialToken() = withContext(Dispatchers.IO) {
-        dataStoreRepository.getSocialToken().first()
+        dataStoreRepository.getSocialAccessToken().first()
     }
 
     fun saveAccessToken(accessToken: String, refreshToken: String) =
@@ -94,5 +102,9 @@ class LoginViewModel @Inject constructor(
 
     suspend fun getRefreshToken() = withContext(Dispatchers.IO) {
         dataStoreRepository.getRefreshToken().first()
+    }
+
+    companion object{
+        private const val KAKAO = "KAKAO"
     }
 }

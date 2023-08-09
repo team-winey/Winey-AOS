@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentTargetAmountBottomSheetBinding
@@ -17,9 +18,13 @@ import com.android.go.sopt.winey.util.binding.BindingBottomSheetDialogFragment
 import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.viewLifeCycle
+import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 
@@ -56,26 +61,24 @@ class TargetAmountBottomSheetFragment :
     }
 
     fun initCreateGoalObserver() {
-        lifecycleScope.launch {
-            viewModel.createGoalState.collect {
-                when (it) {
-                    is UiState.Loading -> {
-                    }
+        viewModel.createGoalState.flowWithLifecycle(viewLifeCycle).onEach {
+            when (it) {
+                is UiState.Loading -> {
+                }
 
-                    is UiState.Success -> {
-                        mainViewModel.getUser()
-                        this@TargetAmountBottomSheetFragment.dismiss()
-                    }
+                is UiState.Success -> {
+                    mainViewModel.getUser()
+                    this@TargetAmountBottomSheetFragment.dismiss()
+                }
 
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { it.msg }
-                    }
+                is UiState.Failure -> {
+                    snackBar(binding.root) { it.msg }
+                }
 
-                    is UiState.Empty -> {
-                    }
+                is UiState.Empty -> {
                 }
             }
-        }
+        }.launchIn(viewLifeCycleScope)
     }
 
     fun initCancelButtonClickListener() {
@@ -141,75 +144,69 @@ class TargetAmountBottomSheetFragment :
     }
 
     private fun initAmountCheckObserver() {
-        lifecycleScope.launch {
-            viewModel.amountCheck.collect {
-                when (it) {
-                    true -> {
-                        binding.tilTargetAmountSetAmount.error = " "
-                        binding.etTargetAmountSetAmount.setTextColor(
-                            requireContext().colorOf(R.color.red_500)
-                        )
-                        binding.tvTargetAmountWarningAmount.setTextColor(
-                            requireContext().colorOf(R.color.red_500)
-                        )
-                    }
+        viewModel.amountCheck.flowWithLifecycle(viewLifeCycle).onEach {
+            when (it) {
+                true -> {
+                    binding.tilTargetAmountSetAmount.error = " "
+                    binding.etTargetAmountSetAmount.setTextColor(
+                        requireContext().colorOf(R.color.red_500)
+                    )
+                    binding.tvTargetAmountWarningAmount.setTextColor(
+                        requireContext().colorOf(R.color.red_500)
+                    )
+                }
 
-                    false -> {
-                        binding.tilTargetAmountSetAmount.error = null
-                        binding.etTargetAmountSetAmount.setTextColor(
-                            requireContext().colorOf(R.color.purple_400)
-                        )
-                        binding.tvTargetAmountWarningAmount.setTextColor(
-                            requireContext().colorOf(R.color.gray_400)
-                        )
-                    }
+                false -> {
+                    binding.tilTargetAmountSetAmount.error = null
+                    binding.etTargetAmountSetAmount.setTextColor(
+                        requireContext().colorOf(R.color.purple_400)
+                    )
+                    binding.tvTargetAmountWarningAmount.setTextColor(
+                        requireContext().colorOf(R.color.gray_400)
+                    )
                 }
             }
-        }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initDayCheckObserver() {
-        lifecycleScope.launch {
-            viewModel.dayCheck.collect {
-                when (it) {
-                    true -> {
-                        binding.tilTargetAmountSetDay.error = " "
-                        binding.etTargetAmountSetDay.setTextColor(
-                            requireContext().colorOf(R.color.red_500)
-                        )
-                        binding.tvTargetAmountWarningDay.setTextColor(
-                            requireContext().colorOf(R.color.red_500)
-                        )
-                    }
+        viewModel.dayCheck.flowWithLifecycle(viewLifeCycle).onEach {
+            when (it) {
+                true -> {
+                    binding.tilTargetAmountSetDay.error = " "
+                    binding.etTargetAmountSetDay.setTextColor(
+                        requireContext().colorOf(R.color.red_500)
+                    )
+                    binding.tvTargetAmountWarningDay.setTextColor(
+                        requireContext().colorOf(R.color.red_500)
+                    )
+                }
 
-                    false -> {
-                        binding.tilTargetAmountSetDay.error = null
-                        binding.etTargetAmountSetDay.setTextColor(
-                            requireContext().colorOf(R.color.purple_400)
-                        )
-                        binding.tvTargetAmountWarningDay.setTextColor(
-                            requireContext().colorOf(R.color.gray_400)
-                        )
-                    }
+                false -> {
+                    binding.tilTargetAmountSetDay.error = null
+                    binding.etTargetAmountSetDay.setTextColor(
+                        requireContext().colorOf(R.color.purple_400)
+                    )
+                    binding.tvTargetAmountWarningDay.setTextColor(
+                        requireContext().colorOf(R.color.gray_400)
+                    )
                 }
             }
-        }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initButtonStateCheckObserver() {
-        lifecycleScope.launch {
-            viewModel.buttonStateCheck.collect {
-                when (it) {
-                    true -> {
-                        binding.btnTargetAmountSave.isEnabled = true
-                    }
+        viewModel.buttonStateCheck.flowWithLifecycle(viewLifeCycle).onEach {
+            when (it) {
+                true -> {
+                    binding.btnTargetAmountSave.isEnabled = true
+                }
 
-                    false -> {
-                        binding.btnTargetAmountSave.isEnabled = false
-                    }
+                false -> {
+                    binding.btnTargetAmountSave.isEnabled = false
                 }
             }
-        }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun makeCommaString(input: Long): String {

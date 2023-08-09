@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
@@ -21,6 +22,8 @@ import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -51,7 +54,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun init1On1ButtonClickListener() {
         binding.clMypageTo1on1.setOnClickListener {
-            val url = "https://open.kakao.com/o/s751Susf"
+            val url = ONE_ON_ONE_URL
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         }
@@ -65,28 +68,26 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun setupGetUserState() {
-        lifecycleScope.launch {
-            viewModel.getUserState.collect { state ->
+        viewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
 
-                when (state) {
-                    is UiState.Loading -> {
-                    }
+            when (state) {
+                is UiState.Loading -> {
+                }
 
-                    is UiState.Success -> {
-                        val data = dataStoreRepository.getUserInfo().firstOrNull()
-                        handleSuccessState(data)
-                        handleTargetModifyButtonState(data)
-                    }
+                is UiState.Success -> {
+                    val data = dataStoreRepository.getUserInfo().firstOrNull()
+                    handleSuccessState(data)
+                    handleTargetModifyButtonState(data)
+                }
 
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
 
-                    is UiState.Empty -> {
-                    }
+                is UiState.Empty -> {
                 }
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun handleTargetModifyButtonState(data: User?) {
@@ -166,5 +167,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val LEVEL_KNIGHT = "기사"
         private const val LEVEL_NOBLESS = "귀족"
         private const val LEVEL_KING = "황제"
+        private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
     }
 }

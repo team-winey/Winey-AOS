@@ -20,8 +20,8 @@ class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
-    private val _getUserState = MutableStateFlow<UiState<User>>(UiState.Loading)
-    val getUserState: StateFlow<UiState<User>> get() = _getUserState.asStateFlow()
+    private val _getUserState = MutableStateFlow<UiState<User?>>(UiState.Loading)
+    val getUserState: StateFlow<UiState<User?>> = _getUserState.asStateFlow()
 
     init {
         getUser()
