@@ -7,16 +7,21 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
-import com.android.go.sopt.winey.util.UriToRequestBody
+import com.android.go.sopt.winey.util.multipart.UriToRequestBody
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.viewLifeCycle
+import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.text.DecimalFormat
 
 @AndroidEntryPoint
@@ -43,7 +48,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 //        val adjustedImageBitmap = compressor.adjustImageFormat()
 //        val bitmapRequestBody =
 //            BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
-
         val requestBody = UriToRequestBody(requireContext(), imageUriArg!!)
         viewModel.updateRequestBody(requestBody)
     }
@@ -55,24 +59,25 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     private fun initPostImageStateObserver() {
-        viewModel.postWineyFeedState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Loading -> {
-                    preventUploadButtonClick()
-                }
+        viewModel.postWineyFeedState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Empty -> {
+                    }
 
-                is UiState.Success -> {
-                    navigateLoadingScreen()
-                }
+                    is UiState.Loading -> {
+                        preventUploadButtonClick()
+                    }
 
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
-                }
+                    is UiState.Success -> {
+                        navigateLoadingScreen()
+                    }
 
-                else -> {
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
                 }
-            }
-        }
+            }.launchIn(viewLifeCycleScope)
     }
 
     private fun preventUploadButtonClick() {

@@ -24,7 +24,7 @@
     <string name="upload_next_btn_text">다음</string>
     <string name="upload_content_title">절약 내용을\n작성해주세요!</string>
     <string name="upload_content_detail">적어주신 글을 썸네일과 함께 표시합니다 :)</string>
-    <string name="upload_content_edittext_hint">Ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!</string>
+    <string name="upload_content_edittext_hint">Ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!\n</string>
     <string name="upload_content_counter">(%d/36)</string>
     <string name="upload_amount_title">얼마나 절약했나요?</string>
     <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
@@ -92,6 +92,9 @@
     <string name="upload_amount_hint_text">0</string>
     <string name="recommend_header_title">위니가 알려주는 추천 절약법</string>
     <string name="recommend_header_text">쉿, 그대를 위한 절약방법이 도착했어.\n황실 내에서도 비밀인데 특별히 알려줄게:)</string>
+
+    <string name="upload_content_error_text">6자 이상 작성해주세요</string>
+
     <string name="login_title">절약을 더 쉽고 재밌게</string>
     <string name="login_kakao">카카오톡으로 3초만에 시작하기</string>
 </resources>
