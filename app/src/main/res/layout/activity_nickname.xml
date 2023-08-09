@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginEnd="8dp"
-                    android:text="@string/nickname_counter"
+                    android:text="@{@string/nickname_counter(vm._nickname.length)}"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                     android:textColor="@color/gray_300" />
 
@@ -106,7 +106,8 @@
             setHelperTextColor="@{vm.inputUiState}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="4dp"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
             app:layout_constraintStart_toStartOf="@id/ll_nickname_container"
             app:layout_constraintTop_toBottomOf="@id/ll_nickname_container" />
