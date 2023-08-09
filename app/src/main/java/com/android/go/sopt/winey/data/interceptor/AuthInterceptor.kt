@@ -2,7 +2,7 @@ package com.android.go.sopt.winey.data.interceptor
 
 import android.content.Context
 import com.android.go.sopt.winey.BuildConfig.AUTH_BASE_URL
-import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueToken
+import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -30,11 +30,11 @@ class AuthInterceptor @Inject constructor(
         val response = chain.proceed(headerRequest)
 
         when (response.code) {
-            INVALID_TOKEN -> {
+            CODE_TOKEN_EXPIRED -> {
                 try {
                     val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
                         .url("$AUTH_BASE_URL/auth/token")
-                        .addHeader("refreshToken", runBlocking { getRefreshToken() })
+                        .addHeader(REFRESH_TOKEN, runBlocking { getRefreshToken() })
                         .build()
                     val refreshTokenResponse = chain.proceed(refreshTokenRequest)
                     Timber.e("리프레시 토큰 : $refreshTokenResponse")
@@ -42,7 +42,7 @@ class AuthInterceptor @Inject constructor(
                     if (refreshTokenResponse.isSuccessful) {
                         val responseToken = json.decodeFromString(
                             refreshTokenResponse.body?.string().toString()
-                        ) as BaseResponse<ResponseReIssueToken>
+                        ) as BaseResponse<ResponseReIssueTokenDto>
 
                         if (responseToken.data != null) {
                             saveAccessToken(
@@ -82,7 +82,7 @@ class AuthInterceptor @Inject constructor(
 
     companion object {
         private const val HEADER_TOKEN = "accessToken"
-        private const val INVALID_TOKEN = 401
-        private const val VALID_TOKEN = 200
+        private const val CODE_TOKEN_EXPIRED = 401
+        private const val REFRESH_TOKEN = "refreshToken"
     }
 }
