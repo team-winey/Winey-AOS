@@ -28,16 +28,16 @@ class TargetAmountViewModel @Inject constructor(
     val day: LiveData<String> get() = _day
 
     private val _amountCheck = MutableStateFlow<Boolean>(false)
-    val amountCheck: StateFlow<Boolean> get() = _amountCheck.asStateFlow()
+    val amountCheck: StateFlow<Boolean> = _amountCheck.asStateFlow()
 
     private val _dayCheck = MutableStateFlow<Boolean>(false)
-    val dayCheck: StateFlow<Boolean> get() = _dayCheck.asStateFlow()
+    val dayCheck: StateFlow<Boolean> = _dayCheck.asStateFlow()
 
     private val _buttonStatecheck = MutableStateFlow<Boolean>(false)
-    val buttonStateCheck: StateFlow<Boolean> get() = _buttonStatecheck.asStateFlow()
+    val buttonStateCheck: StateFlow<Boolean> = _buttonStatecheck.asStateFlow()
 
-    private val _createGoalState = MutableStateFlow<UiState<Goal>>(UiState.Empty)
-    val createGoalState: StateFlow<UiState<Goal>> get() = _createGoalState.asStateFlow()
+    private val _createGoalState = MutableStateFlow<UiState<Goal?>>(UiState.Empty)
+    val createGoalState: StateFlow<UiState<Goal?>> = _createGoalState.asStateFlow()
 
     fun postCreateGoal() {
         val money: Any? = amount.value
@@ -93,7 +93,7 @@ class TargetAmountViewModel @Inject constructor(
         val day = _day.value
         val amount = _amount.value
         _buttonStatecheck.value =
-            !day.isNullOrEmpty() && !amount.isNullOrEmpty() && _dayCheck.value && _amountCheck.value
+            !day.isNullOrEmpty() && !amount.isNullOrEmpty() && !_dayCheck.value && !_amountCheck.value
     }
 
     companion object {

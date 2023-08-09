@@ -106,4 +106,11 @@
     <string name="nickname_unchecked_duplication_error">닉네임 중복확인을 해주세요 :(</string>
     <string name="nickname_duplicate_error">중복된 닉네임입니다 :(</string>
     <string name="nickname_valid">사용 가능한 닉네임입니다 :)</string>
+
+    <!-- login -->
+    <string name="login_title">절약을 더 쉽고 재밌게</string>
+    <string name="login_kakao">카카오톡으로 3초만에 시작하기</string>
 </resources>
+
+
+

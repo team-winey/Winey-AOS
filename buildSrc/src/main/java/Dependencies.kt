@@ -31,6 +31,8 @@ object AndroidXDependencies {
     const val workManager = "androidx.work:work-runtime-ktx:${Versions.workManagerVersion}"
     const val hiltWorkManager = "androidx.hilt:hilt-work:1.0.0"
     const val exif = "androidx.exifinterface:exifinterface:${Versions.exifVersion}"
+    const val dataStore = "androidx.datastore:datastore-preferences:${Versions.dataStoreVersion}"
+    const val dataStoreCore = "androidx.datastore:datastore-preferences-core:${Versions.dataStoreVersion}"
 }
 
 object TestDependencies {
@@ -75,6 +77,7 @@ object ThirdPartyDependencies {
         "com.squareup.leakcanary:leakcanary-android:${Versions.leakCanaryVersion}"
     const val soloader = "com.facebook.soloader:soloader:${Versions.soloaderVersion}"
     const val circleImageView = "de.hdodenhof:circleimageview:${Versions.circleImageViewVersion}"
+    const val kakaoLogin = "com.kakao.sdk:v2-user:${Versions.kakaoLoginVersion}"
 }
 
 object FirebaseDependencies {

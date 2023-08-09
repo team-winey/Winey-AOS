@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.presentation.main.recommend
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
 import com.android.go.sopt.winey.R
@@ -12,7 +13,8 @@ import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fragment_recommend) {
@@ -35,24 +37,22 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
     }
 
     private fun getRecommendListStateObserver() {
-        lifecycleScope.launch {
-            viewModel.getRecommendListState.collect { state ->
-                when (state) {
-                    is UiState.Loading -> {
-                    }
+        viewModel.getRecommendListState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Loading -> {
+                }
 
-                    is UiState.Success -> {
-                        recommendAdapter.submitList(state.data)
-                    }
+                is UiState.Success -> {
+                    recommendAdapter.submitList(state.data)
+                }
 
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
 
-                    is UiState.Empty -> {
-                    }
+                is UiState.Empty -> {
                 }
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 }

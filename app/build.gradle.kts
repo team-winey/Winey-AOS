@@ -26,6 +26,13 @@ android {
             "AUTH_BASE_URL",
             gradleLocalProperties(rootDir).getProperty("auth.base.url")
         )
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_KEY",
+            gradleLocalProperties(rootDir).getProperty("kakao.native.key")
+        )
+
+        manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir).getProperty("kakaoNativeKey")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -84,6 +91,8 @@ dependencies {
         implementation(workManager)
         implementation(hiltWorkManager)
         implementation(exif)
+        implementation(dataStore)
+        implementation(dataStoreCore)
     }
 
     TestDependencies.run {
@@ -112,6 +121,7 @@ dependencies {
         implementation(balloon)
         implementation(lottie)
         implementation(circleImageView)
+        implementation(kakaoLogin)
 
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
