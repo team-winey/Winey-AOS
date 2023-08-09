@@ -5,6 +5,7 @@ import androidx.activity.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityNicknameBinding
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import com.android.go.sopt.winey.util.context.hideKeyboard
 
 class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activity_nickname) {
     private val viewModel by viewModels<NicknameViewModel>()
@@ -13,6 +14,13 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
 
-        // todo: 루트 레이아웃 클릭 리스너
+        initRootLayoutClickListener()
+    }
+
+    private fun initRootLayoutClickListener() {
+        binding.root.setOnClickListener {
+            hideKeyboard(binding.root)
+            binding.etNickname.clearFocus()
+        }
     }
 }
