@@ -22,13 +22,13 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         Handler(Looper.getMainLooper()).postDelayed({
-            checkAccessTokenAndNavigate()
+            checkAutoLogin()
         }, DELAY_TIME)
     }
 
-    private fun checkAccessTokenAndNavigate() {
+    private fun checkAutoLogin() {
         val accessToken = runBlocking { dataStoreRepository.getAccessToken().firstOrNull() }
-        if (accessToken.isNullOrEmpty() || accessToken == "") {
+        if (accessToken.isNullOrBlank()) {
             navigateToOnBoardingScreen()
         } else {
             navigateToMainScreen()
