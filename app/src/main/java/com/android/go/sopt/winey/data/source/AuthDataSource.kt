@@ -50,10 +50,10 @@ class AuthDataSource @Inject constructor(
         authService.deleteFeed(feedId)
 
     suspend fun postLogin(
-        accessToken: String,
+        socialAccessToken: String,
         requestLoginDto: RequestLoginDto
     ): BaseResponse<ResponseLoginDto> =
-        authService.postLogin(accessToken, requestLoginDto)
+        authService.postLogin(socialAccessToken, requestLoginDto)
 
     suspend fun postReIssueToken(
         refreshToken: String

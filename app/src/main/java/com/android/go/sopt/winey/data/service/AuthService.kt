@@ -69,7 +69,7 @@ interface AuthService {
 
     @POST("auth")
     suspend fun postLogin(
-        @Header("Authorization") accessToken: String,
+        @Header("Authorization") socialAccessToken: String,
         @Body requestLoginDto: RequestLoginDto
     ): BaseResponse<ResponseLoginDto>
 

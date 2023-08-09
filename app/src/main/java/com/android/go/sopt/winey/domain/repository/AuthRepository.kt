@@ -34,7 +34,7 @@ interface AuthRepository {
     suspend fun deleteFeed(feedId: Int): Result<Unit>
 
     suspend fun postLogin(
-        accessToken: String,
+        socialAccessToken: String,
         requestLoginDto: RequestLoginDto
     ): Result<ResponseLoginDto?>
 

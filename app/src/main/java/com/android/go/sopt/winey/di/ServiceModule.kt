@@ -28,7 +28,7 @@ object ServiceModule {
         client: UserApiClient
     ): KakaoLoginService {
         return object : KakaoLoginService {
-            override fun loginKakao (
+            override fun loginKakao(
                 kakaoLoginCallBack: (OAuthToken?, Throwable?) -> Unit,
                 context: Context
             ) {

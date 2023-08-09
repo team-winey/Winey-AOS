@@ -68,11 +68,11 @@ class AuthRepositoryImpl @Inject constructor(
         }
 
     override suspend fun postLogin(
-        accessToken: String,
+        socialAccessToken: String,
         requestLoginDto: RequestLoginDto
     ): Result<ResponseLoginDto?> =
         runCatching {
-            authDataSource.postLogin(accessToken, requestLoginDto).data
+            authDataSource.postLogin(socialAccessToken, requestLoginDto).data
         }
 
     override suspend fun postReIssueToken(refreshToken: String): Result<ResponseReIssueTokenDto?> =
