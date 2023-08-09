@@ -64,15 +64,10 @@ fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
 
 @BindingAdapter("setBackground")
 fun EditText.setBackground(uiState: InputUiState) {
-    when (uiState) {
-        is Empty -> background = if (this.hasFocus()) {
-            context.drawableOf(R.drawable.shape_purple_line_5_rect)
-        } else {
-            context.drawableOf(R.drawable.shape_gray_line_5_rect)
-        }
-
-        is Success -> background = context.drawableOf(R.drawable.shape_blue_line_5_rect)
-        is Failure -> background = context.drawableOf(R.drawable.shape_red_line_5_rect)
+    background = when (uiState) {
+        is Empty -> context.drawableOf(R.drawable.sel_nickname_edittext_focus_color)
+        is Success -> context.drawableOf(R.drawable.shape_blue_line_5_rect)
+        is Failure -> context.drawableOf(R.drawable.shape_red_line_5_rect)
     }
 }
 
