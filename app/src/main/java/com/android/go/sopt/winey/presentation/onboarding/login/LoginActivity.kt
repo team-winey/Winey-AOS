@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.onboarding
+package com.android.go.sopt.winey.presentation.onboarding.login
 
 import android.content.Intent
 import android.os.Bundle

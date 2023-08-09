@@ -7,7 +7,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivitySplashBinding
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
-import com.android.go.sopt.winey.presentation.onboarding.LoginActivity
+import com.android.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
