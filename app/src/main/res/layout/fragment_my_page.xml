@@ -371,9 +371,48 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
-                    android:id="@+id/v_mypage_space"
+                    android:id="@+id/v_mypage_line7"
                     android:layout_width="match_parent"
-                    android:layout_height="32dp"
+                    android:layout_height="4dp"
+                    android:background="@color/gray_50"
+                    app:layout_constraintTop_toBottomOf="@id/cl_mypage_to_1on1" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_mypage_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_mypage_line7">
+
+                    <TextView
+                        android:id="@+id/tv_mypage_logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="23dp"
+                        android:layout_marginTop="17dp"
+                        android:text="@string/mypage_logout"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                        android:textColor="@color/gray_700"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/iv_mypage_logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/ic_mypage_next"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:id="@+id/v_mypage_line8"
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:background="@color/gray_50"
+                    app:layout_constraintTop_toBottomOf="@id/cl_mypage_logout" />
                     android:background="@color/gray_50"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
