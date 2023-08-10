@@ -36,23 +36,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    fun syncBottomNavigationSelection() {
+    private fun syncBottomNavigationSelection() {
         supportFragmentManager.addOnBackStackChangedListener {
             syncBottomNavigation()
         }
     }
 
-    fun syncBottomNavigation() {
+    private fun syncBottomNavigation() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fcv_main)
         when (currentFragment) {
             is WineyFeedFragment -> binding.bnvMain.selectedItemId = R.id.menu_feed
             is RecommendFragment -> binding.bnvMain.selectedItemId = R.id.menu_recommend
             is MyPageFragment -> binding.bnvMain.selectedItemId = R.id.menu_mypage
-            // 다른 프래그먼트도 추가가능
         }
     }
 
-    inline fun <reified T : Fragment> navigateTo() {
+    private inline fun <reified T : Fragment> navigateTo() {
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }

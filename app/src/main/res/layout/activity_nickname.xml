@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.android.go.sopt.winey.presentation.onboarding.nickname.NicknameViewModel" />
+
+        <import type="com.android.go.sopt.winey.util.view.InputUiState" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.onboarding.nickname.NicknameActivity">
+
+        <TextView
+            android:id="@+id/tv_nickname_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="82dp"
+            android:text="@string/nickname_title"
+            android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_nickname_guide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:text="@string/nickname_input_guide"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toStartOf="@id/tv_nickname_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_nickname_title" />
+
+        <LinearLayout
+            android:id="@+id/ll_nickname_container"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="42dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_nickname_guide">
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+
+                <EditText
+                    android:id="@+id/et_nickname"
+                    style="?editTextStyle"
+                    setBackground="@{vm.inputUiState}"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/nickname_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:maxLength="@{vm.MAX_LENGTH}"
+                    android:maxLines="1"
+                    android:paddingHorizontal="18dp"
+                    android:paddingVertical="12dp"
+                    android:text="@={vm._nickname}"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                    android:textColor="@color/gray_900"
+                    android:textColorHint="@color/gray_400" />
+
+                <TextView
+                    android:id="@+id/tv_nickname_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="8dp"
+                    android:text="@{@string/nickname_counter(vm._nickname.length)}"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                    android:textColor="@color/gray_300" />
+
+            </FrameLayout>
+
+            <Button
+                android:id="@+id/btn_nickname_duplicate_check"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/gray_50"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:stateListAnimator="@null"
+                android:text="@string/nickname_duplicate_check"
+                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                android:textColor="@color/gray_700" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_nickname_helper_text"
+            setHelperText="@{vm.inputUiState}"
+            setHelperTextColor="@{vm.inputUiState}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+            app:layout_constraintStart_toStartOf="@id/ll_nickname_container"
+            app:layout_constraintTop_toBottomOf="@id/ll_nickname_container" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_nickname_complete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/sel_upload_nickname_btn_color"
+            android:enabled="@{vm.isValidNickname, default=false}"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:stateListAnimator="@null"
+            android:text="@string/nickname_complete_btn_text"
+            android:textColor="@drawable/sel_upload_nickname_btn_text_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
