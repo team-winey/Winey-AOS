@@ -4,6 +4,7 @@ import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetRecommendListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
@@ -85,5 +86,5 @@ interface AuthService {
     @GET("user/nickname/is-exist")
     suspend fun getNicknameDuplicateCheck(
         @Query("nickname") nickname: String
-    ): BaseResponse<Boolean>
+    ): BaseResponse<ResponseGetNicknameDuplicateCheckDto>
 }

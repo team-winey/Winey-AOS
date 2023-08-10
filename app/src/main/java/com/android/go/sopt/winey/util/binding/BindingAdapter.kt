@@ -63,43 +63,35 @@ fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
 }
 
 @BindingAdapter("setBackground")
-fun EditText.setBackground(uiState: InputUiState) {
-    background = when (uiState) {
+fun EditText.setBackground(inputUiState: InputUiState) {
+    background = when (inputUiState) {
         is Empty -> context.drawableOf(R.drawable.sel_nickname_edittext_focus_color)
-        is Success -> context.drawableOf(R.drawable.shape_blue_line_5_rect)
         is Failure -> context.drawableOf(R.drawable.shape_red_line_5_rect)
     }
 }
 
 @BindingAdapter("setHelperText")
-fun TextView.setHelperText(uiState: InputUiState) {
-    when (uiState) {
+fun TextView.setHelperText(inputUiState: InputUiState) {
+    when (inputUiState) {
         is Empty -> {
             visibility = View.INVISIBLE
         }
 
-        is Success -> {
-            visibility = View.VISIBLE
-            text = context.stringOf(R.string.nickname_valid)
-        }
-
         is Failure -> {
             visibility = View.VISIBLE
-            text = when (uiState.code) {
+            text = when (inputUiState.code) {
                 CODE_INVALID_LENGTH -> context.stringOf(R.string.nickname_invalid_length_error)
                 CODE_SPACE_SPECIAL_CHAR -> context.stringOf(R.string.nickname_space_special_char_error)
                 CODE_UNCHECKED_DUPLICATION -> context.stringOf(R.string.nickname_unchecked_duplication_error)
-                CODE_DUPLICATE -> context.stringOf(R.string.nickname_duplicate_error)
             }
         }
     }
 }
 
 @BindingAdapter("setHelperTextColor")
-fun TextView.setHelperTextColor(uiState: InputUiState) {
-    when (uiState) {
+fun TextView.setHelperTextColor(inputUiState: InputUiState) {
+    when (inputUiState) {
         is Empty -> setTextColor(context.colorOf(R.color.gray_200))
-        is Success -> setTextColor(context.colorOf(R.color.blue_500))
         is Failure -> setTextColor(context.colorOf(R.color.red_500))
     }
 }
