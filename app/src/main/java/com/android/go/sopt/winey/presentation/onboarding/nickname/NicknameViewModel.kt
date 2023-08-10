@@ -50,7 +50,7 @@ class NicknameViewModel @Inject constructor(
     val isTextChanged: StateFlow<Boolean> = _isTextChanged.asStateFlow()
 
     private val _isClickedCheckBtn = MutableStateFlow(false)
-    private val isClickedCheckBtn: StateFlow<Boolean> = _isClickedCheckBtn.asStateFlow()
+    val isClickedCheckBtn: StateFlow<Boolean> = _isClickedCheckBtn.asStateFlow()
 
     fun getNicknameDuplicateCheck() {
         viewModelScope.launch {
@@ -79,7 +79,6 @@ class NicknameViewModel @Inject constructor(
         _isClickedCheckBtn.value = state
     }
 
-    // map 쓰긴 하는데, inputUiState -> mutable 하게 바꾸자!!!!
     private fun updateInputUiState(nickname: String): InputUiState {
         if (nickname.isEmpty()) return InputUiState.Empty
         if (!checkLength(nickname)) return InputUiState.Failure(CODE_INVALID_LENGTH)
@@ -91,7 +90,6 @@ class NicknameViewModel @Inject constructor(
 
         // 텍스트가 바뀌었는데 중복체크를 하지 않은 경우
         if (isTextChanged.value && !isClickedCheckBtn.value) {
-            Timber.e("isTextChanged && !isClickedCheckBtn")
             return InputUiState.Failure(CODE_UNCHECKED_DUPLICATION)
         }
 
@@ -103,6 +101,7 @@ class NicknameViewModel @Inject constructor(
     private fun containsSpaceOrSpecialChar(nickname: String) =
         !Regex(REGEX_PATTERN).matches(nickname)
 
+    // _nickname.map{} Flow -> MutableStateFlow 변환을 위한 확장 함수
     private fun <T> Flow<T>.mutableStateIn(
         initialValue: T,
         scope: CoroutineScope
