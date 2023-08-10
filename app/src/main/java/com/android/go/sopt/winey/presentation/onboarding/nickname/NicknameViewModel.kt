@@ -2,22 +2,22 @@ package com.android.go.sopt.winey.presentation.onboarding.nickname
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_DUPLICATE
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_INVALID_LENGTH
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_SPACE_SPECIAL_CHAR
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_UNCHECKED_DUPLICATION
 import com.android.go.sopt.winey.util.view.InputUiState
-import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -28,33 +28,29 @@ class NicknameViewModel @Inject constructor(
     val _nickname = MutableStateFlow("")
     val nickname: String get() = _nickname.value
 
-    val inputUiState: StateFlow<InputUiState> = _nickname.map { updateInputUiState(it) }
+    private val _inputUiState: MutableStateFlow<InputUiState> =
+        _nickname.map { updateInputUiState(it) }
+            .mutableStateIn(
+                initialValue = InputUiState.Empty,
+                scope = viewModelScope
+            )
+
+    val inputUiState: StateFlow<InputUiState> = _inputUiState.asStateFlow()
+
+    val isValidNickname: StateFlow<Boolean> = _inputUiState.map { checkInputState(it) }
         .stateIn(
-            initialValue = InputUiState.Empty,
+            initialValue = false,
             scope = viewModelScope,
-            started = WhileSubscribed(PRODUCE_STOP_TIMEOUT)
+            started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
 
-//    val isValidNickname: StateFlow<Boolean> = _nickname.map { validateNickname(it) }
-//        .stateIn(
-//            initialValue = false,
-//            scope = viewModelScope,
-//            started = WhileSubscribed(PRODUCE_STOP_TIMEOUT)
-//        )
+    private fun checkInputState(state: InputUiState) = state == InputUiState.Success
 
     private val _isTextChanged = MutableStateFlow(false)
     val isTextChanged: StateFlow<Boolean> = _isTextChanged.asStateFlow()
 
     private val _isClickedCheckBtn = MutableStateFlow(false)
-    val isClickedCheckBtn: StateFlow<Boolean> = _isClickedCheckBtn.asStateFlow()
-
-//    private val _isDuplicated = MutableStateFlow(true)
-//    val isDuplicated: StateFlow<Boolean> = _isDuplicated.asStateFlow()
-
-    private val _getNicknameDuplicateCheckState =
-        MutableStateFlow<UiState<ResponseGetNicknameDuplicateCheckDto>>(UiState.Empty)
-    val getNicknameDuplicateCheckState: StateFlow<UiState<ResponseGetNicknameDuplicateCheckDto>> =
-        _getNicknameDuplicateCheckState.asStateFlow()
+    private val isClickedCheckBtn: StateFlow<Boolean> = _isClickedCheckBtn.asStateFlow()
 
     fun getNicknameDuplicateCheck() {
         viewModelScope.launch {
@@ -62,17 +58,15 @@ class NicknameViewModel @Inject constructor(
                 .onSuccess { response ->
                     if (response == null) return@onSuccess
                     Timber.e("SUCCESS GET DUPLICATION CHECK: ${response.isDuplicated}")
-                    _getNicknameDuplicateCheckState.value = UiState.Success(response)
+
+                    _inputUiState.value = if (response.isDuplicated) {
+                        InputUiState.Failure(CODE_DUPLICATE)
+                    } else {
+                        InputUiState.Success
+                    }
                 }
                 .onFailure { t ->
-                    if (t is HttpException) {
-                        Timber.e("${t.code()} ${t.message()}")
-                        _getNicknameDuplicateCheckState.value = UiState.Failure(t.message())
-                        return@onFailure
-                    }
-
                     Timber.e("${t.message}")
-                    _getNicknameDuplicateCheckState.value = UiState.Failure(t.message.toString())
                 }
         }
     }
@@ -85,6 +79,7 @@ class NicknameViewModel @Inject constructor(
         _isClickedCheckBtn.value = state
     }
 
+    // map 쓰긴 하는데, inputUiState -> mutable 하게 바꾸자!!!!
     private fun updateInputUiState(nickname: String): InputUiState {
         if (nickname.isEmpty()) return InputUiState.Empty
         if (!checkLength(nickname)) return InputUiState.Failure(CODE_INVALID_LENGTH)
@@ -96,20 +91,28 @@ class NicknameViewModel @Inject constructor(
 
         // 텍스트가 바뀌었는데 중복체크를 하지 않은 경우
         if (isTextChanged.value && !isClickedCheckBtn.value) {
+            Timber.e("isTextChanged && !isClickedCheckBtn")
             return InputUiState.Failure(CODE_UNCHECKED_DUPLICATION)
         }
 
         return InputUiState.Empty
     }
 
-    // todo: 서버통신으로 한번 확인하고 다시 텍스트를 바꾸면, 버튼이 비활성화가 되어야 한다...
-//    private fun validateNickname(nickname: String) =
-//        updateInputUiState(nickname) == InputUiState.Success
-
     private fun checkLength(nickname: String) = nickname.length in MIN_LENGTH..MAX_LENGTH
 
     private fun containsSpaceOrSpecialChar(nickname: String) =
         !Regex(REGEX_PATTERN).matches(nickname)
+
+    private fun <T> Flow<T>.mutableStateIn(
+        initialValue: T,
+        scope: CoroutineScope
+    ): MutableStateFlow<T> {
+        val flow = MutableStateFlow(initialValue)
+        scope.launch {
+            this@mutableStateIn.collect(flow)
+        }
+        return flow
+    }
 
     companion object {
         private const val MIN_LENGTH = 1
