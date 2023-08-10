@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -43,7 +42,7 @@
                 android:id="@+id/tv_target_amount_set_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="18dp"
                 android:text="@string/target_amount_set_amount"
                 android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
@@ -56,7 +55,7 @@
                 style="?textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="8dp"
                 app:boxStrokeColor="@drawable/sel_target_amount_til_stroke_color"
                 app:boxStrokeErrorColor="@color/red_500"
@@ -113,7 +112,7 @@
                 android:id="@+id/tv_target_amount_set_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="34dp"
                 android:text="@string/target_amount_set_day"
                 android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
@@ -126,7 +125,7 @@
                 style="?textInputOutlinedStyle"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginHorizontal="16dp"
+                android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="8dp"
                 app:boxStrokeColor="@drawable/sel_target_amount_til_stroke_color"
                 app:boxStrokeErrorColor="@color/red_500"
