@@ -1,11 +1,14 @@
 package com.android.go.sopt.winey.presentation.onboarding.nickname
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityNicknameBinding
+import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +24,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         initRootLayoutClickListener()
         initEditTextWatcher()
         initDuplicateCheckButtonClickListener()
+        initCompleteButtonClickListener()
     }
 
     private fun initEditTextWatcher() {
@@ -48,10 +52,23 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         }
     }
 
+    private fun initCompleteButtonClickListener() {
+        binding.btnNicknameComplete.setOnClickListener {
+            navigateTo<MainActivity>()
+        }
+    }
+
     private fun initRootLayoutClickListener() {
         binding.root.setOnClickListener {
             hideKeyboard(binding.root)
             binding.etNickname.clearFocus()
+        }
+    }
+
+    private inline fun <reified T : Activity> navigateTo() {
+        Intent(this@NicknameActivity, T::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
         }
     }
 }
