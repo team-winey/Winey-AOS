@@ -27,11 +27,12 @@
     <string name="upload_content_edittext_hint">Ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!\n</string>
     <string name="upload_content_counter">(%d/36)</string>
     <string name="upload_content_error_text">6자 이상 작성해주세요</string>
+    <string name="upload_content_counter_preview">(0/36)</string>
     <string name="upload_amount_title">얼마나 절약했나요?</string>
     <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
     <string name="upload_amount_unit_text">원</string>
+    <string name="upload_amount_hint_text">0</string>
     <string name="upload_last_btn_text">업로드</string>
-    <string name="upload_content_counter_preview">(0/36)</string>
     <string name="upload_loading_title">오늘은\n %s 값을 \n절약했어요</string>
 
     <!-- mypage -->
@@ -92,7 +93,6 @@
 
     <!-- recommend -->
     <string name="recommend_discount">%s 절약</string>
-    <string name="upload_amount_hint_text">0</string>
     <string name="recommend_header_title">예비 황제를 위한 추천 절약법</string>
     <string name="recommend_header_text">쉿, 그대를 위한 절약방법이 도착했어.\n황실 내에서도 비밀인데 특별히 알려줄게:)</string>
 
@@ -112,7 +112,7 @@
     <!-- login -->
     <string name="login_title">절약을 더 쉽고 재밌게</string>
     <string name="login_kakao">카카오톡으로 3초만에 시작하기</string>
+
+    <!-- guide -->
+    <string name="guide_next_btn_text">다음으로</string>
 </resources>
-
-
-
