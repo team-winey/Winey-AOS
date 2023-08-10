@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.util
+package com.android.go.sopt.winey.util.multipart
 
 import android.content.Context
 import android.database.sqlite.SQLiteBindOrColumnIndexOutOfRangeException
@@ -55,5 +55,9 @@ class UriToRequestBody(
 
     override fun contentLength(): Long = size
 
-    fun toFormData() = MultipartBody.Part.createFormData("feedImage", fileName, this)
+    fun toFormData() = MultipartBody.Part.createFormData(KEY_NAME, fileName, this)
+
+    companion object {
+        private const val KEY_NAME = "feedImage"
+    }
 }
