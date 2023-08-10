@@ -26,6 +26,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AuthService {
+    /**
+     *
+     */
+
     @GET("user")
     suspend fun getUser(): BaseResponse<ResponseGetUserDto?>
 
@@ -77,4 +81,9 @@ interface AuthService {
     suspend fun postReIssueToken(
         @Header("refreshToken") refreshToken: String
     ): BaseResponse<ResponseReIssueTokenDto>
+
+    @GET("user/nickname/is-exist")
+    suspend fun getNicknameDuplicateCheck(
+        @Query("nickname") nickname: String
+    ): BaseResponse<Boolean>
 }

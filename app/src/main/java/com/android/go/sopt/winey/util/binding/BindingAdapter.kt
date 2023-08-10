@@ -11,7 +11,7 @@ import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.android.go.sopt.winey.R
-import com.android.go.sopt.winey.util.code.ErrorCode.*
+import com.android.go.sopt.winey.util.code.NicknameErrorCode.*
 import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.drawableOf
 import com.android.go.sopt.winey.util.context.stringOf
@@ -87,8 +87,9 @@ fun TextView.setHelperText(uiState: InputUiState) {
             visibility = View.VISIBLE
             text = when (uiState.code) {
                 CODE_INVALID_LENGTH -> context.stringOf(R.string.nickname_invalid_length_error)
-
                 CODE_SPACE_SPECIAL_CHAR -> context.stringOf(R.string.nickname_space_special_char_error)
+                CODE_UNCHECKED_DUPLICATION -> context.stringOf(R.string.nickname_unchecked_duplication_error)
+                CODE_DUPLICATE -> context.stringOf(R.string.nickname_duplicate_error)
             }
         }
     }

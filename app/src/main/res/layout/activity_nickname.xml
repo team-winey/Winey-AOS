@@ -97,7 +97,6 @@
                 android:text="@string/nickname_duplicate_check"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_700" />
-
         </LinearLayout>
 
         <TextView

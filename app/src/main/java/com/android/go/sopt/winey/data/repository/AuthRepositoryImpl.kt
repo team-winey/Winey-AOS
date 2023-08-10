@@ -79,4 +79,9 @@ class AuthRepositoryImpl @Inject constructor(
         runCatching {
             authDataSource.postReIssueToken(refreshToken).data
         }
+
+    override suspend fun getNicknameDuplicateCheck(nickname: String): Result<Boolean?> =
+        runCatching {
+            authDataSource.getNicknameDuplicateCheck(nickname).data
+        }
 }

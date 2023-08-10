@@ -39,4 +39,6 @@ interface AuthRepository {
     ): Result<ResponseLoginDto?>
 
     suspend fun postReIssueToken(refreshToken: String): Result<ResponseReIssueTokenDto?>
+
+    suspend fun getNicknameDuplicateCheck(nickname: String): Result<Boolean?>
 }

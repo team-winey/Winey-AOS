@@ -59,4 +59,7 @@ class AuthDataSource @Inject constructor(
         refreshToken: String
     ): BaseResponse<ResponseReIssueTokenDto> =
         authService.postReIssueToken(refreshToken)
+
+    suspend fun getNicknameDuplicateCheck(nickname: String): BaseResponse<Boolean> =
+        authService.getNicknameDuplicateCheck(nickname)
 }
