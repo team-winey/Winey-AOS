@@ -87,7 +87,6 @@ class WineyFeedAdapter(
         }
     }
 
-
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
             onItemsTheSame = { old, new -> old.isLiked == new.isLiked },

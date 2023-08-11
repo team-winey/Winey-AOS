@@ -11,8 +11,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
@@ -27,7 +25,6 @@ import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -81,7 +78,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         popupMenu.menuInflater.inflate(R.menu.menu_wineyfeed, popupMenu.menu)
         val menuDelete = popupMenu.menu.findItem(R.id.menu_delete)
         val menuReport = popupMenu.menu.findItem(R.id.menu_report)
-        //TODO: 로그인 완료되면 리팩토링
         if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() }) {
             menuReport.isVisible = false
         } else {
@@ -175,27 +171,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         }
     }
 
-    private fun setListWithInfiniteScroll() {
-        binding.rvWineyfeedPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
-                    var itemCount = wineyFeedAdapter.itemCount
-                    var lastVisibleItemPosition =
-                        (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                    if (binding.rvWineyfeedPost.canScrollVertically(1) && lastVisibleItemPosition == itemCount) {
-                        lastVisibleItemPosition += MAX_FEED_VER_PAGE
-                        itemCount += MAX_FEED_VER_PAGE
-                        runBlocking {
-                            viewModel.getWineyFeed()
-                            delay(100)
-                        }
-                    }
-                }
-            }
-        })
-    }
-
     private fun setSwipeRefreshListener() {
         binding.layoutWineyfeedRefresh.setOnRefreshListener {
             viewModel.getWineyFeed()
@@ -211,7 +186,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     companion object {
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
         private const val MSG_WINEYFEED_ERROR = "ERROR"
-        private const val MAX_FEED_VER_PAGE = 10
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
     }
 }

@@ -23,8 +23,6 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    lateinit var wineyFeedAdapter: WineyFeedAdapter
-
     private val _getWineyFeedListState =
         MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
     val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
@@ -36,8 +34,8 @@ class WineyFeedViewModel @Inject constructor(
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()
 
-    val _deleteMyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
-    val deleteMyFeedState: StateFlow<UiState<Unit>> = _deleteMyFeedState.asStateFlow()
+    val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val deleteWineyFeedState: StateFlow<UiState<Unit>> = _deleteWineyFeedState.asStateFlow()
 
     init {
         getWineyFeed()
@@ -52,9 +50,9 @@ class WineyFeedViewModel @Inject constructor(
         viewModelScope.launch {
             authRepository.deleteFeed(feedId)
                 .onSuccess { state ->
-                    _deleteMyFeedState.value = UiState.Success(state)
+                    _deleteWineyFeedState.value = UiState.Success(state)
                 }
-                .onFailure { t -> handleFailureState(_deleteMyFeedState, t) }
+                .onFailure { t -> handleFailureState(_deleteWineyFeedState, t) }
         }
     }
 

@@ -18,7 +18,6 @@ class MyFeedAdapter(
     private val deleteButtonClick: (feedId: Int, writerLevel: Int) -> Unit
 ) :
     PagingDataAdapter<WineyFeed, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
-
     private val currentData: ItemSnapshotList<WineyFeed>
         get() = snapshot()
 

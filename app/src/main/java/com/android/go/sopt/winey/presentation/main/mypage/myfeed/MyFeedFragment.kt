@@ -6,23 +6,22 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
 import com.android.go.sopt.winey.presentation.main.feed.WineyFeedLoadAdapter
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -37,7 +36,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         initButtonClickListener()
-        setListWithInfiniteScroll()
     }
 
     private fun initAdapter() {
@@ -65,8 +63,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    fun initGetFeedStateObserver() {
-
+    private fun initGetFeedStateObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -90,7 +87,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initPostLikeStateObserver() {
-        viewModel.postMyFeedLikeState.observe(viewLifecycleOwner) { state ->
+        viewModel.postMyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
@@ -106,27 +103,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    private fun setListWithInfiniteScroll() {
-        binding.rvMyfeedPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
-                    var itemCount = myFeedAdapter.itemCount
-                    var lastVisibleItemPosition =
-                        (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-                    if (binding.rvMyfeedPost.canScrollVertically(1) && lastVisibleItemPosition == itemCount) {
-                        lastVisibleItemPosition += MAX_FEED_VER_PAGE
-                        itemCount += MAX_FEED_VER_PAGE
-                        runBlocking {
-                            viewModel.getMyFeed()
-                            delay(100)
-                        }
-                    }
-                }
-            }
-        })
-    }
-
     private fun navigateToMyPage() {
         parentFragmentManager.commit {
             replace(R.id.fcv_main, MyPageFragment())
@@ -136,6 +112,5 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     companion object {
         private const val MSG_MYFEED_ERROR = "ERROR"
-        private const val MAX_FEED_VER_PAGE = 10
     }
 }

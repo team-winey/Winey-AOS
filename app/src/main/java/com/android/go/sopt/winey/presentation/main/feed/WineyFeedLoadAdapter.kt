@@ -35,5 +35,4 @@ class WineyFeedLoadAdapter() : LoadStateAdapter<WineyFeedLoadAdapter.LoadStateVi
             ItemFeedLoadingFooterBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return LoadStateViewHolder(binding)
     }
-
 }

@@ -1,7 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -39,13 +37,11 @@ class MyFeedViewModel @Inject constructor(
     private val _feedList = MutableStateFlow<PagingData<WineyFeed>>(PagingData.empty())
     val feedList: StateFlow<PagingData<WineyFeed>> = _feedList.asStateFlow()
 
-    private val _postMyFeedLikeState = MutableLiveData<UiState<Like>>(UiState.Loading)
-    val postMyFeedLikeState: LiveData<UiState<Like>>
-        get() = _postMyFeedLikeState
+    private val _postMyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
+    val postMyFeedLikeState: StateFlow<UiState<Like>> = _postMyFeedLikeState.asStateFlow()
 
-    val _deleteMyFeedState = MutableLiveData<UiState<Unit>>(UiState.Loading)
-    val deleteMyFeedState: LiveData<UiState<Unit>>
-        get() = _deleteMyFeedState
+    val _deleteMyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val deleteMyFeedState: StateFlow<UiState<Unit>> = _deleteMyFeedState.asStateFlow()
 
     init {
         getMyFeed()
@@ -62,22 +58,7 @@ class MyFeedViewModel @Inject constructor(
                 .onSuccess { state ->
                     _postMyFeedLikeState.value = UiState.Success(state)
                 }
-                .onFailure { t ->
-                    if (t is HttpException) {
-                        _postMyFeedLikeState.value.apply {
-                            when (t.code()) {
-                                CODE_MYFEED_INVALID_USER ->
-                                    UiState.Failure(t.message())
-
-                                CODE_MYFEED_INVALID_REQUEST ->
-                                    UiState.Failure(t.message())
-
-                                else -> UiState.Failure(t.message())
-                            }
-                        }
-                        Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
-                    }
-                }
+                .onFailure { t -> handleFailureState(_postMyFeedLikeState, t) }
         }
     }
 
@@ -97,24 +78,19 @@ class MyFeedViewModel @Inject constructor(
                 .onSuccess { state ->
                     _deleteMyFeedState.value = UiState.Success(state)
                 }
-                .onFailure { t ->
-                    if (t is HttpException) {
-                        _deleteMyFeedState.value.apply {
-                            when (t.code()) {
-                                CODE_MYFEED_INVALID_USER ->
-                                    UiState.Failure(t.message())
+                .onFailure { t -> handleFailureState(_deleteMyFeedState, t) }
+        }
+    }
 
-                                CODE_MYFEED_INVALID_REQUEST ->
-                                    UiState.Failure(t.message())
-
-                                else ->
-                                    _deleteMyFeedState.value =
-                                        UiState.Failure(t.message())
-                            }
-                        }
-                        Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
-                    }
-                }
+    private fun <T> handleFailureState(loadingState: MutableStateFlow<UiState<T>>, t: Throwable) {
+        if (t is HttpException) {
+            val errorMessage = when (t.code()) {
+                CODE_MYFEED_INVALID_USER -> t.message()
+                CODE_MYFEED_INVALID_REQUEST -> t.message()
+                else -> t.message()
+            }
+            loadingState.value = UiState.Failure(errorMessage)
+            Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
         }
     }
 

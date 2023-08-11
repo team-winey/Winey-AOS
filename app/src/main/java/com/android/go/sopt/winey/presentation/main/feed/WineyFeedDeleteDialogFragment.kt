@@ -50,7 +50,7 @@ class WineyFeedDeleteDialogFragment(private val feedId: Int, private val userLev
     }
 
     private fun initDeleteFeedStateObserver() {
-        wineyFeedViewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+        wineyFeedViewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     this.dismiss()
