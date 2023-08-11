@@ -33,7 +33,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>> =
-        Pager(PagingConfig(FEED_PAGE_SIZE)) {
+        Pager(PagingConfig(FEED_PAGE_SIZE, prefetchDistance = LOAD_DISTANCE)) {
             AuthPagingSource(authService)
         }.flow
 
@@ -88,6 +88,7 @@ class AuthRepositoryImpl @Inject constructor(
         }
 
     companion object {
-        const val FEED_PAGE_SIZE = 10
+        const val FEED_PAGE_SIZE = 20
+        const val LOAD_DISTANCE = 2
     }
 }

@@ -10,7 +10,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.LoadState
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,6 +46,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private lateinit var wineyFeedDialogFragment: WineyFeedDialogFragment
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
+    private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -71,7 +71,11 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         )
         viewModel.wineyFeedAdapter = wineyFeedAdapter
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
-        binding.rvWineyfeedPost.adapter = ConcatAdapter(wineyFeedHeaderAdapter, wineyFeedAdapter)
+        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
+        binding.rvWineyfeedPost.adapter = ConcatAdapter(
+            wineyFeedHeaderAdapter,
+            wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
+        )
     }
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
@@ -112,14 +116,9 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                     viewModel.feedList.collectLatest { data ->
                         wineyFeedAdapter.submitData(data)
                     }
-                }
-
-                launch {
-                    wineyFeedAdapter.loadStateFlow
-                        .collectLatest {
-                            if (it.source.append is LoadState.Loading) dialog.show()
-                            else dialog.dismiss()
-                        }
+                    wineyFeedAdapter.addLoadStateListener { loadStates ->
+                        wineyFeedLoadAdapter.loadState = loadStates.refresh
+                    }
                 }
             }
         }
