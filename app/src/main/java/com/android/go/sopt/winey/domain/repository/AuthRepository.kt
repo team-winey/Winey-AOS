@@ -21,7 +21,7 @@ interface AuthRepository {
 
     suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>>
 
-    suspend fun getMyFeedList(page: Int): Result<List<WineyFeed>>
+    suspend fun getMyFeedList(): Flow<PagingData<WineyFeed>>
 
     suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): Result<Like>
 

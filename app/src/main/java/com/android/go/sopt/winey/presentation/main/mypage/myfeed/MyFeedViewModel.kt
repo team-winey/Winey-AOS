@@ -4,12 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
@@ -25,9 +31,13 @@ class MyFeedViewModel @Inject constructor(
     private var totalPage = Int.MAX_VALUE
     var currentMutableList = mutableListOf<WineyFeed>()
 
-    private val _getMyFeedListState = MutableLiveData<UiState<List<WineyFeed>>>(UiState.Loading)
-    val getMyFeedListState: LiveData<UiState<List<WineyFeed>>>
-        get() = _getMyFeedListState
+    private val _getMyFeedListState =
+        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
+    val getMyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
+        _getMyFeedListState.asStateFlow()
+
+    private val _feedList = MutableStateFlow<PagingData<WineyFeed>>(PagingData.empty())
+    val feedList: StateFlow<PagingData<WineyFeed>> = _feedList.asStateFlow()
 
     private val _postMyFeedLikeState = MutableLiveData<UiState<Like>>(UiState.Loading)
     val postMyFeedLikeState: LiveData<UiState<Like>>
@@ -72,42 +82,12 @@ class MyFeedViewModel @Inject constructor(
     }
 
     fun getMyFeed() {
-        isPagingFinished = false
-        if (isPagingFinished || currentPage > totalPage) {
-            return
-        } else {
-            viewModelScope.launch {
-                authRepository.getMyFeedList(++currentPage)
-                    .onSuccess { state ->
-                        currentMutableList.addAll(state)
-                        if (state.isEmpty()) {
-                            totalPage = 0
-                            isPagingFinished = true
-                        } else {
-                            totalPage = currentMutableList[0].totalPageSize
-                        }
-                        val updatedList = currentMutableList.toList()
-                        _getMyFeedListState.value = UiState.Success(updatedList)
-                    }
-                    .onFailure { t ->
-                        if (t is HttpException) {
-                            when (t.code()) {
-                                CODE_MYFEED_INVALID_USER ->
-                                    _getMyFeedListState.value =
-                                        UiState.Failure(t.message())
-
-                                CODE_MYFEED_INVALID_REQUEST ->
-                                    _getMyFeedListState.value =
-                                        UiState.Failure(t.message())
-
-                                else ->
-                                    _getMyFeedListState.value =
-                                        UiState.Failure(t.message())
-                            }
-                            Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
-                        }
-                    }
-            }
+        _getMyFeedListState.value = UiState.Empty
+        viewModelScope.launch {
+            authRepository.getMyFeedList().cachedIn(viewModelScope)
+                .collectLatest { data ->
+                    _feedList.emit(data)
+                }
         }
     }
 

@@ -5,10 +5,14 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
+import com.android.go.sopt.winey.presentation.main.feed.WineyFeedLoadAdapter
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -16,6 +20,8 @@ import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 
@@ -24,7 +30,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private val viewModel by viewModels<MyFeedViewModel>()
     private lateinit var myFeedDeleteDialogFragment: MyFeedDeleteDialogFragment
     private lateinit var myFeedAdapter: MyFeedAdapter
-    private var totalPage = Int.MAX_VALUE
+    private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
@@ -35,6 +41,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initAdapter() {
+        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         myFeedAdapter = MyFeedAdapter(
             deleteButtonClick = { feedId, writerLevel ->
                 initDialog(feedId, writerLevel)
@@ -44,7 +51,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                 viewModel.likeFeed(feedId, isLiked)
             }
         )
-        binding.rvMyfeedPost.adapter = myFeedAdapter
+        binding.rvMyfeedPost.adapter = myFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
     }
 
     private fun initDialog(feedId: Int, userLevel: Int) {
@@ -59,29 +66,25 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     fun initGetFeedStateObserver() {
-        viewModel.getMyFeedListState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Success -> {
-                    if (state.data.isEmpty()) {
-                        binding.rvMyfeedPost.isVisible = false
-                        binding.layoutMyfeedEmpty.isVisible = true
-                    } else {
-                        binding.rvMyfeedPost.isVisible = true
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    myFeedAdapter.addLoadStateListener {
+                        if (it.append.endOfPaginationReached) {
+                            binding.rvMyfeedPost.isVisible = false
+                            binding.layoutMyfeedEmpty.isVisible = true
+                        } else {
+                            binding.rvMyfeedPost.isVisible = true
+                        }
                     }
-                    val myFeedList = state.data
-                    myFeedAdapter.submitList(myFeedList)
                 }
-
-                is UiState.Loading -> {
-                    binding.rvMyfeedPost.isVisible = false
-                    binding.layoutMyfeedEmpty.isVisible = false
+                viewModel.feedList.collectLatest { data ->
+                    myFeedAdapter.submitData(data)
                 }
-
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
+                myFeedAdapter.addLoadStateListener { loadStates ->
+                    wineyFeedLoadAdapter.loadState = loadStates.refresh
                 }
-
-                else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
         }
     }

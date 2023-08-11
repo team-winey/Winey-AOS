@@ -18,7 +18,6 @@ import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
-import com.android.go.sopt.winey.presentation.LoadingDialog
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -50,7 +49,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
-    private lateinit var dialog: LoadingDialog
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
@@ -61,6 +60,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initAdapter() {
+        wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
+        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         wineyFeedAdapter = WineyFeedAdapter(
             likeButtonClick = { feedId, isLiked ->
                 viewModel.likeFeed(feedId, isLiked)
@@ -69,9 +70,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                 showPopupMenu(view, wineyFeed)
             }
         )
-        viewModel.wineyFeedAdapter = wineyFeedAdapter
-        wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
-        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
             wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
@@ -109,7 +107,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initGetFeedStateObserver() {
-        dialog = LoadingDialog(requireContext())
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
