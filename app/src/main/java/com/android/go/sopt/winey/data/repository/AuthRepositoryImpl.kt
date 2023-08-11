@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.data.repository
 
+import WineyFeedPagingSource
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -11,7 +12,6 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFee
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.service.AuthService
 import com.android.go.sopt.winey.data.source.AuthDataSource
-import com.android.go.sopt.winey.data.source.AuthPagingSource
 import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.Recommend
@@ -34,7 +34,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>> =
         Pager(PagingConfig(FEED_PAGE_SIZE, prefetchDistance = LOAD_DISTANCE)) {
-            AuthPagingSource(authService)
+            WineyFeedPagingSource(authService)
         }.flow
 
     override suspend fun getMyFeedList(page: Int): Result<List<WineyFeed>> =

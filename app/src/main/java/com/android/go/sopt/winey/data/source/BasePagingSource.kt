@@ -1,19 +1,14 @@
 package com.android.go.sopt.winey.data.source
 
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.android.go.sopt.winey.data.service.AuthService
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import kotlinx.coroutines.delay
 import java.io.IOException
-import javax.inject.Inject
 
-const val STARTING_KEY = 1
-private const val DELAY_MILLIS = 1_000L
-
-class AuthPagingSource @Inject constructor(
-    private val authService: AuthService
+abstract class BasePagingSource(
+    protected val authService: AuthService
 ) : PagingSource<Int, WineyFeed>() {
 
     override fun getRefreshKey(state: PagingState<Int, WineyFeed>): Int? {
@@ -23,18 +18,26 @@ class AuthPagingSource @Inject constructor(
         }
     }
 
+    abstract suspend fun getFeedList(position: Int): List<WineyFeed>
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, WineyFeed> {
         val position = params.key ?: STARTING_KEY
         if (position != STARTING_KEY) delay(DELAY_MILLIS)
+
         return try {
-            val feedData = authService.getWineyFeedList(position).toWineyFeed()
+            val feedData = getFeedList(position)
             LoadResult.Page(
                 data = feedData,
                 prevKey = if (position == STARTING_KEY) null else position - 1,
                 nextKey = if (feedData.isEmpty() || feedData.first().isEnd) null else position + 1
             )
         } catch (e: IOException) {
-            return PagingSource.LoadResult.Error(e)
+            return LoadResult.Error(e)
         }
+    }
+
+    companion object {
+        private const val STARTING_KEY = 1
+        private const val DELAY_MILLIS = 1_000L
     }
 }
