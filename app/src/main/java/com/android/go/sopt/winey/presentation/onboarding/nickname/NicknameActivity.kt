@@ -46,7 +46,6 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
                 viewModel.apply {
                     updateDuplicateCheckButtonState(true)
                     getNicknameDuplicateCheck()
-                    updateDuplicateCheckButtonState(false)
                 }
             }
         }

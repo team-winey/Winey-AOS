@@ -37,14 +37,14 @@ class NicknameViewModel @Inject constructor(
 
     val inputUiState: StateFlow<InputUiState> = _inputUiState.asStateFlow()
 
-    val isValidNickname: StateFlow<Boolean> = _inputUiState.map { checkInputState(it) }
+    val isValidNickname: StateFlow<Boolean> = _inputUiState.map { validateNickname(it) }
         .stateIn(
             initialValue = false,
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
 
-    private fun checkInputState(state: InputUiState) = state == InputUiState.Success
+    private fun validateNickname(state: InputUiState) = state == InputUiState.Success
 
     private val _isTextChanged = MutableStateFlow(false)
     val isTextChanged: StateFlow<Boolean> = _isTextChanged.asStateFlow()
@@ -77,6 +77,11 @@ class NicknameViewModel @Inject constructor(
 
     fun updateDuplicateCheckButtonState(state: Boolean) { // updated in Activity
         _isCheckBtnClicked.value = state
+        initDuplicateCheckButtonState()
+    }
+
+    private fun initDuplicateCheckButtonState() {
+        _isCheckBtnClicked.value = false
     }
 
     private fun updateInputUiState(nickname: String): InputUiState {
