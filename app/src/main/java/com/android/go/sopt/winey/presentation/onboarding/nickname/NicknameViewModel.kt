@@ -49,8 +49,8 @@ class NicknameViewModel @Inject constructor(
     private val _isTextChanged = MutableStateFlow(false)
     val isTextChanged: StateFlow<Boolean> = _isTextChanged.asStateFlow()
 
-    private val _isClickedCheckBtn = MutableStateFlow(false)
-    val isClickedCheckBtn: StateFlow<Boolean> = _isClickedCheckBtn.asStateFlow()
+    private val _isCheckBtnClicked = MutableStateFlow(false)
+    val isCheckBtnClicked: StateFlow<Boolean> = _isCheckBtnClicked.asStateFlow()
 
     fun getNicknameDuplicateCheck() {
         viewModelScope.launch {
@@ -76,7 +76,7 @@ class NicknameViewModel @Inject constructor(
     }
 
     fun updateDuplicateCheckButtonState(state: Boolean) { // updated in Activity
-        _isClickedCheckBtn.value = state
+        _isCheckBtnClicked.value = state
     }
 
     private fun updateInputUiState(nickname: String): InputUiState {
@@ -89,7 +89,7 @@ class NicknameViewModel @Inject constructor(
         }
 
         // 텍스트가 바뀌었는데 중복체크를 하지 않은 경우
-        if (isTextChanged.value && !isClickedCheckBtn.value) {
+        if (isTextChanged.value && !isCheckBtnClicked.value) {
             return InputUiState.Failure(CODE_UNCHECKED_DUPLICATION)
         }
 
