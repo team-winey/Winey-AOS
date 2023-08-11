@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.util.binding
 
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 import android.widget.TextView
@@ -52,4 +53,9 @@ fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
     load(imageUri) {
         transformations(RoundedCornersTransformation(10f))
     }
+}
+
+@BindingAdapter("setVisibility")
+fun setVisible(view: View, isVisible: Boolean) {
+    view.visibility = if (isVisible) View.VISIBLE else View.GONE
 }

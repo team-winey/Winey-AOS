@@ -12,6 +12,7 @@ import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.Recommend
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
+import com.android.go.sopt.winey.presentation.main.feed.FeedMultiViewItem
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -19,9 +20,9 @@ import okhttp3.RequestBody
 interface AuthRepository {
     suspend fun getUser(): Result<User?>
 
-    suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>>
+    suspend fun getWineyFeedList(): Flow<PagingData<FeedMultiViewItem.WineyFeed>>
 
-    suspend fun getMyFeedList(page: Int): Result<List<WineyFeed>>
+    suspend fun getMyFeedList(page: Int): Result<List<FeedMultiViewItem.WineyFeed>>
 
     suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): Result<Like>
 

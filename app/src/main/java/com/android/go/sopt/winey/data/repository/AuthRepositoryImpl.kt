@@ -16,8 +16,8 @@ import com.android.go.sopt.winey.domain.entity.Goal
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.Recommend
 import com.android.go.sopt.winey.domain.entity.User
-import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.presentation.main.feed.FeedMultiViewItem
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -32,12 +32,12 @@ class AuthRepositoryImpl @Inject constructor(
             authDataSource.getUser().data?.toUser()
         }
 
-    override suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>> =
+    override suspend fun getWineyFeedList(): Flow<PagingData<FeedMultiViewItem.WineyFeed>> =
         Pager(PagingConfig(FEED_PAGE_SIZE)) {
             AuthPagingSource(authService)
         }.flow
 
-    override suspend fun getMyFeedList(page: Int): Result<List<WineyFeed>> =
+    override suspend fun getMyFeedList(page: Int): Result<List<FeedMultiViewItem.WineyFeed>> =
         runCatching {
             val response = authDataSource.getMyFeedList(page)
             response.toWineyFeed()

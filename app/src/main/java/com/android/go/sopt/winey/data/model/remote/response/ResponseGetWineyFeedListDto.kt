@@ -1,6 +1,6 @@
 package com.android.go.sopt.winey.data.model.remote.response
 
-import com.android.go.sopt.winey.domain.entity.WineyFeed
+import com.android.go.sopt.winey.presentation.main.feed.FeedMultiViewItem
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -55,8 +55,8 @@ data class ResponseGetWineyFeedListDto(
         )
     }
 
-    fun toWineyFeed(): List<WineyFeed> = data.getFeedResponseDtoList.map { feed ->
-        WineyFeed(
+    fun toWineyFeed(): List<FeedMultiViewItem.WineyFeed> = data.getFeedResponseDtoList.map { feed ->
+        FeedMultiViewItem.WineyFeed(
             feedId = feed.feedId,
             feedImage = feed.feedImage,
             feedMoney = feed.feedMoney,
