@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.android.go.sopt.winey.presentation.main.feed.FeedMultiViewItem.WineyFeed" />
+            type="com.android.go.sopt.winey.domain.entity.WineyFeed" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,7 +81,8 @@
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_image" />
+            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_image"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/iv_wineyfeed_like"
@@ -104,7 +105,8 @@
             android:textColor="@color/gray_700"
             app:layout_constraintStart_toStartOf="@id/iv_wineyfeed_like"
             app:layout_constraintEnd_toEndOf="@id/iv_wineyfeed_like"
-            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_like" />
+            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_like"
+            tools:text="5,319" />
 
         <TextView
             android:id="@+id/tv_wineyfeed_title"

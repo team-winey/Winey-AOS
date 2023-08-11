@@ -11,15 +11,15 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
-import androidx.paging.PagingData
-import androidx.paging.map
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
+import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
+import com.android.go.sopt.winey.presentation.LoadingDialog
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -50,6 +50,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
+    private lateinit var dialog: LoadingDialog
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
@@ -73,7 +74,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         binding.rvWineyfeedPost.adapter = ConcatAdapter(wineyFeedHeaderAdapter, wineyFeedAdapter)
     }
 
-    private fun showPopupMenu(view: View, wineyFeed: FeedMultiViewItem.WineyFeed) {
+    private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.menu_wineyfeed, popupMenu.menu)
         val menuDelete = popupMenu.menu.findItem(R.id.menu_delete)
@@ -104,24 +105,20 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initGetFeedStateObserver() {
-        val itemList: PagingData<FeedMultiViewItem>
+        dialog = LoadingDialog(requireContext())
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.feedList.collectLatest { data ->
-                        // 변환된 데이터를 어댑터에 전달
-                        wineyFeedAdapter.submitData(data.toPagingDataOfMultiViewItem())
+                        wineyFeedAdapter.submitData(data)
                     }
                 }
 
                 launch {
                     wineyFeedAdapter.loadStateFlow
                         .collectLatest {
-                            if (it.source.append is LoadState.Loading) {
-                                wineyFeedAdapter.submitData(
-                                    PagingData.from(listOf(FeedMultiViewItem.Loading))
-                                )
-                            }
+                            if (it.source.append is LoadState.Loading) dialog.show()
+                            else dialog.dismiss()
                         }
                 }
             }
@@ -220,23 +217,5 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val MAX_FEED_VER_PAGE = 10
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
-    }
-
-    private fun PagingData<FeedMultiViewItem.WineyFeed>.toPagingDataOfMultiViewItem(): PagingData<FeedMultiViewItem> {
-        return this.map {
-            FeedMultiViewItem.WineyFeed(
-                it.feedId,
-                it.feedImage,
-                it.feedMoney,
-                it.feedTitle,
-                it.isLiked,
-                it.likes,
-                it.nickName,
-                it.userId,
-                it.writerLevel,
-                it.totalPageSize,
-                it.isEnd
-            )
-        }
     }
 }

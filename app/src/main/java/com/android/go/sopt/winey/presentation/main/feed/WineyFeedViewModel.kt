@@ -26,13 +26,12 @@ class WineyFeedViewModel @Inject constructor(
     lateinit var wineyFeedAdapter: WineyFeedAdapter
 
     private val _getWineyFeedListState =
-        MutableStateFlow<UiState<PagingData<FeedMultiViewItem.WineyFeed>>>(UiState.Loading)
-    val getWineyFeedListState: StateFlow<UiState<PagingData<FeedMultiViewItem.WineyFeed>>> =
+        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
+    val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
         _getWineyFeedListState.asStateFlow()
 
-    private val _feedList = MutableStateFlow<PagingData<FeedMultiViewItem.WineyFeed>>(PagingData.empty())
-    val feedList: StateFlow<PagingData<FeedMultiViewItem.WineyFeed>> =
-        _feedList.asStateFlow()
+    private val _feedList = MutableStateFlow<PagingData<WineyFeed>>(PagingData.empty())
+    val feedList: StateFlow<PagingData<WineyFeed>> = _feedList.asStateFlow()
 
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()

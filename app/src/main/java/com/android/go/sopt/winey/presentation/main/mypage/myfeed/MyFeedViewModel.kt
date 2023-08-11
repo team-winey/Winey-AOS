@@ -37,9 +37,9 @@ class MyFeedViewModel @Inject constructor(
     val deleteMyFeedState: LiveData<UiState<Unit>>
         get() = _deleteMyFeedState
 
-//    init {
-//        getMyFeed()
-//    }
+    init {
+        getMyFeed()
+    }
 
     fun likeFeed(feedId: Int, isLiked: Boolean) {
         val requestPostLikeDto = RequestPostLikeDto(isLiked)
@@ -71,45 +71,45 @@ class MyFeedViewModel @Inject constructor(
         }
     }
 
-//    fun getMyFeed() {
-//        isPagingFinished = false
-//        if (isPagingFinished || currentPage > totalPage) {
-//            return
-//        } else {
-//            viewModelScope.launch {
-//                authRepository.getMyFeedList(++currentPage)
-//                    .onSuccess { state ->
-//                        currentMutableList.addAll(state)
-//                        if (state.isEmpty()) {
-//                            totalPage = 0
-//                            isPagingFinished = true
-//                        } else {
-//                            totalPage = currentMutableList[0].totalPageSize
-//                        }
-//                        val updatedList = currentMutableList.toList()
-//                        _getMyFeedListState.value = UiState.Success(updatedList)
-//                    }
-//                    .onFailure { t ->
-//                        if (t is HttpException) {
-//                            when (t.code()) {
-//                                CODE_MYFEED_INVALID_USER ->
-//                                    _getMyFeedListState.value =
-//                                        UiState.Failure(t.message())
-//
-//                                CODE_MYFEED_INVALID_REQUEST ->
-//                                    _getMyFeedListState.value =
-//                                        UiState.Failure(t.message())
-//
-//                                else ->
-//                                    _getMyFeedListState.value =
-//                                        UiState.Failure(t.message())
-//                            }
-//                            Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
-//                        }
-//                    }
-//            }
-//        }
-//    }
+    fun getMyFeed() {
+        isPagingFinished = false
+        if (isPagingFinished || currentPage > totalPage) {
+            return
+        } else {
+            viewModelScope.launch {
+                authRepository.getMyFeedList(++currentPage)
+                    .onSuccess { state ->
+                        currentMutableList.addAll(state)
+                        if (state.isEmpty()) {
+                            totalPage = 0
+                            isPagingFinished = true
+                        } else {
+                            totalPage = currentMutableList[0].totalPageSize
+                        }
+                        val updatedList = currentMutableList.toList()
+                        _getMyFeedListState.value = UiState.Success(updatedList)
+                    }
+                    .onFailure { t ->
+                        if (t is HttpException) {
+                            when (t.code()) {
+                                CODE_MYFEED_INVALID_USER ->
+                                    _getMyFeedListState.value =
+                                        UiState.Failure(t.message())
+
+                                CODE_MYFEED_INVALID_REQUEST ->
+                                    _getMyFeedListState.value =
+                                        UiState.Failure(t.message())
+
+                                else ->
+                                    _getMyFeedListState.value =
+                                        UiState.Failure(t.message())
+                            }
+                            Timber.e("$MSG_MYFEED_FAIL : ${t.code()} : ${t.message()}")
+                        }
+                    }
+            }
+        }
+    }
 
     fun deleteFeed(feedId: Int) {
         viewModelScope.launch {

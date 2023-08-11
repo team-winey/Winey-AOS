@@ -115,8 +115,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                         lastVisibleItemPosition += MAX_FEED_VER_PAGE
                         itemCount += MAX_FEED_VER_PAGE
                         runBlocking {
-//                            viewModel.getMyFeed()
-//                            delay(100)
+                            viewModel.getMyFeed()
+                            delay(100)
                         }
                     }
                 }
