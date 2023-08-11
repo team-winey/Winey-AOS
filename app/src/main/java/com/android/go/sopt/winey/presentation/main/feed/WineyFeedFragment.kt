@@ -18,6 +18,8 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
+import com.android.go.sopt.winey.domain.repository.DataStoreRepository
+import com.android.go.sopt.winey.presentation.LoadingDialog
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -28,6 +30,9 @@ import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -45,9 +50,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
-
     private lateinit var dialog: LoadingDialog
-    private var totalPage = Int.MAX_VALUE
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAdapter()
@@ -127,10 +130,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-//                    wineyFeedAdapter.updateLikeStatus(
-//                        state.data.data.feedId,
-//                        state.data.data.isLiked
-//                    )
+                    wineyFeedAdapter.updateLikeStatus(
+                        state.data.data.feedId,
+                        state.data.data.isLiked
+                    )
                 }
 
                 is UiState.Failure -> {

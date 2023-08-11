@@ -9,6 +9,7 @@ import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
+import com.android.go.sopt.winey.data.service.AuthService
 import com.android.go.sopt.winey.data.source.AuthDataSource
 import com.android.go.sopt.winey.data.source.AuthPagingSource
 import com.android.go.sopt.winey.domain.entity.Goal
@@ -70,7 +71,7 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun getRecommendList(page: Int): Result<List<Recommend>?> =
         runCatching {
-            authDataSource.postCreateGoal(requestCreateGoalDto).data!!.toGoal()
+            authDataSource.getRecommendList(page).data?.convertToRecommend()
         }
 
     override suspend fun postLogin(
