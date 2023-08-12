@@ -8,10 +8,12 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseGetRecommend
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
+import com.android.go.sopt.winey.domain.entity.Login
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -77,4 +79,7 @@ interface AuthService {
     suspend fun postReIssueToken(
         @Header("refreshToken") refreshToken: String
     ): BaseResponse<ResponseReIssueTokenDto>
+
+    @POST("auth/sign-out")
+    suspend fun postLogout(): ResponseLogoutDto
 }
