@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.data.source
 
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
+import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
@@ -63,4 +64,7 @@ class AuthDataSource @Inject constructor(
 
     suspend fun getNicknameDuplicateCheck(nickname: String): BaseResponse<ResponseGetNicknameDuplicateCheckDto> =
         authService.getNicknameDuplicateCheck(nickname)
+
+    suspend fun patchNickname(requestPatchNicknameDto: RequestPatchNicknameDto): BaseResponse<Nothing> =
+        authService.patchNickname(requestPatchNicknameDto)
 }
