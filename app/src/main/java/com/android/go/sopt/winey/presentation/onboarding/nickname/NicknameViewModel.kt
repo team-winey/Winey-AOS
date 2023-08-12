@@ -105,15 +105,15 @@ class NicknameViewModel @Inject constructor(
 
     private fun comparePrevCheckResult(): InputUiState {
         // 이전에 서버통신 한 결과가 없는 경우
-        if(prevCheckResult == null) {
+        if (prevCheckResult == null) {
             Timber.d("CASE 1")
             return InputUiState.Failure(CODE_UNCHECKED_DUPLICATION)
         }
 
         // 현재 입력값이 이전에 서버통신 했던 닉네임과 일치하는 경우
-        if(nickname == prevCheckResult?.first){
+        if (nickname == prevCheckResult?.first) {
             // 그때 당시의 서버통신 결과 그대로 반환
-            if(prevCheckResult?.second == true) {
+            if (prevCheckResult?.second == true) {
                 Timber.d("CASE 2")
                 return InputUiState.Failure(CODE_DUPLICATE)
             }
