@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.util.code.NicknameErrorCode
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_DUPLICATE
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_INVALID_LENGTH
@@ -26,7 +27,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NicknameViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
     val _nickname = MutableStateFlow("")
     val nickname: String get() = _nickname.value
@@ -59,17 +61,26 @@ class NicknameViewModel @Inject constructor(
 
     fun patchNickname() {
         viewModelScope.launch {
-            authRepository.patchNickname(RequestPatchNicknameDto(nickname))
-                .onSuccess { response ->
-                    Timber.d("SUCCESS PATCH NICKNAME: ${response.code} ${response.message}")
-                }
-                .onFailure { t ->
-                    if (t is HttpException) {
-                        Timber.e("HTTP FAIL PATCH NICKNAME: ${t.code()} ${t.message}")
-                        return@onFailure
+            dataStoreRepository.getAccessToken().collect { accessToken ->
+                if (accessToken == null) return@collect
+
+                Timber.e("ACCESS TOKEN: $accessToken")
+
+                authRepository.patchNickname(
+                    accessToken,
+                    RequestPatchNicknameDto(nickname)
+                )
+                    .onSuccess { response ->
+                        Timber.d("SUCCESS PATCH NICKNAME: ${response.code} ${response.message}")
                     }
-                    Timber.e("FAIL PATCH NICKNAME: ${t.message}")
-                }
+                    .onFailure { t ->
+                        if (t is HttpException) {
+                            Timber.e("HTTP FAIL PATCH NICKNAME: ${t.code()} ${t.message}")
+                            return@onFailure
+                        }
+                        Timber.e("FAIL PATCH NICKNAME: ${t.message}")
+                    }
+            }
         }
     }
 

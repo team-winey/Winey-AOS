@@ -45,5 +45,8 @@ interface AuthRepository {
 
     suspend fun getNicknameDuplicateCheck(nickname: String): Result<ResponseGetNicknameDuplicateCheckDto?>
 
-    suspend fun patchNickname(requestPatchNicknameDto: RequestPatchNicknameDto): Result<ResponsePatchNickname>
+    suspend fun patchNickname(
+        accessToken: String,
+        requestPatchNicknameDto: RequestPatchNicknameDto
+    ): Result<ResponsePatchNickname>
 }

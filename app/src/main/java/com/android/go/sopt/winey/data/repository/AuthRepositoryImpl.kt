@@ -88,8 +88,11 @@ class AuthRepositoryImpl @Inject constructor(
             authDataSource.getNicknameDuplicateCheck(nickname).data
         }
 
-    override suspend fun patchNickname(requestPatchNicknameDto: RequestPatchNicknameDto): Result<ResponsePatchNickname> =
+    override suspend fun patchNickname(
+        accessToken: String,
+        requestPatchNicknameDto: RequestPatchNicknameDto
+    ): Result<ResponsePatchNickname> =
         runCatching {
-            authDataSource.patchNickname(requestPatchNicknameDto)
+            authDataSource.patchNickname(accessToken, requestPatchNicknameDto)
         }
 }
