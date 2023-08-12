@@ -13,7 +13,7 @@ import com.android.go.sopt.winey.databinding.ActivityMainBinding
 import com.android.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.recommend.RecommendFragment
-import com.android.go.sopt.winey.presentation.onboarding.LoginActivity
+import com.android.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.view.UiState
@@ -46,19 +46,18 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    fun syncBottomNavigationSelection() {
+    private fun syncBottomNavigationSelection() {
         supportFragmentManager.addOnBackStackChangedListener {
             syncBottomNavigation()
         }
     }
 
-    fun syncBottomNavigation() {
+    private fun syncBottomNavigation() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fcv_main)
         when (currentFragment) {
             is WineyFeedFragment -> binding.bnvMain.selectedItemId = R.id.menu_feed
             is RecommendFragment -> binding.bnvMain.selectedItemId = R.id.menu_recommend
             is MyPageFragment -> binding.bnvMain.selectedItemId = R.id.menu_mypage
-            // 다른 프래그먼트도 추가가능
         }
     }
 
@@ -88,11 +87,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         Intent(this@MainActivity, LoginActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(this)
+            finish()
         }
-        finish()
     }
 
-    inline fun <reified T : Fragment> navigateTo() {
+    private inline fun <reified T : Fragment> navigateTo() {
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }

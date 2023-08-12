@@ -4,6 +4,7 @@ import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetRecommendListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
@@ -27,6 +28,10 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AuthService {
+    /**
+     *
+     */
+
     @GET("user")
     suspend fun getUser(): BaseResponse<ResponseGetUserDto?>
 
@@ -81,4 +86,8 @@ interface AuthService {
 
     @POST("auth/sign-out")
     suspend fun postLogout(): ResponseLogoutDto
+    @GET("user/nickname/is-exist")
+    suspend fun getNicknameDuplicateCheck(
+        @Query("nickname") nickname: String
+    ): BaseResponse<ResponseGetNicknameDuplicateCheckDto>
 }

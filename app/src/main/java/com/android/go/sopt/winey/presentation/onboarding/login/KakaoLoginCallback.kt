@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.onboarding
+package com.android.go.sopt.winey.presentation.onboarding.login
 
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause
