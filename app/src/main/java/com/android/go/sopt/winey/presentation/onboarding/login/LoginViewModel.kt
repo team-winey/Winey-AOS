@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.onboarding
+package com.android.go.sopt.winey.presentation.onboarding.login
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
