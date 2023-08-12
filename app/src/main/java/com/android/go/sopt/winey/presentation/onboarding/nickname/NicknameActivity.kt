@@ -53,6 +53,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     private fun initCompleteButtonClickListener() {
         binding.btnNicknameComplete.setOnClickListener {
+            // todo: 서버에 닉네임 PATCH
             navigateTo<MainActivity>()
         }
     }
