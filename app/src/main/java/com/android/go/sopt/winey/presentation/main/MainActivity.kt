@@ -1,17 +1,26 @@
 package com.android.go.sopt.winey.presentation.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityMainBinding
 import com.android.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.recommend.RecommendFragment
+import com.android.go.sopt.winey.presentation.onboarding.LoginActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import com.android.go.sopt.winey.util.context.snackBar
+import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -23,6 +32,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         navigateTo<WineyFeedFragment>()
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
+        setupLogoutState()
     }
 
     private fun initBnvItemSelectedListener() {
@@ -50,6 +60,36 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             is MyPageFragment -> binding.bnvMain.selectedItemId = R.id.menu_mypage
             // 다른 프래그먼트도 추가가능
         }
+    }
+
+    fun setupLogoutState() {
+        viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Loading -> {
+
+                }
+
+                is UiState.Success -> {
+                    navigateToOnBoardingScreen()
+                    Timber.e("로그인 액티비티로 전환")
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                is UiState.Empty -> {
+                }
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun navigateToOnBoardingScreen() {
+        Intent(this@MainActivity, LoginActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(this)
+        }
+        finish()
     }
 
     inline fun <reified T : Fragment> navigateTo() {
