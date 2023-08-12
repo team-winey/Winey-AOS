@@ -4,6 +4,7 @@ import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.domain.entity.Goal
@@ -39,4 +40,6 @@ interface AuthRepository {
     ): Result<ResponseLoginDto?>
 
     suspend fun postReIssueToken(refreshToken: String): Result<ResponseReIssueTokenDto?>
+
+    suspend fun postLogout(): Result<ResponseLogoutDto>
 }
