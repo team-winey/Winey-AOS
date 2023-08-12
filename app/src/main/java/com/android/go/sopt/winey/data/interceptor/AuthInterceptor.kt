@@ -23,6 +23,7 @@ class AuthInterceptor @Inject constructor(
     private val dataStoreRepository: DataStoreRepository
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
+        runBlocking { Timber.e("액세스토큰 : ${getAccessToken()}, 리프레시토큰 : ${getRefreshToken()}") }
         val originalRequest = chain.request()
 
         val headerRequest = originalRequest.newAuthBuilder()
@@ -33,6 +34,8 @@ class AuthInterceptor @Inject constructor(
         when (response.code) {
             CODE_TOKEN_EXPIRED -> {
                 try {
+                    Timber.e("액세스 토큰 만료, 토큰 재발급 합니다.")
+                    response.close()
                     val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
                         .url("$AUTH_BASE_URL/auth/token")
                         .addHeader(REFRESH_TOKEN, runBlocking(Dispatchers.IO) { getRefreshToken() })
@@ -44,8 +47,8 @@ class AuthInterceptor @Inject constructor(
                         val responseToken = json.decodeFromString(
                             refreshTokenResponse.body?.string().toString()
                         ) as BaseResponse<ResponseReIssueTokenDto>
-
                         if (responseToken.data != null) {
+                            Timber.e("리프레시 토큰 : ${responseToken.data.refreshToken}")
                             saveAccessToken(
                                 responseToken.data.accessToken,
                                 responseToken.data.refreshToken
@@ -54,10 +57,15 @@ class AuthInterceptor @Inject constructor(
                         refreshTokenResponse.close()
                         val newRequest = originalRequest.newAuthBuilder().build()
                         return chain.proceed(newRequest)
+                    } else {
+                        refreshTokenResponse.close()
+                        Timber.e("리프레시 토큰 : ${refreshTokenResponse.code}")
+                        Timber.e("리프레시 토큰 만료입니다.")
+                        saveAccessToken("", "")
+                        return chain.proceed(headerRequest)
                     }
-                    saveAccessToken("", "")
                 } catch (t: Throwable) {
-                    Timber.e(t)
+                    Timber.e("예외발생 ${t.message}")
                     saveAccessToken("", "")
                 }
             }
@@ -73,7 +81,7 @@ class AuthInterceptor @Inject constructor(
     }
 
     private suspend fun getRefreshToken(): String {
-        return dataStoreRepository.getAccessToken().first() ?: ""
+        return dataStoreRepository.getRefreshToken().first() ?: ""
     }
 
     private fun saveAccessToken(accessToken: String, refreshToken: String) =

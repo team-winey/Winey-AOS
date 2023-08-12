@@ -13,7 +13,6 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
-import com.android.go.sopt.winey.domain.entity.Login
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
