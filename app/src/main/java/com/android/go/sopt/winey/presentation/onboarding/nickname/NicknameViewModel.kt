@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.onboarding.nickname
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.code.NicknameErrorCode
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_DUPLICATE
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -55,6 +57,22 @@ class NicknameViewModel @Inject constructor(
 
     private var prevCheckResult: Pair<String, Boolean>? = null
 
+    fun patchNickname() {
+        viewModelScope.launch {
+            authRepository.patchNickname(RequestPatchNicknameDto(nickname))
+                .onSuccess { response ->
+                    Timber.d("SUCCESS PATCH NICKNAME: ${response.code} ${response.message}")
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP FAIL PATCH NICKNAME: ${t.code()} ${t.message}")
+                        return@onFailure
+                    }
+                    Timber.e("FAIL PATCH NICKNAME: ${t.message}")
+                }
+        }
+    }
+
     fun getNicknameDuplicateCheck() {
         viewModelScope.launch {
             authRepository.getNicknameDuplicateCheck(nickname)
@@ -62,7 +80,7 @@ class NicknameViewModel @Inject constructor(
                     if (response == null) return@onSuccess
 
                     response.isDuplicated.let {
-                        Timber.e("SUCCESS GET DUPLICATION CHECK: $it")
+                        Timber.d("SUCCESS GET DUPLICATION CHECK: $it")
                         updateDuplicateCheckState(it)
                         saveDuplicateCheckState(it)
                     }
