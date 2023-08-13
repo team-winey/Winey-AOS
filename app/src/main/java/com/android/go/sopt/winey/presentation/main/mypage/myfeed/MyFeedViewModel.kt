@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
-import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.domain.repository.FeedRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyFeedViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val feedRepository: FeedRepository
 ) : ViewModel() {
 
     private val _getMyFeedListState =
@@ -46,7 +46,7 @@ class MyFeedViewModel @Inject constructor(
 
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
-            authRepository.postFeedLike(feedId, requestPostLikeDto)
+            feedRepository.postFeedLike(feedId, requestPostLikeDto)
                 .onSuccess { response ->
                     _postMyFeedLikeState.emit(UiState.Success(response))
                 }
@@ -57,7 +57,7 @@ class MyFeedViewModel @Inject constructor(
     fun getMyFeed() {
         viewModelScope.launch {
             _getMyFeedListState.emit(UiState.Loading)
-            authRepository.getMyFeedList().cachedIn(viewModelScope)
+            feedRepository.getMyFeedList().cachedIn(viewModelScope)
                 .collectLatest { response ->
                     _getMyFeedListState.emit(UiState.Success(response))
                 }
@@ -66,7 +66,7 @@ class MyFeedViewModel @Inject constructor(
 
     fun deleteFeed(feedId: Int) {
         viewModelScope.launch {
-            authRepository.deleteFeed(feedId)
+            feedRepository.deleteFeed(feedId)
                 .onSuccess { response ->
                     _deleteMyFeedState.emit(UiState.Success(response))
                 }

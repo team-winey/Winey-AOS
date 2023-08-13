@@ -1,14 +1,14 @@
-package com.android.go.sopt.winey.data.source
+package com.android.go.sopt.winey.data.source.pagingSource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.android.go.sopt.winey.data.service.AuthService
+import com.android.go.sopt.winey.data.service.FeedService
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import kotlinx.coroutines.delay
 import java.io.IOException
 
 abstract class BasePagingSource(
-    protected val authService: AuthService
+    protected val feedService: FeedService
 ) : PagingSource<Int, WineyFeed>() {
 
     override fun getRefreshKey(state: PagingState<Int, WineyFeed>): Int? {

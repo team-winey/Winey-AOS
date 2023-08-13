@@ -7,7 +7,7 @@ import androidx.paging.cachedIn
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
-import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.domain.repository.FeedRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WineyFeedViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val feedRepository: FeedRepository
 ) : ViewModel() {
     private val _getWineyFeedListState =
         MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
@@ -45,7 +45,7 @@ class WineyFeedViewModel @Inject constructor(
 
     fun deleteFeed(feedId: Int) {
         viewModelScope.launch {
-            authRepository.deleteFeed(feedId)
+            feedRepository.deleteFeed(feedId)
                 .onSuccess { response ->
                     _deleteWineyFeedState.emit(UiState.Success(response))
                 }
@@ -55,7 +55,7 @@ class WineyFeedViewModel @Inject constructor(
 
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
-            authRepository.postFeedLike(feedId, requestPostLikeDto)
+            feedRepository.postFeedLike(feedId, requestPostLikeDto)
                 .onSuccess { response ->
                     _postWineyFeedLikeState.emit(UiState.Success(response))
                 }
@@ -66,7 +66,7 @@ class WineyFeedViewModel @Inject constructor(
     fun getWineyFeed() {
         viewModelScope.launch {
             _getWineyFeedListState.emit(UiState.Loading)
-            authRepository.getWineyFeedList().cachedIn(viewModelScope)
+            feedRepository.getWineyFeedList().cachedIn(viewModelScope)
                 .collectLatest { response ->
                     _getWineyFeedListState.emit(UiState.Success(response))
                 }
