@@ -39,7 +39,7 @@ class AmountViewModel @Inject constructor(
     private var imageRequestBody: UriToRequestBody? = null
 
     private val _postWineyFeedState =
-        MutableStateFlow<UiState<ResponsePostWineyFeedDto?>>(UiState.Loading)
+        MutableStateFlow<UiState<ResponsePostWineyFeedDto?>>(UiState.Empty)
     val postWineyFeedState: StateFlow<UiState<ResponsePostWineyFeedDto?>> =
         _postWineyFeedState.asStateFlow()
 
@@ -63,19 +63,21 @@ class AmountViewModel @Inject constructor(
         if (!validateRequestBody()) return
 
         viewModelScope.launch {
+            _postWineyFeedState.value = UiState.Loading
             val (file, requestMap) = createRequestBody(content, amount)
+
             authRepository.postWineyFeed(file, requestMap)
                 .onSuccess { response ->
-                    _postWineyFeedState.emit(UiState.Success(response))
+                    _postWineyFeedState.value = UiState.Success(response)
                     Timber.d("${response?.feedId} ${response?.createdAt}")
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        _postWineyFeedState.emit(UiState.Failure(t.message()))
-                        Timber.e("${t.code()} ${t.message()}")
+                        _postWineyFeedState.value = UiState.Failure(t.message.toString())
+                        Timber.e("${t.code()} ${t.message}")
                         return@onFailure
                     }
-                    _postWineyFeedState.emit(UiState.Failure(t.message.toString()))
+                    _postWineyFeedState.value = UiState.Failure(t.message.toString())
                     Timber.e(t.message)
                 }
         }

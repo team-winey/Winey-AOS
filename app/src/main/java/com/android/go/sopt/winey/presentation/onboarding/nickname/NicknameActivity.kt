@@ -53,6 +53,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     private fun initCompleteButtonClickListener() {
         binding.btnNicknameComplete.setOnClickListener {
+            viewModel.patchNickname()
             navigateTo<MainActivity>()
         }
     }
