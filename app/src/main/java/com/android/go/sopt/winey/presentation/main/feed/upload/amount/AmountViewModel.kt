@@ -98,8 +98,6 @@ class AmountViewModel @Inject constructor(
     }
 
     private fun validateRequestBody(): Boolean {
-        Timber.e("IMAGE REQUEST BODY: $imageRequestBody")
-
         if (imageRequestBody == null) {
             _postWineyFeedState.value = UiState.Failure(REQUEST_BODY_ERR_MSG)
             Timber.e(REQUEST_BODY_ERR_MSG)
