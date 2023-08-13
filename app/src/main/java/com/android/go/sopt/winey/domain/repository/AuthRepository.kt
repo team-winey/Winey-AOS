@@ -6,7 +6,6 @@ import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameD
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
-import com.android.go.sopt.winey.data.model.remote.response.ResponsePatchNickname
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.domain.entity.Goal
@@ -45,7 +44,5 @@ interface AuthRepository {
 
     suspend fun getNicknameDuplicateCheck(nickname: String): Result<ResponseGetNicknameDuplicateCheckDto?>
 
-    suspend fun patchNickname(
-        requestPatchNicknameDto: RequestPatchNicknameDto
-    ): Result<ResponsePatchNickname>
+    suspend fun patchNickname(requestPatchNicknameDto: RequestPatchNicknameDto): Result<Unit>
 }

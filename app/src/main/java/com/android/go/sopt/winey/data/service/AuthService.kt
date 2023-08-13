@@ -10,7 +10,6 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseGetRecommend
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
-import com.android.go.sopt.winey.data.model.remote.response.ResponsePatchNickname
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
@@ -30,10 +29,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface AuthService {
-    /**
-     *
-     */
-
     @GET("user")
     suspend fun getUser(): BaseResponse<ResponseGetUserDto?>
 
@@ -94,5 +89,5 @@ interface AuthService {
     @PATCH("user/nickname")
     suspend fun patchNickname(
         @Body requestPatchNicknameDto: RequestPatchNicknameDto
-    ): ResponsePatchNickname
+    ): BaseResponse<Unit>
 }

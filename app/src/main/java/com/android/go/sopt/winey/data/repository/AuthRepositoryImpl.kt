@@ -6,7 +6,6 @@ import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameD
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
-import com.android.go.sopt.winey.data.model.remote.response.ResponsePatchNickname
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.source.AuthDataSource
@@ -90,8 +89,8 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun patchNickname(
         requestPatchNicknameDto: RequestPatchNicknameDto
-    ): Result<ResponsePatchNickname> =
+    ): Result<Unit> =
         runCatching {
-            authDataSource.patchNickname(requestPatchNicknameDto)
+            authDataSource.patchNickname(requestPatchNicknameDto).data
         }
 }

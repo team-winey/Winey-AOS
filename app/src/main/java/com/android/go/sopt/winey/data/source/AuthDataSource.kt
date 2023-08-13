@@ -10,7 +10,6 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseGetRecommend
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
-import com.android.go.sopt.winey.data.model.remote.response.ResponsePatchNickname
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
@@ -68,6 +67,6 @@ class AuthDataSource @Inject constructor(
 
     suspend fun patchNickname(
         requestPatchNicknameDto: RequestPatchNicknameDto
-    ): ResponsePatchNickname =
+    ): BaseResponse<Unit> =
         authService.patchNickname(requestPatchNicknameDto)
 }

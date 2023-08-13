@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
-import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.util.code.NicknameErrorCode
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_DUPLICATE
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_INVALID_LENGTH
@@ -27,8 +26,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NicknameViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
-    private val dataStoreRepository: DataStoreRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     val _nickname = MutableStateFlow("")
     val nickname: String get() = _nickname.value
@@ -61,11 +59,9 @@ class NicknameViewModel @Inject constructor(
 
     fun patchNickname() {
         viewModelScope.launch {
-            authRepository.patchNickname(
-                RequestPatchNicknameDto(nickname)
-            )
-                .onSuccess { response ->
-                    Timber.d("SUCCESS PATCH NICKNAME: ${response.code} ${response.message}")
+            authRepository.patchNickname(RequestPatchNicknameDto(nickname))
+                .onSuccess {
+                    Timber.d("SUCCESS PATCH NICKNAME")
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
@@ -74,11 +70,6 @@ class NicknameViewModel @Inject constructor(
                     }
                     Timber.e("FAIL PATCH NICKNAME: ${t.message}")
                 }
-
-//            dataStoreRepository.getAccessToken().collect { accessToken ->
-//                if (accessToken == null) return@collect
-//                Timber.e("ACCESS TOKEN: $accessToken")
-//            }
         }
     }
 
