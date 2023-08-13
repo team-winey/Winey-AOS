@@ -24,18 +24,10 @@ class MyFeedViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private var currentPage = 0
-    private var isPagingFinished = false
-    private var totalPage = Int.MAX_VALUE
-    var currentMutableList = mutableListOf<WineyFeed>()
-
     private val _getMyFeedListState =
         MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
     val getMyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
         _getMyFeedListState.asStateFlow()
-
-    private val _feedList = MutableStateFlow<PagingData<WineyFeed>>(PagingData.empty())
-    val feedList: StateFlow<PagingData<WineyFeed>> = _feedList.asStateFlow()
 
     private val _postMyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postMyFeedLikeState: StateFlow<UiState<Like>> = _postMyFeedLikeState.asStateFlow()
@@ -55,19 +47,19 @@ class MyFeedViewModel @Inject constructor(
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
             authRepository.postFeedLike(feedId, requestPostLikeDto)
-                .onSuccess { state ->
-                    _postMyFeedLikeState.value = UiState.Success(state)
+                .onSuccess { response ->
+                    _postMyFeedLikeState.emit(UiState.Success(response))
                 }
                 .onFailure { t -> handleFailureState(_postMyFeedLikeState, t) }
         }
     }
 
     fun getMyFeed() {
-        _getMyFeedListState.value = UiState.Empty
         viewModelScope.launch {
+            _getMyFeedListState.emit(UiState.Loading)
             authRepository.getMyFeedList().cachedIn(viewModelScope)
-                .collectLatest { data ->
-                    _feedList.emit(data)
+                .collectLatest { response ->
+                    _getMyFeedListState.emit(UiState.Success(response))
                 }
         }
     }
@@ -75,8 +67,8 @@ class MyFeedViewModel @Inject constructor(
     fun deleteFeed(feedId: Int) {
         viewModelScope.launch {
             authRepository.deleteFeed(feedId)
-                .onSuccess { state ->
-                    _deleteMyFeedState.value = UiState.Success(state)
+                .onSuccess { response ->
+                    _deleteMyFeedState.emit(UiState.Success(response))
                 }
                 .onFailure { t -> handleFailureState(_deleteMyFeedState, t) }
         }

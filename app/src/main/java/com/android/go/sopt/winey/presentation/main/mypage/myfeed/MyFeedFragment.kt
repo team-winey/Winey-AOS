@@ -67,20 +67,28 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    myFeedAdapter.addLoadStateListener {
-                        if (it.append.endOfPaginationReached) {
-                            binding.rvMyfeedPost.isVisible = false
-                            binding.layoutMyfeedEmpty.isVisible = true
-                        } else {
-                            binding.rvMyfeedPost.isVisible = true
+                    viewModel.getMyFeedListState.collectLatest { state ->
+                        when (state) {
+                            is UiState.Success -> {
+                                myFeedAdapter.submitData(state.data)
+                                myFeedAdapter.addLoadStateListener { loadState ->
+                                    wineyFeedLoadAdapter.loadState = loadState.refresh
+                                    if (loadState.append.endOfPaginationReached) {
+                                        binding.rvMyfeedPost.isVisible = false
+                                        binding.layoutMyfeedEmpty.isVisible = true
+                                    } else {
+                                        binding.rvMyfeedPost.isVisible = true
+                                    }
+                                }
+                            }
+
+                            is UiState.Failure -> {
+                                snackBar(binding.root) { state.msg }
+                            }
+
+                            else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
                         }
                     }
-                }
-                viewModel.feedList.collectLatest { data ->
-                    myFeedAdapter.submitData(data)
-                }
-                myFeedAdapter.addLoadStateListener { loadStates ->
-                    wineyFeedLoadAdapter.loadState = loadStates.refresh
                 }
             }
         }
@@ -91,7 +99,10 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    myFeedAdapter.updateLikeStatus(state.data.data.feedId, state.data.data.isLiked)
+                    myFeedAdapter.updateLikeStatus(
+                        state.data.data.feedId,
+                        state.data.data.isLiked
+                    )
                 }
 
                 is UiState.Failure -> {

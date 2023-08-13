@@ -28,9 +28,6 @@ class WineyFeedViewModel @Inject constructor(
     val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
         _getWineyFeedListState.asStateFlow()
 
-    private val _feedList = MutableStateFlow<PagingData<WineyFeed>>(PagingData.empty())
-    val feedList: StateFlow<PagingData<WineyFeed>> = _feedList.asStateFlow()
-
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()
 
@@ -49,8 +46,8 @@ class WineyFeedViewModel @Inject constructor(
     fun deleteFeed(feedId: Int) {
         viewModelScope.launch {
             authRepository.deleteFeed(feedId)
-                .onSuccess { state ->
-                    _deleteWineyFeedState.value = UiState.Success(state)
+                .onSuccess { response ->
+                    _deleteWineyFeedState.emit(UiState.Success(response))
                 }
                 .onFailure { t -> handleFailureState(_deleteWineyFeedState, t) }
         }
@@ -59,19 +56,19 @@ class WineyFeedViewModel @Inject constructor(
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
             authRepository.postFeedLike(feedId, requestPostLikeDto)
-                .onSuccess { state ->
-                    _postWineyFeedLikeState.value = UiState.Success(state)
+                .onSuccess { response ->
+                    _postWineyFeedLikeState.emit(UiState.Success(response))
                 }
                 .onFailure { t -> handleFailureState(_postWineyFeedLikeState, t) }
         }
     }
 
     fun getWineyFeed() {
-        _getWineyFeedListState.value = UiState.Empty
         viewModelScope.launch {
+            _getWineyFeedListState.emit(UiState.Loading)
             authRepository.getWineyFeedList().cachedIn(viewModelScope)
-                .collectLatest { data ->
-                    _feedList.emit(data)
+                .collectLatest { response ->
+                    _getWineyFeedListState.emit(UiState.Success(response))
                 }
         }
     }
