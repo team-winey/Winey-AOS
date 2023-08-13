@@ -61,26 +61,24 @@ class NicknameViewModel @Inject constructor(
 
     fun patchNickname() {
         viewModelScope.launch {
-            dataStoreRepository.getAccessToken().collect { accessToken ->
-                if (accessToken == null) return@collect
-
-                Timber.e("ACCESS TOKEN: $accessToken")
-
-                authRepository.patchNickname(
-                    accessToken,
-                    RequestPatchNicknameDto(nickname)
-                )
-                    .onSuccess { response ->
-                        Timber.d("SUCCESS PATCH NICKNAME: ${response.code} ${response.message}")
+            authRepository.patchNickname(
+                RequestPatchNicknameDto(nickname)
+            )
+                .onSuccess { response ->
+                    Timber.d("SUCCESS PATCH NICKNAME: ${response.code} ${response.message}")
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP FAIL PATCH NICKNAME: ${t.code()} ${t.message}")
+                        return@onFailure
                     }
-                    .onFailure { t ->
-                        if (t is HttpException) {
-                            Timber.e("HTTP FAIL PATCH NICKNAME: ${t.code()} ${t.message}")
-                            return@onFailure
-                        }
-                        Timber.e("FAIL PATCH NICKNAME: ${t.message}")
-                    }
-            }
+                    Timber.e("FAIL PATCH NICKNAME: ${t.message}")
+                }
+
+//            dataStoreRepository.getAccessToken().collect { accessToken ->
+//                if (accessToken == null) return@collect
+//                Timber.e("ACCESS TOKEN: $accessToken")
+//            }
         }
     }
 

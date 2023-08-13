@@ -89,10 +89,9 @@ class AuthRepositoryImpl @Inject constructor(
         }
 
     override suspend fun patchNickname(
-        accessToken: String,
         requestPatchNicknameDto: RequestPatchNicknameDto
     ): Result<ResponsePatchNickname> =
         runCatching {
-            authDataSource.patchNickname(accessToken, requestPatchNicknameDto)
+            authDataSource.patchNickname(requestPatchNicknameDto)
         }
 }

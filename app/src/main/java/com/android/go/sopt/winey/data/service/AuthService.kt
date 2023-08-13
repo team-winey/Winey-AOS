@@ -93,7 +93,6 @@ interface AuthService {
 
     @PATCH("user/nickname")
     suspend fun patchNickname(
-        @Header("accessToken") accessToken: String,
         @Body requestPatchNicknameDto: RequestPatchNicknameDto
     ): ResponsePatchNickname
 }

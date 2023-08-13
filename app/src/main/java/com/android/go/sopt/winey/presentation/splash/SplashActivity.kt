@@ -16,6 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,6 +35,8 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
     private fun checkAutoLogin() {
         val accessToken = runBlocking { dataStoreRepository.getAccessToken().firstOrNull() }
+        Timber.e("ACCESS TOKEN: $accessToken")
+
         if (accessToken.isNullOrBlank()) {
             navigateTo<LoginActivity>()
         } else {

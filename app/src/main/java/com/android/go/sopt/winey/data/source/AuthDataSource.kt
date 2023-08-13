@@ -67,8 +67,7 @@ class AuthDataSource @Inject constructor(
         authService.getNicknameDuplicateCheck(nickname)
 
     suspend fun patchNickname(
-        accessToken: String,
         requestPatchNicknameDto: RequestPatchNicknameDto
     ): ResponsePatchNickname =
-        authService.patchNickname(accessToken, requestPatchNicknameDto)
+        authService.patchNickname(requestPatchNicknameDto)
 }
