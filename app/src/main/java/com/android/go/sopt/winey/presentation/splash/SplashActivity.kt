@@ -18,10 +18,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-/**
- * Splash -> Onboarding -> Login -> 여기서 서버 오류 발생 -> Nickname -> Main
- *        -> 자동 로그인 -> Main
- * */
 @AndroidEntryPoint
 class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash) {
     @Inject
