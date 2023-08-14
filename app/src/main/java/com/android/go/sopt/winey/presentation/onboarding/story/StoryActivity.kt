@@ -1,6 +1,7 @@
 package com.android.go.sopt.winey.presentation.onboarding.story
 
 import android.content.Intent
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
@@ -59,13 +60,16 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
 
     private fun setUpDefaultFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            navigateTo<FirstStoryFragment>()
+            supportFragmentManager.commit {
+                replace(R.id.fcv_story, FirstStoryFragment())
+            }
         }
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_story, T::class.simpleName)
+            addToBackStack(null)
         }
     }
 
