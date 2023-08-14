@@ -126,6 +126,6 @@
     <!-- story -->
     <string name="story_nav_number">1/3</string>
     <string name="stroy_nav_title">위니제국 세이버의\n눈물나는 스토리</string>
-    <string name="story_nav_detail">세이버 쫓겨나는 중...</string>
+    <string name="story_nav_detail">세이버 쫓겨나는 중…</string>
     <string name="story_fab_content_desc">next button</string>
 </resources>
