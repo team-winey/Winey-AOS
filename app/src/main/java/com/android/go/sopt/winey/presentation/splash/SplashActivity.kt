@@ -28,7 +28,8 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
         lifecycleScope.launch {
             delay(DELAY_TIME)
-            checkAutoLogin()
+            //checkAutoLogin()
+            navigateTo<GuideActivity>()
         }
     }
 
