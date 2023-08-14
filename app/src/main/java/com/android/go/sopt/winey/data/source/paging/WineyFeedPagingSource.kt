@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.data.source.pagingSource
+package com.android.go.sopt.winey.data.source.paging
 
 import com.android.go.sopt.winey.data.service.FeedService
 import com.android.go.sopt.winey.domain.entity.WineyFeed

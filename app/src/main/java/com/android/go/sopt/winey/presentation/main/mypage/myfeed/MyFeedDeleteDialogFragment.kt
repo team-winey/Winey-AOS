@@ -9,8 +9,10 @@ import com.android.go.sopt.winey.databinding.FragmentFeedDeleteDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
+import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
@@ -62,7 +64,7 @@ class MyFeedDeleteDialogFragment(private val feedId: Int, private val userLevel:
 
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
-        }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun refreshMyFeed() {

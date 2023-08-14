@@ -97,7 +97,7 @@ class MyFeedAdapter(
 
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
-            onItemsTheSame = { old, new -> old.isLiked == new.isLiked },
+            onItemsTheSame = { old, new -> old.feedId == new.feedId },
             onContentsTheSame = { old, new -> old == new }
         )
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"

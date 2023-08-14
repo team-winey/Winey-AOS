@@ -16,10 +16,12 @@ import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
+import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -66,28 +68,26 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private fun initGetFeedStateObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.getMyFeedListState.collectLatest { state ->
-                        when (state) {
-                            is UiState.Success -> {
-                                myFeedAdapter.submitData(state.data)
-                                myFeedAdapter.addLoadStateListener { loadState ->
-                                    wineyFeedLoadAdapter.loadState = loadState.refresh
-                                    if (loadState.append.endOfPaginationReached) {
-                                        binding.rvMyfeedPost.isVisible = false
-                                        binding.layoutMyfeedEmpty.isVisible = true
-                                    } else {
-                                        binding.rvMyfeedPost.isVisible = true
-                                    }
+                viewModel.getMyFeedListState.collectLatest { state ->
+                    when (state) {
+                        is UiState.Success -> {
+                            myFeedAdapter.submitData(state.data)
+                            myFeedAdapter.addLoadStateListener { loadState ->
+                                wineyFeedLoadAdapter.loadState = loadState.refresh
+                                if (loadState.append.endOfPaginationReached) {
+                                    binding.rvMyfeedPost.isVisible = false
+                                    binding.layoutMyfeedEmpty.isVisible = true
+                                } else {
+                                    binding.rvMyfeedPost.isVisible = true
                                 }
                             }
-
-                            is UiState.Failure -> {
-                                snackBar(binding.root) { state.msg }
-                            }
-
-                            else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
                         }
+
+                        is UiState.Failure -> {
+                            snackBar(binding.root) { state.msg }
+                        }
+
+                        else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
                     }
                 }
             }
@@ -111,7 +111,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
-        }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun navigateToMyPage() {

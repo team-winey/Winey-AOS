@@ -7,8 +7,8 @@ import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.service.FeedService
 import com.android.go.sopt.winey.data.source.FeedDataSource
-import com.android.go.sopt.winey.data.source.pagingSource.MyFeedPagingSource
-import com.android.go.sopt.winey.data.source.pagingSource.WineyFeedPagingSource
+import com.android.go.sopt.winey.data.source.paging.MyFeedPagingSource
+import com.android.go.sopt.winey.data.source.paging.WineyFeedPagingSource
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.FeedRepository

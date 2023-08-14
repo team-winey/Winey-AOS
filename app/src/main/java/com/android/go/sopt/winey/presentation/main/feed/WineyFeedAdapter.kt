@@ -29,20 +29,19 @@ class WineyFeedAdapter(
         fun onBind(data: WineyFeed?) {
             binding.apply {
                 this.data = data
-                if (data != null) {
-                    ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
-                    ivWineyfeedLike.setImageResource(
-                        if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
-                    )
-                    ivWineyfeedLike.setOnSingleClickListener {
-                        onLikeButtonClick(data.feedId, !data.isLiked)
-                    }
-
-                    btnWineyfeedMore.setOnClickListener { view ->
-                        showPopupMenu(view, data)
-                    }
+                if (data == null)
+                    return
+                ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
+                ivWineyfeedLike.setImageResource(
+                    if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
+                )
+                ivWineyfeedLike.setOnSingleClickListener {
+                    onLikeButtonClick(data.feedId, !data.isLiked)
                 }
-                executePendingBindings()
+
+                btnWineyfeedMore.setOnClickListener { view ->
+                    showPopupMenu(view, data)
+                }
             }
         }
 
@@ -73,23 +72,23 @@ class WineyFeedAdapter(
     fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
         currentData.let { data ->
             val index = data.indexOfFirst { it?.feedId == feedId }
-            if (index != -1) {
-                data[index]?.let { item ->
-                    item.isLiked = isLiked
-                    if (isLiked) {
-                        item.likes++
-                    } else {
-                        item.likes--
-                    }
-                    notifyItemChanged(index)
+            if (index == -1)
+                return
+            data[index]?.let { item ->
+                item.isLiked = isLiked
+                if (isLiked) {
+                    item.likes++
+                } else {
+                    item.likes--
                 }
+                notifyItemChanged(index)
             }
         }
     }
 
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
-            onItemsTheSame = { old, new -> old.isLiked == new.isLiked },
+            onItemsTheSame = { old, new -> old.feedId == new.feedId },
             onContentsTheSame = { old, new -> old == new }
         )
     }

@@ -105,13 +105,12 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private fun initGetFeedStateObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
                     viewModel.getWineyFeedListState.collectLatest { state ->
                         when (state) {
                             is UiState.Success -> {
                                 wineyFeedAdapter.submitData(state.data)
-                                wineyFeedAdapter.addLoadStateListener { loadStates ->
-                                    wineyFeedLoadAdapter.loadState = loadStates.refresh
+                                wineyFeedAdapter.addLoadStateListener { loadState ->
+                                    wineyFeedLoadAdapter.loadState = loadState.refresh
                                 }
                             }
 
@@ -122,7 +121,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                             else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                         }
                     }
-                }
             }
         }
     }
@@ -183,7 +181,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun setSwipeRefreshListener() {
         binding.layoutWineyfeedRefresh.setOnRefreshListener {
-            viewModel.getWineyFeed()
+            wineyFeedAdapter.refresh()
             binding.layoutWineyfeedRefresh.isRefreshing = false
         }
     }
