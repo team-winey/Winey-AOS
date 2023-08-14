@@ -67,34 +67,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_guide_title" />
 
-        <FrameLayout
+        <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="23dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_guide_level"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_guide_detail">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                android:src="@drawable/img_guide_level" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_guide_start"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_gravity="bottom"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/shape_purple_fill_10_rect"
-                android:stateListAnimator="@null"
-                android:text="@string/guide_start_btn_text"
-                android:textColor="@color/white" />
-
-        </FrameLayout>
+            app:layout_constraintTop_toBottomOf="@id/tv_guide_detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

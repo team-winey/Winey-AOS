@@ -7,19 +7,27 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.onboarding.guide.GuideActivity">
 
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/fcv_guide"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_guide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_guide_next"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="14dp"
+            android:background="@drawable/shape_purple_fill_10_rect"
+            android:stateListAnimator="@null"
+            android:text="@string/guide_next_btn_text"
+            android:textColor="@color/white" />
+
+    </FrameLayout>
 </layout>

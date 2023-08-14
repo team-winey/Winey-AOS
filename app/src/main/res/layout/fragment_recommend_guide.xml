@@ -87,18 +87,6 @@
                 android:layout_gravity="bottom"
                 android:src="@drawable/shape_white_gradient_rect" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_guide_next"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_gravity="bottom"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
-                android:background="@drawable/shape_purple_fill_10_rect"
-                android:stateListAnimator="@null"
-                android:text="@string/guide_next_btn_text"
-                android:textColor="@color/white" />
-
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
