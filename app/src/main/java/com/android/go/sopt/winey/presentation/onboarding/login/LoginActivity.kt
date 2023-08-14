@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityLoginBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
-import com.android.go.sopt.winey.presentation.onboarding.nickname.NicknameActivity
+import com.android.go.sopt.winey.presentation.onboarding.story.StoryActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.view.UiState
@@ -51,7 +51,7 @@ class LoginActivity :
                     if (state.data?.isRegistered == true) {
                         navigateTo<MainActivity>()
                     } else {
-                        navigateTo<NicknameActivity>()
+                        navigateTo<StoryActivity>()
                     }
                 }
 

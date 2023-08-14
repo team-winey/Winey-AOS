@@ -27,49 +27,45 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".presentation.onboarding.guide.GuideActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".presentation.onboarding.login.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".presentation.onboarding.story.StoryActivity"
+            android:exported="false" />
         <activity
             android:name=".presentation.onboarding.nickname.NicknameActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".presentation.main.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".presentation.main.feed.upload.UploadActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".presentation.main.feed.upload.loading.LoadingActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".presentation.main.mypage.MypageHelpActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -77,7 +73,6 @@
                     android:host="oauth"
                     android:scheme="kakao${KAKAO_NATIVE_KEY}" />
             </intent-filter>
-
         </activity>
     </application>
 
