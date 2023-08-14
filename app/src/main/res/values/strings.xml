@@ -115,4 +115,11 @@
 
     <!-- guide -->
     <string name="guide_next_btn_text">다음으로</string>
+    <string name="guide_start_btn_text">시작하기</string>
+    <string name="guide_wineyfeed_title">메인 피드에서 절약하는\n모습을 인증해 보세요!</string>
+    <string name="guide_wineyfeed_detail">나와 사람들의 절약 방법을 볼 수 있어요</string>
+    <string name="guide_recommend_title">추천 피드에서\n절약법을 추천해 드릴게요!</string>
+    <string name="guide_recommend_detail">흩어져 있는 절약법을 한눈에 볼 수 있어요</string>
+    <string name="guide_level_title">절약 목표를 세우고 실천하며\n캐릭터를 키워보세요!</string>
+    <string name="guide_level_detail">캐릭터를 통해 절약을 재밌게 실천할 수 있어요</string>
 </resources>
