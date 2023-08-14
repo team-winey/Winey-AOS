@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="pageNumber"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,11 +47,12 @@
                     android:id="@+id/tv_story_nav_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/story_nav_number"
+                    android:text="@{@string/story_nav_number(pageNumber)}"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                     android:textColor="@color/gray_400"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/story_nav_num_preview" />
 
                 <TextView
                     android:id="@+id/tv_story_nav_title"

@@ -124,7 +124,7 @@
     <string name="guide_level_detail">캐릭터를 통해 절약을 재밌게 실천할 수 있어요</string>
 
     <!-- story -->
-    <string name="story_nav_number">1/3</string>
+    <string name="story_nav_number">%d/3</string>
     <string name="stroy_nav_title">위니제국 세이버의\n눈물나는 스토리</string>
     <string name="story_nav_detail">세이버 쫓겨나는 중…</string>
     <string name="story_fab_content_desc">next button</string>
@@ -136,4 +136,5 @@
     <string name="story_winey_country_first_speech_bubble">황제님 죄송합니다. 마지막까지 왕가를 설득시키려고 했으나</string>
     <string name="story_winey_country_second_speech_bubble">흥청망청 돈을 쓰셔 위니제국의 황제 자격에 덜어지셨습니다.</string>
     <string name="story_winey_country_third_speech_bubble">절약 목표 금액을 채우시면, 다시 황제로\n돌아오실 수 있습니다. 다시 뵙기를 바라며…</string>
+    <string name="story_nav_num_preview">1/3</string>
 </resources>

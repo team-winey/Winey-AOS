@@ -64,7 +64,7 @@
             android:layout_width="270dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:background="@drawable/shape_gray_line_right10_bottom_10_rect"
+            android:background="@drawable/shape_white_fill_gray_line_right10_bottom10_rect"
             android:paddingHorizontal="20dp"
             android:paddingVertical="16dp"
             android:text="@string/story_winey_country_first_speech_bubble"
