@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="pageNumber"
-            type="Integer" />
+            name="vm"
+            type="com.android.go.sopt.winey.presentation.onboarding.story.StoryViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
                     android:id="@+id/tv_story_nav_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/story_nav_number(pageNumber)}"
+                    android:text="@{@string/story_nav_number(vm.pageNumber)}"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                     android:textColor="@color/gray_400"
                     app:layout_constraintStart_toStartOf="parent"
@@ -69,12 +69,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="@string/story_nav_detail"
+                    android:text="@{vm.detailText}"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                     android:textColor="@color/gray_600"
                     app:layout_constraintStart_toStartOf="@id/tv_story_nav_title"
-                    app:layout_constraintTop_toBottomOf="@id/tv_story_nav_title"
-                    tools:layout="@layout/fragment_first_story" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_story_nav_title" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_story_next"
