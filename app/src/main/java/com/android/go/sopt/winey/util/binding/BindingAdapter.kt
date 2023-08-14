@@ -105,7 +105,7 @@ fun TextView.setHelperTextColor(inputUiState: InputUiState) {
 }
 
 @BindingAdapter("setFeedLikeImage")
-fun setLikeImage(view:ImageView, isLiked:Boolean) {
+fun setLikeImage(view: ImageView, isLiked: Boolean) {
     val imageRes = if (isLiked) {
         R.drawable.ic_wineyfeed_liked
     } else {

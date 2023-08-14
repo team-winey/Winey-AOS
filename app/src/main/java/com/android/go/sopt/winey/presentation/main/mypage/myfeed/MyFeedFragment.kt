@@ -87,7 +87,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                                 checkAndSetEmptyLayout()
                             }
                             myFeedAdapter.submitData(state.data)
-
                         }
 
                         is UiState.Failure -> {

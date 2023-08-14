@@ -105,22 +105,22 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private fun initGetFeedStateObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    viewModel.getWineyFeedListState.collectLatest { state ->
-                        when (state) {
-                            is UiState.Success -> {
-                                wineyFeedAdapter.submitData(state.data)
-                                wineyFeedAdapter.addLoadStateListener { loadState ->
-                                    wineyFeedLoadAdapter.loadState = loadState.refresh
-                                }
+                viewModel.getWineyFeedListState.collectLatest { state ->
+                    when (state) {
+                        is UiState.Success -> {
+                            wineyFeedAdapter.submitData(state.data)
+                            wineyFeedAdapter.addLoadStateListener { loadState ->
+                                wineyFeedLoadAdapter.loadState = loadState.refresh
                             }
-
-                            is UiState.Failure -> {
-                                snackBar(binding.root) { state.msg }
-                            }
-
-                            else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                         }
+
+                        is UiState.Failure -> {
+                            snackBar(binding.root) { state.msg }
+                        }
+
+                        else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                     }
+                }
             }
         }
     }

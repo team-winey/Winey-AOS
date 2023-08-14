@@ -29,8 +29,9 @@ class WineyFeedAdapter(
         fun onBind(data: WineyFeed?) {
             binding.apply {
                 this.data = data
-                if (data == null)
+                if (data == null) {
                     return
+                }
                 ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
                 ivWineyfeedLike.setOnSingleClickListener {
                     onLikeButtonClick(data.feedId, !data.isLiked)
@@ -69,8 +70,9 @@ class WineyFeedAdapter(
     fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
         currentData.let { data ->
             val index = data.indexOfFirst { it?.feedId == feedId }
-            if (index == -1)
+            if (index == -1) {
                 return
+            }
             data[index]?.let { item ->
                 item.isLiked = isLiked
                 if (isLiked) {
