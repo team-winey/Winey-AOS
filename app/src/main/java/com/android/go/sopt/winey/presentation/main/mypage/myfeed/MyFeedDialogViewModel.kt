@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.domain.repository.FeedRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyFeedDialogViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val feedRepository: FeedRepository
 ) : ViewModel() {
     val _deleteMyFeedState = MutableLiveData<UiState<Unit>>(UiState.Loading)
     val deleteMyFeedState: LiveData<UiState<Unit>>
@@ -22,7 +22,7 @@ class MyFeedDialogViewModel @Inject constructor(
 
     fun deleteFeed(feedId: Int) {
         viewModelScope.launch {
-            authRepository.deleteFeed(feedId)
+            feedRepository.deleteFeed(feedId)
                 .onSuccess { state ->
                     _deleteMyFeedState.value = UiState.Success(state)
                 }
