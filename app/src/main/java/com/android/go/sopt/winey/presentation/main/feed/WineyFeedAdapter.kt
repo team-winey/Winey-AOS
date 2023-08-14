@@ -32,9 +32,6 @@ class WineyFeedAdapter(
                 if (data == null)
                     return
                 ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
-                ivWineyfeedLike.setImageResource(
-                    if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
-                )
                 ivWineyfeedLike.setOnSingleClickListener {
                     onLikeButtonClick(data.feedId, !data.isLiked)
                 }

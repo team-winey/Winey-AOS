@@ -32,9 +32,6 @@ class MyFeedAdapter(
                 this.data = data
                 if (data != null) {
                     ivMyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
-                    ivMyfeedLike.setImageResource(
-                        if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
-                    )
                     ivMyfeedLike.setOnSingleClickListener {
                         onLikeButtonClick(data.feedId, !data.isLiked)
                     }
