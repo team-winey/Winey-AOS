@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,7 +10,86 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/gray_50"
         tools:context=".presentation.onboarding.story.SecondStoryFragment">
+
+        <TextView
+            android:id="@+id/tv_story_saver_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="8dp"
+            android:text="@string/story_saver_name"
+            android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
+            android:textColor="@color/gray_500"
+            app:layout_constraintEnd_toStartOf="@id/iv_story_saver_profile"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_story_saver_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/img_story_saver"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_story_saver_name" />
+
+        <TextView
+            android:id="@+id/tv_story_saver_speech_bubble"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/shape_gray_line_left10_bottom10_rect"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="16dp"
+            android:text="@string/story_saver_second_speech_bubble"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+            app:layout_constraintEnd_toEndOf="@id/tv_story_saver_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_story_saver_name" />
+
+        <TextView
+            android:id="@+id/tv_story_winey_country_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/story_winey_country_name"
+            android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
+            android:textColor="@color/gray_500"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_story_saver_speech_bubble" />
+
+        <TextView
+            android:id="@+id/tv_story_winey_country_speech_bubble"
+            android:layout_width="227dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/shape_gray_line_right10_bottom_10_rect"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="16dp"
+            android:text="@string/story_winey_country_second_speech_bubble"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+            app:layout_constraintStart_toStartOf="@id/tv_story_winey_country_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_story_winey_country_name" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/bg_story_lottie"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_story_winey_country_name">
+
+            <!--            <com.airbnb.lottie.LottieAnimationView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center"-->
+            <!--                app:lottie_autoPlay="true"-->
+            <!--                app:lottie_rawRes="@raw/lottie_story_second" />-->
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
