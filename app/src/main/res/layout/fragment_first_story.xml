@@ -74,13 +74,11 @@
 
         <FrameLayout
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="7dp"
+            android:layout_height="450dp"
             android:background="@drawable/bg_story_lottie"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_story_winey_country_name">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <!--            <com.airbnb.lottie.LottieAnimationView-->
             <!--                android:layout_width="wrap_content"-->
