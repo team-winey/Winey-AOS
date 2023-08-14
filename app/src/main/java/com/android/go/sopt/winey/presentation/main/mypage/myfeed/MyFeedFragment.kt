@@ -65,22 +65,29 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
+    private fun checkAndSetEmptyLayout() {
+        if (myFeedAdapter.itemCount == 0) {
+            binding.rvMyfeedPost.isVisible = false
+            binding.layoutMyfeedEmpty.isVisible = true
+        } else {
+            binding.rvMyfeedPost.isVisible = true
+            binding.layoutMyfeedEmpty.isVisible = false
+        }
+    }
+
     private fun initGetFeedStateObserver() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getMyFeedListState.collectLatest { state ->
                     when (state) {
                         is UiState.Success -> {
-                            myFeedAdapter.submitData(state.data)
+                            checkAndSetEmptyLayout()
                             myFeedAdapter.addLoadStateListener { loadState ->
                                 wineyFeedLoadAdapter.loadState = loadState.refresh
-                                if (loadState.append.endOfPaginationReached) {
-                                    binding.rvMyfeedPost.isVisible = false
-                                    binding.layoutMyfeedEmpty.isVisible = true
-                                } else {
-                                    binding.rvMyfeedPost.isVisible = true
-                                }
+                                checkAndSetEmptyLayout()
                             }
+                            myFeedAdapter.submitData(state.data)
+
                         }
 
                         is UiState.Failure -> {
