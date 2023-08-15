@@ -21,7 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import retrofit2.HttpException
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -70,8 +69,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 }
 
                 is UiState.Success -> {
-                    navigateToOnBoardingScreen()
-                    Timber.e("로그인 액티비티로 전환")
+                    navigateToLoginScreen()
                 }
 
                 is UiState.Failure -> {
@@ -89,7 +87,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             when (state) {
                 is UiState.Failure -> {
                     if (state is HttpException) {
-                        if (state.code() == 401) {
+                        if (state.code() == CODE_TOKEN_EXPIRED) {
                             viewModel.postLogout()
                         }
                     }
@@ -101,7 +99,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun navigateToOnBoardingScreen() {
+    private fun navigateToLoginScreen() {
         Intent(this@MainActivity, LoginActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(this)
@@ -113,5 +111,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }
+    }
+
+    companion object {
+        private const val CODE_TOKEN_EXPIRED = 401
     }
 }
