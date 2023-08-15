@@ -36,34 +36,7 @@ class AuthInterceptor @Inject constructor(
                 try {
                     Timber.e("액세스 토큰 만료, 토큰 재발급 합니다.")
                     response.close()
-                    val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
-                        .url("$AUTH_BASE_URL/auth/token")
-                        .addHeader(REFRESH_TOKEN, runBlocking(Dispatchers.IO) { getRefreshToken() })
-                        .build()
-                    val refreshTokenResponse = chain.proceed(refreshTokenRequest)
-                    Timber.e("리프레시 토큰 : $refreshTokenResponse")
-
-                    if (refreshTokenResponse.isSuccessful) {
-                        val responseToken = json.decodeFromString(
-                            refreshTokenResponse.body?.string().toString()
-                        ) as BaseResponse<ResponseReIssueTokenDto>
-                        if (responseToken.data != null) {
-                            Timber.e("리프레시 토큰 : ${responseToken.data.refreshToken}")
-                            saveAccessToken(
-                                responseToken.data.accessToken,
-                                responseToken.data.refreshToken
-                            )
-                        }
-                        refreshTokenResponse.close()
-                        val newRequest = originalRequest.newAuthBuilder().build()
-                        return chain.proceed(newRequest)
-                    } else {
-                        refreshTokenResponse.close()
-                        Timber.e("리프레시 토큰 : ${refreshTokenResponse.code}")
-                        Timber.e("리프레시 토큰 만료입니다.")
-                        saveAccessToken("", "")
-                        return chain.proceed(headerRequest)
-                    }
+                    return handleTokenExpired(chain, originalRequest, headerRequest)
                 } catch (t: Throwable) {
                     Timber.e("예외발생 ${t.message}")
                     saveAccessToken("", "")
@@ -87,6 +60,37 @@ class AuthInterceptor @Inject constructor(
     private fun saveAccessToken(accessToken: String, refreshToken: String) =
         runBlocking {
             dataStoreRepository.saveAccessToken(accessToken, refreshToken)
+        }
+
+    private fun handleTokenExpired(chain: Interceptor.Chain, originalRequest: Request, headerRequest: Request): Response
+        {
+            val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
+                .url("$AUTH_BASE_URL/auth/token")
+                .addHeader(REFRESH_TOKEN, runBlocking(Dispatchers.IO) { getRefreshToken() })
+                .build()
+            val refreshTokenResponse = chain.proceed(refreshTokenRequest)
+            Timber.e("리프레시 토큰 : $refreshTokenResponse")
+
+            if (refreshTokenResponse.isSuccessful) {
+                val responseToken = json.decodeFromString(
+                    refreshTokenResponse.body?.string().toString()
+                ) as BaseResponse<ResponseReIssueTokenDto>
+                if (responseToken.data != null) {
+                    Timber.e("리프레시 토큰 : ${responseToken.data.refreshToken}")
+                    saveAccessToken(
+                        responseToken.data.accessToken,
+                        responseToken.data.refreshToken
+                    )
+                }
+                refreshTokenResponse.close()
+                val newRequest = originalRequest.newAuthBuilder().build()
+                return chain.proceed(newRequest)
+            } else {
+                refreshTokenResponse.close()
+                Timber.e("리프레시 토큰 : ${refreshTokenResponse.code}")
+                saveAccessToken("", "")
+                return chain.proceed(headerRequest)
+            }
         }
 
     companion object {
