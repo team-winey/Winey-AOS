@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class StoryViewModel : ViewModel() {
-    private val _pageNumber = MutableStateFlow(1)
+    private val _pageNumber = MutableStateFlow(FIRST_PAGE_NUM)
     val pageNumber: StateFlow<Int> = _pageNumber.asStateFlow()
 
     private val _detailText = MutableStateFlow("")
@@ -18,5 +18,9 @@ class StoryViewModel : ViewModel() {
 
     fun updateDetailText(text: String) {
         _detailText.value = text
+    }
+
+    companion object {
+        private const val FIRST_PAGE_NUM = 1
     }
 }

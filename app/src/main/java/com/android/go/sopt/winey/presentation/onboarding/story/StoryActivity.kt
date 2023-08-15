@@ -17,45 +17,24 @@ import com.android.go.sopt.winey.util.context.stringOf
 
 class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_story) {
     private val viewModel by viewModels<StoryViewModel>()
-    private var currentPageNumber = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
 
         updateStatusBarColor()
-        updateNavigationView(R.string.story_nav_first_detail)
+        setUpDefaultNavigationText()
         setUpDefaultFragment(savedInstanceState)
+
         initNextButtonClickListener()
-    }
-
-    private fun initNextButtonClickListener() {
-        binding.fabStoryNext.setOnClickListener {
-            when (supportFragmentManager.findFragmentById(R.id.fcv_story)) {
-                is FirstStoryFragment -> {
-                    updateNavigationView(R.string.story_nav_second_detail)
-                    navigateTo<SecondStoryFragment>()
-                }
-
-                is SecondStoryFragment -> {
-                    updateNavigationView(R.string.story_nav_third_detail)
-                    navigateTo<ThirdStoryFragment>()
-                }
-
-                is ThirdStoryFragment -> navigateToNicknameScreen()
-            }
-        }
     }
 
     private fun updateStatusBarColor() {
         window.statusBarColor = colorOf(R.color.gray_50)
     }
 
-    private fun updateNavigationView(@StringRes resId: Int) {
-        viewModel.apply {
-            updatePageNumber(++currentPageNumber)
-            updateDetailText(stringOf(resId))
-        }
+    private fun setUpDefaultNavigationText() {
+        viewModel.updateDetailText(stringOf(R.string.story_nav_first_detail))
     }
 
     private fun setUpDefaultFragment(savedInstanceState: Bundle?) {
@@ -66,7 +45,32 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         }
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
+    private fun initNextButtonClickListener() {
+        binding.fabStoryNext.setOnClickListener {
+            when (supportFragmentManager.findFragmentById(R.id.fcv_story)) {
+                is FirstStoryFragment -> {
+                    updateNavigationText(SECOND_PAGE_NUM, R.string.story_nav_second_detail)
+                    navigateAndBackStack<SecondStoryFragment>()
+                }
+
+                is SecondStoryFragment -> {
+                    updateNavigationText(THIRD_PAGE_NUM, R.string.story_nav_third_detail)
+                    navigateAndBackStack<ThirdStoryFragment>()
+                }
+
+                is ThirdStoryFragment -> navigateToNicknameScreen()
+            }
+        }
+    }
+
+    private fun updateNavigationText(pageNumber: Int, @StringRes resId: Int) {
+        viewModel.apply {
+            updatePageNumber(pageNumber)
+            updateDetailText(stringOf(resId))
+        }
+    }
+
+    private inline fun <reified T : Fragment> navigateAndBackStack() {
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_story, T::class.simpleName)
             addToBackStack(null)
@@ -78,5 +82,11 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
+    }
+
+    companion object {
+        private const val FIRST_PAGE_NUM = 1
+        private const val SECOND_PAGE_NUM = 2
+        private const val THIRD_PAGE_NUM = 3
     }
 }
