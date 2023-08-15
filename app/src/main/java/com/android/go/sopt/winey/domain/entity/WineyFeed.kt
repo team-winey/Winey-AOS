@@ -10,5 +10,6 @@ data class WineyFeed(
     val nickName: String,
     val userId: Int,
     val writerLevel: Int,
-    val totalPageSize: Int
+    val totalPageSize: Int,
+    val isEnd: Boolean
 )

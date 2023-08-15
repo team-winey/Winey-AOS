@@ -66,7 +66,8 @@ data class ResponseGetWineyFeedListDto(
             nickName = feed.nickName,
             userId = feed.userId,
             writerLevel = feed.writerLevel,
-            totalPageSize = data.pageResponseDto.totalPageSize
+            totalPageSize = data.pageResponseDto.totalPageSize,
+            isEnd = data.pageResponseDto.isEnd
         )
     }
 }

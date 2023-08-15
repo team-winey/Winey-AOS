@@ -2,7 +2,9 @@ package com.android.go.sopt.winey.di
 
 import android.content.Context
 import com.android.go.sopt.winey.data.service.AuthService
+import com.android.go.sopt.winey.data.service.FeedService
 import com.android.go.sopt.winey.data.service.KakaoLoginService
+import com.android.go.sopt.winey.data.service.RecommendService
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.user.UserApiClient
 import dagger.Module
@@ -22,6 +24,16 @@ object ServiceModule {
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService =
         retrofit.create(AuthService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideFeedService(retrofit: Retrofit): FeedService =
+        retrofit.create(FeedService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideRecommendService(retrofit: Retrofit): RecommendService =
+        retrofit.create(RecommendService::class.java)
 
     @Provides
     fun provideKakaoLoginService(

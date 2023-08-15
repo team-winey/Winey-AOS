@@ -3,7 +3,7 @@ package com.android.go.sopt.winey.presentation.main.feed.upload.amount
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
-import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.domain.repository.FeedRepository
 import com.android.go.sopt.winey.util.multipart.UriToRequestBody
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AmountViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val feedRepository: FeedRepository
 ) : ViewModel() {
     val _amount = MutableStateFlow("")
     val amount: String get() = _amount.value
@@ -66,7 +66,7 @@ class AmountViewModel @Inject constructor(
             _postWineyFeedState.value = UiState.Loading
             val (file, requestMap) = createRequestBody(content, amount)
 
-            authRepository.postWineyFeed(file, requestMap)
+            feedRepository.postWineyFeed(file, requestMap)
                 .onSuccess { response ->
                     _postWineyFeedState.value = UiState.Success(response)
                     Timber.d("${response?.feedId} ${response?.createdAt}")
