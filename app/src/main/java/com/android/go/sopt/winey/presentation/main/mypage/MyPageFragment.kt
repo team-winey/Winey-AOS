@@ -37,6 +37,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         init1On1ButtonClickListener()
         initLevelHelpButtonClickListener()
         initToMyFeedButtonClickListener()
+        initLogoutButtonClickListener()
         setupGetUserState()
         viewModel.getUser()
     }
@@ -63,6 +64,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.btnMypageLevelHelp.setOnClickListener {
             val intent = Intent(context, MypageHelpActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun initLogoutButtonClickListener() {
+        binding.clMypageLogout.setOnClickListener {
+            viewModel.postLogout()
         }
     }
 
