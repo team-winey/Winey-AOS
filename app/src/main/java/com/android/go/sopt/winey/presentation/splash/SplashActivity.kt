@@ -8,7 +8,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivitySplashBinding
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
-import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
+import com.android.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -37,7 +37,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         Timber.e("ACCESS TOKEN: $accessToken")
 
         if (accessToken.isNullOrBlank()) {
-            navigateTo<GuideActivity>()
+            navigateTo<LoginActivity>()
         } else {
             navigateTo<MainActivity>()
         }

@@ -62,6 +62,7 @@ class LoginViewModel @Inject constructor(
                     if (response != null) {
                         saveAccessToken(response.accessToken, response.refreshToken)
                         saveUserId(response.userId)
+                        Timber.e("액세스 : ${response.accessToken} , 리프레시 : ${response.refreshToken}")
                         _loginState.value = UiState.Success(response)
                     } else {
                         Timber.e("response is null")
