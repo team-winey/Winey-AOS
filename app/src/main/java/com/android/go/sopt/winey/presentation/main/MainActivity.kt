@@ -67,7 +67,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
-
                 }
 
                 is UiState.Success -> {
@@ -97,7 +96,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 }
 
                 else -> {
-
                 }
             }
         }

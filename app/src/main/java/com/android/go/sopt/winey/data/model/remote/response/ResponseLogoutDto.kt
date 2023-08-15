@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResponseLogoutDto(
     @SerialName("code")
-    val code : Int,
+    val code: Int,
     @SerialName("message")
-    val message : String
+    val message: String
 )

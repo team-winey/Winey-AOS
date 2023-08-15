@@ -37,6 +37,7 @@ interface AuthService {
 
     @POST("auth/sign-out")
     suspend fun postLogout(): ResponseLogoutDto
+
     @GET("user/nickname/is-exist")
     suspend fun getNicknameDuplicateCheck(
         @Query("nickname") nickname: String
