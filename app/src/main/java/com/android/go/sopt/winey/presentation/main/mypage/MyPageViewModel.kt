@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.presentation.main.mypage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.domain.repository.AuthRepository
+import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
     private val _deleteUserState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteUserState: StateFlow<UiState<Unit>> = _deleteUserState.asStateFlow()
@@ -37,6 +39,12 @@ class MyPageViewModel @Inject constructor(
 
                     Timber.e("FAIL DELETE USER: ${t.message}")
                 }
+        }
+    }
+
+    fun clearDataStore() {
+        viewModelScope.launch {
+            dataStoreRepository.clearDataStore()
         }
     }
 }

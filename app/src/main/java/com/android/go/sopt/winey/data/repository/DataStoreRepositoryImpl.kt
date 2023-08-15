@@ -16,11 +16,11 @@ import java.io.IOException
 import javax.inject.Inject
 
 class DataStoreRepositoryImpl @Inject constructor(
-    val datastore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>
 ) : DataStoreRepository {
 
     override suspend fun saveSocialToken(socialAccessToken: String, socialRefreshToken: String) {
-        datastore.edit {
+        dataStore.edit {
             it[SOCIAL_ACCESS_TOKEN] = socialAccessToken
             it[SOCIAL_REFRESH_TOKEN] = socialRefreshToken
         }
@@ -31,14 +31,14 @@ class DataStoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveAccessToken(accessToken: String, refreshToken: String) {
-        datastore.edit {
+        dataStore.edit {
             it[ACCESS_TOKEN] = accessToken
             it[REFRESH_TOKEN] = refreshToken
         }
     }
 
     override suspend fun saveUserId(userId: Int) {
-        datastore.edit {
+        dataStore.edit {
             it[USER_ID] = userId
         }
     }
@@ -52,7 +52,7 @@ class DataStoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getStringValue(key: Preferences.Key<String>): Flow<String?> {
-        return datastore.data
+        return dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
                     exception.printStackTrace()
@@ -67,7 +67,7 @@ class DataStoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getUserId(): Flow<Int?> {
-        return datastore.data
+        return dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
                     exception.printStackTrace()
@@ -82,14 +82,14 @@ class DataStoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun saveUserInfo(userInfo: User?) {
-        datastore.edit {
+        dataStore.edit {
             val json = Gson().toJson(userInfo)
             it[USER_INFO] = json
         }
     }
 
     override suspend fun getUserInfo(): Flow<User> {
-        return datastore.data
+        return dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
                     exception.printStackTrace()
@@ -106,6 +106,10 @@ class DataStoreRepositoryImpl @Inject constructor(
                     User()
                 }
             }
+    }
+
+    override suspend fun clearDataStore() {
+        dataStore.edit { it.clear() }
     }
 
     companion object PreferencesKeys {

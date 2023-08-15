@@ -90,7 +90,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        // todo: 데이터 스토어에 저장된 값들도 모두 지워야 한다! (액세스 토큰 남아있으면 메인 피드로 넘어감)
+                        myPageViewModel.clearDataStore()
                         navigateToGuideScreen()
                     }
 
