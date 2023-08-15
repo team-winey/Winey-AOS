@@ -20,6 +20,7 @@ import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import retrofit2.HttpException
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -33,6 +34,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
         setupLogoutState()
+        setupTokenState()
     }
 
     private fun initBnvItemSelectedListener() {
@@ -81,6 +83,24 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 }
             }
         }.launchIn(lifecycleScope)
+    }
+
+    fun setupTokenState() {
+        viewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Failure -> {
+                    if (state is HttpException) {
+                        if (state.code() == 401) {
+                            viewModel.postLogout()
+                        }
+                    }
+                }
+
+                else -> {
+
+                }
+            }
+        }
     }
 
     private fun navigateToOnBoardingScreen() {

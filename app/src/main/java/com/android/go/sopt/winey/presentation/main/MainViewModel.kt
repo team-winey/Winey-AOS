@@ -39,9 +39,7 @@ class MainViewModel @Inject constructor(
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        Timber.e("HTTP 실패")
-                        if (t.code().equals(401)) {
-                        }
+                        Timber.e("HTTP 실패 ${t.code()}")
                     }
                     Timber.e("${t.message}")
                     _getUserState.value = UiState.Failure("${t.message}")
