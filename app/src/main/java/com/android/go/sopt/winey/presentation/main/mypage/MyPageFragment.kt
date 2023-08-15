@@ -14,6 +14,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
+import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -69,7 +70,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
-            viewModel.postLogout()
+            val dialog= AlertDialogFragment(
+                "정말 로그아웃 하시겠어요?",
+                "로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.",
+                "취소",
+                "로그아웃하기",
+                handleNegativeButton = {},
+                handlePositiveButton = { viewModel.postLogout() }
+            )
+            dialog.show(this.childFragmentManager, "alertDialog")
         }
     }
 
