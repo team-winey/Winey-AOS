@@ -34,6 +34,8 @@ class AuthDataSource @Inject constructor(
 
     suspend fun postLogout(): ResponseLogoutDto = authService.postLogout()
 
+    suspend fun deleteUser(): BaseResponse<Unit> = authService.deleteUser()
+
     suspend fun getNicknameDuplicateCheck(nickname: String): BaseResponse<ResponseGetNicknameDuplicateCheckDto> =
         authService.getNicknameDuplicateCheck(nickname)
 

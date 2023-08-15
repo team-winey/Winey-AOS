@@ -44,6 +44,11 @@ class AuthRepositoryImpl @Inject constructor(
             authDataSource.postLogout()
         }
 
+    override suspend fun deleteUser(): Result<Unit> =
+        runCatching {
+            authDataSource.deleteUser()
+        }
+
     override suspend fun getNicknameDuplicateCheck(nickname: String): Result<ResponseGetNicknameDuplicateCheckDto?> =
         runCatching {
             authDataSource.getNicknameDuplicateCheck(nickname).data
