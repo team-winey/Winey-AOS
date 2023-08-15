@@ -8,7 +8,6 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityLoginBinding
-import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.presentation.onboarding.story.StoryActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
@@ -48,11 +47,13 @@ class LoginActivity :
                     Timber.e("${state.data?.refreshToken}")
                     Timber.e("${state.data?.isRegistered}")
 
-                    if (state.data?.isRegistered == true) {
-                        navigateTo<MainActivity>()
-                    } else {
-                        navigateTo<StoryActivity>()
-                    }
+                    navigateTo<StoryActivity>()
+
+//                    if (state.data?.isRegistered == true) {
+//                        navigateTo<MainActivity>()
+//                    } else {
+//                        navigateTo<StoryActivity>()
+//                    }
                 }
 
                 is UiState.Failure -> {

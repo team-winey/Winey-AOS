@@ -9,7 +9,6 @@ import com.android.go.sopt.winey.databinding.ActivitySplashBinding
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
-import com.android.go.sopt.winey.presentation.onboarding.story.StoryActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -29,8 +28,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
         lifecycleScope.launch {
             delay(DELAY_TIME)
-            //checkAutoLogin()
-            navigateTo<StoryActivity>()
+            checkAutoLogin()
         }
     }
 
