@@ -6,6 +6,7 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDt
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import com.android.go.sopt.winey.data.service.AuthService
@@ -29,6 +30,8 @@ class AuthDataSource @Inject constructor(
         refreshToken: String
     ): BaseResponse<ResponseReIssueTokenDto> =
         authService.postReIssueToken(refreshToken)
+
+    suspend fun postLogout(): ResponseLogoutDto = authService.postLogout()
 
     suspend fun getNicknameDuplicateCheck(nickname: String): BaseResponse<ResponseGetNicknameDuplicateCheckDto> =
         authService.getNicknameDuplicateCheck(nickname)

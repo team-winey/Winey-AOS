@@ -6,6 +6,7 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDt
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import retrofit2.http.Body
@@ -33,6 +34,9 @@ interface AuthService {
     suspend fun postReIssueToken(
         @Header("refreshToken") refreshToken: String
     ): BaseResponse<ResponseReIssueTokenDto>
+
+    @POST("auth/sign-out")
+    suspend fun postLogout(): ResponseLogoutDto
 
     @GET("user/nickname/is-exist")
     suspend fun getNicknameDuplicateCheck(

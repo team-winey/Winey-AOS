@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
@@ -23,9 +24,8 @@ class MainViewModel @Inject constructor(
     private val _getUserState = MutableStateFlow<UiState<User?>>(UiState.Loading)
     val getUserState: StateFlow<UiState<User?>> = _getUserState.asStateFlow()
 
-    init {
-        getUser()
-    }
+    private val _logoutState = MutableStateFlow<UiState<ResponseLogoutDto?>>(UiState.Empty)
+    val logoutState: StateFlow<UiState<ResponseLogoutDto?>> = _logoutState.asStateFlow()
 
     fun getUser() {
         viewModelScope.launch {
@@ -39,10 +39,30 @@ class MainViewModel @Inject constructor(
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        Timber.e("HTTP 실패")
+                        Timber.e("HTTP 실패 ${t.code()}")
                     }
                     Timber.e("${t.message}")
                     _getUserState.value = UiState.Failure("${t.message}")
+                }
+        }
+    }
+
+    fun postLogout() {
+        viewModelScope.launch {
+            _logoutState.value = UiState.Loading
+
+            authRepository.postLogout()
+                .onSuccess { response ->
+                    dataStoreRepository.saveAccessToken("", "")
+                    _logoutState.value = UiState.Success(response)
+                    Timber.e("${response.message}")
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP 실패")
+                    }
+                    Timber.e("${t.message}")
+                    _logoutState.value = UiState.Failure("${t.message}")
                 }
         }
     }
