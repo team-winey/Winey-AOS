@@ -18,6 +18,7 @@ import com.android.go.sopt.winey.util.context.stringOf
 
 class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_story) {
     private val viewModel by viewModels<StoryViewModel>()
+    private var currentPageNumber = FIRST_PAGE_NUM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +28,6 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         setUpDefaultNavigationText()
         setUpDefaultFragment(savedInstanceState)
         initNextButtonClickListener()
-
         registerBackPressedCallback()
     }
 
@@ -38,12 +38,12 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
                     is FirstStoryFragment -> finish()
                     is SecondStoryFragment -> {
                         supportFragmentManager.popBackStack()
-                        updateNavigationText(FIRST_PAGE_NUM, R.string.story_first_detail_text)
+                        updateNavigationText(BACK_DIRECTION, R.string.story_first_detail_text)
                     }
 
                     is ThirdStoryFragment -> {
                         supportFragmentManager.popBackStack()
-                        updateNavigationText(SECOND_PAGE_NUM, R.string.story_second_detail_text)
+                        updateNavigationText(BACK_DIRECTION, R.string.story_second_detail_text)
                     }
                 }
             }
@@ -55,12 +55,12 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         binding.fabStoryNext.setOnClickListener {
             when (supportFragmentManager.findFragmentById(R.id.fcv_story)) {
                 is FirstStoryFragment -> {
-                    updateNavigationText(SECOND_PAGE_NUM, R.string.story_second_detail_text)
+                    updateNavigationText(FRONT_DIRECTION, R.string.story_second_detail_text)
                     navigateAndBackStack<SecondStoryFragment>()
                 }
 
                 is SecondStoryFragment -> {
-                    updateNavigationText(THIRD_PAGE_NUM, R.string.story_third_detail_text)
+                    updateNavigationText(FRONT_DIRECTION, R.string.story_third_detail_text)
                     navigateAndBackStack<ThirdStoryFragment>()
                 }
 
@@ -69,9 +69,13 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         }
     }
 
-    private fun updateNavigationText(pageNumber: Int, @StringRes resId: Int) {
+    private fun updateNavigationText(direction: Int, @StringRes resId: Int) {
         viewModel.apply {
-            updatePageNumber(pageNumber)
+            if (direction == BACK_DIRECTION) {
+                updatePageNumber(--currentPageNumber)
+            } else {
+                updatePageNumber(++currentPageNumber)
+            }
             updateDetailText(stringOf(resId))
         }
     }
@@ -108,7 +112,7 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
 
     companion object {
         private const val FIRST_PAGE_NUM = 1
-        private const val SECOND_PAGE_NUM = 2
-        private const val THIRD_PAGE_NUM = 3
+        private const val BACK_DIRECTION = -1
+        private const val FRONT_DIRECTION = 1
     }
 }
