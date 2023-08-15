@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
@@ -16,8 +17,11 @@ import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
+import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.viewLifeCycle
+import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,22 +32,24 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val mainViewModel by activityViewModels<MainViewModel>()
+    private val myPageViewModel by viewModels<MyPageViewModel>()
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         init1On1ButtonClickListener()
         initLevelHelpButtonClickListener()
         initToMyFeedButtonClickListener()
         initLogoutButtonClickListener()
-        setupGetUserState()
-        viewModel.getUser()
-    }
+        initWithdrawButtonClickListener()
 
-    override fun onResume() {
-        super.onResume()
+        setupGetUserState()
+        setupDeleteUserState()
+        mainViewModel.getUser()
     }
 
     private fun initToMyFeedButtonClickListener() {
@@ -69,13 +75,44 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
-            viewModel.postLogout()
+            mainViewModel.postLogout()
+        }
+    }
+
+    private fun initWithdrawButtonClickListener() {
+        binding.ivMypageWithdraw.setOnClickListener {
+            myPageViewModel.deleteUser()
+        }
+    }
+
+    private fun setupDeleteUserState() {
+        myPageViewModel.deleteUserState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        myPageViewModel.clearDataStore()
+                        navigateToGuideScreen()
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {
+                    }
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun navigateToGuideScreen() {
+        Intent(requireContext(), GuideActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(this)
         }
     }
 
     private fun setupGetUserState() {
-        viewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
-
+        mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
                 }
@@ -160,8 +197,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
-        val currentFragment = parentFragmentManager.findFragmentById(R.id.fcv_main)
-
         parentFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
             addToBackStack(null)

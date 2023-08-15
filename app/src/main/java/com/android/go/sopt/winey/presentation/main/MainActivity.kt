@@ -62,7 +62,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    fun setupLogoutState() {
+    private fun setupLogoutState() {
         viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
@@ -82,7 +82,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }.launchIn(lifecycleScope)
     }
 
-    fun setupTokenState() {
+    private fun setupTokenState() {
         viewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Failure -> {
