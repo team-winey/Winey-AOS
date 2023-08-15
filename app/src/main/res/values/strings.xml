@@ -126,9 +126,9 @@
     <!-- story -->
     <string name="story_nav_number">%d/3</string>
     <string name="stroy_nav_title">위니제국 세이버의\n눈물나는 스토리</string>
-    <string name="story_nav_first_detail">세이버 쫓겨나는 중…</string>
-    <string name="story_nav_second_detail">세이버 상황 파악 중…</string>
-    <string name="story_nav_third_detail">세이버 우는 중…</string>
+    <string name="story_first_detail_text">세이버 쫓겨나는 중…</string>
+    <string name="story_second_detail_text">세이버 상황 파악 중…</string>
+    <string name="story_third_detail_text">세이버 우는 중…</string>
     <string name="story_fab_content_desc">next button</string>
     <string name="story_saver_name">세이버</string>
     <string name="story_winey_country_name">위니국</string>
