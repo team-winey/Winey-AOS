@@ -3,7 +3,8 @@ package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.ListAdapter
+import androidx.paging.ItemSnapshotList
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemMyfeedPostBinding
@@ -16,7 +17,9 @@ class MyFeedAdapter(
     private val fragmentManager: FragmentManager,
     private val deleteButtonClick: (feedId: Int, writerLevel: Int) -> Unit
 ) :
-    ListAdapter<WineyFeed, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
+    PagingDataAdapter<WineyFeed, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
+    private val currentData: ItemSnapshotList<WineyFeed>
+        get() = snapshot()
 
     class MyFeedViewHolder(
         private val fragmentManager: FragmentManager,
@@ -24,21 +27,20 @@ class MyFeedAdapter(
         private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
         private val deleteButtonClick: (feedId: Int, writerLevel: Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(data: WineyFeed) {
+        fun onBind(data: WineyFeed?) {
             binding.apply {
                 this.data = data
-                ivMyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
-                ivMyfeedLike.setImageResource(
-                    if (data.isLiked) R.drawable.ic_wineyfeed_liked else R.drawable.ic_wineyfeed_disliked
-                )
-                ivMyfeedLike.setOnSingleClickListener {
-                    onLikeButtonClick(data.feedId, !data.isLiked)
+                if (data != null) {
+                    ivMyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
+                    ivMyfeedLike.setOnSingleClickListener {
+                        onLikeButtonClick(data.feedId, !data.isLiked)
+                    }
+                    tvMyfeedDelete.setOnSingleClickListener {
+                        showDeleteDialog(data.feedId, data.writerLevel)
+                        deleteButtonClick(data.feedId, data.writerLevel)
+                    }
+                    executePendingBindings()
                 }
-                tvMyfeedDelete.setOnSingleClickListener {
-                    showDeleteDialog(data.feedId, data.writerLevel)
-                    deleteButtonClick(data.feedId, data.writerLevel)
-                }
-                executePendingBindings()
             }
         }
 
@@ -74,21 +76,25 @@ class MyFeedAdapter(
     }
 
     fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
-        val index = currentList.indexOfFirst { it.feedId == feedId }
-        if (index != -1) {
-            currentList[index].isLiked = isLiked
-            if (isLiked) {
-                currentList[index].likes++
-            } else {
-                currentList[index].likes--
+        currentData.let { data ->
+            val index = data.indexOfFirst { it?.feedId == feedId }
+            if (index != -1) {
+                data[index]?.let { item ->
+                    item.isLiked = isLiked
+                    if (isLiked) {
+                        item.likes++
+                    } else {
+                        item.likes--
+                    }
+                    notifyItemChanged(index)
+                }
             }
-            submitList(currentList)
         }
     }
 
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
-            onItemsTheSame = { old, new -> old.isLiked == new.isLiked },
+            onItemsTheSame = { old, new -> old.feedId == new.feedId },
             onContentsTheSame = { old, new -> old == new }
         )
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
