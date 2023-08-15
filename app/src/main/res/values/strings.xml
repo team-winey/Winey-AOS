@@ -97,7 +97,8 @@
     <string name="recommend_header_text">쉿, 그대를 위한 절약방법이 도착했어.\n황실 내에서도 비밀인데 특별히 알려줄게:)</string>
 
     <!-- nickname -->
-    <string name="nickname_title">위니제국에 들어온 당신,\n어떤 닉네임으로 불리고 싶나요?</string>
+    <string name="nickname_default_title">위니제국에 들어온 당신,\n어떤 닉네임으로 불리고 싶나요?</string>
+    <string name="nickname_mypage_title">위니제국의 국민인 당신,\n어떤 닉네임으로 바꾸고 싶나요?</string>
     <string name="nickname_input_guide">공백 또는 특수문자는 사용할 수 없습니다</string>
     <string name="nickname_hint">닉네임 입력</string>
     <string name="nickname_counter">(%d/8)</string>

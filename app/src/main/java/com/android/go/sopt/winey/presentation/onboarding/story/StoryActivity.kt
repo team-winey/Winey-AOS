@@ -11,7 +11,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityStoryBinding
-import com.android.go.sopt.winey.presentation.onboarding.nickname.NicknameActivity
+import com.android.go.sopt.winey.presentation.nickname.NicknameActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.stringOf
@@ -106,6 +106,7 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
     private fun navigateToNicknameScreen() {
         Intent(this, NicknameActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(EXTRA_KEY, EXTRA_VALUE)
             startActivity(this)
         }
     }
@@ -114,5 +115,7 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         private const val FIRST_PAGE_NUM = 1
         private const val BACK_DIRECTION = -1
         private const val FRONT_DIRECTION = 1
+        private const val EXTRA_KEY = "PREV_SCREEN_NAME"
+        private const val EXTRA_VALUE = "StoryActivity"
     }
 }

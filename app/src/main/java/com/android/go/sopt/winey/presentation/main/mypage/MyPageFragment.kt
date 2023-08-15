@@ -17,6 +17,7 @@ import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
+import com.android.go.sopt.winey.presentation.nickname.NicknameActivity
 import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -46,10 +47,22 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initToMyFeedButtonClickListener()
         initLogoutButtonClickListener()
         initWithdrawButtonClickListener()
+        initNicknameButtonClickListener()
 
         setupGetUserState()
         setupDeleteUserState()
+    }
+
+    // 다른 액티비티로 갔다가 다시 돌아왔을 때, 최신 유저 정보가 보이도록
+    override fun onStart() {
+        super.onStart()
         mainViewModel.getUser()
+    }
+
+    private fun initNicknameButtonClickListener() {
+        binding.ivMypageNickname.setOnClickListener {
+            navigateToNicknameScreen()
+        }
     }
 
     private fun initToMyFeedButtonClickListener() {
@@ -107,6 +120,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun navigateToGuideScreen() {
         Intent(requireContext(), GuideActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(this)
+        }
+    }
+
+    // todo: 닉네임 화면 전환 시, 부가 데이터 전달하기
+    private fun navigateToNicknameScreen() {
+        Intent(requireContext(), NicknameActivity::class.java).apply {
+            putExtra(EXTRA_KEY, EXTRA_VALUE)
             startActivity(this)
         }
     }
@@ -209,5 +230,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val LEVEL_NOBLESS = "귀족"
         private const val LEVEL_KING = "황제"
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
+        private const val EXTRA_KEY = "PREV_SCREEN_NAME"
+        private const val EXTRA_VALUE = "MyPageFragment"
     }
 }
