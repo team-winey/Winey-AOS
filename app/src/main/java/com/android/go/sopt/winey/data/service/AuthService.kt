@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.data.service
 
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
+import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
@@ -12,6 +13,7 @@ import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -42,4 +44,9 @@ interface AuthService {
     suspend fun getNicknameDuplicateCheck(
         @Query("nickname") nickname: String
     ): BaseResponse<ResponseGetNicknameDuplicateCheckDto>
+
+    @PATCH("user/nickname")
+    suspend fun patchNickname(
+        @Body requestPatchNicknameDto: RequestPatchNicknameDto
+    ): BaseResponse<Unit>
 }

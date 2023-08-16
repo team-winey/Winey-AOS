@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.domain.repository
 
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
+import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
@@ -24,4 +25,6 @@ interface AuthRepository {
     suspend fun postLogout(): Result<ResponseLogoutDto>
 
     suspend fun getNicknameDuplicateCheck(nickname: String): Result<ResponseGetNicknameDuplicateCheckDto?>
+
+    suspend fun patchNickname(requestPatchNicknameDto: RequestPatchNicknameDto): Result<Unit>
 }

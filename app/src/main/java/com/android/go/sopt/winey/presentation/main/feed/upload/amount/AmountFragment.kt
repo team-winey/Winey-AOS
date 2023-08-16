@@ -62,9 +62,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         viewModel.postWineyFeedState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
                 when (state) {
-                    is UiState.Empty -> {
-                    }
-
                     is UiState.Loading -> {
                         preventUploadButtonClick()
                     }
@@ -75,6 +72,9 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
                     is UiState.Failure -> {
                         snackBar(binding.root) { state.msg }
+                    }
+
+                    is UiState.Empty -> {
                     }
                 }
             }.launchIn(viewLifeCycleScope)

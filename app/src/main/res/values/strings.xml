@@ -27,11 +27,12 @@
     <string name="upload_content_edittext_hint">Ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!\n</string>
     <string name="upload_content_counter">(%d/36)</string>
     <string name="upload_content_error_text">6자 이상 작성해주세요</string>
+    <string name="upload_content_counter_preview">(0/36)</string>
     <string name="upload_amount_title">얼마나 절약했나요?</string>
     <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
     <string name="upload_amount_unit_text">원</string>
+    <string name="upload_amount_hint_text">0</string>
     <string name="upload_last_btn_text">업로드</string>
-    <string name="upload_content_counter_preview">(0/36)</string>
     <string name="upload_loading_title">오늘은\n %s 값을 \n절약했어요</string>
 
     <!-- mypage -->
@@ -92,7 +93,6 @@
 
     <!-- recommend -->
     <string name="recommend_discount">%s 절약</string>
-    <string name="upload_amount_hint_text">0</string>
     <string name="recommend_header_title">예비 황제를 위한 추천 절약법</string>
     <string name="recommend_header_text">쉿, 그대를 위한 절약방법이 도착했어.\n황실 내에서도 비밀인데 특별히 알려줄게:)</string>
 
@@ -112,7 +112,31 @@
     <!-- login -->
     <string name="login_title">절약을 더 쉽고 재밌게</string>
     <string name="login_kakao">카카오톡으로 3초만에 시작하기</string>
+
+    <!-- guide -->
+    <string name="guide_next_btn_text">다음으로</string>
+    <string name="guide_start_btn_text">시작하기</string>
+    <string name="guide_wineyfeed_title">메인 피드에서 절약하는\n모습을 인증해 보세요!</string>
+    <string name="guide_wineyfeed_detail">나와 사람들의 절약 방법을 볼 수 있어요</string>
+    <string name="guide_recommend_title">추천 피드에서\n절약법을 추천해 드릴게요!</string>
+    <string name="guide_recommend_detail">흩어져 있는 절약법을 한눈에 볼 수 있어요</string>
+    <string name="guide_level_title">절약 목표를 세우고 실천하며\n캐릭터를 키워보세요!</string>
+    <string name="guide_level_detail">캐릭터를 통해 절약을 재밌게 실천할 수 있어요</string>
+
+    <!-- story -->
+    <string name="story_nav_number">%d/3</string>
+    <string name="stroy_nav_title">위니제국 세이버의\n눈물나는 스토리</string>
+    <string name="story_first_detail_text">세이버 쫓겨나는 중…</string>
+    <string name="story_second_detail_text">세이버 상황 파악 중…</string>
+    <string name="story_third_detail_text">세이버 우는 중…</string>
+    <string name="story_fab_content_desc">next button</string>
+    <string name="story_saver_name">세이버</string>
+    <string name="story_winey_country_name">위니국</string>
+    <string name="story_saver_first_speech_bubble">아니, 어제까지 위니 제국의\n황제였던 내가 갑자기 평민이라고?</string>
+    <string name="story_saver_second_speech_bubble">그래서 지금 날 쫓아내는거야?</string>
+    <string name="story_saver_third_speech_bubble">어떻게 해야 다시 돌아갈 수 있어?</string>
+    <string name="story_winey_country_first_speech_bubble">황제님 죄송합니다. 마지막까지 왕가를\n설득 시키려고 하였으나…</string>
+    <string name="story_winey_country_second_speech_bubble">흥청망청 돈을 쓰셔 위니제국의\n황제 자격을 박탈당하셨습니다.</string>
+    <string name="story_winey_country_third_speech_bubble">절약 목표 금액을 채우시면, 다시 황제로\n돌아오실 수 있습니다. 다시 뵙기를 바라며…</string>
+    <string name="story_nav_num_preview">1/3</string>
 </resources>
-
-
-
