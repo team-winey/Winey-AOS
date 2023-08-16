@@ -10,37 +10,37 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_gray_fill_12_rect"
+        android:elevation="0dp"
         android:paddingHorizontal="14dp"
         android:paddingBottom="16dp"
-        android:elevation="0dp"
-        android:stateListAnimator="@null"
-        android:background="@drawable/shape_gray_fill_12_rect"
-        android:layout_gravity="center">
+        android:stateListAnimator="@null">
 
         <TextView
             android:id="@+id/tv_dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:textColor="@color/gray_900"
             android:textAppearance="@style/TextAppearance.WINEY.body_b_18"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/gray_900"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="타이틀 메시지 입니다." />
+            tools:text="@string/alert_title" />
 
         <TextView
             android:id="@+id/tv_dialog_sub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="@color/gray_500"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textColor="@color/gray_500"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
-            tools:text="서브 메시지 입니다.\n서브 메시지 입니다." />
+            tools:text="@string/alert_subtitle" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_dialog_negative"
@@ -48,13 +48,13 @@
             android:layout_height="52dp"
             android:layout_marginTop="18dp"
             android:background="@drawable/shape_gray_fill_5_rect"
-            android:textColor="@color/gray_500"
             android:stateListAnimator="@null"
-            tools:text="버튼1"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+            android:textColor="@color/gray_500"
             app:layout_constraintEnd_toStartOf="@id/btn_dialog_positive"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub" />
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub"
+            tools:text="@string/alert_btn1" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_dialog_positive"
@@ -64,12 +64,12 @@
             android:layout_marginTop="18dp"
             android:background="@drawable/shape_yellow_fill_5_rect"
             android:stateListAnimator="@null"
-            tools:text="버튼2"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
             android:textColor="@color/gray_900"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_dialog_negative"
-            app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub" />
+            app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub"
+            tools:text="@string/alert_btn2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
