@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
-import com.android.go.sopt.winey.util.code.NicknameErrorCode
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_DUPLICATE
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_INVALID_LENGTH
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_SPACE_SPECIAL_CHAR
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_UNCHECKED_DUPLICATION
 import com.android.go.sopt.winey.util.view.InputUiState
+import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -47,8 +47,6 @@ class NicknameViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
 
-    private fun validateNickname(state: InputUiState) = state == InputUiState.Success
-
     private val _isTextChanged = MutableStateFlow(false)
     val isTextChanged: StateFlow<Boolean> = _isTextChanged.asStateFlow()
 
@@ -57,11 +55,19 @@ class NicknameViewModel @Inject constructor(
 
     private var prevCheckResult: Pair<String, Boolean>? = null
 
+    private val _patchNicknameState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
+    val patchNicknameState: StateFlow<UiState<Unit>> = _patchNicknameState.asStateFlow()
+
+    private fun validateNickname(state: InputUiState) = state == InputUiState.Success
+
     fun patchNickname() {
         viewModelScope.launch {
+            _patchNicknameState.value = UiState.Loading
+
             authRepository.patchNickname(RequestPatchNicknameDto(nickname))
-                .onSuccess {
+                .onSuccess { response ->
                     Timber.d("SUCCESS PATCH NICKNAME")
+                    _patchNicknameState.value = UiState.Success(response)
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
@@ -69,6 +75,7 @@ class NicknameViewModel @Inject constructor(
                         return@onFailure
                     }
                     Timber.e("FAIL PATCH NICKNAME: ${t.message}")
+                    _patchNicknameState.value = UiState.Failure(t.message.toString())
                 }
         }
     }
@@ -93,7 +100,7 @@ class NicknameViewModel @Inject constructor(
 
     private fun updateDuplicateCheckState(isDuplicated: Boolean) {
         _inputUiState.value = if (isDuplicated) {
-            InputUiState.Failure(NicknameErrorCode.CODE_DUPLICATE)
+            InputUiState.Failure(CODE_DUPLICATE)
         } else {
             InputUiState.Success
         }
