@@ -20,8 +20,8 @@ class AlertDialogFragment(
         super.onViewCreated(view, savedInstanceState)
 
         initDialogText(title, subTitle, positiveButtonLabel, negativeButtonLabel)
-        initNegativeButton(handleNegativeButton)
-        initPositiveButton(handlePositiveButton)
+        initNegativeButtonClickListener(handleNegativeButton)
+        initPositiveButtonClickListener(handlePositiveButton)
     }
 
     private fun initDialogText(title: String, subTitle: String, positiveButtonLabel: String, negativeButtonLabel: String) {
@@ -31,14 +31,14 @@ class AlertDialogFragment(
         binding.btnDialogNegative.text = negativeButtonLabel
     }
 
-    private fun initNegativeButton(handleNegativeButton: () -> Unit) {
+    private fun initNegativeButtonClickListener(handleNegativeButton: () -> Unit) {
         binding.btnDialogNegative.setOnClickListener {
             handleNegativeButton.invoke()
             dismiss()
         }
     }
 
-    private fun initPositiveButton(handlePositiveButton: () -> Unit) {
+    private fun initPositiveButtonClickListener(handlePositiveButton: () -> Unit) {
         binding.btnDialogPositive.setOnClickListener {
             handlePositiveButton.invoke()
             dismiss()
