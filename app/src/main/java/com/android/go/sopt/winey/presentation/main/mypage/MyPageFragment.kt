@@ -53,7 +53,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         setupDeleteUserState()
     }
 
-    // 다른 액티비티로 갔다가 다시 돌아왔을 때, 최신 유저 정보가 보이도록
+    // 다른 액티비티에서 유저 데이터 갱신 후, 마이페이지 돌아왔을 때 최신 데이터가 보이도록
     override fun onStart() {
         super.onStart()
         mainViewModel.getUser()
@@ -124,7 +124,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    // todo: 닉네임 화면 전환 시, 부가 데이터 전달하기
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
             putExtra(EXTRA_KEY, EXTRA_VALUE)
