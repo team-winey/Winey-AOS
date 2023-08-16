@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.android.go.sopt.winey.util.view.WineySnackbar
 import com.google.android.material.snackbar.Snackbar
 
 fun Fragment.toast(message: String) {
@@ -20,6 +21,10 @@ fun Fragment.longToast(message: String) {
 
 fun Fragment.snackBar(anchorView: View, message: () -> String) {
     Snackbar.make(anchorView, message(), Snackbar.LENGTH_SHORT).show()
+}
+
+fun Fragment.wineySnackbar(anchorView: View, isSuccess: Boolean, message: String) {
+    WineySnackbar.make(anchorView, isSuccess, message).show()
 }
 
 fun Fragment.stringOf(@StringRes resId: Int) = getString(resId)
