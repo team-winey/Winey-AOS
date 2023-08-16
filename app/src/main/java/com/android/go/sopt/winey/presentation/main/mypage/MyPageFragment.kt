@@ -18,7 +18,9 @@ import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -71,10 +73,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
             val dialog = AlertDialogFragment(
-                DIALOG_TITLE,
-                DIALOG_SUB_TITLE,
-                DIALOG_NEGATIVE_BUTTON_LABEL,
-                DIALOG_POSITIVE_BUTTON_LABEL,
+                stringOf(R.string.mypage_dialog_title),
+                stringOf(R.string.mypage_dialog_subtitle),
+                stringOf(R.string.mypage_dialog_negativebutton),
+                stringOf(R.string.mypage_dialog_positivebutton),
                 handleNegativeButton = {},
                 handlePositiveButton = { viewModel.postLogout() }
             )
@@ -183,9 +185,5 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val LEVEL_NOBLESS = "귀족"
         private const val LEVEL_KING = "황제"
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
-        private const val DIALOG_TITLE = "정말 로그아웃 하시겠어요?"
-        private const val DIALOG_SUB_TITLE = "로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다."
-        private const val DIALOG_NEGATIVE_BUTTON_LABEL = "취소"
-        private const val DIALOG_POSITIVE_BUTTON_LABEL = "로그아웃하기"
     }
 }
