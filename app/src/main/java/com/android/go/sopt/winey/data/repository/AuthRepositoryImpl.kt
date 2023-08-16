@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.data.repository
 
 import com.android.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestLoginDto
+import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
@@ -46,5 +47,12 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun getNicknameDuplicateCheck(nickname: String): Result<ResponseGetNicknameDuplicateCheckDto?> =
         runCatching {
             authDataSource.getNicknameDuplicateCheck(nickname).data
+        }
+
+    override suspend fun patchNickname(
+        requestPatchNicknameDto: RequestPatchNicknameDto
+    ): Result<Unit> =
+        runCatching {
+            authDataSource.patchNickname(requestPatchNicknameDto).data
         }
 }

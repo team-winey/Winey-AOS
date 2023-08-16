@@ -121,6 +121,7 @@
             android:layout_marginBottom="14dp"
             android:background="@drawable/sel_upload_nickname_btn_color"
             android:enabled="@{vm.isValidNickname, default=false}"
+            android:onClick="@{()->vm.patchNickname()}"
             android:insetTop="0dp"
             android:insetBottom="0dp"
             android:stateListAnimator="@null"

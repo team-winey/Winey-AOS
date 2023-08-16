@@ -6,12 +6,18 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.activity.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityNicknameBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.hideKeyboard
+import com.android.go.sopt.winey.util.context.snackBar
+import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activity_nickname) {
@@ -24,7 +30,23 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         initRootLayoutClickListener()
         initEditTextWatcher()
         initDuplicateCheckButtonClickListener()
-        initCompleteButtonClickListener()
+        initPatchNicknameStateObserver()
+    }
+
+    private fun initPatchNicknameStateObserver() {
+        viewModel.patchNicknameState.flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Loading -> preventContinuousButtonClick()
+                    is UiState.Success -> navigateTo<MainActivity>()
+                    is UiState.Failure -> snackBar(binding.root) { state.msg }
+                    is UiState.Empty -> {}
+                }
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun preventContinuousButtonClick() {
+        binding.btnNicknameComplete.isClickable = false
     }
 
     private fun initEditTextWatcher() {
@@ -51,13 +73,6 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         }
     }
 
-    private fun initCompleteButtonClickListener() {
-        binding.btnNicknameComplete.setOnClickListener {
-            // todo: 서버에 닉네임 PATCH
-            navigateTo<MainActivity>()
-        }
-    }
-
     private fun initRootLayoutClickListener() {
         binding.root.setOnClickListener {
             hideKeyboard(binding.root)
@@ -66,7 +81,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     }
 
     private inline fun <reified T : Activity> navigateTo() {
-        Intent(this@NicknameActivity, T::class.java).apply {
+        Intent(this, T::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }

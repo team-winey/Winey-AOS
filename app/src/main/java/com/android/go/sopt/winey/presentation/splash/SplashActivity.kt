@@ -8,23 +8,21 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivitySplashBinding
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
-import com.android.go.sopt.winey.presentation.onboarding.login.LoginActivity
+import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import timber.log.Timber
 import javax.inject.Inject
 
-/**
- * Splash -> Onboarding -> Login -> 여기서 서버 오류 발생 -> Nickname -> Main
- *        -> 자동 로그인 -> Main
- * */
 @AndroidEntryPoint
 class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash) {
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,8 +34,10 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
     private fun checkAutoLogin() {
         val accessToken = runBlocking { dataStoreRepository.getAccessToken().firstOrNull() }
+        Timber.e("ACCESS TOKEN: $accessToken")
+
         if (accessToken.isNullOrBlank()) {
-            navigateTo<LoginActivity>()
+            navigateTo<GuideActivity>()
         } else {
             navigateTo<MainActivity>()
         }

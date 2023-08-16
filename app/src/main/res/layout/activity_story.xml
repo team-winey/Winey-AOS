@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.android.go.sopt.winey.presentation.onboarding.story.StoryViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_50"
+        tools:context=".presentation.onboarding.story.StoryActivity">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_story"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/fl_story_nav_container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout="@layout/fragment_first_story" />
+
+        <FrameLayout
+            android:id="@+id/fl_story_nav_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/green_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_story_nav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_gray_line_top10_rect"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="20dp">
+
+                <TextView
+                    android:id="@+id/tv_story_nav_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/story_nav_number(vm.pageNumber)}"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                    android:textColor="@color/gray_400"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/story_nav_num_preview" />
+
+                <TextView
+                    android:id="@+id/tv_story_nav_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="22dp"
+                    android:text="@string/stroy_nav_title"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
+                    app:layout_constraintStart_toStartOf="@id/tv_story_nav_num"
+                    app:layout_constraintTop_toBottomOf="@id/tv_story_nav_num" />
+
+                <TextView
+                    android:id="@+id/tv_story_nav_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@{vm.detailText}"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                    android:textColor="@color/gray_600"
+                    app:layout_constraintStart_toStartOf="@id/tv_story_nav_title"
+                    app:layout_constraintTop_toBottomOf="@id/tv_story_nav_title" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_story_next"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/story_fab_content_desc"
+                    android:src="@drawable/ic_story_arrow_next"
+                    app:elevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:tint="@null" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
