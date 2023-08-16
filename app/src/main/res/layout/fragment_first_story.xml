@@ -61,7 +61,7 @@
 
         <TextView
             android:id="@+id/tv_story_winey_country_speech_bubble"
-            android:layout_width="275dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:background="@drawable/shape_white_fill_gray_line_right10_bottom10_rect"
@@ -72,17 +72,24 @@
             app:layout_constraintStart_toStartOf="@id/tv_story_winey_country_name"
             app:layout_constraintTop_toBottomOf="@id/tv_story_winey_country_name" />
 
-        <com.airbnb.lottie.LottieAnimationView
+        <FrameLayout
             android:layout_width="0dp"
             android:layout_height="420dp"
+            android:background="@drawable/bg_story_lottie"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:lottie_autoPlay="true"
-            app:lottie_imageAssetsFolder="images"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/lottie_story_first" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/lottie_story_first" />
+
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

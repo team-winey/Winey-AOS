@@ -7,22 +7,28 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityNicknameBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.context.stringOf
+import com.android.go.sopt.winey.util.context.snackBar
+import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activity_nickname) {
-    private val nicknameViewModel by viewModels<NicknameViewModel>()
+    private val viewModel by viewModels<NicknameViewModel>()
     private val prevScreenName by lazy { intent.extras?.getString(EXTRA_KEY, "") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.vm = nicknameViewModel
+        binding.vm = viewModel
 
         switchCloseButtonVisibility()
         initCloseButtonClickListener()
@@ -31,7 +37,23 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         initRootLayoutClickListener()
         initEditTextWatcher()
         initDuplicateCheckButtonClickListener()
-        initCompleteButtonClickListener()
+        initPatchNicknameStateObserver()
+    }
+
+    private fun initPatchNicknameStateObserver() {
+        viewModel.patchNicknameState.flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Loading -> preventContinuousButtonClick()
+                    is UiState.Success -> navigateTo<MainActivity>()
+                    is UiState.Failure -> snackBar(binding.root) { state.msg }
+                    is UiState.Empty -> {}
+                }
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun preventContinuousButtonClick() {
+        binding.btnNicknameComplete.isClickable = false
     }
 
     private fun switchTitleText() {
@@ -66,7 +88,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
             override fun afterTextChanged(s: Editable?) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val inputText = s.toString()
-                nicknameViewModel.updateTextChangedState(inputText.isNotBlank() && inputText != prevText)
+                viewModel.updateTextChangedState(inputText.isNotBlank() && inputText != prevText)
                 prevText = inputText
             }
         })
@@ -74,8 +96,8 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     private fun initDuplicateCheckButtonClickListener() {
         binding.btnNicknameDuplicateCheck.setOnClickListener {
-            if (nicknameViewModel.isTextChanged.value) {
-                nicknameViewModel.apply {
+            if (viewModel.isTextChanged.value) {
+                viewModel.apply {
                     updateDuplicateCheckButtonState(true)
                     getNicknameDuplicateCheck()
                 }
@@ -102,7 +124,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     }
 
     private inline fun <reified T : Activity> navigateTo() {
-        Intent(this@NicknameActivity, T::class.java).apply {
+        Intent(this, T::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
