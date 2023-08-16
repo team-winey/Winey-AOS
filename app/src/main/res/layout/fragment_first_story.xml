@@ -61,7 +61,7 @@
 
         <TextView
             android:id="@+id/tv_story_winey_country_speech_bubble"
-            android:layout_width="275dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:background="@drawable/shape_white_fill_gray_line_right10_bottom10_rect"
