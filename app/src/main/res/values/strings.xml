@@ -134,9 +134,9 @@
     <string name="story_winey_country_name">위니국</string>
     <string name="story_saver_first_speech_bubble">아니, 어제까지 위니 제국의\n황제였던 내가 갑자기 평민이라고?</string>
     <string name="story_saver_second_speech_bubble">그래서 지금 날 쫓아내는거야?</string>
-    <string name="story_saver_third_speech_bubble">어떻게 다시 돌아갈 수 있어?</string>
-    <string name="story_winey_country_first_speech_bubble">황제님 죄송합니다. 마지막까지 왕가를 설득시키려고 했으나</string>
-    <string name="story_winey_country_second_speech_bubble">흥청망청 돈을 쓰셔 위니제국의 황제 자격에 덜어지셨습니다.</string>
+    <string name="story_saver_third_speech_bubble">어떻게 해야 다시 돌아갈 수 있어?</string>
+    <string name="story_winey_country_first_speech_bubble">황제님 죄송합니다. 마지막까지 왕가를 설득 시키려고 하였으나…</string>
+    <string name="story_winey_country_second_speech_bubble">흥청망청 돈을 쓰셔 위니제국의 황제 자격을 박탈당하셨습니다.</string>
     <string name="story_winey_country_third_speech_bubble">절약 목표 금액을 채우시면, 다시 황제로\n돌아오실 수 있습니다. 다시 뵙기를 바라며…</string>
     <string name="story_nav_num_preview">1/3</string>
 </resources>
