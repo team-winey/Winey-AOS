@@ -16,6 +16,8 @@ import com.android.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import com.android.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
+import com.android.go.sopt.winey.util.context.stringOf
+import com.android.go.sopt.winey.util.context.wineySnackbar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -25,6 +27,7 @@ import retrofit2.HttpException
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel by viewModels<MainViewModel>()
+    private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         syncBottomNavigationSelection()
         setupLogoutState()
         setupTokenState()
+        showUploadSuccessSnackbar()
+    }
+
+    private fun showUploadSuccessSnackbar() {
+        if (isUploadSuccess != null && isUploadSuccess == true) {
+            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_success))
+        }
     }
 
     private fun initBnvItemSelectedListener() {
@@ -115,5 +125,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     companion object {
         private const val CODE_TOKEN_EXPIRED = 401
+        private const val EXTRA_UPLOAD_KEY = "upload"
     }
 }

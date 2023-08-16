@@ -1,7 +1,9 @@
 package com.android.go.sopt.winey.util.view
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import androidx.databinding.DataBindingUtil
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.LayoutWineySnackbarBinding
@@ -10,12 +12,12 @@ import com.android.go.sopt.winey.util.context.drawableOf
 import com.google.android.material.snackbar.Snackbar
 
 class WineySnackbar(
-    view: View,
+    anchorView: View,
     private val isSuccess: Boolean,
     private val message: String
 ) {
-    private val context = view.context
-    private val snackbar = Snackbar.make(view, "", DURATION_WINEY_SNACKBAR)
+    private val context = anchorView.context
+    private val snackbar = Snackbar.make(anchorView, "", DURATION_WINEY_SNACKBAR)
     private val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
 
     private val inflater = LayoutInflater.from(context)
@@ -28,12 +30,20 @@ class WineySnackbar(
     }
 
     private fun initView() {
+        setPosition()
+
         with(snackbarLayout) {
             removeAllViews()
             setPadding(0, 0, 0, 0)
             setBackgroundColor(context.colorOf(android.R.color.transparent))
-            addView(binding.root, 0)
+            addView(binding.root)
         }
+    }
+
+    private fun setPosition() {
+        val snackbarLayoutParams = snackbar.view.layoutParams as FrameLayout.LayoutParams
+        snackbarLayoutParams.gravity = Gravity.TOP
+        snackbar.view.layoutParams = snackbarLayoutParams
     }
 
     private fun initData() {
@@ -50,7 +60,7 @@ class WineySnackbar(
     }
 
     companion object {
-        private const val DURATION_WINEY_SNACKBAR = 4000
+        private const val DURATION_WINEY_SNACKBAR = 1500
 
         @JvmStatic
         fun make(view: View, isSuccess: Boolean, message: String) =

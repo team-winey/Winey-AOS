@@ -13,9 +13,10 @@ import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
-import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
+import com.android.go.sopt.winey.util.fragment.wineySnackbar
 import com.android.go.sopt.winey.util.multipart.UriToRequestBody
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
@@ -71,7 +72,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     }
 
                     is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
+                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_fail))
                     }
 
                     is UiState.Empty -> {
