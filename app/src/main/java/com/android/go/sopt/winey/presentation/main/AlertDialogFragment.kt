@@ -19,16 +19,26 @@ class AlertDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initDialogText(title, subTitle, positiveButtonLabel, negativeButtonLabel)
+        initNegativeButton(handleNegativeButton)
+        initPositiveButton(handlePositiveButton)
+    }
+
+    private fun initDialogText(title: String, subTitle: String, positiveButtonLabel: String, negativeButtonLabel: String) {
         binding.tvDialogTitle.text = title
         binding.tvDialogSub.text = subTitle
         binding.btnDialogPositive.text = positiveButtonLabel
         binding.btnDialogNegative.text = negativeButtonLabel
+    }
 
+    private fun initNegativeButton(handleNegativeButton: () -> Unit) {
         binding.btnDialogNegative.setOnClickListener {
             handleNegativeButton.invoke()
             dismiss()
         }
+    }
 
+    private fun initPositiveButton(handlePositiveButton: () -> Unit) {
         binding.btnDialogPositive.setOnClickListener {
             handlePositiveButton.invoke()
             dismiss()
