@@ -14,8 +14,8 @@ import com.android.go.sopt.winey.databinding.ActivityNicknameBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.hideKeyboard
-import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.context.snackBar
+import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -40,20 +40,17 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         initPatchNicknameStateObserver()
     }
 
-    private fun initPatchNicknameStateObserver() {
-        viewModel.patchNicknameState.flowWithLifecycle(lifecycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Loading -> preventContinuousButtonClick()
-                    is UiState.Success -> navigateTo<MainActivity>()
-                    is UiState.Failure -> snackBar(binding.root) { state.msg }
-                    is UiState.Empty -> {}
-                }
-            }.launchIn(lifecycleScope)
+    private fun switchCloseButtonVisibility() {
+        when (prevScreenName) {
+            STORY_SCREEN -> binding.ivNicknameClose.visibility = View.GONE
+            MY_PAGE_SCREEN -> binding.ivNicknameClose.visibility = View.VISIBLE
+        }
     }
 
-    private fun preventContinuousButtonClick() {
-        binding.btnNicknameComplete.isClickable = false
+    private fun initCloseButtonClickListener() {
+        binding.ivNicknameClose.setOnClickListener {
+            finish()
+        }
     }
 
     private fun switchTitleText() {
@@ -65,19 +62,6 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
             MY_PAGE_SCREEN ->
                 binding.tvNicknameTitle.text =
                     stringOf(R.string.nickname_mypage_title)
-        }
-    }
-
-    private fun switchCloseButtonVisibility() {
-        when (prevScreenName) {
-            STORY_SCREEN -> binding.ivNicknameClose.visibility = View.GONE
-            MY_PAGE_SCREEN -> binding.ivNicknameClose.visibility = View.VISIBLE
-        }
-    }
-
-    private fun initCloseButtonClickListener() {
-        binding.ivNicknameClose.setOnClickListener {
-            finish()
         }
     }
 
@@ -105,15 +89,26 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         }
     }
 
-    private fun initCompleteButtonClickListener() {
-        binding.btnNicknameComplete.setOnClickListener {
-            nicknameViewModel.patchNickname()
+    private fun initPatchNicknameStateObserver() {
+        viewModel.patchNicknameState.flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Loading -> preventContinuousButtonClick()
+                    is UiState.Success -> {
+                        when (prevScreenName) {
+                            STORY_SCREEN -> navigateTo<MainActivity>()
+                            MY_PAGE_SCREEN -> finish()
+                        }
+                    }
 
-            when (prevScreenName) {
-                STORY_SCREEN -> navigateTo<MainActivity>()
-                MY_PAGE_SCREEN -> finish()
-            }
-        }
+                    is UiState.Failure -> snackBar(binding.root) { state.msg }
+                    is UiState.Empty -> {}
+                }
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun preventContinuousButtonClick() {
+        binding.btnNicknameComplete.isClickable = false
     }
 
     private fun initRootLayoutClickListener() {
