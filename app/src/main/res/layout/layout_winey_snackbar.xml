@@ -36,7 +36,7 @@
                 android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/white"
-                tools:text="@string/snackbar_success" />
+                tools:text="@string/snackbar_upload_success" />
 
         </LinearLayout>
 

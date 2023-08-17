@@ -72,7 +72,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     }
 
                     is UiState.Failure -> {
-                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_fail))
+                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_upload_fail))
                     }
 
                     is UiState.Empty -> {
