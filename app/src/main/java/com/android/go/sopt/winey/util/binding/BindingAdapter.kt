@@ -7,8 +7,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
+import coil.ImageLoader
 import coil.load
+import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.*
@@ -47,6 +50,20 @@ fun loadImager(view: ImageView, imageurl: String) {
         placeholder(R.drawable.img_wineyfeed_default)
         transformations(RoundedCornersTransformation(10F))
     }
+}
+
+
+@BindingAdapter("backgroundImageUrl")
+fun loadBackgroundImage(view: ConstraintLayout, imageUrl: String) {
+    val imageLoader = ImageLoader(view.context)
+    val request = ImageRequest.Builder(view.context)
+        .data(imageUrl)
+        .transformations(RoundedCornersTransformation(10F))
+        .placeholder(R.drawable.img_wineyfeed_default)
+        .target { drawable -> view.background = drawable }
+        .build()
+
+    imageLoader.enqueue(request)
 }
 
 @BindingAdapter("setImageUriWithCoil", "setDefaultDrawable")
