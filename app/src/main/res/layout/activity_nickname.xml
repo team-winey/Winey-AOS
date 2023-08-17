@@ -96,19 +96,21 @@
 
             </FrameLayout>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_nickname_duplicate_check"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/gray_50"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
                 android:stateListAnimator="@null"
                 android:text="@string/nickname_duplicate_check"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-                android:textColor="@color/gray_700" />
+                android:textColor="@color/gray_700"
+                app:backgroundTint="@color/gray_50"
+                app:cornerRadius="5dp"
+                app:rippleColor="@color/purple_200" />
         </LinearLayout>
 
         <TextView
@@ -131,9 +133,9 @@
             android:layout_marginBottom="14dp"
             android:background="@drawable/sel_upload_nickname_btn_color"
             android:enabled="@{vm.isValidNickname, default=false}"
-            android:onClick="@{()->vm.patchNickname()}"
             android:insetTop="0dp"
             android:insetBottom="0dp"
+            android:onClick="@{()->vm.patchNickname()}"
             android:stateListAnimator="@null"
             android:text="@string/nickname_complete_btn_text"
             android:textColor="@drawable/sel_upload_nickname_btn_text_color"
