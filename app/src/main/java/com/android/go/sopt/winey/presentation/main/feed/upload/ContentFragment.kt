@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.main.feed.upload.content
+package com.android.go.sopt.winey.presentation.main.feed.upload
 
 import android.os.Bundle
 import android.view.View
@@ -6,8 +6,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentContentBinding
-import com.android.go.sopt.winey.presentation.main.feed.upload.UploadViewModel
-import com.android.go.sopt.winey.presentation.main.feed.upload.amount.AmountFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
 

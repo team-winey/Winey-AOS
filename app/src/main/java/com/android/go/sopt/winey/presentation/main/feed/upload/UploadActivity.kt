@@ -5,7 +5,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.commit
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityUploadBinding
-import com.android.go.sopt.winey.presentation.main.feed.upload.photo.PhotoFragment
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment

@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.main.feed.upload.photo
+package com.android.go.sopt.winey.presentation.main.feed.upload
 
 import android.os.Bundle
 import android.view.View
@@ -7,8 +7,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentPhotoBinding
-import com.android.go.sopt.winey.presentation.main.feed.upload.UploadViewModel
-import com.android.go.sopt.winey.presentation.main.feed.upload.content.ContentFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 
 class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_photo) {
