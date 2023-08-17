@@ -8,8 +8,13 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NotificationActivity : BindingActivity<ActivityNotificationBinding>(R.layout.activity_notification) {
-
+    private lateinit var notificationAdapter: NotificationAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initNotificationAdapter()
+    }
+
+    private fun initNotificationAdapter() {
+        notificationAdapter = NotificationAdapter()
     }
 }
