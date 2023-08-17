@@ -55,18 +55,26 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_wineyfeed_image"
-            backgroundImageUrl="@{data.feedImage}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
-            android:elevation="1dp"
-            android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="H,4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_profilephoto"
-            tools:src="@drawable/img_wineyfeed_default">
+            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_profilephoto">
+
+            <ImageView
+                android:id="@+id/iv_wineyfeed_image"
+                imageUrl="@{data.feedImage}"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/img_wineyfeed_default" />
 
             <TextView
                 android:id="@+id/tv_wineyfeed_money"
@@ -81,8 +89,8 @@
                 android:paddingVertical="10dp"
                 android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
                 android:textColor="@color/gray_900"
-                app:layout_constraintBottom_toBottomOf="@id/layout_wineyfeed_image"
-                app:layout_constraintStart_toStartOf="@id/layout_wineyfeed_image" />
+                app:layout_constraintBottom_toBottomOf="@+id/iv_wineyfeed_image"
+                app:layout_constraintStart_toStartOf="@+id/iv_wineyfeed_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

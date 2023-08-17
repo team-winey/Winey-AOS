@@ -20,6 +20,7 @@ import com.android.go.sopt.winey.util.context.drawableOf
 import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.view.InputUiState
 import com.android.go.sopt.winey.util.view.InputUiState.*
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.text.DecimalFormat
 
 @BindingAdapter("likedAmount")
@@ -50,20 +51,6 @@ fun loadImager(view: ImageView, imageurl: String) {
         placeholder(R.drawable.img_wineyfeed_default)
         transformations(RoundedCornersTransformation(10F))
     }
-}
-
-
-@BindingAdapter("backgroundImageUrl")
-fun loadBackgroundImage(view: ConstraintLayout, imageUrl: String) {
-    val imageLoader = ImageLoader(view.context)
-    val request = ImageRequest.Builder(view.context)
-        .data(imageUrl)
-        .transformations(RoundedCornersTransformation(10F))
-        .placeholder(R.drawable.img_wineyfeed_default)
-        .target { drawable -> view.background = drawable }
-        .build()
-
-    imageLoader.enqueue(request)
 }
 
 @BindingAdapter("setImageUriWithCoil", "setDefaultDrawable")
