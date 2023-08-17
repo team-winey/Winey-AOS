@@ -34,6 +34,10 @@
     <string name="upload_amount_hint_text">0</string>
     <string name="upload_last_btn_text">업로드</string>
     <string name="upload_loading_title">오늘은\n %s 값을 \n절약했어요</string>
+    <string name="upload_dialog_title">지금 나가시면 작성하신 게 지워져요</string>
+    <string name="upload_dialog_subtitle">절약 실천 게시물을 올리면 레벨업에 가까워져요\n그래도 나가시겠습니까?</string>
+    <string name="upload_dialog_negative_button">취소</string>
+    <string name="upload_dialog_positive_button">나가기</string>
 
     <!-- mypage -->
     <string name="mypage_title">마이페이지</string>
@@ -58,7 +62,6 @@
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
     <string name="mypage_logout_dialog_negative_button">취소</string>
     <string name="mypage_logout_dialog_positive_button">로그아웃하기</string>
-
     <string name="mypage_withdraw_dialog_title">정말로 떠나시겠어요?</string>
     <string name="mypage_withdraw_dialog_subtitle">세이버와 함께한 절약을 잊지 말아주세요.\n탈퇴 시, 계정은 삭제되며 복구되지 않습니다.</string>
     <string name="mypage_withdraw_dialog_negative_button">탈퇴하기</string>

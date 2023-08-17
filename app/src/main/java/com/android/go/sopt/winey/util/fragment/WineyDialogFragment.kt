@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.main
+package com.android.go.sopt.winey.util.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAlertDialogBinding
 import com.android.go.sopt.winey.util.binding.BindingDialogFragment
 
-class AlertDialogFragment(
+class WineyDialogFragment(
     private val title: String,
     private val subTitle: String,
     private val negativeButtonLabel: String,

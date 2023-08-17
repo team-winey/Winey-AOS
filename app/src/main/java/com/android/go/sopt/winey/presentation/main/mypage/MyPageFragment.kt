@@ -15,12 +15,12 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
-import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.presentation.nickname.NicknameActivity
 import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
@@ -90,7 +90,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
-            val dialog = AlertDialogFragment(
+            val dialog = WineyDialogFragment(
                 stringOf(R.string.mypage_logout_dialog_title),
                 stringOf(R.string.mypage_logout_dialog_subtitle),
                 stringOf(R.string.mypage_logout_dialog_negative_button),
@@ -104,7 +104,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initWithdrawButtonClickListener() {
         binding.ivMypageWithdraw.setOnClickListener {
-            val dialog = AlertDialogFragment(
+            val dialog = WineyDialogFragment(
                 stringOf(R.string.mypage_withdraw_dialog_title),
                 stringOf(R.string.mypage_withdraw_dialog_subtitle),
                 stringOf(R.string.mypage_withdraw_dialog_negative_button),
