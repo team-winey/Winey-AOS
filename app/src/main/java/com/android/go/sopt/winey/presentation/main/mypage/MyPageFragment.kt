@@ -55,7 +55,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         setupDeleteUserState()
     }
 
-    // 다른 액티비티에서 유저 데이터 갱신 후, 마이페이지 돌아왔을 때 최신 데이터가 보이도록
+    // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
     override fun onStart() {
         super.onStart()
         mainViewModel.getUser()
@@ -141,7 +141,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    // todo: 메인에서 getUser 성공했을 때만 바텀시트 버튼 클릭 리스너가 작동하는구나!
     private fun setupGetUserState() {
+        // TODO: 이 옵저버는 왜 작동하지 않는가! 닉네임에서 메인으로 다시 돌아올 때!
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
@@ -149,8 +151,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
                 is UiState.Success -> {
                     val data = dataStoreRepository.getUserInfo().firstOrNull()
-                    handleSuccessState(data)
-                    handleTargetModifyButtonState(data)
+                    updateUserInfo(data)
+                    initBottomSheetClickListener(data)
                 }
 
                 is UiState.Failure -> {
@@ -163,10 +165,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.launchIn(lifecycleScope)
     }
 
-    private fun handleTargetModifyButtonState(data: User?) {
+    private fun initBottomSheetClickListener(data: User?) {
         binding.btnMypageTargetModify.setOnSingleClickListener {
             val bottomSheet = TargetAmountBottomSheetFragment()
             bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
+
             /*when (data.isOver) {
             true -> {
                 val bottomSheet = TargetAmountBottomSheetFragment()
@@ -181,7 +184,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun handleSuccessState(data: User?) {
+    private fun updateUserInfo(data: User?) {
         binding.data = data
 
         when (data?.isOver) {

@@ -32,7 +32,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.getUser() // 데이터스토어 갱신
+        // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
+        viewModel.getUser()
 
         navigateTo<WineyFeedFragment>()
         initBnvItemSelectedListener()
@@ -99,6 +100,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         viewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Failure -> {
+                    // todo: 메인 뷰모델에 있는 todo 주석 참고해주세요!
                     if (state is HttpException) {
                         if (state.code() == CODE_TOKEN_EXPIRED) {
                             viewModel.postLogout()

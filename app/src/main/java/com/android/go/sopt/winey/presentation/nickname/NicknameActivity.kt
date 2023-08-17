@@ -97,7 +97,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
                     is UiState.Success -> {
                         when (prevScreenName) {
                             STORY_SCREEN -> navigateTo<MainActivity>()
-                            MY_PAGE_SCREEN -> finish()
+                            MY_PAGE_SCREEN -> finish() // 마이페이지 onStart에서 유저 데이터 갱신
                         }
                     }
 
