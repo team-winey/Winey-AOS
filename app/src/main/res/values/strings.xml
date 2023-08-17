@@ -53,10 +53,16 @@
     <string name="mypage_1on1"><u>1:1 문의</u></string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
-    <string name="mypage_dialog_title">정말 로그아웃 하시겠어요?</string>
-    <string name="mypage_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
-    <string name="mypage_dialog_negativebutton">취소</string>
-    <string name="mypage_dialog_positivebutton">로그아웃하기</string>
+
+    <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
+    <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
+    <string name="mypage_logout_dialog_negative_button">취소</string>
+    <string name="mypage_logout_dialog_positive_button">로그아웃하기</string>
+
+    <string name="mypage_withdraw_dialog_title">정말로 떠나시겠어요?</string>
+    <string name="mypage_withdraw_dialog_subtitle">세이버와 함께한 절약을 잊지 말아주세요.\n탈퇴 시, 계정은 삭제되며 복구되지 않습니다.</string>
+    <string name="mypage_withdraw_dialog_negative_button">탈퇴하기</string>
+    <string name="mypage_withdraw_dialog_positive_button">머무르기</string>
 
     <string name="target_amount_cancel">취소</string>
     <string name="target_amount_set_amount">목표 절약 금액을 설정해주세요</string>

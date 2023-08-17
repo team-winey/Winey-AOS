@@ -91,20 +91,28 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
             val dialog = AlertDialogFragment(
-                stringOf(R.string.mypage_dialog_title),
-                stringOf(R.string.mypage_dialog_subtitle),
-                stringOf(R.string.mypage_dialog_negativebutton),
-                stringOf(R.string.mypage_dialog_positivebutton),
+                stringOf(R.string.mypage_logout_dialog_title),
+                stringOf(R.string.mypage_logout_dialog_subtitle),
+                stringOf(R.string.mypage_logout_dialog_negative_button),
+                stringOf(R.string.mypage_logout_dialog_positive_button),
                 handleNegativeButton = {},
                 handlePositiveButton = { mainViewModel.postLogout() }
             )
-            dialog.show(this.childFragmentManager, dialog.tag)
+            dialog.show(parentFragmentManager, TAG_LOGOUT_DIALOG)
         }
     }
 
     private fun initWithdrawButtonClickListener() {
         binding.ivMypageWithdraw.setOnClickListener {
-            myPageViewModel.deleteUser()
+            val dialog = AlertDialogFragment(
+                stringOf(R.string.mypage_withdraw_dialog_title),
+                stringOf(R.string.mypage_withdraw_dialog_subtitle),
+                stringOf(R.string.mypage_withdraw_dialog_negative_button),
+                stringOf(R.string.mypage_withdraw_dialog_positive_button),
+                handleNegativeButton = { myPageViewModel.deleteUser() },
+                handlePositiveButton = {}
+            )
+            dialog.show(parentFragmentManager, TAGE_WITHDRAW_DIALOG)
         }
     }
 
@@ -141,9 +149,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    // todo: 메인에서 getUser 성공했을 때만 바텀시트 버튼 클릭 리스너가 작동하는구나!
     private fun setupGetUserState() {
-        // TODO: 이 옵저버는 왜 작동하지 않는가! 닉네임에서 메인으로 다시 돌아올 때!
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
@@ -184,6 +190,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    // todo: 여기 한 함수에 들어가는 코드량이 많습니다! 함수화 시켜주세요! @우상욱
     private fun updateUserInfo(data: User?) {
         binding.data = data
 
@@ -244,5 +251,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
         private const val EXTRA_KEY = "PREV_SCREEN_NAME"
         private const val EXTRA_VALUE = "MyPageFragment"
+
+        private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
+        private const val TAGE_WITHDRAW_DIALOG = "WITHDRAW_DIALOG"
     }
 }
