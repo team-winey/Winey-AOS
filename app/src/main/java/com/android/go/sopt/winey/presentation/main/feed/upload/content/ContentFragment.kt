@@ -1,23 +1,22 @@
 package com.android.go.sopt.winey.presentation.main.feed.upload.content
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
-import androidx.fragment.app.viewModels
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentContentBinding
+import com.android.go.sopt.winey.presentation.main.feed.upload.UploadViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.amount.AmountFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
 
 class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragment_content) {
-    private val viewModel by viewModels<ContentViewModel>()
-    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(ARGS_PHOTO_KEY) }
+    private val uploadViewModel by activityViewModels<UploadViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.vm = viewModel
+        binding.vm = uploadViewModel
 
         initRootLayoutClickListener()
         initNextButtonClickListener()
@@ -38,13 +37,7 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
 
     private fun navigateToNext() {
         parentFragmentManager.commit {
-            val fragmentWithBundle = AmountFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARGS_PHOTO_KEY, imageUriArg)
-                    putString(ARGS_CONTENT_KEY, viewModel.content)
-                }
-            }
-            replace(R.id.fcv_upload, fragmentWithBundle)
+            replace(R.id.fcv_upload, AmountFragment())
             addToBackStack(null)
         }
     }
@@ -58,10 +51,5 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
 
     private fun focusOutEditText() {
         binding.etUploadContent.clearFocus()
-    }
-
-    companion object {
-        private const val ARGS_PHOTO_KEY = "photo"
-        private const val ARGS_CONTENT_KEY = "content"
     }
 }

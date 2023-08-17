@@ -72,12 +72,12 @@ class AmountViewModel @Inject constructor(
                     Timber.d("${response?.feedId} ${response?.createdAt}")
                 }
                 .onFailure { t ->
+                    _postWineyFeedState.value = UiState.Failure(t.message.toString())
+
                     if (t is HttpException) {
-                        _postWineyFeedState.value = UiState.Failure(t.message.toString())
                         Timber.e("${t.code()} ${t.message}")
                         return@onFailure
                     }
-                    _postWineyFeedState.value = UiState.Failure(t.message.toString())
                     Timber.e(t.message)
                 }
         }
