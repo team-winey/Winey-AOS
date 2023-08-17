@@ -53,6 +53,10 @@
     <string name="mypage_1on1"><u>1:1 문의</u></string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
+    <string name="mypage_dialog_title">정말 로그아웃 하시겠어요?</string>
+    <string name="mypage_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
+    <string name="mypage_dialog_negativebutton">취소</string>
+    <string name="mypage_dialog_positivebutton">로그아웃하기</string>
 
     <string name="target_amount_cancel">취소</string>
     <string name="target_amount_set_amount">목표 절약 금액을 설정해주세요</string>
@@ -140,6 +144,12 @@
     <string name="story_winey_country_second_speech_bubble">흥청망청 돈을 쓰셔 위니제국의\n황제 자격을 박탈당하셨습니다.</string>
     <string name="story_winey_country_third_speech_bubble">절약 목표 금액을 채우시면, 다시 황제로\n돌아오실 수 있습니다. 다시 뵙기를 바라며…</string>
     <string name="story_nav_num_preview">1/3</string>
+
+    <!-- alert -->
+    <string name="alert_title">타이틀 메시지 입니다.</string>
+    <string name="alert_subtitle">서브 메시지 입니다.\n서브 메시지 입니다.</string>
+    <string name="alert_btn1">버튼1</string>
+    <string name="alert_btn2">버튼2</string>
 
     <string name="snackbar_success">업로드가 완료되었습니다 :)</string>
     <string name="snackbar_fail">죄송합니다. 업로드에 실패했습니다 :(</string>
