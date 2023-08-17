@@ -32,9 +32,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel.getUser() // 데이터스토어 갱신
+
         navigateTo<WineyFeedFragment>()
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
+
         setupLogoutState()
         setupTokenState()
         showUploadSuccessSnackbar()
