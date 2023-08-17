@@ -14,10 +14,13 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
+import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,7 +72,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
-            viewModel.postLogout()
+            val dialog = AlertDialogFragment(
+                stringOf(R.string.mypage_dialog_title),
+                stringOf(R.string.mypage_dialog_subtitle),
+                stringOf(R.string.mypage_dialog_negativebutton),
+                stringOf(R.string.mypage_dialog_positivebutton),
+                handleNegativeButton = {},
+                handlePositiveButton = { viewModel.postLogout() }
+            )
+            dialog.show(this.childFragmentManager, dialog.tag)
         }
     }
 
