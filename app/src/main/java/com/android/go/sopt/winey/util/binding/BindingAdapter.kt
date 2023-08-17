@@ -113,3 +113,32 @@ fun setLikeImage(view: ImageView, isLiked: Boolean) {
     }
     view.setImageResource(imageRes)
 }
+
+@BindingAdapter("notiType")
+fun TextView.setNotiType(notiType: String) {
+    when (notiType) {
+        "RANKUPTO2", "RANKUPTO3", "RANKUPTO4" -> context.stringOf(R.string.notification_rankup)
+        "DELETERANKDOWNTO1", "DELETERANKDOWNTO2", "DELETERANKDOWNTO3" -> context.stringOf(R.string.notification_rankdown)
+        "GOALFAILED" -> context.stringOf(R.string.notification_goal_failed)
+        "LIKENOTI" -> context.stringOf(R.string.notification_like)
+        "COMMENTNOTI" -> context.stringOf(R.string.notification_comment)
+        "HOWTOLEVELUP" -> context.stringOf(R.string.notification_how_to_levelup)
+        else -> {
+        }
+    }
+}
+
+@BindingAdapter("notiType")
+fun ImageView.setNotiType(notiType: String) {
+    when (notiType) {
+        "RANKUPTO2", "DELETERANKDOWNTO2" -> context.drawableOf(R.drawable.ic_notification_lv2)
+        "RANKUPTO3", "DELETERANKDOWNTO3" -> context.drawableOf(R.drawable.ic_notification_lv3)
+        "RANKUPTO4" -> context.drawableOf(R.drawable.ic_notification_lv4)
+        "DELETERANKDOWNTO1" -> context.drawableOf(R.drawable.ic_notification_lv1)
+        "GOALFAILED", "HOWTOLEVELUP" -> context.drawableOf(R.drawable.ic_notification_logo)
+        "LIKENOTI" -> context.drawableOf(R.drawable.ic_notification_like)
+        "COMMENTNOTI" -> context.drawableOf(R.drawable.ic_notification_comment)
+        else -> {
+        }
+    }
+}
