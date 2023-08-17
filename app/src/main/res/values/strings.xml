@@ -5,8 +5,8 @@
     <string name="main_mypage">마이페이지</string>
 
     <!-- winey feed -->
-    <string name="wineyfeed_head">이웃나라 왕족들의 소비생활을\n관찰하고 소통할 수 있어요!</string>
-    <string name="wineyfeed_sub">아니, 어제만해도 왕족인 내가 평민이라고?\n용납할 수 없지. 얘들아 모여봐 뭔일이야</string>
+    <string name="wineyfeed_head">위니와 절약을 더 쉽고 재밌게!</string>
+    <string name="wineyfeed_sub">절약한 소비를 피드에 올리고\n사람들과 소통해요</string>
     <string name="wineyfeed_nickname">부자가 되고싶어</string>
     <string name="wineyfeed_title">교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다</string>
     <string name="wineyfeed_money">원 절약</string>
