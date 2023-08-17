@@ -94,6 +94,8 @@
     <string name="myfeed_dialog_highlevel_sub">지금 게시물을 삭제하면 누적 금액이\n 삭감되어 레벨이 내려갈 수 있으니 주의하세요!</string>
     <string name="myfeed_dialog_cancel">취소</string>
     <string name="myfeed_dialog_delete">삭제하기</string>
+    <string name="myfeed_empty_title">아직 없사옵니다</string>
+    <string name="myfeed_empty_sub">황제가 되기 위해 얼른 하나 채워보시지요</string>
 
     <!-- recommend -->
     <string name="recommend_discount">%s 절약</string>
