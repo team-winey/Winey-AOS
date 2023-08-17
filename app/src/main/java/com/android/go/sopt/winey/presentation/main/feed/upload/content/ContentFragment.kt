@@ -13,7 +13,7 @@ import com.android.go.sopt.winey.util.context.hideKeyboard
 
 class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragment_content) {
     private val viewModel by viewModels<ContentViewModel>()
-    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(PHOTO_KEY) }
+    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(ARGS_PHOTO_KEY) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,8 +40,8 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
         parentFragmentManager.commit {
             val fragmentWithBundle = AmountFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(PHOTO_KEY, imageUriArg)
-                    putString(CONTENT_KEY, viewModel.content)
+                    putParcelable(ARGS_PHOTO_KEY, imageUriArg)
+                    putString(ARGS_CONTENT_KEY, viewModel.content)
                 }
             }
             replace(R.id.fcv_upload, fragmentWithBundle)
@@ -61,7 +61,7 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
     }
 
     companion object {
-        private const val PHOTO_KEY = "photo"
-        private const val CONTENT_KEY = "content"
+        private const val ARGS_PHOTO_KEY = "photo"
+        private const val ARGS_CONTENT_KEY = "content"
     }
 }

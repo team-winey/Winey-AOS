@@ -61,7 +61,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         parentFragmentManager.commit {
             val fragmentWithBundle = ContentFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(PHOTO_KEY, viewModel.imageUri.value)
+                    putParcelable(ARGS_PHOTO_KEY, viewModel.imageUri.value)
                 }
             }
             replace(R.id.fcv_upload, fragmentWithBundle)
@@ -70,7 +70,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
     }
 
     companion object {
-        private const val PHOTO_KEY = "photo"
+        private const val ARGS_PHOTO_KEY = "photo"
         private const val IMAGE_FILE = "image/*"
     }
 }
