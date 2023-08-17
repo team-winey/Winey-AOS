@@ -149,4 +149,12 @@
     <string name="alert_subtitle">서브 메시지 입니다.\n서브 메시지 입니다.</string>
     <string name="alert_btn1">버튼1</string>
     <string name="alert_btn2">버튼2</string>
+
+    <!-- notification -->
+    <string name="notification_rankup">등급 상승</string>
+    <string name="notification_rankdown">등급 하락</string>
+    <string name="notification_goal_failed">목표 달성 실패</string>
+    <string name="notification_like">좋아요</string>
+    <string name="notification_comment">댓글</string>
+    <string name="notification_how_to_levelup">위니 사용법</string>
 </resources>
