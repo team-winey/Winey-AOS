@@ -45,7 +45,7 @@ data class ResponseGetWineyFeedListDto(
             @SerialName("comments")
             val comments: Long,
             @SerialName("timeAgo")
-            val timeAgo: String,
+            val timeAgo: String
         )
 
         @Serializable
