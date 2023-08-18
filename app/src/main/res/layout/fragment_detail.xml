@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="data"
+            type="com.android.go.sopt.winey.domain.entity.DetailFeed" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -67,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:gravity="center_vertical"
-                android:text="@string/wineyfeed_nickname"
+                android:text="@{data.nickName}"
                 android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
                 app:layout_constraintBottom_toBottomOf="@id/iv_detail_profilephoto"
                 app:layout_constraintStart_toEndOf="@id/iv_detail_profilephoto"
@@ -93,16 +95,17 @@
                 android:layout_height="0dp"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="10dp"
+                app:layout_constraintDimensionRatio="H,4:3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/iv_detail_profilephoto">
 
                 <ImageView
                     android:id="@+id/iv_detail_image"
+                    imageUrl="@{data.feedImage}"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img_wineyfeed_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +121,8 @@
                     android:background="@drawable/shape_yellow_fill_99_rect"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="10dp"
-                    android:text="44원 절약"
+                    setAmount="@{data.feedMoney}"
+                    setSuffix="@{@string/wineyfeed_money}"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
                     android:textColor="@color/gray_900"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_detail_image"
@@ -132,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="26dp"
-                android:src="@drawable/ic_wineyfeed_liked"
+                setFeedLikeImage="@{data.liked}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/l_detail_image"
                 tools:src="@drawable/ic_wineyfeed_liked" />
@@ -142,7 +146,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="222"
+                likedAmount="@{data.likes}"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_700"
                 app:layout_constraintEnd_toEndOf="@id/iv_detail_like"
@@ -156,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="5dp"
-                android:text="@string/wineyfeed_title"
+                android:text="@{data.feedTitle}"
                 android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                 android:textColor="@color/gray_900"
                 app:layout_constraintEnd_toStartOf="@id/iv_detail_like"
@@ -180,7 +184,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="2"
+                android:text="@{String.valueOf(data.comments)}"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_500"
                 app:layout_constraintStart_toEndOf="@id/iv_detail_comment"
@@ -203,7 +207,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="5분 전"
+                android:text="@{data.timeAgo}"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_500"
                 app:layout_constraintStart_toEndOf="@id/iv_detail_seperator"
