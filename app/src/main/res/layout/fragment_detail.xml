@@ -80,8 +80,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="10dp"
-                android:padding="6dp"
                 android:background="@android:color/transparent"
+                android:padding="6dp"
                 android:src="@drawable/ic_wineyfeed_more"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -99,10 +99,10 @@
 
                 <ImageView
                     android:id="@+id/iv_detail_image"
-                    android:src="@drawable/img_wineyfeed_default"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/img_wineyfeed_default"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -111,7 +111,6 @@
 
                 <TextView
                     android:id="@+id/tv_detail_money"
-                    android:text="44원 절약"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="12dp"
@@ -119,6 +118,7 @@
                     android:background="@drawable/shape_yellow_fill_99_rect"
                     android:paddingHorizontal="14dp"
                     android:paddingVertical="10dp"
+                    android:text="44원 절약"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
                     android:textColor="@color/gray_900"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_detail_image"
@@ -128,21 +128,21 @@
 
             <ImageView
                 android:id="@+id/iv_detail_like"
-                android:src="@drawable/ic_wineyfeed_liked"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="26dp"
+                android:src="@drawable/ic_wineyfeed_liked"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/l_detail_image"
                 tools:src="@drawable/ic_wineyfeed_liked" />
 
             <TextView
                 android:id="@+id/tv_detail_like"
-                android:text="222"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:text="222"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_700"
                 app:layout_constraintEnd_toEndOf="@id/iv_detail_like"
@@ -154,7 +154,7 @@
                 android:id="@+id/tv_detail_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="5dp"
                 android:text="@string/wineyfeed_title"
                 android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
@@ -168,10 +168,11 @@
                 android:id="@+id/iv_detail_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="18dp"
+                android:paddingVertical="1dp"
                 android:src="@drawable/ic_wineyfeed_comment"
                 app:layout_constraintStart_toStartOf="@id/l_detail_image"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_title"
+                app:layout_constraintTop_toBottomOf="@id/iv_detail_like"
                 tools:src="@drawable/ic_wineyfeed_comment" />
 
             <TextView
@@ -179,23 +180,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
                 android:text="2"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_500"
-                tools:text="12"
                 app:layout_constraintStart_toEndOf="@id/iv_detail_comment"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_title" />
+                app:layout_constraintTop_toTopOf="@id/iv_detail_comment"
+                tools:text="12" />
 
             <ImageView
                 android:id="@+id/iv_detail_seperator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="12dp"
+                android:paddingVertical="3dp"
                 android:src="@drawable/img_wineyfeed_seperator"
                 app:layout_constraintStart_toEndOf="@id/tv_detail_comment"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_title"
+                app:layout_constraintTop_toTopOf="@id/iv_detail_comment"
                 tools:src="@drawable/img_wineyfeed_seperator" />
 
             <TextView
@@ -203,12 +203,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
                 android:text="5분 전"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_500"
                 app:layout_constraintStart_toEndOf="@id/iv_detail_seperator"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_title" />
+                app:layout_constraintTop_toTopOf="@id/iv_detail_comment" />
 
             <View
                 android:id="@+id/v_detail_end"
