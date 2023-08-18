@@ -22,5 +22,3 @@ data class CommentList(
     val authorLevel: Int,
     val authorId: Int
 )
-
-

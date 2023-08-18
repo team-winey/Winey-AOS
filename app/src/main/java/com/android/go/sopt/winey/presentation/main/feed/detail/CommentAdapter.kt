@@ -18,7 +18,6 @@ class CommentAdapter() : ListAdapter<CommentList, CommentAdapter.CommentViewHold
         }
     }
 
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int

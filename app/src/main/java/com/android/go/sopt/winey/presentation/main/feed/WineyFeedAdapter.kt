@@ -46,7 +46,6 @@ class WineyFeedAdapter(
                 lWineyfeedPost.setOnSingleClickListener {
                     toFeedDetail(data.feedId, data.writerLevel)
                 }
-
             }
         }
 

@@ -12,6 +12,7 @@ import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
+import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -24,9 +25,12 @@ class DetailFragment(private val feedId: Int, private val writerLevel: Int) :
     private val viewModel by viewModels<DetailViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
         viewModel.getFeedDetail(feedId)
+        initAdapter()
         initGetFeedDetailObserver()
+        binding.ivDetailBack.setOnSingleClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
     }
 
     private fun initAdapter() {
