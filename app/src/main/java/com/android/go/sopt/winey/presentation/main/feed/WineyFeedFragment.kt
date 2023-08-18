@@ -2,8 +2,12 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.PopupMenu
+import android.view.WindowManager
+import android.widget.PopupWindow
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,6 +20,7 @@ import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
+import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -74,32 +79,70 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
-        val popupMenu = PopupMenu(requireContext(), view)
-        popupMenu.menuInflater.inflate(R.menu.menu_wineyfeed, popupMenu.menu)
-        val menuDelete = popupMenu.menu.findItem(R.id.menu_delete)
-        val menuReport = popupMenu.menu.findItem(R.id.menu_report)
+        val inflater = LayoutInflater.from(requireContext())
+        val popupView = inflater.inflate(R.layout.menu_wineyfeed, null)
+        val popupWindow = PopupWindow(
+            popupView,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            true
+        )
+        val menuDelete = popupView.findViewById<TextView>(R.id.tv_popup_delete)
+        val menuReport = popupView.findViewById<TextView>(R.id.tv_popup_report)
         if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() }) {
             menuReport.isVisible = false
         } else {
             menuDelete.isVisible = false
         }
-        popupMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menu_delete -> {
-                    showDeleteDialog(wineyFeed.feedId, wineyFeed.writerLevel)
-                    true
-                }
-
-                else -> false
-                /* 신고 구현 : 앱잼 내에서는 없음 */
-            }
+        menuDelete.setOnSingleClickListener {
+            showDeleteDialog(wineyFeed.feedId, wineyFeed.writerLevel)
+            popupWindow.dismiss()
         }
-        popupMenu.show()
+        popupWindow.showAsDropDown(view)
+    }
+
+    private fun refreshWineyFeed() {
+        val fragmentManager = parentFragmentManager
+        fragmentManager.beginTransaction().apply {
+            replace(R.id.fcv_main, WineyFeedFragment())
+            commit()
+        }
     }
 
     private fun showDeleteDialog(feedId: Int, userLevel: Int) {
-        val wineyFeedDeleteDialogFragment = WineyFeedDeleteDialogFragment(feedId, userLevel)
-        wineyFeedDeleteDialogFragment.show(parentFragmentManager, TAG_DELETE_DIALOG)
+        val dialogSub: Int =
+            if (userLevel <= LV_KNIGHT) {
+                R.string.myfeed_dialog_lowlevel_sub
+            } else {
+                R.string.myfeed_dialog_highlevel_sub
+            }
+
+        val deleteDialog = AlertDialogFragment(
+            getString(R.string.wineyfeed_dialog_title),
+            getString(dialogSub),
+            getString(R.string.wineyfeed_dialog_cancel),
+            getString(R.string.myfeed_dialog_delete),
+            handleNegativeButton = { },
+            handlePositiveButton = { viewModel.deleteFeed(feedId) }
+        )
+        deleteDialog.show(parentFragmentManager, TAG_DELETE_DIALOG)
+        initDeleteFeedStateObserver()
+    }
+
+    private fun initDeleteFeedStateObserver() {
+        viewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    refreshWineyFeed()
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+            }
+        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initGetFeedStateObserver() {
@@ -192,6 +235,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     companion object {
+        private const val LV_KNIGHT = 2
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
