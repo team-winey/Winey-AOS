@@ -18,7 +18,6 @@ import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
-import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.view.UiState
@@ -38,6 +37,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init1On1ButtonClickListener()
+        initTermsButtonClickListener()
         initLevelHelpButtonClickListener()
         initToMyFeedButtonClickListener()
         initLogoutButtonClickListener()
@@ -58,6 +58,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun init1On1ButtonClickListener() {
         binding.clMypageTo1on1.setOnClickListener {
             val url = ONE_ON_ONE_URL
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        }
+    }
+
+    private fun initTermsButtonClickListener() {
+        binding.clMypageToTerms.setOnClickListener {
+            val url = TERMS_URL
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         }
@@ -127,7 +135,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun handleSuccessState(data: User?) {
         binding.data = data
+        handleIsOver(data)
+        handleUserLevel(data)
+    }
 
+    private fun handleIsOver(data: User?) {
         when (data?.isOver) {
             true -> {
                 binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
@@ -147,6 +159,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             null -> {
             }
         }
+    }
+
+    private fun handleUserLevel(data: User?) {
         when (data?.userLevel) {
             LEVEL_COMMON -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
@@ -185,5 +200,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val LEVEL_NOBLESS = "귀족"
         private const val LEVEL_KING = "황제"
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
+        private const val TERMS_URL = "https://empty-weaver-a9f.notion.site/62b37962c661488ba5f60958c24753e1?pvs=4"
     }
 }

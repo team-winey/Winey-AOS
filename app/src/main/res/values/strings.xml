@@ -51,6 +51,7 @@
     <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
     <string name="impossible_dialog_close">닫기</string>
     <string name="mypage_1on1"><u>1:1 문의</u></string>
+    <string name="mypage_terms"><u>이용약관</u></string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
     <string name="mypage_dialog_title">정말 로그아웃 하시겠어요?</string>
