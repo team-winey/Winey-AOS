@@ -20,7 +20,6 @@ import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import retrofit2.HttpException
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
