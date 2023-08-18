@@ -6,10 +6,12 @@ data class WineyFeed(
     val feedMoney: Long,
     val feedTitle: String,
     var isLiked: Boolean,
-    var likes: Int,
+    var likes: Long,
     val nickName: String,
     val userId: Int,
     val writerLevel: Int,
     val totalPageSize: Int,
-    val isEnd: Boolean
+    val isEnd: Boolean,
+    val comments: Long,
+    val timeAgo: String
 )

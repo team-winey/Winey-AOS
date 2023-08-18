@@ -149,12 +149,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:text="12"
+            android:text="@{String.valueOf(data.comments)}"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
             android:textColor="@color/gray_500"
             app:layout_constraintStart_toEndOf="@id/iv_wineyfeed_comment"
-            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title"
-            tools:text="12" />
+            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title" />
 
         <ImageView
             android:id="@+id/iv_wineyfeed_seperator"
@@ -173,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
-            android:text="9분 전"
+            android:text="@{data.timeAgo}"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
             android:textColor="@color/gray_500"
             app:layout_constraintStart_toEndOf="@id/iv_wineyfeed_seperator"
