@@ -14,7 +14,8 @@ import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class WineyFeedAdapter(
     private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
-    private val showPopupMenu: (View, WineyFeed) -> Unit
+    private val showPopupMenu: (View, WineyFeed) -> Unit,
+    private val toFeedDetail: (feedId:Int) -> Unit
 ) :
     PagingDataAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
     private val currentData: ItemSnapshotList<WineyFeed>
@@ -23,7 +24,8 @@ class WineyFeedAdapter(
     class WineyFeedViewHolder(
         private val binding: ItemWineyfeedPostBinding,
         private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
-        private val showPopupMenu: (View, WineyFeed) -> Unit
+        private val showPopupMenu: (View, WineyFeed) -> Unit,
+        private val toFeedDetail: (feedId:Int) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(data: WineyFeed?) {
@@ -37,9 +39,14 @@ class WineyFeedAdapter(
                     onLikeButtonClick(data.feedId, !data.isLiked)
                 }
 
-                btnWineyfeedMore.setOnClickListener { view ->
+                btnWineyfeedMore.setOnSingleClickListener { view ->
                     showPopupMenu(view, data)
                 }
+
+                lWineyfeedPost.setOnSingleClickListener {
+                    toFeedDetail(data.feedId)
+                }
+
             }
         }
 
@@ -60,7 +67,7 @@ class WineyFeedAdapter(
     ): WineyFeedViewHolder {
         val binding =
             ItemWineyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return WineyFeedViewHolder(binding, likeButtonClick, showPopupMenu)
+        return WineyFeedViewHolder(binding, likeButtonClick, showPopupMenu, toFeedDetail)
     }
 
     override fun onBindViewHolder(holder: WineyFeedViewHolder, position: Int) {

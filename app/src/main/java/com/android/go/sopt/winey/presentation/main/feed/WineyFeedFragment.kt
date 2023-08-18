@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -22,7 +24,10 @@ import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
+import com.android.go.sopt.winey.presentation.main.feed.detail.DetailFragment
+import com.android.go.sopt.winey.presentation.main.feed.detail.DetailViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
+import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
@@ -70,7 +75,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             },
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
-            }
+            },
+            toFeedDetail = { feedId -> navigateDetail(feedId) }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
@@ -225,6 +231,12 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private fun navigateToUpload() {
         val intent = Intent(requireContext(), UploadActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun navigateDetail(feedId: Int) {
+        parentFragmentManager.commit {
+            replace(R.id.fcv_main, DetailFragment(feedId))
+        }
     }
 
     companion object {
