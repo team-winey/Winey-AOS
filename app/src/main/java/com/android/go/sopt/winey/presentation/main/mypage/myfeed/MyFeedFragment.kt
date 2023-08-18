@@ -60,7 +60,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
         val inflater = LayoutInflater.from(requireContext())
-        val popupView = inflater.inflate(R.layout.menu_wineyfeed, null,false)
+        val popupView = inflater.inflate(R.layout.menu_wineyfeed, null, false)
         val popupWindow = PopupWindow(
             popupView,
             WindowManager.LayoutParams.WRAP_CONTENT,
