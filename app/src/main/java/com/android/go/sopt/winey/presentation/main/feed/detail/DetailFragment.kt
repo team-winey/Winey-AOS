@@ -1,7 +1,7 @@
 package com.android.go.sopt.winey.presentation.main.feed.detail
 
+import CommentAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -18,15 +18,20 @@ import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
-class DetailFragment(feedId: Int) :
+class DetailFragment(private val feedId: Int) :
     BindingFragment<FragmentDetailBinding>(R.layout.fragment_detail) {
-    val feedId = feedId
+    private lateinit var commentAdapter: CommentAdapter
     private val viewModel by viewModels<DetailViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initAdapter()
         viewModel.getFeedDetail(feedId)
         initGetFeedDetailObserver()
-        Log.e("feedId", feedId.toString())
+    }
+
+    private fun initAdapter() {
+        commentAdapter = CommentAdapter()
+        binding.rvDetailComment.adapter = commentAdapter
     }
 
     private fun initGetFeedDetailObserver() {
@@ -34,6 +39,7 @@ class DetailFragment(feedId: Int) :
             when (state) {
                 is UiState.Success -> {
                     binding.data = state.data
+                    commentAdapter.submitList(state.data?.commentList)
                 }
 
                 is UiState.Failure -> {
