@@ -6,7 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResponseGetDetailDto(
+data class ResponseGetFeedDetailDto(
     @SerialName("getFeedResponseDto")
     val getFeedResponseDto: GetFeedResponseDto,
     @SerialName("getCommentResponseList")
@@ -53,7 +53,7 @@ data class ResponseGetDetailDto(
         @SerialName("authorLevel")
         val authorLevel: Int,
         @SerialName("authorId")
-        val authorId: Int,
+        val authorId: Int
     )
 
     fun toDetailFeed(): DetailFeed = DetailFeed(
