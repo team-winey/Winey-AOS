@@ -7,11 +7,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.BindingAdapter
-import coil.ImageLoader
 import coil.load
-import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.util.code.NicknameErrorCode.*
@@ -20,7 +17,6 @@ import com.android.go.sopt.winey.util.context.drawableOf
 import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.view.InputUiState
 import com.android.go.sopt.winey.util.view.InputUiState.*
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import java.text.DecimalFormat
 
 @BindingAdapter("likedAmount")
