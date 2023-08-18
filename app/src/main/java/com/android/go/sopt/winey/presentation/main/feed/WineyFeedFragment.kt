@@ -2,8 +2,12 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.PopupMenu
+import android.view.WindowManager
+import android.widget.PopupWindow
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -74,27 +78,26 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
-        val popupMenu = PopupMenu(requireContext(), view)
-        popupMenu.menuInflater.inflate(R.menu.menu_wineyfeed, popupMenu.menu)
-        val menuDelete = popupMenu.menu.findItem(R.id.menu_delete)
-        val menuReport = popupMenu.menu.findItem(R.id.menu_report)
+        val inflater = LayoutInflater.from(requireContext())
+        val popupView = inflater.inflate(R.layout.menu_wineyfeed, null)
+        val popupWindow = PopupWindow(
+            popupView,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            true
+        )
+        val menuDelete = popupView.findViewById<TextView>(R.id.tv_popup_delete)
+        val menuReport = popupView.findViewById<TextView>(R.id.tv_popup_report)
         if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() }) {
             menuReport.isVisible = false
         } else {
             menuDelete.isVisible = false
         }
-        popupMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menu_delete -> {
-                    showDeleteDialog(wineyFeed.feedId, wineyFeed.writerLevel)
-                    true
-                }
-
-                else -> false
-                /* 신고 구현 : 앱잼 내에서는 없음 */
-            }
+        menuDelete.setOnSingleClickListener {
+            showDeleteDialog(wineyFeed.feedId, wineyFeed.writerLevel)
+            popupWindow.dismiss()
         }
-        popupMenu.show()
+        popupWindow.showAsDropDown(view)
     }
 
     private fun showDeleteDialog(feedId: Int, userLevel: Int) {
