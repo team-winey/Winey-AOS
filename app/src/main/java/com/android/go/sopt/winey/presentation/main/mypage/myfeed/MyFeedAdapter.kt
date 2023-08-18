@@ -35,7 +35,7 @@ class MyFeedAdapter(
                     ivMyfeedLike.setOnSingleClickListener {
                         onLikeButtonClick(data.feedId, !data.isLiked)
                     }
-                    tvMyfeedDelete.setOnSingleClickListener {
+                    btnWineyfeedMore.setOnSingleClickListener {
                         showDeleteDialog(data.feedId, data.writerLevel)
                         deleteButtonClick(data.feedId, data.writerLevel)
                     }
