@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="data"
             type="com.android.go.sopt.winey.domain.entity.CommentList" />
@@ -14,11 +15,11 @@
 
         <TextView
             android:id="@+id/tv_comment_level"
+            setLevelText="@{data.authorLevel}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="LV.황제 . "
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_600"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,8 +33,8 @@
             android:text="@{data.author}"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_600"
-            app:layout_constraintStart_toEndOf="@id/tv_comment_level"
             app:layout_constraintEnd_toStartOf="@id/iv_comment_more"
+            app:layout_constraintStart_toEndOf="@id/tv_comment_level"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -49,12 +50,13 @@
 
         <TextView
             android:id="@+id/tv_comment_content"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="@{data.content}"
             android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
             android:textColor="@color/gray_900"
+            app:layout_constraintEnd_toStartOf="@id/iv_comment_more"
             app:layout_constraintStart_toStartOf="@id/tv_comment_level"
             app:layout_constraintTop_toBottomOf="@id/tv_comment_level" />
 

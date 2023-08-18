@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
-class DetailFragment(private val feedId: Int) :
+class DetailFragment(private val feedId: Int, private val writerLevel: Int) :
     BindingFragment<FragmentDetailBinding>(R.layout.fragment_detail) {
     private lateinit var commentAdapter: CommentAdapter
     private val viewModel by viewModels<DetailViewModel>()
@@ -32,6 +32,7 @@ class DetailFragment(private val feedId: Int) :
     private fun initAdapter() {
         commentAdapter = CommentAdapter()
         binding.rvDetailComment.adapter = commentAdapter
+        binding.ivDetailProfilephoto.setImageResource(setUserProfile(writerLevel))
     }
 
     private fun initGetFeedDetailObserver() {
@@ -49,6 +50,16 @@ class DetailFragment(private val feedId: Int) :
                 else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
             }
         }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun setUserProfile(userLevel: Int): Int {
+        return when (userLevel) {
+            1 -> R.drawable.img_wineyfeed_profile_1
+            2 -> R.drawable.img_wineyfeed_profile_2
+            3 -> R.drawable.img_wineyfeed_profile_3
+            4 -> R.drawable.img_wineyfeed_profile_4
+            else -> R.drawable.img_wineyfeed_profile
+        }
     }
 
     companion object {

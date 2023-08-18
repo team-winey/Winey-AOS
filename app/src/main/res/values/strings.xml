@@ -151,4 +151,10 @@
     <string name="alert_subtitle">서브 메시지 입니다.\n서브 메시지 입니다.</string>
     <string name="alert_btn1">버튼1</string>
     <string name="alert_btn2">버튼2</string>
+
+    <!-- comment -->
+    <string name="comment_level_1">LV.평민 ㆍ </string>
+    <string name="comment_level_2">LV.기사 ㆍ </string>
+    <string name="comment_level_3">LV.귀족 ㆍ </string>
+    <string name="comment_level_4">LV.황제 ㆍ </string>
 </resources>

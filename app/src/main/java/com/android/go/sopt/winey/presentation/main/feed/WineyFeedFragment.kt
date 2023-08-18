@@ -1,6 +1,5 @@
 package com.android.go.sopt.winey.presentation.main.feed
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,9 +24,7 @@ import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.detail.DetailFragment
-import com.android.go.sopt.winey.presentation.main.feed.detail.DetailViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
-import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
@@ -76,7 +73,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
             },
-            toFeedDetail = { feedId -> navigateDetail(feedId) }
+            toFeedDetail = { feedId, writerLevel -> navigateDetail(feedId, writerLevel) }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
@@ -233,14 +230,14 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         startActivity(intent)
     }
 
-    private fun navigateDetail(feedId: Int) {
+    private fun navigateDetail(feedId: Int, writerLevel: Int) {
         parentFragmentManager.commit {
-            replace(R.id.fcv_main, DetailFragment(feedId))
+            replace(R.id.fcv_main, DetailFragment(feedId, writerLevel))
+            addToBackStack(null)
         }
     }
 
     companion object {
-        private const val LV_KNIGHT = 2
         private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
