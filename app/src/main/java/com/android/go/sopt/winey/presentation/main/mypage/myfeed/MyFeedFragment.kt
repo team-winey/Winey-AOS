@@ -71,23 +71,16 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         val menuReport = popupView.findViewById<TextView>(R.id.tv_popup_report)
         menuReport.isVisible = false
         menuDelete.setOnSingleClickListener {
-            showDeleteDialog(wineyFeed.feedId, wineyFeed.writerLevel)
+            showDeleteDialog(wineyFeed.feedId)
             popupWindow.dismiss()
         }
         popupWindow.showAsDropDown(view)
     }
 
-    private fun showDeleteDialog(feedId: Int, userLevel: Int) {
-        val dialogSub: Int =
-            if (userLevel <= LV_KNIGHT) {
-                R.string.myfeed_dialog_lowlevel_sub
-            } else {
-                R.string.myfeed_dialog_highlevel_sub
-            }
-
+    private fun showDeleteDialog(feedId: Int) {
         val deleteDialog = AlertDialogFragment(
-            getString(R.string.wineyfeed_dialog_title),
-            getString(dialogSub),
+            getString(R.string.myfeed_dialog_title),
+            getString(R.string.myfeed_dialog_sub),
             getString(R.string.wineyfeed_dialog_cancel),
             getString(R.string.myfeed_dialog_delete),
             handleNegativeButton = { },
