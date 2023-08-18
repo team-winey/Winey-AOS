@@ -68,10 +68,10 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private fun checkAndSetEmptyLayout() {
         if (myFeedAdapter.itemCount == 0) {
             binding.rvMyfeedPost.isVisible = false
-            binding.layoutMyfeedEmpty.isVisible = true
+            binding.lMyfeedEmpty.isVisible = true
         } else {
             binding.rvMyfeedPost.isVisible = true
-            binding.layoutMyfeedEmpty.isVisible = false
+            binding.lMyfeedEmpty.isVisible = false
         }
     }
 
