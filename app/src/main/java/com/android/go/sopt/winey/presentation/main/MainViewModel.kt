@@ -40,6 +40,9 @@ class MainViewModel @Inject constructor(
                 .onFailure { t ->
                     if (t is HttpException) {
                         Timber.e("HTTP 실패 ${t.code()}")
+                        if (t.code() == CODE_TOKEN_EXPIRED) {
+                            postLogout()
+                        }
                     }
                     Timber.e("${t.message}")
                     _getUserState.value = UiState.Failure("${t.message}")
@@ -65,5 +68,9 @@ class MainViewModel @Inject constructor(
                     _logoutState.value = UiState.Failure("${t.message}")
                 }
         }
+    }
+
+    companion object {
+        private const val CODE_TOKEN_EXPIRED = 401
     }
 }

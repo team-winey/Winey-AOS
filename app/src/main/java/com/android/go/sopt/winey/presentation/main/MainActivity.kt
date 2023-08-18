@@ -33,7 +33,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
         setupLogoutState()
-        setupTokenState()
     }
 
     private fun initBnvItemSelectedListener() {
@@ -82,23 +81,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }.launchIn(lifecycleScope)
     }
 
-    fun setupTokenState() {
-        viewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Failure -> {
-                    if (state is HttpException) {
-                        if (state.code() == CODE_TOKEN_EXPIRED) {
-                            viewModel.postLogout()
-                        }
-                    }
-                }
-
-                else -> {
-                }
-            }
-        }
-    }
-
     private fun navigateToLoginScreen() {
         Intent(this@MainActivity, LoginActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -111,9 +93,5 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }
-    }
-
-    companion object {
-        private const val CODE_TOKEN_EXPIRED = 401
     }
 }
