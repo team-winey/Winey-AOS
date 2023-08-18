@@ -116,29 +116,38 @@ fun setLikeImage(view: ImageView, isLiked: Boolean) {
 
 @BindingAdapter("notiType")
 fun TextView.setNotiType(notiType: String) {
-    when (notiType) {
-        "RANKUPTO2", "RANKUPTO3", "RANKUPTO4" -> context.stringOf(R.string.notification_rankup)
-        "DELETERANKDOWNTO1", "DELETERANKDOWNTO2", "DELETERANKDOWNTO3" -> context.stringOf(R.string.notification_rankdown)
-        "GOALFAILED" -> context.stringOf(R.string.notification_goal_failed)
-        "LIKENOTI" -> context.stringOf(R.string.notification_like)
-        "COMMENTNOTI" -> context.stringOf(R.string.notification_comment)
-        "HOWTOLEVELUP" -> context.stringOf(R.string.notification_how_to_levelup)
-        else -> {
-        }
+    val resourceId = when (notiType) {
+        "RANKUPTO2", "RANKUPTO3", "RANKUPTO4" -> R.string.notification_rankup
+        "DELETERANKDOWNTO1", "DELETERANKDOWNTO2", "DELETERANKDOWNTO3" -> R.string.notification_rankdown
+        "GOALFAILED" -> R.string.notification_goal_failed
+        "LIKENOTI" -> R.string.notification_like
+        "COMMENTNOTI" -> R.string.notification_comment
+        "HOWTOLEVELUP" -> R.string.notification_how_to_levelup
+        else -> null
+    }
+
+    if (resourceId != null) {
+        text = context.getString(resourceId)
+    } else {
+        text = ""
     }
 }
 
 @BindingAdapter("notiType")
 fun ImageView.setNotiType(notiType: String) {
-    when (notiType) {
-        "RANKUPTO2", "DELETERANKDOWNTO2" -> context.drawableOf(R.drawable.ic_notification_lv2)
-        "RANKUPTO3", "DELETERANKDOWNTO3" -> context.drawableOf(R.drawable.ic_notification_lv3)
-        "RANKUPTO4" -> context.drawableOf(R.drawable.ic_notification_lv4)
-        "DELETERANKDOWNTO1" -> context.drawableOf(R.drawable.ic_notification_lv1)
-        "GOALFAILED", "HOWTOLEVELUP" -> context.drawableOf(R.drawable.ic_notification_logo)
-        "LIKENOTI" -> context.drawableOf(R.drawable.ic_notification_like)
-        "COMMENTNOTI" -> context.drawableOf(R.drawable.ic_notification_comment)
-        else -> {
-        }
+    val drawableResourceId = when (notiType) {
+        "RANKUPTO2", "DELETERANKDOWNTO2" -> R.drawable.ic_notification_lv2
+        "RANKUPTO3", "DELETERANKDOWNTO3" -> R.drawable.ic_notification_lv3
+        "RANKUPTO4" -> R.drawable.ic_notification_lv4
+        "DELETERANKDOWNTO1" -> R.drawable.ic_notification_lv1
+        "GOALFAILED", "HOWTOLEVELUP" -> R.drawable.ic_notification_logo
+        "LIKENOTI" -> R.drawable.ic_notification_like
+        "COMMENTNOTI" -> R.drawable.ic_notification_comment
+        else -> 0
+    }
+
+    if (drawableResourceId != 0) {
+        setImageResource(drawableResourceId)
+    } else {
     }
 }
