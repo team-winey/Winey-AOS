@@ -35,13 +35,17 @@ data class ResponseGetWineyFeedListDto(
             @SerialName("isLiked")
             val isLiked: Boolean,
             @SerialName("likes")
-            val likes: Int,
+            val likes: Long,
             @SerialName("nickName")
             val nickName: String,
             @SerialName("userId")
             val userId: Int,
             @SerialName("writerLevel")
-            val writerLevel: Int
+            val writerLevel: Int,
+            @SerialName("comments")
+            val comments: Long,
+            @SerialName("timeAgo")
+            val timeAgo: String,
         )
 
         @Serializable
@@ -66,6 +70,8 @@ data class ResponseGetWineyFeedListDto(
             nickName = feed.nickName,
             userId = feed.userId,
             writerLevel = feed.writerLevel,
+            comments = feed.comments,
+            timeAgo = feed.timeAgo,
             totalPageSize = data.pageResponseDto.totalPageSize,
             isEnd = data.pageResponseDto.isEnd
         )
