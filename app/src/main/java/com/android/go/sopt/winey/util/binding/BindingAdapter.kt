@@ -42,10 +42,13 @@ fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) 
 }
 
 @BindingAdapter("imageUrl")
-fun loadImager(view: ImageView, imageurl: String) {
-    view.load(imageurl) {
-        placeholder(R.drawable.img_wineyfeed_default)
-        transformations(RoundedCornersTransformation(10F))
+fun loadImager(view: ImageView, imageurl: String?) {
+    if (imageurl != null) {
+        val uri = Uri.parse(imageurl)
+        view.load(uri) {
+            placeholder(R.drawable.img_wineyfeed_default)
+            transformations(RoundedCornersTransformation(10F))
+        }
     }
 }
 
