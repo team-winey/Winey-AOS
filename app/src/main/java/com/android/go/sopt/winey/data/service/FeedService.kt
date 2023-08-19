@@ -1,6 +1,7 @@
 package com.android.go.sopt.winey.data.service
 
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseGetFeedDetailDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
@@ -45,4 +46,9 @@ interface FeedService {
         @Part file: MultipartBody.Part?,
         @PartMap requestMap: HashMap<String, RequestBody>
     ): BaseResponse<ResponsePostWineyFeedDto>
+
+    @GET("feed/{feedId}")
+    suspend fun getFeedDetail(
+        @Path("feedId") feedId: Int
+    ): BaseResponse<ResponseGetFeedDetailDto>
 }
