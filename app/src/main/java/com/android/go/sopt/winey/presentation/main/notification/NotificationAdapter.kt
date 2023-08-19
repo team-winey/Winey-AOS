@@ -2,14 +2,14 @@ package com.android.go.sopt.winey.presentation.main.notification
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.databinding.ItemNotificationPostBinding
 import com.android.go.sopt.winey.domain.entity.Notification
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
 class NotificationAdapter :
-    PagingDataAdapter<Notification, NotificationAdapter.NotificationViewHolder>(DiffUtil) {
+    ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(DiffUtil) {
 
     class NotificationViewHolder(private val binding: ItemNotificationPostBinding) :
         RecyclerView.ViewHolder(binding.root) {
