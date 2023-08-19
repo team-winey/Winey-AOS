@@ -10,12 +10,24 @@
     <string name="wineyfeed_nickname">부자가 되고싶어</string>
     <string name="wineyfeed_title">교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다</string>
     <string name="wineyfeed_money">원 절약</string>
-    <string name="wineyfeed_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
-    <string name="wineyfeed_dialog_sub">지금 마이프로필에서 간단한 목표를\n 설정해보세요!</string>
-    <string name="wineyfeed_dialog_cancel">취소</string>
-    <string name="wineyfeed_dialog_setgoal">목표 설정하기</string>
     <string name="wineyfeed_menu_report">신고하기</string>
     <string name="wineyfeed_menu_delete">삭제하기</string>
+    <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
+    <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
+    <string name="wineyfeed_goal_dialog_negative_button">취소</string>
+    <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
+
+    <!-- comment delete dialog -->
+    <string name="feed_comment_delete_dialog_title">삭제하시겠습니까?</string>
+    <string name="feed_comment_delete_dialog_subtitle">삭제한 글은 다시 복구할 수 없습니다.</string>
+    <string name="feed_comment_delete_dialog_negative_button">취소</string>
+    <string name="feed_comment_delete_dialog_positive_button">삭제하기</string>
+
+    <!-- feed delete dialog -->
+    <string name="feed_delete_dialog_title">정말 게시물을 삭제하시겠어요?</string>
+    <string name="feed_delete_dialog_subtitle">지금 게시물을 삭제하면 누적 금액이\n삭감되니 주의하세요!</string>
+    <string name="feed_delete_dialog_negative_button">취소</string>
+    <string name="feed_delete_dialog_positive_button">삭제하기</string>
 
     <!-- upload -->
     <string name="upload_photo_title">절약을 실천한\n모습을 보여주세요!</string>
