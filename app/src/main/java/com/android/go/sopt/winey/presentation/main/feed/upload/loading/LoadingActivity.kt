@@ -47,6 +47,7 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(EXTRA_UPLOAD_KEY, true)
             startActivity(this)
         }
     }
@@ -54,5 +55,6 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     companion object {
         private const val DELAY_TIME = 3000L
         private const val EXTRA_AMOUNT_KEY = "amount"
+        private const val EXTRA_UPLOAD_KEY = "upload"
     }
 }

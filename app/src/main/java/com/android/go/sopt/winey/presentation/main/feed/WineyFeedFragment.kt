@@ -195,7 +195,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     }
 
     private fun initGetUserStateObserver() {
-        lifecycleScope.launch {
+        viewLifeCycleScope.launch {
             mainViewModel.getUserState.collect { state ->
                 when (state) {
                     is UiState.Success -> {

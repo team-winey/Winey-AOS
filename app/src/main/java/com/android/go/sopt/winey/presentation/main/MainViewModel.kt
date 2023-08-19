@@ -33,13 +33,16 @@ class MainViewModel @Inject constructor(
 
             authRepository.getUser()
                 .onSuccess { response ->
+                    Timber.e("SUCCESS GET USER IN MAIN")
                     dataStoreRepository.saveUserInfo(response)
                     _getUserState.value = UiState.Success(response)
-                    Timber.e("메인뷰모델 성공")
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        Timber.e("HTTP 실패 ${t.code()}")
+                        Timber.e("FAIL GET USER IN MAIN: ${t.code()}")
+
+                        // todo: 메인 액티비티가 아니라 여기서 t.code() 이용해서
+                        //   리프레시 토큰 만료되면 로그아웃 되게 해야 될 거 같아요!
                     }
                     Timber.e("${t.message}")
                     _getUserState.value = UiState.Failure("${t.message}")
@@ -55,7 +58,7 @@ class MainViewModel @Inject constructor(
                 .onSuccess { response ->
                     dataStoreRepository.saveAccessToken("", "")
                     _logoutState.value = UiState.Success(response)
-                    Timber.e("${response.message}")
+                    Timber.e(response.message)
                 }
                 .onFailure { t ->
                     if (t is HttpException) {

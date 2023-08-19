@@ -11,6 +11,7 @@ import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -39,6 +40,9 @@ interface AuthService {
 
     @POST("auth/sign-out")
     suspend fun postLogout(): ResponseLogoutDto
+
+    @DELETE("auth/withdraw")
+    suspend fun deleteUser(): BaseResponse<Unit>
 
     @GET("user/nickname/is-exist")
     suspend fun getNicknameDuplicateCheck(

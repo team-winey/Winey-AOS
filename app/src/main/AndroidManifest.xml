@@ -39,7 +39,7 @@
             android:name=".presentation.onboarding.story.StoryActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.onboarding.nickname.NicknameActivity"
+            android:name=".presentation.nickname.NicknameActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />

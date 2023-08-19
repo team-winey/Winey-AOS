@@ -7,22 +7,22 @@
 
         <variable
             name="vm"
-            type="com.android.go.sopt.winey.presentation.main.feed.upload.photo.PhotoViewModel" />
+            type="com.android.go.sopt.winey.presentation.main.feed.upload.UploadViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.main.feed.upload.photo.PhotoFragment">
+        tools:context=".presentation.main.feed.upload.PhotoFragment">
 
         <ImageView
             android:id="@+id/iv_photo_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/ic_upload_close"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="16dp"
+            android:src="@drawable/ic_upload_nickname_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -103,7 +103,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginBottom="14dp"
             android:background="@drawable/sel_upload_nickname_btn_color"
-            android:enabled="@{vm.photoUploadState, default=false}"
+            android:enabled="@{vm.isImageSelected, default=false}"
             android:stateListAnimator="@null"
             android:text="@string/upload_next_btn_text"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"

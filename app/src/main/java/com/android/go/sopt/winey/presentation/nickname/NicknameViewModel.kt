@@ -1,4 +1,4 @@
-package com.android.go.sopt.winey.presentation.onboarding.nickname
+package com.android.go.sopt.winey.presentation.nickname
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
