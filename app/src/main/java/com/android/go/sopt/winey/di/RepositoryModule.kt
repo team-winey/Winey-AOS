@@ -4,11 +4,13 @@ import com.android.go.sopt.winey.data.repository.AuthRepositoryImpl
 import com.android.go.sopt.winey.data.repository.DataStoreRepositoryImpl
 import com.android.go.sopt.winey.data.repository.FeedRepositoryImpl
 import com.android.go.sopt.winey.data.repository.KakaoLoginRepositoryImpl
+import com.android.go.sopt.winey.data.repository.NotificationRepositoryImpl
 import com.android.go.sopt.winey.data.repository.RecommendRepositoryImpl
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.domain.repository.FeedRepository
 import com.android.go.sopt.winey.domain.repository.KakaoLoginRepository
+import com.android.go.sopt.winey.domain.repository.NotificationRepository
 import com.android.go.sopt.winey.domain.repository.RecommendRepository
 import dagger.Binds
 import dagger.Module
@@ -48,4 +50,10 @@ abstract class RepositoryModule {
     abstract fun bindsDataStoreRepository(
         dataStoreRepository: DataStoreRepositoryImpl
     ): DataStoreRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindsNotificationRepository(
+        notificationRepository: NotificationRepositoryImpl
+    ): NotificationRepository
 }
