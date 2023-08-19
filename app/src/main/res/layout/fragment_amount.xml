@@ -7,14 +7,14 @@
 
         <variable
             name="vm"
-            type="com.android.go.sopt.winey.presentation.main.feed.upload.amount.AmountViewModel" />
+            type="com.android.go.sopt.winey.presentation.main.feed.upload.UploadViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.main.feed.upload.amount.AmountFragment">
+        tools:context=".presentation.main.feed.upload.AmountFragment">
 
         <ImageView
             android:id="@+id/iv_amount_back"

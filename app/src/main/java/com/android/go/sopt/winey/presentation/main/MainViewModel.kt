@@ -33,9 +33,9 @@ class MainViewModel @Inject constructor(
 
             authRepository.getUser()
                 .onSuccess { response ->
+                    Timber.e("SUCCESS GET USER IN MAIN")
                     dataStoreRepository.saveUserInfo(response)
                     _getUserState.value = UiState.Success(response)
-                    Timber.e("메인뷰모델 성공")
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
@@ -58,7 +58,7 @@ class MainViewModel @Inject constructor(
                 .onSuccess { response ->
                     dataStoreRepository.saveAccessToken("", "")
                     _logoutState.value = UiState.Success(response)
-                    Timber.e("${response.message}")
+                    Timber.e(response.message)
                 }
                 .onFailure { t ->
                     if (t is HttpException) {

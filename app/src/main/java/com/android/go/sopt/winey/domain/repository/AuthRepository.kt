@@ -24,6 +24,8 @@ interface AuthRepository {
 
     suspend fun postLogout(): Result<ResponseLogoutDto>
 
+    suspend fun deleteUser(): Result<Unit>
+
     suspend fun getNicknameDuplicateCheck(nickname: String): Result<ResponseGetNicknameDuplicateCheckDto?>
 
     suspend fun patchNickname(requestPatchNicknameDto: RequestPatchNicknameDto): Result<Unit>

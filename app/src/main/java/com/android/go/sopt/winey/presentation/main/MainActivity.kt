@@ -16,6 +16,8 @@ import com.android.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import com.android.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
+import com.android.go.sopt.winey.util.context.stringOf
+import com.android.go.sopt.winey.util.context.wineySnackbar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -24,14 +26,26 @@ import kotlinx.coroutines.flow.onEach
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel by viewModels<MainViewModel>()
+    private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
+        viewModel.getUser()
+
         navigateTo<WineyFeedFragment>()
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
+
         setupLogoutState()
+        showUploadSuccessSnackbar()
+    }
+
+    private fun showUploadSuccessSnackbar() {
+        if (isUploadSuccess != null && isUploadSuccess == true) {
+            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
+        }
     }
 
     private fun initBnvItemSelectedListener() {
@@ -60,7 +74,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    fun setupLogoutState() {
+    private fun setupLogoutState() {
         viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
@@ -92,5 +106,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }
+    }
+
+    companion object {
+        private const val EXTRA_UPLOAD_KEY = "upload"
     }
 }
