@@ -3,7 +3,6 @@ package com.android.go.sopt.winey.presentation.onboarding.story
 import android.content.Intent
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -28,40 +27,19 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         setUpDefaultNavigationText()
         setUpDefaultFragment(savedInstanceState)
         initNextButtonClickListener()
-        registerBackPressedCallback()
-    }
-
-    private fun registerBackPressedCallback() {
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                when (supportFragmentManager.findFragmentById(R.id.fcv_story)) {
-                    is FirstStoryFragment -> finish()
-                    is SecondStoryFragment -> {
-                        supportFragmentManager.popBackStack()
-                        updateNavigationText(BACK_DIRECTION, R.string.story_first_detail_text)
-                    }
-
-                    is ThirdStoryFragment -> {
-                        supportFragmentManager.popBackStack()
-                        updateNavigationText(BACK_DIRECTION, R.string.story_second_detail_text)
-                    }
-                }
-            }
-        }
-        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun initNextButtonClickListener() {
         binding.fabStoryNext.setOnClickListener {
             when (supportFragmentManager.findFragmentById(R.id.fcv_story)) {
                 is FirstStoryFragment -> {
-                    updateNavigationText(FRONT_DIRECTION, R.string.story_second_detail_text)
-                    navigateAndBackStack<SecondStoryFragment>()
+                    updateNavigationText(R.string.story_second_detail_text)
+                    navigateTo<SecondStoryFragment>()
                 }
 
                 is SecondStoryFragment -> {
-                    updateNavigationText(FRONT_DIRECTION, R.string.story_third_detail_text)
-                    navigateAndBackStack<ThirdStoryFragment>()
+                    updateNavigationText(R.string.story_third_detail_text)
+                    navigateTo<ThirdStoryFragment>()
                 }
 
                 is ThirdStoryFragment -> navigateToNicknameScreen()
@@ -69,13 +47,9 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         }
     }
 
-    private fun updateNavigationText(direction: Int, @StringRes resId: Int) {
+    private fun updateNavigationText(@StringRes resId: Int) {
         viewModel.apply {
-            if (direction == BACK_DIRECTION) {
-                updatePageNumber(--currentPageNumber)
-            } else {
-                updatePageNumber(++currentPageNumber)
-            }
+            updatePageNumber(++currentPageNumber)
             updateDetailText(stringOf(resId))
         }
     }
@@ -96,10 +70,9 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         }
     }
 
-    private inline fun <reified T : Fragment> navigateAndBackStack() {
+    private inline fun <reified T : Fragment> navigateTo() {
         supportFragmentManager.commit {
             replace<T>(R.id.fcv_story, T::class.simpleName)
-            addToBackStack(null)
         }
     }
 
@@ -113,8 +86,6 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
 
     companion object {
         private const val FIRST_PAGE_NUM = 1
-        private const val BACK_DIRECTION = -1
-        private const val FRONT_DIRECTION = 1
         private const val EXTRA_KEY = "PREV_SCREEN_NAME"
         private const val EXTRA_VALUE = "StoryActivity"
     }
