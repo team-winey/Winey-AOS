@@ -69,7 +69,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initToMyFeedButtonClickListener() {
         binding.clMypageToMyfeed.setOnSingleClickListener {
-            navigateTo<MyFeedFragment>()
+            navigateAndBackStack<MyFeedFragment>()
         }
     }
 
@@ -236,7 +236,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
+    private inline fun <reified T : Fragment> navigateAndBackStack() {
         parentFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
             addToBackStack(null)
