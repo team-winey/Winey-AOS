@@ -67,6 +67,7 @@
     <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
     <string name="impossible_dialog_close">닫기</string>
     <string name="mypage_1on1"><u>1:1 문의</u></string>
+    <string name="mypage_terms"><u>이용약관</u></string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
 
@@ -173,6 +174,15 @@
     <string name="alert_subtitle">서브 메시지 입니다.\n서브 메시지 입니다.</string>
     <string name="alert_btn1">버튼1</string>
     <string name="alert_btn2">버튼2</string>
+
+    <!-- notification -->
+    <string name="notification_title">알림</string>
+    <string name="notification_rankup">등급 상승</string>
+    <string name="notification_rankdown">등급 하락</string>
+    <string name="notification_goal_failed">목표 달성 실패</string>
+    <string name="notification_like">좋아요</string>
+    <string name="notification_comment">댓글</string>
+    <string name="notification_how_to_levelup">위니 사용법</string>
 
     <!-- snackbar -->
     <string name="snackbar_upload_success">업로드가 완료되었습니다 :)</string>

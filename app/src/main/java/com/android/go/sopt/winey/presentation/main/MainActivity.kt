@@ -22,7 +22,6 @@ import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import retrofit2.HttpException
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -40,7 +39,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         syncBottomNavigationSelection()
 
         setupLogoutState()
-        setupTokenState()
         showUploadSuccessSnackbar()
     }
 
@@ -96,24 +94,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }.launchIn(lifecycleScope)
     }
 
-    private fun setupTokenState() {
-        viewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Failure -> {
-                    // todo: 메인 뷰모델에 있는 todo 주석 참고해주세요!
-                    if (state is HttpException) {
-                        if (state.code() == CODE_TOKEN_EXPIRED) {
-                            viewModel.postLogout()
-                        }
-                    }
-                }
-
-                else -> {
-                }
-            }
-        }
-    }
-
     private fun navigateToLoginScreen() {
         Intent(this@MainActivity, LoginActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -129,7 +109,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     companion object {
-        private const val CODE_TOKEN_EXPIRED = 401
         private const val EXTRA_UPLOAD_KEY = "upload"
     }
 }
