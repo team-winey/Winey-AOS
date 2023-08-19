@@ -176,6 +176,7 @@
     <string name="alert_btn2">버튼2</string>
 
     <!-- notification -->
+    <string name="notification_title">알림</string>
     <string name="notification_rankup">등급 상승</string>
     <string name="notification_rankdown">등급 하락</string>
     <string name="notification_goal_failed">목표 달성 실패</string>
