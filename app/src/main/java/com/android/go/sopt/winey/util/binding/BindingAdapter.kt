@@ -42,13 +42,10 @@ fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) 
 }
 
 @BindingAdapter("imageUrl")
-fun loadImager(view: ImageView, imageurl: String?) {
-    if (imageurl != null) {
-        val uri = Uri.parse(imageurl)
-        view.load(uri) {
-            placeholder(R.drawable.img_wineyfeed_default)
-            transformations(RoundedCornersTransformation(10F))
-        }
+fun loadImager(view: ImageView, imageurl: String) {
+    view.load(imageurl) {
+        placeholder(R.drawable.img_wineyfeed_default)
+        transformations(RoundedCornersTransformation(10F))
     }
 }
 
@@ -126,5 +123,43 @@ fun TextView.setLevelText(level: Int?) {
             3 -> text = resources.getString(R.string.comment_level_3)
             4 -> text = resources.getString(R.string.comment_level_4)
         }
+    }
+}
+
+@BindingAdapter("notiType")
+fun TextView.setNotiType(notiType: String) {
+    val resourceId = when (notiType) {
+        "RANKUPTO2", "RANKUPTO3", "RANKUPTO4" -> R.string.notification_rankup
+        "DELETERANKDOWNTO1", "DELETERANKDOWNTO2", "DELETERANKDOWNTO3" -> R.string.notification_rankdown
+        "GOALFAILED" -> R.string.notification_goal_failed
+        "LIKENOTI" -> R.string.notification_like
+        "COMMENTNOTI" -> R.string.notification_comment
+        "HOWTOLEVELUP" -> R.string.notification_how_to_levelup
+        else -> null
+    }
+
+    if (resourceId != null) {
+        text = context.getString(resourceId)
+    } else {
+        text = ""
+    }
+}
+
+@BindingAdapter("notiType")
+fun ImageView.setNotiType(notiType: String) {
+    val drawableResourceId = when (notiType) {
+        "RANKUPTO2", "DELETERANKDOWNTO2" -> R.drawable.ic_notification_lv2
+        "RANKUPTO3", "DELETERANKDOWNTO3" -> R.drawable.ic_notification_lv3
+        "RANKUPTO4" -> R.drawable.ic_notification_lv4
+        "DELETERANKDOWNTO1" -> R.drawable.ic_notification_lv1
+        "GOALFAILED", "HOWTOLEVELUP" -> R.drawable.ic_notification_logo
+        "LIKENOTI" -> R.drawable.ic_notification_like
+        "COMMENTNOTI" -> R.drawable.ic_notification_comment
+        else -> 0
+    }
+
+    if (drawableResourceId != 0) {
+        setImageResource(drawableResourceId)
+    } else {
     }
 }

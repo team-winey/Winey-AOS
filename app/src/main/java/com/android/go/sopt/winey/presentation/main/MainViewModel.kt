@@ -39,10 +39,10 @@ class MainViewModel @Inject constructor(
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
-                        Timber.e("FAIL GET USER IN MAIN: ${t.code()}")
-
-                        // todo: 메인 액티비티가 아니라 여기서 t.code() 이용해서
-                        //   리프레시 토큰 만료되면 로그아웃 되게 해야 될 거 같아요!
+                        Timber.e("HTTP 실패 ${t.code()}")
+                        if (t.code() == CODE_TOKEN_EXPIRED) {
+                            postLogout()
+                        }
                     }
                     Timber.e("${t.message}")
                     _getUserState.value = UiState.Failure("${t.message}")
@@ -68,5 +68,9 @@ class MainViewModel @Inject constructor(
                     _logoutState.value = UiState.Failure("${t.message}")
                 }
         }
+    }
+
+    companion object {
+        private const val CODE_TOKEN_EXPIRED = 401
     }
 }
