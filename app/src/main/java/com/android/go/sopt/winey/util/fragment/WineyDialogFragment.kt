@@ -18,6 +18,7 @@ class WineyDialogFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        dialog?.setCanceledOnTouchOutside(false)
         initDialogText(title, subTitle, positiveButtonLabel, negativeButtonLabel)
         initNegativeButtonClickListener(handleNegativeButton)
         initPositiveButtonClickListener(handlePositiveButton)

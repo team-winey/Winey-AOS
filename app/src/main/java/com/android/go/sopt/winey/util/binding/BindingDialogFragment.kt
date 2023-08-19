@@ -9,7 +9,6 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
-import com.android.go.sopt.winey.R
 
 abstract class BindingDialogFragment<T : ViewDataBinding>(
     @LayoutRes val layoutRes: Int
