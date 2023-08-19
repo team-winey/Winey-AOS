@@ -157,4 +157,5 @@
     <string name="comment_level_2">LV.기사 ㆍ </string>
     <string name="comment_level_3">LV.귀족 ㆍ </string>
     <string name="comment_level_4">LV.황제 ㆍ </string>
+    <string name="comment_empty">아직 댓글이 없어요</string>
 </resources>
