@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.presentation.main.feed.detail
 import CommentAdapter
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import com.android.go.sopt.winey.R
@@ -43,8 +44,19 @@ class DetailFragment(private val feedId: Int, private val writerLevel: Int) :
         viewModel.getFeedDetailState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
+                    if (state.data?.commentList?.isEmpty() == true) {
+                        binding.rvDetailComment.isVisible = false
+                        binding.lCommentEmpty.isVisible = true
+                    } else {
+                        binding.rvDetailComment.isVisible = true
+                    }
                     binding.data = state.data
                     commentAdapter.submitList(state.data?.commentList)
+                }
+
+                is UiState.Loading -> {
+                    binding.rvDetailComment.isVisible = false
+                    binding.lCommentEmpty.isVisible = false
                 }
 
                 is UiState.Failure -> {
