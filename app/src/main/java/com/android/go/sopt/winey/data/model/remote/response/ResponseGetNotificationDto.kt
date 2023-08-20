@@ -26,10 +26,10 @@ data class ResponseGetNotificationDto(
         @SerialName("createdAt")
         val createdAt: String,
         @SerialName("linkId")
-        val linkId: Int
+        val linkId: Int?
     )
 
-    fun toNotification(): List<Notification> = getNotiResponseDtoList.map { data ->
+    fun toNotification() = this.getNotiResponseDtoList.map { data ->
         Notification(
             notiId = data.notiId,
             notiReceiver = data.notiReceiver,
@@ -37,7 +37,7 @@ data class ResponseGetNotificationDto(
             notiType = data.notiType,
             isChecked = data.isChecked,
             timeAgo = data.timeAgo,
-            linkId = data.linkId
+            linkId = data.linkId ?: null
         )
     }
 }

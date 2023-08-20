@@ -7,5 +7,5 @@ data class Notification(
     val notiType: String,
     val isChecked: Boolean,
     val timeAgo: String,
-    val linkId: Int
+    val linkId: Int?
 )
