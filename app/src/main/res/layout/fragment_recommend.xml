@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="vm"
+            type="com.android.go.sopt.winey.presentation.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,12 +33,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/iv_wineyfeed_notification"
+                android:id="@+id/iv_recommend_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_wineyfeed_notification_new"
+                android:src="@{vm.notiState ? @drawable/ic_wineyfeed_notification_new : @drawable/ic_wineyfeed_notification_none}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
