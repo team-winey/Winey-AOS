@@ -20,6 +20,7 @@ import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.feed.WineyFeedLoadAdapter
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
@@ -67,23 +68,26 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             WindowManager.LayoutParams.WRAP_CONTENT,
             true
         )
+
         val menuDelete = popupView.findViewById<TextView>(R.id.tv_popup_delete)
         val menuReport = popupView.findViewById<TextView>(R.id.tv_popup_report)
         menuReport.isVisible = false
+
         menuDelete.setOnSingleClickListener {
             showDeleteDialog(wineyFeed.feedId)
             popupWindow.dismiss()
         }
+
         popupWindow.showAsDropDown(view)
     }
 
     private fun showDeleteDialog(feedId: Int) {
-        val deleteDialog = AlertDialogFragment(
-            getString(R.string.myfeed_dialog_title),
-            getString(R.string.myfeed_dialog_sub),
-            getString(R.string.wineyfeed_dialog_cancel),
-            getString(R.string.myfeed_dialog_delete),
-            handleNegativeButton = { },
+        val deleteDialog = WineyDialogFragment(
+            getString(R.string.feed_delete_dialog_title),
+            getString(R.string.feed_delete_dialog_subtitle),
+            getString(R.string.feed_delete_dialog_negative_button),
+            getString(R.string.feed_delete_dialog_positive_button),
+            handleNegativeButton = {},
             handlePositiveButton = { viewModel.deleteFeed(feedId) }
         )
         deleteDialog.show(parentFragmentManager, TAG_DELETE_DIALOG)

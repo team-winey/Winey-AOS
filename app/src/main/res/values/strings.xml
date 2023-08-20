@@ -10,12 +10,24 @@
     <string name="wineyfeed_nickname">부자가 되고싶어</string>
     <string name="wineyfeed_title">교통비를 아끼기 위해 대중교통 대신\n걸어서 출퇴근을 했습니다</string>
     <string name="wineyfeed_money">원 절약</string>
-    <string name="wineyfeed_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
-    <string name="wineyfeed_dialog_sub">지금 마이프로필에서 간단한 목표를\n 설정해보세요!</string>
-    <string name="wineyfeed_dialog_cancel">취소</string>
-    <string name="wineyfeed_dialog_setgoal">목표 설정하기</string>
     <string name="wineyfeed_menu_report">신고하기</string>
     <string name="wineyfeed_menu_delete">삭제하기</string>
+    <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
+    <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
+    <string name="wineyfeed_goal_dialog_negative_button">취소</string>
+    <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
+
+    <!-- comment delete dialog -->
+    <string name="feed_comment_delete_dialog_title">삭제하시겠습니까?</string>
+    <string name="feed_comment_delete_dialog_subtitle">삭제한 글은 다시 복구할 수 없습니다.</string>
+    <string name="feed_comment_delete_dialog_negative_button">취소</string>
+    <string name="feed_comment_delete_dialog_positive_button">삭제하기</string>
+
+    <!-- feed delete dialog -->
+    <string name="feed_delete_dialog_title">정말 게시물을 삭제하시겠어요?</string>
+    <string name="feed_delete_dialog_subtitle">지금 게시물을 삭제하면 누적 금액이\n삭감되니 주의하세요!</string>
+    <string name="feed_delete_dialog_negative_button">취소</string>
+    <string name="feed_delete_dialog_positive_button">삭제하기</string>
 
     <!-- upload -->
     <string name="upload_photo_title">절약을 실천한\n모습을 보여주세요!</string>
@@ -34,6 +46,10 @@
     <string name="upload_amount_hint_text">0</string>
     <string name="upload_last_btn_text">업로드</string>
     <string name="upload_loading_title">오늘은\n %s 값을 \n절약했어요</string>
+    <string name="upload_dialog_title">지금 나가시면 작성하신 게 지워져요</string>
+    <string name="upload_dialog_subtitle">절약 실천 게시물을 올리면 레벨업에 가까워져요\n그래도 나가시겠습니까?</string>
+    <string name="upload_dialog_negative_button">취소</string>
+    <string name="upload_dialog_positive_button">나가기</string>
 
     <!-- mypage -->
     <string name="mypage_title">마이페이지</string>
@@ -51,12 +67,18 @@
     <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
     <string name="impossible_dialog_close">닫기</string>
     <string name="mypage_1on1"><u>1:1 문의</u></string>
+    <string name="mypage_terms"><u>이용약관</u></string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
-    <string name="mypage_dialog_title">정말 로그아웃 하시겠어요?</string>
-    <string name="mypage_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
-    <string name="mypage_dialog_negativebutton">취소</string>
-    <string name="mypage_dialog_positivebutton">로그아웃하기</string>
+
+    <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
+    <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
+    <string name="mypage_logout_dialog_negative_button">취소</string>
+    <string name="mypage_logout_dialog_positive_button">로그아웃하기</string>
+    <string name="mypage_withdraw_dialog_title">정말로 떠나시겠어요?</string>
+    <string name="mypage_withdraw_dialog_subtitle">세이버와 함께한 절약을 잊지 말아주세요.\n탈퇴 시, 계정은 삭제되며 복구되지 않습니다.</string>
+    <string name="mypage_withdraw_dialog_negative_button">탈퇴하기</string>
+    <string name="mypage_withdraw_dialog_positive_button">머무르기</string>
 
     <string name="target_amount_cancel">취소</string>
     <string name="target_amount_set_amount">목표 절약 금액을 설정해주세요</string>
@@ -89,8 +111,8 @@
     <string name="myfeed_nickname">루이당 4세</string>
     <string name="myfeed_title">오늘은 자네가 자주 타는\n대중교통비를 줄여보는 거 어떤가?</string>
     <string name="myfeed_money">원 절약</string>
-    <string name="myfeed_dialog_title">삭제하시겠습니까?</string>
-    <string name="myfeed_dialog_sub">삭제한 글은 다시 복구할 수 없습니다.</string>
+    <string name="myfeed_dialog_title">진짜 게시물을 삭제하시겠어요?</string>
+    <string name="myfeed_dialog_lowlevel_sub">지금 게시물을 삭제하면\n누적 금액이 삭감되니 주의하세요!</string>
     <string name="myfeed_dialog_highlevel_sub">지금 게시물을 삭제하면 누적 금액이\n 삭감되어 레벨이 내려갈 수 있으니 주의하세요!</string>
     <string name="myfeed_dialog_cancel">취소</string>
     <string name="myfeed_dialog_delete">삭제하기</string>
@@ -103,7 +125,8 @@
     <string name="recommend_header_text">쉿, 그대를 위한 절약방법이 도착했어.\n황실 내에서도 비밀인데 특별히 알려줄게:)</string>
 
     <!-- nickname -->
-    <string name="nickname_title">위니제국에 들어온 당신,\n어떤 닉네임으로 불리고 싶나요?</string>
+    <string name="nickname_default_title">위니제국에 들어온 당신,\n어떤 닉네임으로 불리고 싶나요?</string>
+    <string name="nickname_mypage_title">위니제국의 국민인 당신,\n어떤 닉네임으로 바꾸고 싶나요?</string>
     <string name="nickname_input_guide">공백 또는 특수문자는 사용할 수 없습니다</string>
     <string name="nickname_hint">닉네임 입력</string>
     <string name="nickname_counter">(%d/8)</string>
@@ -146,11 +169,24 @@
     <string name="story_winey_country_third_speech_bubble">절약 목표 금액을 채우시면, 다시 황제로\n돌아오실 수 있습니다. 다시 뵙기를 바라며…</string>
     <string name="story_nav_num_preview">1/3</string>
 
-    <!-- alert -->
+    <!-- alert dialog -->
     <string name="alert_title">타이틀 메시지 입니다.</string>
     <string name="alert_subtitle">서브 메시지 입니다.\n서브 메시지 입니다.</string>
     <string name="alert_btn1">버튼1</string>
     <string name="alert_btn2">버튼2</string>
+
+    <!-- notification -->
+    <string name="notification_title">알림</string>
+    <string name="notification_rankup">등급 상승</string>
+    <string name="notification_rankdown">등급 하락</string>
+    <string name="notification_goal_failed">목표 달성 실패</string>
+    <string name="notification_like">좋아요</string>
+    <string name="notification_comment">댓글</string>
+    <string name="notification_how_to_levelup">위니 사용법</string>
+
+    <!-- snackbar -->
+    <string name="snackbar_upload_success">업로드가 완료되었습니다 :)</string>
+    <string name="snackbar_upload_fail">죄송합니다. 업로드에 실패했습니다 :(</string>
 
     <!-- comment -->
     <string name="comment_level_1">LV.평민 ㆍ </string>

@@ -1,21 +1,21 @@
-package com.android.go.sopt.winey.presentation.main.feed.upload.amount
+package com.android.go.sopt.winey.presentation.main.feed.upload
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentAmountBinding
 import com.android.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
-import com.android.go.sopt.winey.util.fragment.snackBar
+import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
+import com.android.go.sopt.winey.util.fragment.wineySnackbar
 import com.android.go.sopt.winey.util.multipart.UriToRequestBody
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
@@ -26,13 +26,11 @@ import java.text.DecimalFormat
 
 @AndroidEntryPoint
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
-    private val viewModel by viewModels<AmountViewModel>()
-    private val imageUriArg by lazy { requireArguments().getParcelable<Uri>(ARGS_PHOTO_KEY) }
-    private val contentArg by lazy { requireArguments().getString(ARGS_CONTENT_KEY, "") }
+    private val uploadViewModel by activityViewModels<UploadViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.vm = viewModel
+        binding.vm = uploadViewModel
 
         updateRequestBody()
         initPostImageStateObserver()
@@ -48,18 +46,20 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 //        val adjustedImageBitmap = compressor.adjustImageFormat()
 //        val bitmapRequestBody =
 //            BitmapRequestBody(requireContext(), imageUriArg, adjustedImageBitmap)
-        val requestBody = UriToRequestBody(requireContext(), imageUriArg!!)
-        viewModel.updateRequestBody(requestBody)
+
+        val imageUri = uploadViewModel.imageUri.value ?: return
+        val requestBody = UriToRequestBody(requireContext(), imageUri)
+        uploadViewModel.updateRequestBody(requestBody)
     }
 
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
-            viewModel.postWineyFeed(contentArg, viewModel.amount.removeComma())
+            uploadViewModel.postWineyFeed(uploadViewModel.content, uploadViewModel.amount.removeComma())
         }
     }
 
     private fun initPostImageStateObserver() {
-        viewModel.postWineyFeedState.flowWithLifecycle(viewLifeCycle)
+        uploadViewModel.postWineyFeedState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
                 when (state) {
                     is UiState.Loading -> {
@@ -71,7 +71,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     }
 
                     is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
+                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_upload_fail))
                     }
 
                     is UiState.Empty -> {
@@ -86,7 +86,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
     private fun navigateLoadingScreen() {
         Intent(requireContext(), LoadingActivity::class.java).apply {
-            putExtra(EXTRA_AMOUNT_KEY, viewModel.amount.removeComma())
+            putExtra(EXTRA_AMOUNT_KEY, uploadViewModel.amount.removeComma())
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
@@ -137,8 +137,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val ARGS_PHOTO_KEY = "photo"
-        private const val ARGS_CONTENT_KEY = "content"
         private const val EXTRA_AMOUNT_KEY = "amount"
     }
 }

@@ -9,6 +9,7 @@ import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import com.android.go.sopt.winey.util.view.WineySnackbar
 import com.google.android.material.snackbar.Snackbar
 
 /** Hide keyboard from window */
@@ -27,6 +28,10 @@ fun Context.longToast(message: String) {
 
 fun Context.snackBar(anchorView: View, message: () -> String) {
     Snackbar.make(anchorView, message(), Snackbar.LENGTH_SHORT).show()
+}
+
+fun Context.wineySnackbar(anchorView: View, isSuccess: Boolean, message: String) {
+    WineySnackbar.make(anchorView, isSuccess, message).show()
 }
 
 fun Context.stringOf(@StringRes resId: Int) = getString(resId)

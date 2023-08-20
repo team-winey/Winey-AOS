@@ -33,6 +33,7 @@ class TargetAmountBottomSheetFragment :
     ) {
     private val viewModel by viewModels<TargetAmountViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
+
     override fun onStart() {
         super.onStart()
         initScreenHeight()
@@ -65,6 +66,7 @@ class TargetAmountBottomSheetFragment :
                 }
 
                 is UiState.Success -> {
+                    // 마이페이지 프래그먼트에서 getUserState 관찰
                     mainViewModel.getUser()
                     this@TargetAmountBottomSheetFragment.dismiss()
                 }

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.android.go.sopt.winey.domain.entity.Notification" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_notification_icon"
+            notiType="@{data.notiType}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_notification_comment" />
+
+        <TextView
+            android:id="@+id/tv_notification_what"
+            notiType="@{data.notiType}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+            android:textColor="@color/gray_400"
+            app:layout_constraintStart_toEndOf="@id/iv_notification_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="좋아요" />
+
+        <TextView
+            android:id="@+id/tv_notification_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@{data.notiMessage}"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+            app:layout_constraintStart_toStartOf="@id/tv_notification_what"
+            app:layout_constraintTop_toBottomOf="@id/tv_notification_what"
+            tools:text="님이 회원님의 게시글을 좋아해요." />
+
+        <TextView
+            android:id="@+id/tv_notification_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@{data.timeAgo}"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+            android:textColor="@color/gray_400"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10분전" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_50"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

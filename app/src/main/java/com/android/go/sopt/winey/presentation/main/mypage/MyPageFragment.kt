@@ -8,19 +8,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyPageBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
-import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
+import com.android.go.sopt.winey.presentation.nickname.NicknameActivity
+import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
-import com.android.go.sopt.winey.util.context.stringOf
+import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.stringOf
+import com.android.go.sopt.winey.util.fragment.viewLifeCycle
+import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,33 +35,56 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
-    private val viewModel by activityViewModels<MainViewModel>()
+    private val mainViewModel by activityViewModels<MainViewModel>()
+    private val myPageViewModel by viewModels<MyPageViewModel>()
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         init1On1ButtonClickListener()
+        initTermsButtonClickListener()
         initLevelHelpButtonClickListener()
         initToMyFeedButtonClickListener()
         initLogoutButtonClickListener()
+        initWithdrawButtonClickListener()
+        initNicknameButtonClickListener()
+
         setupGetUserState()
-        viewModel.getUser()
+        setupDeleteUserState()
     }
 
-    override fun onResume() {
-        super.onResume()
+    // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
+    override fun onStart() {
+        super.onStart()
+        mainViewModel.getUser()
+    }
+
+    private fun initNicknameButtonClickListener() {
+        binding.ivMypageNickname.setOnClickListener {
+            navigateToNicknameScreen()
+        }
     }
 
     private fun initToMyFeedButtonClickListener() {
         binding.clMypageToMyfeed.setOnSingleClickListener {
-            navigateTo<MyFeedFragment>()
+            navigateAndBackStack<MyFeedFragment>()
         }
     }
 
     private fun init1On1ButtonClickListener() {
         binding.clMypageTo1on1.setOnClickListener {
             val url = ONE_ON_ONE_URL
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        }
+    }
+
+    private fun initTermsButtonClickListener() {
+        binding.clMypageToTerms.setOnClickListener {
+            val url = TERMS_URL
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
         }
@@ -72,29 +99,75 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
-            val dialog = AlertDialogFragment(
-                stringOf(R.string.mypage_dialog_title),
-                stringOf(R.string.mypage_dialog_subtitle),
-                stringOf(R.string.mypage_dialog_negativebutton),
-                stringOf(R.string.mypage_dialog_positivebutton),
+            val dialog = WineyDialogFragment(
+                stringOf(R.string.mypage_logout_dialog_title),
+                stringOf(R.string.mypage_logout_dialog_subtitle),
+                stringOf(R.string.mypage_logout_dialog_negative_button),
+                stringOf(R.string.mypage_logout_dialog_positive_button),
                 handleNegativeButton = {},
-                handlePositiveButton = { viewModel.postLogout() }
+                handlePositiveButton = { mainViewModel.postLogout() }
             )
-            dialog.show(this.childFragmentManager, dialog.tag)
+            dialog.show(parentFragmentManager, TAG_LOGOUT_DIALOG)
+        }
+    }
+
+    private fun initWithdrawButtonClickListener() {
+        binding.ivMypageWithdraw.setOnClickListener {
+            val dialog = WineyDialogFragment(
+                stringOf(R.string.mypage_withdraw_dialog_title),
+                stringOf(R.string.mypage_withdraw_dialog_subtitle),
+                stringOf(R.string.mypage_withdraw_dialog_negative_button),
+                stringOf(R.string.mypage_withdraw_dialog_positive_button),
+                handleNegativeButton = { myPageViewModel.deleteUser() },
+                handlePositiveButton = {}
+            )
+            dialog.show(parentFragmentManager, TAGE_WITHDRAW_DIALOG)
+        }
+    }
+
+    private fun setupDeleteUserState() {
+        myPageViewModel.deleteUserState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        myPageViewModel.clearDataStore()
+                        navigateToGuideScreen()
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {
+                    }
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun navigateToGuideScreen() {
+        Intent(requireContext(), GuideActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToNicknameScreen() {
+        Intent(requireContext(), NicknameActivity::class.java).apply {
+            putExtra(EXTRA_KEY, EXTRA_VALUE)
+            startActivity(this)
         }
     }
 
     private fun setupGetUserState() {
-        viewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
-
+        mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
                 }
 
                 is UiState.Success -> {
                     val data = dataStoreRepository.getUserInfo().firstOrNull()
-                    handleSuccessState(data)
-                    handleTargetModifyButtonState(data)
+                    updateUserInfo(data)
+                    initBottomSheetClickListener(data)
                 }
 
                 is UiState.Failure -> {
@@ -107,27 +180,32 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.launchIn(lifecycleScope)
     }
 
-    private fun handleTargetModifyButtonState(data: User?) {
+    private fun initBottomSheetClickListener(data: User?) {
         binding.btnMypageTargetModify.setOnSingleClickListener {
             val bottomSheet = TargetAmountBottomSheetFragment()
             bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
-            /*when (data.isOver) {
-            true -> {
-                val bottomSheet = TargetAmountBottomSheetFragment()
-                bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
-            }
 
-            false -> {
-                val dialog = MyPageDialogFragment()
-                dialog.show(this.childFragmentManager, dialog.tag)
-            }
-        }*/
+            /*when (data.isOver) {
+                true -> {
+                    val bottomSheet = TargetAmountBottomSheetFragment()
+                    bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
+                }
+
+                false -> {
+                    val dialog = MyPageDialogFragment()
+                    dialog.show(this.childFragmentManager, dialog.tag)
+                }
+           }*/
         }
     }
 
-    private fun handleSuccessState(data: User?) {
+    private fun updateUserInfo(data: User?) {
         binding.data = data
+        handleIsOver(data)
+        handleUserLevel(data)
+    }
 
+    private fun handleIsOver(data: User?) {
         when (data?.isOver) {
             true -> {
                 binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
@@ -147,6 +225,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             null -> {
             }
         }
+    }
+
+    private fun handleUserLevel(data: User?) {
         when (data?.userLevel) {
             LEVEL_COMMON -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
@@ -170,9 +251,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
-        val currentFragment = parentFragmentManager.findFragmentById(R.id.fcv_main)
-
+    private inline fun <reified T : Fragment> navigateAndBackStack() {
         parentFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
             addToBackStack(null)
@@ -185,5 +264,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val LEVEL_NOBLESS = "귀족"
         private const val LEVEL_KING = "황제"
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
+        private const val TERMS_URL = "https://empty-weaver-a9f.notion.site/62b37962c661488ba5f60958c24753e1?pvs=4"
+        private const val EXTRA_KEY = "PREV_SCREEN_NAME"
+        private const val EXTRA_VALUE = "MyPageFragment"
+        private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
+        private const val TAGE_WITHDRAW_DIALOG = "WITHDRAW_DIALOG"
     }
 }
