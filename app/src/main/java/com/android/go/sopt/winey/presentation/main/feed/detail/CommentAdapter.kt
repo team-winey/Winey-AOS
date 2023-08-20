@@ -6,7 +6,7 @@ import com.android.go.sopt.winey.databinding.ItemDetailCommentBinding
 import com.android.go.sopt.winey.domain.entity.CommentList
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
-class CommentAdapter() : ListAdapter<CommentList, CommentAdapter.CommentViewHolder>(diffUtil) {
+class CommentAdapter : ListAdapter<CommentList, CommentAdapter.CommentViewHolder>(diffUtil) {
     class CommentViewHolder(
         private val binding: ItemDetailCommentBinding
     ) : RecyclerView.ViewHolder(binding.root) {

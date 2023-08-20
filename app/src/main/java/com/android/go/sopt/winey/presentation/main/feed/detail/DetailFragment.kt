@@ -22,12 +22,13 @@ import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
-class DetailFragment() :
+class DetailFragment :
     BindingFragment<FragmentDetailBinding>(R.layout.fragment_detail) {
     private var writerLevel: Int = 0
     private var feedId: Int = 0
     private lateinit var commentAdapter: CommentAdapter
     private val viewModel by viewModels<DetailViewModel>()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
@@ -35,10 +36,13 @@ class DetailFragment() :
             writerLevel = it.getInt("writerLevel", 0)
         }
         viewModel.getFeedDetail(feedId)
+
         initAdapter()
         initGetFeedDetailObserver()
+
         binding.ivDetailBack.setOnSingleClickListener {
-            navigateToWineyFeed()
+            // navigateToWineyFeed()
+            requireActivity().finish()
         }
     }
 
