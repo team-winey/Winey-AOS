@@ -13,17 +13,20 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val feedId = intent.getIntExtra("feedId", 0)
-        val writerLevel = intent.getIntExtra("writerLevel", 0)
-        putArgsToDetail(feedId, writerLevel)
+
+        putArgsToDetailFragment()
         setDefaultFragment(savedInstanceState)
     }
 
-    private fun putArgsToDetail(feedId: Int, writerLevel: Int) {
+    private fun putArgsToDetailFragment() {
         detailFragment = DetailFragment()
+
+        val feedId = intent.getIntExtra(EXTRA_KEY_FEED_ID, 0)
+        val writerLevel = intent.getIntExtra(EXTRA_KEY_WRITER_LV, 0)
+
         detailFragment.arguments = Bundle().apply {
-            putInt("feedId", feedId)
-            putInt("writerLevel", writerLevel)
+            putInt(EXTRA_KEY_FEED_ID, feedId)
+            putInt(EXTRA_KEY_WRITER_LV, writerLevel)
         }
     }
 
@@ -33,5 +36,10 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 replace(R.id.fcv_detail, detailFragment)
             }
         }
+    }
+
+    companion object {
+        private const val EXTRA_KEY_FEED_ID = "feedId"
+        private const val EXTRA_KEY_WRITER_LV = "writerLevel"
     }
 }
