@@ -31,8 +31,18 @@ class DetailViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
 
+    val isLongText: StateFlow<Boolean> = _comment.map { checkLength(it) }
+        .stateIn(
+            initialValue = false,
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
+        )
+
     private fun validateComment(comment: String): Boolean =
         comment.isNotBlank() && comment.length in MIN_COMMENT_LENGTH..MAX_COMMENT_LENGTH
+
+    private fun checkLength(comment: String) =
+        comment.isNotBlank() && comment.length >= LONG_TEXT_LENGTH
 
     private val _getFeedDetailState =
         MutableStateFlow<UiState<DetailFeed?>>(UiState.Loading)
@@ -68,6 +78,7 @@ class DetailViewModel @Inject constructor(
 
         private const val PRODUCE_STOP_TIMEOUT = 5000L
         private const val MIN_COMMENT_LENGTH = 1
-        private const val MAX_COMMENT_LENGTH = 500
+        private const val LONG_TEXT_LENGTH = 450
+        const val MAX_COMMENT_LENGTH = 500
     }
 }
