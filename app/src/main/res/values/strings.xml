@@ -187,4 +187,11 @@
     <!-- snackbar -->
     <string name="snackbar_upload_success">업로드가 완료되었습니다 :)</string>
     <string name="snackbar_upload_fail">죄송합니다. 업로드에 실패했습니다 :(</string>
+
+    <!-- comment -->
+    <string name="comment_level_1">LV.평민 ㆍ </string>
+    <string name="comment_level_2">LV.기사 ㆍ </string>
+    <string name="comment_level_3">LV.귀족 ㆍ </string>
+    <string name="comment_level_4">LV.황제 ㆍ </string>
+    <string name="comment_empty">아직 댓글이 없어요</string>
 </resources>

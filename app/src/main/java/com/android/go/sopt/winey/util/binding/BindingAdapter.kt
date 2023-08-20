@@ -154,3 +154,15 @@ fun ImageView.setNotiType(notiType: String) {
     } else {
     }
 }
+
+@BindingAdapter("setLevelText")
+fun TextView.setLevelText(level: Int?) {
+    level?.let {
+        when (it) {
+            1 -> text = resources.getString(R.string.comment_level_1)
+            2 -> text = resources.getString(R.string.comment_level_2)
+            3 -> text = resources.getString(R.string.comment_level_3)
+            4 -> text = resources.getString(R.string.comment_level_4)
+        }
+    }
+}

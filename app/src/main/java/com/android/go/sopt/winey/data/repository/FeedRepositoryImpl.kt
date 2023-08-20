@@ -9,6 +9,7 @@ import com.android.go.sopt.winey.data.service.FeedService
 import com.android.go.sopt.winey.data.source.FeedDataSource
 import com.android.go.sopt.winey.data.source.paging.MyFeedPagingSource
 import com.android.go.sopt.winey.data.source.paging.WineyFeedPagingSource
+import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.FeedRepository
@@ -50,6 +51,11 @@ class FeedRepositoryImpl @Inject constructor(
     ): Result<Like> =
         runCatching {
             feedDataSource.postFeedLike(feedId, requestPostLikeDto).toLike()
+        }
+
+    override suspend fun getFeedDetail(feedId: Int): Result<DetailFeed?> =
+        runCatching {
+            feedDataSource.getFeedDetail(feedId).data?.toDetailFeed()
         }
 
     companion object {
