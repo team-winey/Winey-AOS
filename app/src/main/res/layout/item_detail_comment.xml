@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="data"
-            type="com.android.go.sopt.winey.domain.entity.CommentList" />
+            type="com.android.go.sopt.winey.domain.entity.Comment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +24,8 @@
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_600"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="LV.황제 ㆍ " />
 
         <TextView
             android:id="@+id/tv_comment_nickname"
@@ -35,7 +37,8 @@
             android:textColor="@color/gray_600"
             app:layout_constraintEnd_toStartOf="@id/iv_comment_more"
             app:layout_constraintStart_toEndOf="@id/tv_comment_level"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="안뇽" />
 
         <ImageView
             android:id="@+id/iv_comment_more"
@@ -58,7 +61,8 @@
             android:textColor="@color/gray_900"
             app:layout_constraintEnd_toStartOf="@id/iv_comment_more"
             app:layout_constraintStart_toStartOf="@id/tv_comment_level"
-            app:layout_constraintTop_toBottomOf="@id/tv_comment_level" />
+            app:layout_constraintTop_toBottomOf="@id/tv_comment_level"
+            tools:text="잘하셨어요^^ 안드짱" />
 
         <View
             android:id="@+id/v_comment_end"
@@ -67,7 +71,5 @@
             android:layout_marginTop="16dp"
             android:background="@color/gray_100"
             app:layout_constraintTop_toBottomOf="@id/tv_comment_content" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

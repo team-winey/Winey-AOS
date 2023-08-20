@@ -256,8 +256,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun navigateToDetail(feedId: Int, writerLevel: Int) {
         val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra("feedId", feedId)
-        intent.putExtra("writerLevel", writerLevel)
+        intent.putExtra(KEY_FEED_ID, feedId)
+        intent.putExtra(KEY_WRITER_LV, writerLevel)
         startActivity(intent)
     }
 
@@ -265,5 +265,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
+
+        private const val KEY_FEED_ID = "feedId"
+        private const val KEY_WRITER_LV = "writerLevel"
     }
 }

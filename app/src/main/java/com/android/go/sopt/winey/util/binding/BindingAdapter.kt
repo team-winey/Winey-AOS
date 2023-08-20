@@ -17,6 +17,7 @@ import com.android.go.sopt.winey.util.context.drawableOf
 import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.view.InputUiState
 import com.android.go.sopt.winey.util.view.InputUiState.*
+import de.hdodenhof.circleimageview.CircleImageView
 import java.text.DecimalFormat
 
 @BindingAdapter("likedAmount")
@@ -165,4 +166,16 @@ fun TextView.setLevelText(level: Int?) {
             4 -> text = resources.getString(R.string.comment_level_4)
         }
     }
+}
+
+@BindingAdapter("setWriterLevelImage")
+fun CircleImageView.setWriterLevelImage(writerLevel: Int) {
+    val drawableResId = when (writerLevel) {
+        1 -> R.drawable.img_wineyfeed_profile_1
+        2 -> R.drawable.img_wineyfeed_profile_2
+        3 -> R.drawable.img_wineyfeed_profile_3
+        4 -> R.drawable.img_wineyfeed_profile_4
+        else -> R.drawable.img_wineyfeed_profile
+    }
+    setImageResource(drawableResId)
 }
