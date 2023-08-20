@@ -41,6 +41,7 @@
             android:id="@+id/rv_detail"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/gray_50"
             android:orientation="vertical"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
