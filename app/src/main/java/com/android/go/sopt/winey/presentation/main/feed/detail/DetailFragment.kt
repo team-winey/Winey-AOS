@@ -1,6 +1,7 @@
 package com.android.go.sopt.winey.presentation.main.feed.detail
 
 import CommentAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -8,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentDetailBinding
+import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
@@ -20,17 +22,23 @@ import kotlinx.coroutines.flow.onEach
 import timber.log.Timber
 
 @AndroidEntryPoint
-class DetailFragment(private val feedId: Int, private val writerLevel: Int) :
+class DetailFragment() :
     BindingFragment<FragmentDetailBinding>(R.layout.fragment_detail) {
+    private var writerLevel: Int = 0
+    private var feedId: Int = 0
     private lateinit var commentAdapter: CommentAdapter
     private val viewModel by viewModels<DetailViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.let {
+            feedId = it.getInt("feedId", 0)
+            writerLevel = it.getInt("writerLevel", 0)
+        }
         viewModel.getFeedDetail(feedId)
         initAdapter()
         initGetFeedDetailObserver()
         binding.ivDetailBack.setOnSingleClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
+            navigateToWineyFeed()
         }
     }
 
@@ -76,6 +84,13 @@ class DetailFragment(private val feedId: Int, private val writerLevel: Int) :
             4 -> R.drawable.img_wineyfeed_profile_4
             else -> R.drawable.img_wineyfeed_profile
         }
+    }
+
+    private fun navigateToWineyFeed() {
+        val intent = Intent(requireContext(), MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     companion object {

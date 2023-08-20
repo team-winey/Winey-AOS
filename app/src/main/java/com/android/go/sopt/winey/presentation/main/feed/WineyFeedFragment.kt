@@ -10,6 +10,8 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -21,10 +23,10 @@ import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
-import com.android.go.sopt.winey.presentation.main.AlertDialogFragment
 import com.android.go.sopt.winey.presentation.main.MainViewModel
-import com.android.go.sopt.winey.presentation.main.feed.detail.DetailFragment
+import com.android.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
+import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -49,7 +51,6 @@ import javax.inject.Inject
 class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
     private val viewModel by viewModels<WineyFeedViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
-    private lateinit var wineyFeedDialogFragment: WineyFeedDialogFragment
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
@@ -76,7 +77,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
             },
-            toFeedDetail = { feedId, writerLevel -> navigateDetail(feedId, writerLevel) }
+            toFeedDetail = { feedId, writerLevel -> navigateToDetail(feedId, writerLevel) }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
@@ -253,17 +254,15 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         startActivity(intent)
     }
 
-    private fun navigateDetail(feedId: Int, writerLevel: Int) {
-        parentFragmentManager.commit {
-            replace(R.id.fcv_main, DetailFragment(feedId, writerLevel))
-            addToBackStack(null)
-        }
+    private fun navigateToDetail(feedId: Int, writerLevel: Int) {
+        val intent = Intent(requireContext(), DetailActivity::class.java)
+        intent.putExtra("feedId", feedId)
+        intent.putExtra("writerLevel", writerLevel)
+        startActivity(intent)
     }
 
     companion object {
-        private const val TAG_WINEYFEED_DIALOG = "NO_GOAL_DIALOG"
         private const val MSG_WINEYFEED_ERROR = "ERROR"
-
         private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
     }
