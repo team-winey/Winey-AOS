@@ -196,4 +196,5 @@
     <string name="comment_empty">아직 댓글이 없어요</string>
     <string name="comment_hint">댓글을 입력하세요</string>
     <string name="comment_upload_btn_text">등록</string>
+    <string name="comment_counter_preview">450/500</string>
 </resources>

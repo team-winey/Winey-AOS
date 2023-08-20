@@ -73,6 +73,16 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
+                    android:visibility="invisible"
+                    android:textColor="?colorError"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="@string/comment_counter_preview" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </FrameLayout>
