@@ -16,8 +16,7 @@ class WineyFeedAdapter(
     private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
     private val showPopupMenu: (View, WineyFeed) -> Unit,
     private val toFeedDetail: (feedId: Int, writerLevel: Int) -> Unit
-) :
-    PagingDataAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
+) : PagingDataAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
     private val currentData: ItemSnapshotList<WineyFeed>
         get() = snapshot()
 
