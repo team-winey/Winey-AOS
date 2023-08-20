@@ -24,7 +24,7 @@ import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainViewModel
-import com.android.go.sopt.winey.presentation.main.feed.detail.DetailFragment
+import com.android.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -77,7 +77,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
             },
-            toFeedDetail = { feedId, writerLevel -> navigateDetail(feedId, writerLevel) }
+            toFeedDetail = { feedId, writerLevel -> navigateToDetail(feedId, writerLevel) }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
@@ -254,11 +254,11 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         startActivity(intent)
     }
 
-    private fun navigateDetail(feedId: Int, writerLevel: Int) {
-        parentFragmentManager.commit {
-            replace(R.id.fcv_main, DetailFragment(feedId, writerLevel))
-            addToBackStack(null)
-        }
+    private fun navigateToDetail(feedId: Int, writerLevel: Int) {
+        val intent = Intent(requireContext(), DetailActivity::class.java)
+        intent.putExtra("feedId", feedId)
+        intent.putExtra("writerLevel", writerLevel)
+        startActivity(intent)
     }
 
     companion object {
