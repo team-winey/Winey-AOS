@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +8,9 @@ import android.view.WindowManager
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -17,6 +20,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.presentation.main.feed.WineyFeedLoadAdapter
+import com.android.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
@@ -25,6 +29,7 @@ import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -53,7 +58,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             },
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
-            }
+            },
+            toFeedDetail = { feedId, writerLevel -> navigateToDetail(feedId, writerLevel) }
         )
         binding.rvMyfeedPost.adapter = myFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
     }
@@ -95,7 +101,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     private fun initButtonClickListener() {
         binding.imgMyfeedBack.setOnSingleClickListener {
-            navigateToMyPage()
+            navigateTo<MyPageFragment>()
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -178,11 +185,19 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    private fun navigateToMyPage() {
+    private fun navigateToDetail(feedId: Int, writerLevel: Int) {
+        val intent = Intent(requireContext(), DetailActivity::class.java)
+        intent.putExtra("feedId", feedId)
+        intent.putExtra("writerLevel", writerLevel)
+        startActivity(intent)
+    }
+
+    private inline fun <reified T : Fragment> navigateTo() {
         parentFragmentManager.commit {
-            replace(R.id.fcv_main, MyPageFragment())
+            replace<T>(R.id.fcv_main, T::class.simpleName)
         }
-        parentFragmentManager.popBackStack()
+        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
+        bottomNav.selectedItemId = R.id.menu_mypage
     }
 
     companion object {
