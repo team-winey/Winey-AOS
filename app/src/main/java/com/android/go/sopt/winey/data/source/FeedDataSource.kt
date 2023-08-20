@@ -1,6 +1,7 @@
 package com.android.go.sopt.winey.data.source
 
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseGetFeedDetailDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
@@ -26,4 +27,9 @@ class FeedDataSource @Inject constructor(
         requestMap: HashMap<String, RequestBody>
     ): BaseResponse<ResponsePostWineyFeedDto> =
         feedService.postWineyFeed(file, requestMap)
+
+    suspend fun getFeedDetail(
+        feedId: Int
+    ): BaseResponse<ResponseGetFeedDetailDto> =
+        feedService.getFeedDetail(feedId)
 }

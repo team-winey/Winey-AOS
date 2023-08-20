@@ -42,10 +42,13 @@ fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) 
 }
 
 @BindingAdapter("imageUrl")
-fun loadImager(view: ImageView, imageurl: String) {
-    view.load(imageurl) {
-        placeholder(R.drawable.img_wineyfeed_default)
-        transformations(RoundedCornersTransformation(10F))
+fun loadImager(view: ImageView, imageurl: String?) {
+    if (imageurl != null) {
+        val uri = Uri.parse(imageurl)
+        view.load(uri) {
+            placeholder(R.drawable.img_wineyfeed_default)
+            transformations(RoundedCornersTransformation(10F))
+        }
     }
 }
 
@@ -149,5 +152,17 @@ fun ImageView.setNotiType(notiType: String) {
     if (drawableResourceId != 0) {
         setImageResource(drawableResourceId)
     } else {
+    }
+}
+
+@BindingAdapter("setLevelText")
+fun TextView.setLevelText(level: Int?) {
+    level?.let {
+        when (it) {
+            1 -> text = resources.getString(R.string.comment_level_1)
+            2 -> text = resources.getString(R.string.comment_level_2)
+            3 -> text = resources.getString(R.string.comment_level_3)
+            4 -> text = resources.getString(R.string.comment_level_4)
+        }
     }
 }
