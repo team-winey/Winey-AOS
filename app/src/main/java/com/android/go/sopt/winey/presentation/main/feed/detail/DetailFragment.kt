@@ -1,7 +1,6 @@
 package com.android.go.sopt.winey.presentation.main.feed.detail
 
 import CommentAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -9,7 +8,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentDetailBinding
-import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
@@ -41,7 +39,6 @@ class DetailFragment :
         initGetFeedDetailObserver()
 
         binding.ivDetailBack.setOnSingleClickListener {
-            // navigateToWineyFeed()
             requireActivity().finish()
         }
     }
@@ -88,13 +85,6 @@ class DetailFragment :
             4 -> R.drawable.img_wineyfeed_profile_4
             else -> R.drawable.img_wineyfeed_profile
         }
-    }
-
-    private fun navigateToWineyFeed() {
-        val intent = Intent(requireContext(), MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(intent)
-        requireActivity().finish()
     }
 
     companion object {
