@@ -31,6 +31,19 @@ class CommentAdapter : ListAdapter<Comment, CommentAdapter.CommentViewHolder>(di
         holder.onBind(getItem(position))
     }
 
+    fun addItem(item: Comment) {
+        val newList = currentList.toMutableList()
+        newList.add(item)
+        submitList(newList)
+    }
+
+    // todo: 어댑터에서 아이템 삭제한 뒤에, 실제로 서버통신도 해줘야 다음에 GET 할 때 반영된다!
+    fun deleteItem(position: Int) {
+        val newList = currentList.toMutableList()
+        newList.removeAt(position)
+        submitList(newList)
+    }
+
     companion object {
         private val diffUtil = ItemDiffCallback<Comment>(
             onItemsTheSame = { old, new -> old.commentId == new.commentId },

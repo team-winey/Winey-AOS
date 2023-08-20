@@ -1,5 +1,6 @@
 package com.android.go.sopt.winey.data.model.remote.response
 
+import com.android.go.sopt.winey.domain.entity.Comment
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -17,4 +18,12 @@ data class ResponsePostCommentDto(
     val authorId: Int,
     @SerialName("authorLevel")
     val authorLevel: Int
-)
+) {
+    fun toComment() = Comment(
+        commentId = this.commentId,
+        author = this.author,
+        content = this.content,
+        authorLevel = this.authorLevel,
+        authorId = this.authorId
+    )
+}

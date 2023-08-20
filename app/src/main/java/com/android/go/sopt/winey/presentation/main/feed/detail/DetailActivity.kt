@@ -36,6 +36,33 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.getFeedDetail(feedId)
         initGetFeedDetailObserver()
         initBackButtonClickListener()
+
+        initCommentUploadButtonClickListener()
+        initPostCommentStateObserver()
+    }
+
+    private fun initCommentUploadButtonClickListener() {
+        binding.tvCommentUpload.setOnClickListener {
+            val content = binding.etComment.text.toString()
+            viewModel.postComment(feedId, content)
+        }
+    }
+
+    private fun initPostCommentStateObserver() {
+        viewModel.postCommentState.flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val comment = state.data ?: return@onEach
+                        commentAdapter.addItem(comment)
+                    }
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+                    else -> {
+                    }
+                }
+            }.launchIn(lifecycleScope)
     }
 
     private fun initGetFeedDetailObserver() {
