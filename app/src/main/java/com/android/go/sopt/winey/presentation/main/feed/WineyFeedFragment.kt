@@ -26,6 +26,7 @@ import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import com.android.go.sopt.winey.presentation.main.notification.NotificationActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -64,6 +65,9 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         initFabClickListener()
         initPostLikeStateObserver()
         initGetFeedStateObserver()
+        binding.vm = mainViewModel
+        mainViewModel.getHasNewNoti()
+        initNotificationButtonClickListener()
     }
 
     private fun initAdapter() {
@@ -213,6 +217,13 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
                     else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                 }
             }
+        }
+    }
+
+    private fun initNotificationButtonClickListener() {
+        binding.ivWineyfeedNotification.setOnClickListener {
+            val intent = Intent(context,NotificationActivity::class.java)
+            startActivity(intent)
         }
     }
 
