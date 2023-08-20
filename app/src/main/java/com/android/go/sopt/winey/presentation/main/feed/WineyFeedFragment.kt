@@ -224,7 +224,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun initNotificationButtonClickListener() {
         binding.ivWineyfeedNotification.setOnClickListener {
-            val intent = Intent(context,NotificationActivity::class.java)
+            mainViewModel.patchCheckAllNoti()
+            val intent = Intent(context, NotificationActivity::class.java)
             startActivity(intent)
         }
     }

@@ -34,10 +34,7 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
         getRecommendListStateObserver()
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
-        binding.ivRecommendNotification.setOnClickListener {
-            val intent = Intent(context, NotificationActivity::class.java)
-            startActivity(intent)
-        }
+        initNotificationButtonClickListener()
     }
 
     private fun initAdapter() {
@@ -65,5 +62,13 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
                 }
             }
         }.launchIn(lifecycleScope)
+    }
+
+    private fun initNotificationButtonClickListener() {
+        binding.ivRecommendNotification.setOnClickListener {
+            mainViewModel.patchCheckAllNoti()
+            val intent = Intent(context, NotificationActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

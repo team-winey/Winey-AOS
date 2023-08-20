@@ -18,7 +18,8 @@ import javax.inject.Inject
 class NotificationViewModel @Inject constructor(
     private val notificationRepository: NotificationRepository
 ) : ViewModel() {
-    private val _getNoticationState = MutableStateFlow<UiState<List<Notification>?>>(UiState.Loading)
+    private val _getNoticationState =
+        MutableStateFlow<UiState<List<Notification>?>>(UiState.Loading)
     val getNotificationState: StateFlow<UiState<List<Notification>?>> =
         _getNoticationState.asStateFlow()
 

@@ -81,13 +81,28 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             notificationRepository.getHasNewNotification()
                 .onSuccess { response ->
-                    if(response?.hasNewNotification == true){
+                    if (response?.hasNewNotification == true) {
                         _notiState.value = true
                         Timber.e("true")
-                    }else{
+                    } else {
                         _notiState.value = false
                         Timber.e("false")
                     }
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP 실패")
+                    }
+                    Timber.e("${t.message}")
+                }
+        }
+    }
+
+    fun patchCheckAllNoti() {
+        viewModelScope.launch {
+            notificationRepository.patchCheckAllNotification()
+                .onSuccess {
+                    getHasNewNoti()
                 }
                 .onFailure { t ->
                     if (t is HttpException) {

@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class ResponseGetNotificationDto(
     @SerialName("getNotiResponseDtoList")
     val getNotiResponseDtoList: List<GetNotiResponseDto>
-){
+) {
     @Serializable
     data class GetNotiResponseDto(
         @SerialName("notiId")

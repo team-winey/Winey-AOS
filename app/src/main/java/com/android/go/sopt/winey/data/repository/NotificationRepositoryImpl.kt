@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class NotificationRepositoryImpl @Inject constructor(
     private val notificationDataSource: NotificationDataSource
-) : NotificationRepository{
+) : NotificationRepository {
     override suspend fun getNotification(): Result<List<Notification>?> =
         runCatching {
             notificationDataSource.getNotification().data?.toNotification()
@@ -23,5 +23,4 @@ class NotificationRepositoryImpl @Inject constructor(
         runCatching {
             notificationDataSource.patchCheckAllNotification().data
         }
-
 }
