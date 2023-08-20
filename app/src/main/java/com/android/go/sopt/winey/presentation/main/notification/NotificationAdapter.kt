@@ -25,11 +25,11 @@ class NotificationAdapter(
         fun onBind(data: Notification?) {
             binding.apply {
                 this.data = data
-                if(data == null){
+                if (data == null) {
                     return
                 }
                 binding.root.setOnClickListener {
-                    when(data?.notiType){
+                    when (data?.notiType) {
                         "HOWTOLEVELUP" -> navigateLevelupHelp.invoke()
                         "LIKENOTI", "COMMENTNOTI" -> navigateFeedDetail(data.linkId)
                         else -> navigateMypage.invoke()
