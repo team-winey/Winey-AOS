@@ -61,6 +61,10 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".presentation.main.notification.NotificationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
