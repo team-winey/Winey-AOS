@@ -5,6 +5,11 @@
 
     <data>
 
+        <variable
+            name="vm"
+            type="com.android.go.sopt.winey.presentation.main.feed.detail.DetailViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,14 +43,25 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/shape_white_fill_10_rect"
                 android:gravity="center_vertical"
-                android:hint="@string/detail_comment_hint"
+                android:hint="@string/comment_hint"
                 android:importantForAutofill="no"
                 android:inputType="text|textMultiLine"
                 android:maxLength="500"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="10dp"
                 android:scrollbars="vertical"
+                android:text="@={vm._comment}"
                 android:textAppearance="@style/TextAppearance.WINEY.body2_m_15" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="16dp"
+                android:text="@string/comment_upload_btn_text"
+                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                android:textColor="@color/purple_400"
+                android:visibility="@{vm.isValidComment ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

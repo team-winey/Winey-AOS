@@ -1,6 +1,7 @@
 package com.android.go.sopt.winey.presentation.main.feed.detail
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityDetailBinding
@@ -9,10 +10,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_detail) {
+    private val viewModel by viewModels<DetailViewModel>()
     private lateinit var detailFragment: DetailFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.vm = viewModel
 
         putArgsToDetailFragment()
         setDefaultFragment(savedInstanceState)

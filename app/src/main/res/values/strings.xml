@@ -194,6 +194,6 @@
     <string name="comment_level_3">LV.귀족 ㆍ </string>
     <string name="comment_level_4">LV.황제 ㆍ </string>
     <string name="comment_empty">아직 댓글이 없어요</string>
-
-    <string name="detail_comment_hint">댓글을 입력하세요</string>
+    <string name="comment_hint">댓글을 입력하세요</string>
+    <string name="comment_upload_btn_text">등록</string>
 </resources>
