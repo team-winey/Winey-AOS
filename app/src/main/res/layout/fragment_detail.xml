@@ -218,7 +218,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="14dp"
                 android:layout_marginTop="20dp"
-                android:background="@color/gray_100"
+                android:background="@color/gray_50"
                 app:layout_constraintTop_toBottomOf="@id/tv_detail_createdAt" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -232,7 +232,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/l_comment_empty"
-                android:background="@color/gray_100"
+                android:background="@color/gray_50"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"

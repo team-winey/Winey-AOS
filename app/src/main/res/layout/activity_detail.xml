@@ -16,15 +16,15 @@
             android:id="@+id/fcv_detail"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/fl_comment"
+            app:layout_constraintBottom_toTopOf="@id/fl_comment_input"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
-            android:id="@+id/fl_comment"
+            android:id="@+id/fl_comment_input"
             android:layout_width="0dp"
-            android:layout_height="62dp"
+            android:layout_height="wrap_content"
             android:background="@color/gray_100"
             android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
