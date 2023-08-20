@@ -20,7 +20,7 @@ class NotificationRepositoryImpl @Inject constructor(
         }
 
     override suspend fun patchCheckAllNotification(): Result<Unit> =
-        kotlin.runCatching {
+        runCatching {
             notificationDataSource.patchCheckAllNotification().data
         }
 

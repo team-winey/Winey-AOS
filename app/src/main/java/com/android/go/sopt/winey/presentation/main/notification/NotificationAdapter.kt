@@ -17,11 +17,10 @@ class NotificationAdapter :
         fun onBind(data: Notification?) {
             binding.apply {
                 this.data = data
-                if (data == null) {
-                    return
-                }
+
                 binding.root.setOnClickListener {
                 }
+                executePendingBindings()
             }
         }
     }
