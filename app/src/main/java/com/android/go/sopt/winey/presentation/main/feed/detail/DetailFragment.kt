@@ -38,7 +38,8 @@ class DetailFragment() :
         initAdapter()
         initGetFeedDetailObserver()
         binding.ivDetailBack.setOnSingleClickListener {
-            navigateToWineyFeed()
+            //navigateToWineyFeed()
+            requireActivity().finish()
         }
     }
 

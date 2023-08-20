@@ -1,11 +1,15 @@
 package com.android.go.sopt.winey.presentation.main.notification
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityNotificationBinding
+import com.android.go.sopt.winey.presentation.main.MainActivity
+import com.android.go.sopt.winey.presentation.main.feed.detail.DetailActivity
+import com.android.go.sopt.winey.presentation.main.mypage.MypageHelpActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.view.UiState
@@ -27,7 +31,11 @@ class NotificationActivity :
     }
 
     private fun initNotificationAdapter() {
-        notificationAdapter = NotificationAdapter()
+        notificationAdapter = NotificationAdapter(
+            navigateFeedDetail = { feedId -> navigateToDetail(feedId) },
+            navigateLevelupHelp = { navigateToLevelupHelp() },
+            navigateMypage = { navigateToMypage() }
+        )
         binding.rvNotificationPost.adapter = notificationAdapter
     }
 
@@ -55,5 +63,24 @@ class NotificationActivity :
         binding.ivNotificationBack.setOnClickListener {
             finish()
         }
+    }
+
+    private fun navigateToDetail(feedId: Int?) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra("feedId", feedId)
+        startActivity(intent)
+    }
+
+    private fun navigateToMypage() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.putExtra("navigateMypage", true)
+        startActivity(intent)
+        this.finish()
+    }
+
+    private fun navigateToLevelupHelp() {
+        val intent = Intent(this, MypageHelpActivity::class.java)
+        startActivity(intent)
     }
 }

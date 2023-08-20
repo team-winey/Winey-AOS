@@ -8,17 +8,32 @@ import com.android.go.sopt.winey.databinding.ItemNotificationPostBinding
 import com.android.go.sopt.winey.domain.entity.Notification
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
-class NotificationAdapter :
+class NotificationAdapter(
+    private val navigateFeedDetail: (feedId: Int?) -> Unit,
+    private val navigateMypage: () -> Unit,
+    private val navigateLevelupHelp: () -> Unit
+) :
     ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(DiffUtil) {
 
-    class NotificationViewHolder(private val binding: ItemNotificationPostBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    class NotificationViewHolder(
+        private val binding: ItemNotificationPostBinding,
+        private val navigateFeedDetail: (feedId: Int?) -> Unit,
+        private val navigateMypage: () -> Unit,
+        private val navigateLevelupHelp: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(data: Notification?) {
             binding.apply {
                 this.data = data
-
+                if(data == null){
+                    return
+                }
                 binding.root.setOnClickListener {
+                    when(data?.notiType){
+                        "HOWTOLEVELUP" -> navigateLevelupHelp.invoke()
+                        "LIKENOTI", "COMMENTNOTI" -> navigateFeedDetail(data.linkId)
+                        else -> navigateMypage.invoke()
+                    }
                 }
                 executePendingBindings()
             }
@@ -28,7 +43,7 @@ class NotificationAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         val binding =
             ItemNotificationPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NotificationViewHolder(binding)
+        return NotificationViewHolder(binding, navigateFeedDetail, navigateMypage, navigateLevelupHelp)
     }
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
