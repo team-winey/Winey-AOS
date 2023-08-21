@@ -25,14 +25,14 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-    private val viewModel by viewModels<MainViewModel>()
+    private val mainViewModel by viewModels<MainViewModel>()
     private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
-        viewModel.getUser()
+        mainViewModel.getUser()
 
         initFragment()
         initBnvItemSelectedListener()
@@ -84,7 +84,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun setupLogoutState() {
-        viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
+        mainViewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
                 }

@@ -2,6 +2,8 @@ package com.android.go.sopt.winey.presentation.main.feed.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
+import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.repository.FeedRepository
 import com.android.go.sopt.winey.util.view.UiState
@@ -49,6 +51,9 @@ class DetailViewModel @Inject constructor(
     val getFeedDetailState: StateFlow<UiState<DetailFeed?>> =
         _getFeedDetailState.asStateFlow()
 
+    private val _postCommentState = MutableStateFlow<UiState<Comment?>>(UiState.Loading)
+    val postCommentState: StateFlow<UiState<Comment?>> = _postCommentState.asStateFlow()
+
     fun getFeedDetail(feedId: Int) {
         viewModelScope.launch {
             feedRepository.getFeedDetail(feedId)
@@ -56,6 +61,25 @@ class DetailViewModel @Inject constructor(
                     _getFeedDetailState.emit(UiState.Success(response))
                 }
                 .onFailure { t -> handleFailureState(_getFeedDetailState, t) }
+        }
+    }
+
+    fun postComment(feedId: Int, content: String) {
+        viewModelScope.launch {
+            feedRepository.postComment(feedId, RequestPostCommentDto(content))
+                .onSuccess { response ->
+                    _postCommentState.value = UiState.Success(response)
+                    Timber.d("SUCCESS POST COMMENT")
+                }
+                .onFailure { t ->
+                    _postCommentState.value = UiState.Failure(t.message.toString())
+
+                    if (t is HttpException) {
+                        Timber.e("HTTP FAIL POST COMMENT: ${t.code()} ${t.message}")
+                        return@onFailure
+                    }
+                    Timber.e("FAIL POST COMMENT: ${t.message}")
+                }
         }
     }
 

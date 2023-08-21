@@ -1,4 +1,5 @@
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -6,14 +7,20 @@ import com.android.go.sopt.winey.databinding.ItemDetailCommentBinding
 import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
-class CommentAdapter : ListAdapter<Comment, CommentAdapter.CommentViewHolder>(diffUtil) {
-    class CommentViewHolder(
+class CommentAdapter(
+    private val onPopupMenuClicked: (View, Int) -> Unit
+) : ListAdapter<Comment, CommentAdapter.CommentViewHolder>(diffUtil) {
+    inner class CommentViewHolder(
         private val binding: ItemDetailCommentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(data: Comment) {
+        fun onBind(comment: Comment) {
             binding.apply {
-                this.data = data
-                executePendingBindings()
+                this.data = comment
+
+                // 팝업 메뉴 버튼을 클릭하면, 해당 버튼의 뷰와 댓글 작성자의 아이디를 전달한다.
+                ivCommentMore.setOnClickListener { view ->
+                    onPopupMenuClicked(view, comment.authorId)
+                }
             }
         }
     }
@@ -29,6 +36,19 @@ class CommentAdapter : ListAdapter<Comment, CommentAdapter.CommentViewHolder>(di
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         holder.onBind(getItem(position))
+    }
+
+    fun addItem(item: Comment): Int {
+        val newList = currentList.toMutableList()
+        newList.add(item)
+        submitList(newList)
+        return newList.size
+    }
+
+    fun deleteItem(position: Int) {
+        val newList = currentList.toMutableList()
+        newList.removeAt(position)
+        submitList(newList)
     }
 
     companion object {

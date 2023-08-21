@@ -56,7 +56,7 @@ interface FeedService {
 
     @POST("comment/{feedId}")
     suspend fun postComment(
-        @Path("feedId") feedId: Long,
+        @Path("feedId") feedId: Int,
         @Body requestPostCommentDto: RequestPostCommentDto
     ): BaseResponse<ResponsePostCommentDto>
 }
