@@ -34,8 +34,12 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     private val feedId by lazy { intent.getIntExtra(KEY_FEED_ID, 0) }
     private val feedWriterId by lazy { intent.getIntExtra(KEY_FEED_WRITER_ID, 0) }
 
-    private var detailFeedAdapter: DetailFeedAdapter? = null
-    private var commentAdapter: CommentAdapter? = null
+    private var _detailFeedAdapter: DetailFeedAdapter? = null
+    private val detailFeedAdapter get() = requireNotNull(_detailFeedAdapter)
+
+    private var _commentAdapter: CommentAdapter? = null
+    private val commentAdapter get() = requireNotNull(_commentAdapter)
+
     private val commentEmptyAdapter by lazy { CommentEmptyAdapter() }
 
     @Inject
@@ -55,7 +59,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     }
 
     private fun initCommentAdapter() {
-        commentAdapter = CommentAdapter(
+        _commentAdapter = CommentAdapter(
             onPopupMenuClicked = { anchorView, commentAuthorId ->
                 showPopupMenu(anchorView, commentAuthorId)
             }
@@ -165,7 +169,9 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 when (state) {
                     is UiState.Success -> {
                         val comment = state.data ?: return@onEach
-                        commentAdapter?.addItem(comment)
+                        val commentNumber = commentAdapter.addItem(comment)
+                        detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
+                        binding.etComment.text.clear()
                     }
 
                     is UiState.Failure -> {
@@ -202,7 +208,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             Timber.e("DETAIL FEED IS NULL")
             return
         }
-        detailFeedAdapter = DetailFeedAdapter(detailFeed)
+        _detailFeedAdapter = DetailFeedAdapter(detailFeed)
     }
 
     private fun switchCommentContainer(commentList: List<Comment>?) {
@@ -215,7 +221,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
         } else {
             binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
-            commentAdapter?.submitList(commentList)
+            commentAdapter.submitList(commentList)
         }
     }
 

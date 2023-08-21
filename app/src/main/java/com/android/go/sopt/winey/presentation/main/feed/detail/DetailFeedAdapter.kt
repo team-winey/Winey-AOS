@@ -8,8 +8,14 @@ import com.android.go.sopt.winey.domain.entity.DetailFeed
 
 class DetailFeedAdapter(
     private val detailFeed: DetailFeed
-) :
-    RecyclerView.Adapter<DetailFeedAdapter.DetailFeedViewHolder>() {
+) : RecyclerView.Adapter<DetailFeedAdapter.DetailFeedViewHolder>() {
+    class DetailFeedViewHolder(
+        private val binding: ItemDetailFeedBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: DetailFeed) {
+            binding.data = data
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailFeedViewHolder {
         return DetailFeedViewHolder(
@@ -21,18 +27,15 @@ class DetailFeedAdapter(
         )
     }
 
+    override fun getItemCount(): Int = FEED_ITEM_COUNT
+
     override fun onBindViewHolder(holder: DetailFeedViewHolder, position: Int) {
         holder.bind(detailFeed)
     }
 
-    override fun getItemCount(): Int = FEED_ITEM_COUNT
-
-    class DetailFeedViewHolder(
-        private val binding: ItemDetailFeedBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: DetailFeed) {
-            binding.data = data
-        }
+    fun updateCommentNumber(comments: Long) {
+        detailFeed.comments = comments
+        notifyItemChanged(0)
     }
 
     companion object {
