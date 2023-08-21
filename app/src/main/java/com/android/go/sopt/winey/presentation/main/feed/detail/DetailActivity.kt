@@ -175,7 +175,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             stringOf(R.string.comment_delete_dialog_negative_button),
             stringOf(R.string.comment_delete_dialog_positive_button),
             handleNegativeButton = {},
-            handlePositiveButton = { /* todo: 댓글 삭제하기 */}
+            handlePositiveButton = { /* todo: 댓글 삭제하기 */ }
         )
         dialog.show(supportFragmentManager, TAG_COMMENT_DELETE_DIALOG)
     }
@@ -200,7 +200,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             stringOf(R.string.report_dialog_negative_button),
             stringOf(R.string.report_dialog_positive_button),
             handleNegativeButton = {},
-            handlePositiveButton = { /* todo: 댓글 신고하기 */ }
+            handlePositiveButton = { navigateToMain(EXTRA_REPORT_KEY) }
         )
         dialog.show(supportFragmentManager, TAG_COMMENT_REPORT_DIALOG)
     }
@@ -259,7 +259,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.deleteFeedDetailState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    navigateToMain()
+                    navigateToMain(EXTRA_DELETE_KEY)
                 }
 
                 is UiState.Failure -> {
@@ -309,10 +309,10 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }.launchIn(lifecycleScope)
     }
 
-    private fun navigateToMain() {
+    private fun navigateToMain(extraKey: String) {
         Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra(EXTRA_DELETE_KEY, true)
+            putExtra(extraKey, true)
             startActivity(this)
         }
     }
@@ -329,5 +329,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         private const val MSG_DETAIL_ERROR = "ERROR"
 
         private const val EXTRA_DELETE_KEY = "delete"
+        private const val EXTRA_REPORT_KEY = "report"
     }
 }
