@@ -71,7 +71,6 @@ class MyFeedAdapter(
         holder.onBind(getItem(position))
     }
 
-
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
             onItemsTheSame = { old, new -> old.feedId == new.feedId },

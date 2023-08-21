@@ -209,7 +209,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             Timber.e("DETAIL FEED IS NULL")
             return
         }
-        detailFeedAdapter =
+        _detailFeedAdapter =
             DetailFeedAdapter(
                 detailFeed,
                 postLike = { feedId, isLiked ->
@@ -250,7 +250,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 }
 
                 else -> {
-
                 }
             }
         }.launchIn(lifecycleScope)

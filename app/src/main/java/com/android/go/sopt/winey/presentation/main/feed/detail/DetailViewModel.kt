@@ -59,7 +59,6 @@ class DetailViewModel @Inject constructor(
     private val _postFeedDetailLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postFeedDetailLikeState: StateFlow<UiState<Like>> = _postFeedDetailLikeState.asStateFlow()
 
-
     fun likeFeed(feedId: Int, isLiked: Boolean) {
         val requestPostLikeDto = RequestPostLikeDto(isLiked)
         postLike(feedId, requestPostLikeDto)

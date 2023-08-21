@@ -49,7 +49,6 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
-
 @AndroidEntryPoint
 class WineyFeedFragment :
     BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
@@ -101,7 +100,7 @@ class WineyFeedFragment :
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
         val inflater = LayoutInflater.from(requireContext())
-        val popupView = inflater.inflate(com.android.go.sopt.winey.R.layout.menu_wineyfeed, null)
+        val popupView = inflater.inflate(R.layout.menu_wineyfeed, null)
         val popupWindow = PopupWindow(
             popupView,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -110,9 +109,9 @@ class WineyFeedFragment :
         )
 
         val menuDelete =
-            popupView.findViewById<TextView>(com.android.go.sopt.winey.R.id.tv_popup_delete)
+            popupView.findViewById<TextView>(R.id.tv_popup_delete)
         val menuReport =
-            popupView.findViewById<TextView>(com.android.go.sopt.winey.R.id.tv_popup_report)
+            popupView.findViewById<TextView>(R.id.tv_popup_report)
 
         if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() }) {
             menuReport.isVisible = false
@@ -131,7 +130,7 @@ class WineyFeedFragment :
     private fun refreshWineyFeed() {
         val fragmentManager = parentFragmentManager
         fragmentManager.beginTransaction().apply {
-            replace(com.android.go.sopt.winey.R.id.fcv_main, WineyFeedFragment())
+            replace(R.id.fcv_main, WineyFeedFragment())
             commit()
         }
     }
@@ -257,11 +256,11 @@ class WineyFeedFragment :
 
     private inline fun <reified T : Fragment> navigateTo() {
         parentFragmentManager.commit {
-            replace<T>(com.android.go.sopt.winey.R.id.fcv_main, T::class.simpleName)
+            replace<T>(R.id.fcv_main, T::class.simpleName)
         }
         val bottomNav: BottomNavigationView =
-            requireActivity().findViewById(com.android.go.sopt.winey.R.id.bnv_main)
-        bottomNav.selectedItemId = com.android.go.sopt.winey.R.id.menu_mypage
+            requireActivity().findViewById(R.id.bnv_main)
+        bottomNav.selectedItemId = R.id.menu_mypage
     }
 
     private fun setSwipeRefreshListener() {
@@ -281,42 +280,6 @@ class WineyFeedFragment :
         intent.putExtra(KEY_FEED_ID, feedId)
         intent.putExtra(KEY_FEED_WRITER_ID, writerId)
         startActivity(intent)
-    }
-
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("Fragment Lifecycle", "onStart 호출됨")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getWineyFeed()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("Fragment Lifecycle", "onPause 호출됨")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("Fragment Lifecycle", "onStop 호출됨")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("Fragment Lifecycle", "onDestroyView 호출됨")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("Fragment Lifecycle", "onDestroy 호출됨")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("Fragment Lifecycle", "onDetach 호출됨")
     }
 
     companion object {
