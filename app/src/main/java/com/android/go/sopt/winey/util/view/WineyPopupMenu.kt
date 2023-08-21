@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
+import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyPopupBinding
 import com.android.go.sopt.winey.databinding.LayoutWineyPopupBinding
 import com.android.go.sopt.winey.util.context.drawableOf
@@ -49,7 +50,7 @@ class WineyPopupMenu(
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
         height = contentView.measuredHeight
-        setBackgroundDrawable(context.drawableOf(android.R.drawable.screen_background_light_transparent))
+        setBackgroundDrawable(context.drawableOf(R.drawable.shape_transparent_fill_5_rect))
     }
 
     private fun getDp(context: Context, value: Float): Int {

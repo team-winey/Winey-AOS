@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_margin="4dp"
         android:background="@drawable/shape_white_fill_5_rect"
-        android:elevation="2dp"
+        android:elevation="3dp"
         android:orientation="vertical"/>
 
 </FrameLayout>

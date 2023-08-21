@@ -57,7 +57,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         commentAdapter = CommentAdapter(
             onPopupMenuClicked = { view, commentAuthorId ->
                 //showPopupMenu(view, commentAuthorId)
-                showDeletePopupMenu(view)
+                showAllPopupMenu(view)
             }
         )
     }
