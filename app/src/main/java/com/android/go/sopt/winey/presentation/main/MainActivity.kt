@@ -34,12 +34,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
         viewModel.getUser()
 
-        navigateTo<WineyFeedFragment>()
+        initFragment()
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
 
         setupLogoutState()
         showUploadSuccessSnackbar()
+    }
+
+    private fun initFragment() {
+        if (intent.getBooleanExtra("navigateMypage", false)) {
+            navigateTo<MyPageFragment>()
+            binding.bnvMain.selectedItemId = R.id.menu_mypage
+        } else {
+            navigateTo<WineyFeedFragment>()
+        }
     }
 
     private fun showUploadSuccessSnackbar() {
