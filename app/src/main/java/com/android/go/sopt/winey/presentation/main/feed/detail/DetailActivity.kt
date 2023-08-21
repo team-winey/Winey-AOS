@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed.detail
 
 import CommentAdapter
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -130,7 +131,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             }
 
         // todo: 팝업 메뉴 표시 위치 바꾸기
-        popupMenu.showAsDropDown(view)
+        popupMenu.showAsDropDown(view, -65, -65, Gravity.END)
     }
 
     private fun showCommentDeleteDialog() {
