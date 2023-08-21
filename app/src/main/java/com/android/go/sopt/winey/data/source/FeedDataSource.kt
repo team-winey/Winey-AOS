@@ -36,7 +36,7 @@ class FeedDataSource @Inject constructor(
         feedService.getFeedDetail(feedId)
 
     suspend fun postComment(
-        feedId: Long,
+        feedId: Int,
         requestPostCommentDto: RequestPostCommentDto
     ): BaseResponse<ResponsePostCommentDto> =
         feedService.postComment(feedId, requestPostCommentDto)

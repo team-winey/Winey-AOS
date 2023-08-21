@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="6dp">
+    app:cardCornerRadius="6dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -14,28 +15,28 @@
             android:id="@+id/tv_popup_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
             android:paddingStart="12dp"
             android:paddingEnd="67dp"
-            android:layout_marginVertical="16dp"
-            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
-            android:text="@string/wineyfeed_menu_delete" />
+            android:text="@string/wineyfeed_menu_delete"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12" />
 
         <View
-            android:visibility="invisible"
             android:id="@+id/v_popup_seperator"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/gray_200" />
+            android:background="@color/gray_200"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_popup_report"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
             android:paddingStart="12dp"
             android:paddingEnd="67dp"
-            android:layout_marginVertical="16dp"
-            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
-            android:text="@string/wineyfeed_menu_report" />
+            android:text="@string/wineyfeed_menu_report"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

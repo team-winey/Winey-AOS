@@ -19,11 +19,16 @@ class DetailFeedAdapter(
         return DetailFeedViewHolder(binding, postLike)
     }
 
+    override fun getItemCount(): Int = FEED_ITEM_COUNT
+
     override fun onBindViewHolder(holder: DetailFeedViewHolder, position: Int) {
         holder.bind(detailFeed)
     }
 
-    override fun getItemCount(): Int = FEED_ITEM_COUNT
+    fun updateCommentNumber(comments: Long) {
+        detailFeed.comments = comments
+        notifyItemChanged(0)
+    }
 
     class DetailFeedViewHolder(
         private val binding: ItemDetailFeedBinding,

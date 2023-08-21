@@ -10,7 +10,7 @@ data class DetailFeed(
     val nickName: String,
     val userId: Int,
     val writerLevel: Int,
-    val comments: Long,
+    var comments: Long,
     val timeAgo: String,
     val commentList: List<Comment>
 )
