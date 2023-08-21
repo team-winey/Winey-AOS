@@ -52,7 +52,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun showSuccessSnackBar(){
+    private fun showSuccessSnackBar() {
         if (isUploadSuccess != null && isUploadSuccess == true) {
             wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
         }

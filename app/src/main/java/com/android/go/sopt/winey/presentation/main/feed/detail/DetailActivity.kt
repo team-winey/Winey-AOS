@@ -302,9 +302,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     snackBar(binding.root) { state.msg }
                 }
 
-                else -> {
-
-                }
+                else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
             }
         }.launchIn(lifecycleScope)
     }

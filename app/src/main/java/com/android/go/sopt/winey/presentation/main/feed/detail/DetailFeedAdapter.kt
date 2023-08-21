@@ -49,7 +49,6 @@ class DetailFeedAdapter(
                 btnDetailMore.setOnSingleClickListener { view ->
                     onPopupMenuClicked(view)
                 }
-
             }
         }
     }
