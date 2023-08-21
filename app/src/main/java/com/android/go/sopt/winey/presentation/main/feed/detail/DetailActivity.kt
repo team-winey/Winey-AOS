@@ -36,6 +36,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.getFeedDetail(feedId)
         initGetFeedDetailObserver()
         initBackButtonClickListener()
+        initPostLikeStateObserver()
     }
 
     private fun initGetFeedDetailObserver() {
@@ -62,7 +63,13 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             Timber.e("DETAIL FEED IS NULL")
             return
         }
-        detailFeedAdapter = DetailFeedAdapter(detailFeed)
+        detailFeedAdapter =
+            DetailFeedAdapter(
+                detailFeed,
+                postLike = { feedId, isLiked ->
+                    viewModel.likeFeed(feedId, isLiked)
+                }
+            )
     }
 
     private fun switchCommentContainer(commentList: List<Comment>?) {
@@ -83,6 +90,25 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         binding.ivDetailBack.setOnClickListener {
             finish()
         }
+    }
+
+    private fun initPostLikeStateObserver() {
+        viewModel.postFeedDetailLikeState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    viewModel.getFeedDetail(feedId)
+
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> {
+
+                }
+            }
+        }.launchIn(lifecycleScope)
     }
 
     companion object {

@@ -2,7 +2,9 @@ package com.android.go.sopt.winey.presentation.main.feed.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.domain.entity.DetailFeed
+import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.repository.FeedRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -49,6 +51,15 @@ class DetailViewModel @Inject constructor(
     val getFeedDetailState: StateFlow<UiState<DetailFeed?>> =
         _getFeedDetailState.asStateFlow()
 
+    private val _postFeedDetailLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
+    val postFeedDetailLikeState: StateFlow<UiState<Like>> = _postFeedDetailLikeState.asStateFlow()
+
+
+    fun likeFeed(feedId: Int, isLiked: Boolean) {
+        val requestPostLikeDto = RequestPostLikeDto(isLiked)
+        postLike(feedId, requestPostLikeDto)
+    }
+
     fun getFeedDetail(feedId: Int) {
         viewModelScope.launch {
             feedRepository.getFeedDetail(feedId)
@@ -56,6 +67,16 @@ class DetailViewModel @Inject constructor(
                     _getFeedDetailState.emit(UiState.Success(response))
                 }
                 .onFailure { t -> handleFailureState(_getFeedDetailState, t) }
+        }
+    }
+
+    private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
+        viewModelScope.launch {
+            feedRepository.postFeedLike(feedId, requestPostLikeDto)
+                .onSuccess { response ->
+                    _postFeedDetailLikeState.emit(UiState.Success(response))
+                }
+                .onFailure { t -> handleFailureState(_postFeedDetailLikeState, t) }
         }
     }
 
