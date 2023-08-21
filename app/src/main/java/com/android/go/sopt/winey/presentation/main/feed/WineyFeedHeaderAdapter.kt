@@ -3,13 +3,32 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyfeedHeaderBinding
+import com.android.go.sopt.winey.domain.entity.DetailFeed
+import java.util.Random
 
-class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
-
+class WineyFeedHeaderAdapter(
+) : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>(
+) {
     class HeaderViewHolder(
         private val binding: ItemWineyfeedHeaderBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind() {
+            binding.ivWineyfeedBanner.setImageResource(setRandomBannerImage())
+        }
+
+        private fun setRandomBannerImage(): Int {
+            val random = Random()
+            return when (random.nextInt(4)) {
+                1 -> R.drawable.img_wineyfeed_banner_1
+                2 -> R.drawable.img_wineyfeed_banner_2
+                3 -> R.drawable.img_wineyfeed_banner_3
+                4 -> R.drawable.img_wineyfeed_banner_4
+                else -> R.drawable.img_wineyfeed_banner_1
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         val binding =
@@ -18,7 +37,7 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
     }
 
     override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
-        return
+        holder.bind()
     }
 
     override fun getItemCount(): Int = HEADER_COUNT
