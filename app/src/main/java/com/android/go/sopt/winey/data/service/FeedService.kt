@@ -59,4 +59,9 @@ interface FeedService {
         @Path("feedId") feedId: Int,
         @Body requestPostCommentDto: RequestPostCommentDto
     ): BaseResponse<ResponsePostCommentDto>
+
+    @DELETE("comment/{commentId}")
+    suspend fun deleteComment(
+        @Path("commentId") commentId: Int
+    ): BaseResponse<Unit>
 }

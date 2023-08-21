@@ -68,6 +68,11 @@ class FeedRepositoryImpl @Inject constructor(
             feedDataSource.postComment(feedId, requestPostCommentDto).data?.toComment()
         }
 
+    override suspend fun deleteComment(commentId: Int): Result<Unit> =
+        runCatching {
+            feedDataSource.deleteComment(commentId)
+        }
+
     companion object {
         const val WINEYFEED_PAGE_SIZE = 20
         const val MYFEED_PAGE_SIZE = 10

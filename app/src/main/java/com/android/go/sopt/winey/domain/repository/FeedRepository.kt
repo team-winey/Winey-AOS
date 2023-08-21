@@ -32,4 +32,6 @@ interface FeedRepository {
         feedId: Int,
         requestPostCommentDto: RequestPostCommentDto
     ): Result<Comment?>
+
+    suspend fun deleteComment(commentId: Int): Result<Unit>
 }

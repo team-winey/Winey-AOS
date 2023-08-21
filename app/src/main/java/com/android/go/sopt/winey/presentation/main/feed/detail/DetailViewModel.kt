@@ -54,6 +54,9 @@ class DetailViewModel @Inject constructor(
     private val _postCommentState = MutableStateFlow<UiState<Comment?>>(UiState.Loading)
     val postCommentState: StateFlow<UiState<Comment?>> = _postCommentState.asStateFlow()
 
+    private val _deleteCommentState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val deleteCommentState: StateFlow<UiState<Unit>> = _deleteCommentState.asStateFlow()
+
     fun getFeedDetail(feedId: Int) {
         viewModelScope.launch {
             feedRepository.getFeedDetail(feedId)
@@ -79,6 +82,25 @@ class DetailViewModel @Inject constructor(
                         return@onFailure
                     }
                     Timber.e("FAIL POST COMMENT: ${t.message}")
+                }
+        }
+    }
+
+    fun deleteComment(commentId: Int) {
+        viewModelScope.launch {
+            feedRepository.deleteComment(commentId)
+                .onSuccess { response ->
+                    _deleteCommentState.value = UiState.Success(response)
+                    Timber.d("SUCCESS DELETE COMMENT")
+                }
+                .onFailure { t ->
+                    _deleteCommentState.value = UiState.Failure(t.message.toString())
+
+                    if (t is HttpException) {
+                        Timber.e("HTTP FAIL DELETE COMMENT: ${t.code()} ${t.message}")
+                        return@onFailure
+                    }
+                    Timber.e("FAIL DELETE COMMENT: ${t.message}")
                 }
         }
     }
