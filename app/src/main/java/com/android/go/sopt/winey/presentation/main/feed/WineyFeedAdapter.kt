@@ -72,6 +72,24 @@ class WineyFeedAdapter(
         holder.onBind(getItem(position))
     }
 
+    fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
+        currentData.let { data ->
+            val index = data.indexOfFirst { it?.feedId == feedId }
+            if (index == -1) {
+                return
+            }
+            data[index]?.let { item ->
+                item.isLiked = isLiked
+                if (isLiked) {
+                    item.likes++
+                } else {
+                    item.likes--
+                }
+                notifyItemChanged(index)
+            }
+        }
+    }
+
     companion object {
         private val diffUtil = ItemDiffCallback<WineyFeed>(
             onItemsTheSame = { old, new -> old.feedId == new.feedId },

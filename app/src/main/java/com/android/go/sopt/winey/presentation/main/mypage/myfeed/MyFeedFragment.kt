@@ -162,7 +162,10 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    myFeedAdapter.refresh()
+                    myFeedAdapter.updateLikeStatus(
+                        state.data.data.feedId,
+                        state.data.data.isLiked
+                    )
                 }
 
                 is UiState.Failure -> {
