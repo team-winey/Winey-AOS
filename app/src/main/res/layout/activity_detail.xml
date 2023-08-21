@@ -81,12 +81,12 @@
                     android:text="@={vm._comment}"
                     android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/tv_comment_upload"
+                    app:layout_constraintEnd_toStartOf="@id/tv_comment_create"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_comment_upload"
+                    android:id="@+id/tv_comment_create"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top|end"

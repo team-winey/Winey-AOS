@@ -81,7 +81,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
             },
-            toFeedDetail = { feedId, writerLevel -> navigateToDetail(feedId, writerLevel) }
+            toFeedDetail = { feedId, writerId -> navigateToDetail(feedId, writerId) }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
@@ -266,10 +266,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         startActivity(intent)
     }
 
-    private fun navigateToDetail(feedId: Int, writerLevel: Int) {
+    private fun navigateToDetail(feedId: Int, writerId: Int) {
         val intent = Intent(requireContext(), DetailActivity::class.java)
         intent.putExtra(KEY_FEED_ID, feedId)
-        intent.putExtra(KEY_WRITER_LV, writerLevel)
+        intent.putExtra(KEY_FEED_WRITER_ID, writerId)
         startActivity(intent)
     }
 
@@ -279,6 +279,6 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
 
         private const val KEY_FEED_ID = "feedId"
-        private const val KEY_WRITER_LV = "writerLevel"
+        private const val KEY_FEED_WRITER_ID = "feedWriterId"
     }
 }

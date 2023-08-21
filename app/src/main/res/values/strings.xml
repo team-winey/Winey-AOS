@@ -18,10 +18,16 @@
     <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
 
     <!-- comment delete dialog -->
-    <string name="feed_comment_delete_dialog_title">삭제하시겠습니까?</string>
-    <string name="feed_comment_delete_dialog_subtitle">삭제한 글은 다시 복구할 수 없습니다.</string>
-    <string name="feed_comment_delete_dialog_negative_button">취소</string>
-    <string name="feed_comment_delete_dialog_positive_button">삭제하기</string>
+    <string name="comment_delete_dialog_title">삭제하시겠습니까?</string>
+    <string name="comment_delete_dialog_subtitle">삭제한 글은 다시 복구할 수 없습니다.</string>
+    <string name="comment_delete_dialog_negative_button">취소</string>
+    <string name="comment_delete_dialog_positive_button">삭제하기</string>
+
+    <!-- report dialog -->
+    <string name="report_dialog_title">신고하시겠습니까?</string>
+    <string name="report_dialog_subtitle">욕설/비하, 상업적 광고 및 판매,\n낚시/놀람/도배 글의 경우 신고할 수 있습니다.</string>
+    <string name="report_dialog_negative_button">취소</string>
+    <string name="report_dialog_positive_button">신고하기</string>
 
     <!-- feed delete dialog -->
     <string name="feed_delete_dialog_title">정말 게시물을 삭제하시겠어요?</string>
@@ -198,4 +204,8 @@
     <string name="comment_upload_btn_text">등록</string>
     <string name="comment_counter">%d/500</string>
     <string name="comment_counter_preview">450/500</string>
+
+    <!-- popup menu -->
+    <string name="popup_delete_title">삭제하기</string>
+    <string name="popup_report_title">신고하기</string>
 </resources>

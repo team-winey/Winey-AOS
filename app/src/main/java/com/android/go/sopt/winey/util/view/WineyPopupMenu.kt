@@ -1,37 +1,63 @@
 package com.android.go.sopt.winey.util.view
 
 import android.content.Context
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupWindow
 import com.android.go.sopt.winey.databinding.ItemWineyPopupBinding
 import com.android.go.sopt.winey.databinding.LayoutWineyPopupBinding
+import com.android.go.sopt.winey.util.context.drawableOf
 
 class WineyPopupMenu(
     private val context: Context,
-    private val titles: MutableList<String>,
+    private val titles: List<String>,
     private val menuItemClickListener: (View, String, Int) -> Unit
 ) : PopupWindow(context) {
     init {
-        addMenuItemViewToLayout()
+        isOutsideTouchable = true
+        isTouchable = true
+        inflateMenuItemsToLayout()
+        setUpContentView()
     }
 
-    private fun addMenuItemViewToLayout() {
+    private fun inflateMenuItemsToLayout() {
         val inflater = LayoutInflater.from(context)
         val layoutBinding = LayoutWineyPopupBinding.inflate(inflater, null, false)
-        val itemBinding = ItemWineyPopupBinding.inflate(inflater, null, false)
+        contentView = layoutBinding.root
 
-        for (i in 0 until titles.size) {
+        for (i in titles.indices) {
+            val itemBinding = ItemWineyPopupBinding.inflate(inflater, null, false)
             itemBinding.tvPopupTitle.text = titles[i]
             itemBinding.vPopupSeperator.visibility =
                 if (i < titles.size - 1) View.VISIBLE else View.INVISIBLE
 
-            itemBinding.root.setOnClickListener { rootView ->
-                menuItemClickListener.invoke(rootView, titles[i], i)
+            val menuItemView = itemBinding.root
+            menuItemView.setOnClickListener { view ->
+                menuItemClickListener.invoke(view, titles[i], i)
                 dismiss()
             }
-
-            layoutBinding.llPopupContainer.addView(itemBinding.root)
+            layoutBinding.llPopupContainer.addView(menuItemView)
         }
+    }
+
+    private fun setUpContentView() {
+        width = getDp(context, POPUP_MENU_WIDTH)
+        contentView.measure(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        height = contentView.measuredHeight
+        setBackgroundDrawable(context.drawableOf(android.R.drawable.screen_background_light_transparent))
+    }
+
+    private fun getDp(context: Context, value: Float): Int {
+        val dm = context.resources.displayMetrics
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, dm).toInt()
+    }
+
+    companion object {
+        private const val POPUP_MENU_WIDTH = 120f
     }
 }

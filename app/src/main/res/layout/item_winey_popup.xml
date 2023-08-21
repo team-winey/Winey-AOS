@@ -20,7 +20,7 @@
         android:id="@+id/v_popup_seperator"
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:layout_marginHorizontal="12dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_marginTop="16dp"
         android:background="@color/gray_200"
         app:layout_constraintEnd_toEndOf="parent"
