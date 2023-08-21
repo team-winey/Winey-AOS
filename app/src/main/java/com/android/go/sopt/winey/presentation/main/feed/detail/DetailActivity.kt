@@ -97,7 +97,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             when (state) {
                 is UiState.Success -> {
                     viewModel.getFeedDetail(feedId)
-
                 }
 
                 is UiState.Failure -> {

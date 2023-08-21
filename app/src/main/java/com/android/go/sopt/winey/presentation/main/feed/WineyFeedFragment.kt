@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -47,8 +48,10 @@ import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
-class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
+class WineyFeedFragment :
+    BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
     private val viewModel by viewModels<WineyFeedViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
@@ -60,6 +63,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("Fragment Lifecycle", "onViewCreated 호출됨")
         initAdapter()
         setSwipeRefreshListener()
         initFabClickListener()
@@ -87,7 +91,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
         val inflater = LayoutInflater.from(requireContext())
-        val popupView = inflater.inflate(R.layout.menu_wineyfeed, null)
+        val popupView = inflater.inflate(com.android.go.sopt.winey.R.layout.menu_wineyfeed, null)
         val popupWindow = PopupWindow(
             popupView,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -95,8 +99,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             true
         )
 
-        val menuDelete = popupView.findViewById<TextView>(R.id.tv_popup_delete)
-        val menuReport = popupView.findViewById<TextView>(R.id.tv_popup_report)
+        val menuDelete =
+            popupView.findViewById<TextView>(com.android.go.sopt.winey.R.id.tv_popup_delete)
+        val menuReport =
+            popupView.findViewById<TextView>(com.android.go.sopt.winey.R.id.tv_popup_report)
 
         if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() }) {
             menuReport.isVisible = false
@@ -115,7 +121,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
     private fun refreshWineyFeed() {
         val fragmentManager = parentFragmentManager
         fragmentManager.beginTransaction().apply {
-            replace(R.id.fcv_main, WineyFeedFragment())
+            replace(com.android.go.sopt.winey.R.id.fcv_main, WineyFeedFragment())
             commit()
         }
     }
@@ -178,10 +184,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    wineyFeedAdapter.updateLikeStatus(
-                        state.data.data.feedId,
-                        state.data.data.isLiked
-                    )
+                    wineyFeedAdapter.refresh()
                 }
 
                 is UiState.Failure -> {
@@ -236,10 +239,11 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     private inline fun <reified T : Fragment> navigateTo() {
         parentFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
+            replace<T>(com.android.go.sopt.winey.R.id.fcv_main, T::class.simpleName)
         }
-        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
-        bottomNav.selectedItemId = R.id.menu_mypage
+        val bottomNav: BottomNavigationView =
+            requireActivity().findViewById(com.android.go.sopt.winey.R.id.bnv_main)
+        bottomNav.selectedItemId = com.android.go.sopt.winey.R.id.menu_mypage
     }
 
     private fun setSwipeRefreshListener() {
@@ -259,6 +263,42 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         intent.putExtra(KEY_FEED_ID, feedId)
         intent.putExtra(KEY_WRITER_LV, writerLevel)
         startActivity(intent)
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("Fragment Lifecycle", "onStart 호출됨")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getWineyFeed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("Fragment Lifecycle", "onPause 호출됨")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("Fragment Lifecycle", "onStop 호출됨")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("Fragment Lifecycle", "onDestroyView 호출됨")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("Fragment Lifecycle", "onDestroy 호출됨")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("Fragment Lifecycle", "onDetach 호출됨")
     }
 
     companion object {
