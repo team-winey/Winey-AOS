@@ -56,32 +56,31 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun initCommentAdapter() {
         commentAdapter = CommentAdapter(
-            onPopupMenuClicked = { view, commentAuthorId ->
-                //showPopupMenu(view, commentAuthorId)
-                showAllPopupMenu(view)
+            onPopupMenuClicked = { anchorView, commentAuthorId ->
+                showPopupMenu(anchorView, commentAuthorId)
             }
         )
     }
 
-    private fun showPopupMenu(view: View, commentAuthorId: Int) {
+    private fun showPopupMenu(anchorView: View, commentAuthorId: Int) {
         lifecycleScope.launch {
             val currentUserId = dataStoreRepository.getUserId().first()
 
             if (isMyFeed(currentUserId)) {
                 if (isMyComment(currentUserId, commentAuthorId)) {
-                    // todo: 내 댓글 삭제
-                    showDeletePopupMenu(view)
+                    // 내 댓글 삭제
+                    showDeletePopupMenu(anchorView)
                 } else {
-                    // todo: 방문자 댓글 삭제/신고
-                    showAllPopupMenu(view)
+                    // 방문자 댓글 삭제/신고
+                    showAllPopupMenu(anchorView)
                 }
             } else {
                 if (isMyComment(currentUserId, commentAuthorId)) {
-                    // todo: 내 댓글 삭제
-                    showDeletePopupMenu(view)
+                    // 내 댓글 삭제
+                    showDeletePopupMenu(anchorView)
                 } else {
-                    // todo: 다른 사람 댓글 신고
-                    showReportPopupMenu(view)
+                    // 다른 사람 댓글 신고
+                    showReportPopupMenu(anchorView)
                 }
             }
         }
@@ -89,49 +88,39 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun showDeletePopupMenu(anchorView: View) {
         val deleteTitle = listOf(stringOf(R.string.popup_delete_title))
-
-        val popupMenu = WineyPopupMenu(
-            context = anchorView.context,
-            titles = deleteTitle
-        ) { _, _, _ ->
+        WineyPopupMenu(context = anchorView.context, titles = deleteTitle) { _, _, _ ->
             showCommentDeleteDialog()
+        }.apply {
+            showCustomPosition(anchorView)
         }
-
-        // todo: 팝업 메뉴 표시 위치 바꾸기
-        popupMenu.showAsDropDown(anchorView, 0, 0)
     }
 
-    private fun showReportPopupMenu(view: View) {
+    private fun showReportPopupMenu(anchorView: View) {
         val reportTitle = listOf(stringOf(R.string.popup_report_title))
-        val popupMenu =
-            WineyPopupMenu(context = view.context, titles = reportTitle) { _, _, _ ->
-                showCommentReportDialog()
-            }
-
-        // todo: 팝업 메뉴 표시 위치 바꾸기
-        popupMenu.showAsDropDown(view)
+        WineyPopupMenu(context = anchorView.context, titles = reportTitle) { _, _, _ ->
+            showCommentReportDialog()
+        }.apply {
+            showCustomPosition(anchorView)
+        }
     }
 
-    private fun showAllPopupMenu(view: View) {
+    private fun showAllPopupMenu(anchorView: View) {
         val menuTitles = listOf(
             stringOf(R.string.popup_delete_title),
             stringOf(R.string.popup_report_title)
         )
-        val popupMenu =
-            WineyPopupMenu(context = view.context, titles = menuTitles) { _, _, position ->
-                when (position) {
-                    0 -> {
-                        showCommentDeleteDialog()
-                    }
-
-                    1 -> {
-                        showCommentReportDialog()
-                    }
-                }
+        WineyPopupMenu(context = anchorView.context, titles = menuTitles) { _, _, position ->
+            when (position) {
+                0 -> showCommentDeleteDialog()
+                1 -> showCommentReportDialog()
             }
+        }.apply {
+            showCustomPosition(anchorView)
+        }
+    }
 
-        // todo: 팝업 메뉴 표시 위치 바꾸기
-        popupMenu.showAsDropDown(view, -65, -65, Gravity.END)
+    private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
+        showAsDropDown(anchorView, -POPUP_MENU_OFFSET, -POPUP_MENU_OFFSET, Gravity.END)
     }
 
     private fun showCommentDeleteDialog() {
@@ -242,5 +231,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_COMMENT_REPORT_DIALOG = "COMMENT_REPORT_DIALOG"
+
+        private const val POPUP_MENU_OFFSET = 65
     }
 }
