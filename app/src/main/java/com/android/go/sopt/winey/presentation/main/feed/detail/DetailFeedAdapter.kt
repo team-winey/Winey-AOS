@@ -1,6 +1,7 @@
 package com.android.go.sopt.winey.presentation.main.feed.detail
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.databinding.ItemDetailFeedBinding
@@ -9,14 +10,15 @@ import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class DetailFeedAdapter(
     private val detailFeed: DetailFeed,
-    private val postLike: (feedId: Int, isLiked: Boolean) -> Unit
+    private val onLikeButtonClicked: (feedId: Int, isLiked: Boolean) -> Unit,
+    private val onPopupMenuClicked: (View) -> Unit
 ) :
     RecyclerView.Adapter<DetailFeedAdapter.DetailFeedViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailFeedViewHolder {
         val binding =
             ItemDetailFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return DetailFeedViewHolder(binding, postLike)
+        return DetailFeedViewHolder(binding, onLikeButtonClicked, onPopupMenuClicked)
     }
 
     override fun getItemCount(): Int = FEED_ITEM_COUNT
@@ -32,7 +34,8 @@ class DetailFeedAdapter(
 
     class DetailFeedViewHolder(
         private val binding: ItemDetailFeedBinding,
-        private val postLike: (feedId: Int, isLiked: Boolean) -> Unit
+        private val onLikeButtonClicked: (feedId: Int, isLiked: Boolean) -> Unit,
+        private val onPopupMenuClicked: (View) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: DetailFeed?) {
             binding.apply {
@@ -41,8 +44,12 @@ class DetailFeedAdapter(
                     return
                 }
                 ivDetailLike.setOnSingleClickListener {
-                    postLike(data.feedId, !data.isLiked)
+                    onLikeButtonClicked(data.feedId, !data.isLiked)
                 }
+                btnDetailMore.setOnSingleClickListener { view ->
+                    onPopupMenuClicked(view)
+                }
+
             }
         }
     }
