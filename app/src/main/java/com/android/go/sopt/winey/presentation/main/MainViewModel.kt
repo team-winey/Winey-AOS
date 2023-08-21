@@ -1,11 +1,14 @@
 package com.android.go.sopt.winey.presentation.main
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
+import com.android.go.sopt.winey.domain.repository.NotificationRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,13 +22,17 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val dataStoreRepository: DataStoreRepository
+    private val dataStoreRepository: DataStoreRepository,
+    private val notificationRepository: NotificationRepository
 ) : ViewModel() {
     private val _getUserState = MutableStateFlow<UiState<User?>>(UiState.Loading)
     val getUserState: StateFlow<UiState<User?>> = _getUserState.asStateFlow()
 
     private val _logoutState = MutableStateFlow<UiState<ResponseLogoutDto?>>(UiState.Empty)
     val logoutState: StateFlow<UiState<ResponseLogoutDto?>> = _logoutState.asStateFlow()
+
+    private val _notiState = MutableStateFlow(true)
+    val notiState: LiveData<Boolean> = _notiState.asLiveData()
 
     fun getUser() {
         viewModelScope.launch {
@@ -66,6 +73,42 @@ class MainViewModel @Inject constructor(
                     }
                     Timber.e("${t.message}")
                     _logoutState.value = UiState.Failure("${t.message}")
+                }
+        }
+    }
+
+    fun getHasNewNoti() {
+        viewModelScope.launch {
+            notificationRepository.getHasNewNotification()
+                .onSuccess { response ->
+                    if (response?.hasNewNotification == true) {
+                        _notiState.value = true
+                        Timber.e("true")
+                    } else {
+                        _notiState.value = false
+                        Timber.e("false")
+                    }
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP 실패")
+                    }
+                    Timber.e("${t.message}")
+                }
+        }
+    }
+
+    fun patchCheckAllNoti() {
+        viewModelScope.launch {
+            notificationRepository.patchCheckAllNotification()
+                .onSuccess {
+                    getHasNewNoti()
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP 실패")
+                    }
+                    Timber.e("${t.message}")
                 }
         }
     }

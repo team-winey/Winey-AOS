@@ -264,7 +264,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val LEVEL_NOBLESS = "귀족"
         private const val LEVEL_KING = "황제"
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
-        private const val TERMS_URL = "https://empty-weaver-a9f.notion.site/62b37962c661488ba5f60958c24753e1?pvs=4"
+        private const val TERMS_URL =
+            "https://empty-weaver-a9f.notion.site/62b37962c661488ba5f60958c24753e1?pvs=4"
         private const val EXTRA_KEY = "PREV_SCREEN_NAME"
         private const val EXTRA_VALUE = "MyPageFragment"
         private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
