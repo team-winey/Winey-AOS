@@ -71,6 +71,12 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         initNotificationButtonClickListener()
     }
 
+    // 상세 피드 갔다가 다시 돌아오면 갱신된 데이터가 보이도록
+    override fun onStart() {
+        super.onStart()
+        viewModel.getWineyFeed()
+    }
+
     private fun initAdapter() {
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
         wineyFeedLoadAdapter = WineyFeedLoadAdapter()
