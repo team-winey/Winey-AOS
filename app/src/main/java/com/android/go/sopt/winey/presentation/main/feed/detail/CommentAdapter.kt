@@ -3,14 +3,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.databinding.ItemDetailCommentBinding
-import com.android.go.sopt.winey.domain.entity.CommentList
+import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
-class CommentAdapter() : ListAdapter<CommentList, CommentAdapter.CommentViewHolder>(diffUtil) {
+class CommentAdapter : ListAdapter<Comment, CommentAdapter.CommentViewHolder>(diffUtil) {
     class CommentViewHolder(
         private val binding: ItemDetailCommentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun onBind(data: CommentList) {
+        fun onBind(data: Comment) {
             binding.apply {
                 this.data = data
                 executePendingBindings()
@@ -32,7 +32,7 @@ class CommentAdapter() : ListAdapter<CommentList, CommentAdapter.CommentViewHold
     }
 
     companion object {
-        private val diffUtil = ItemDiffCallback<CommentList>(
+        private val diffUtil = ItemDiffCallback<Comment>(
             onItemsTheSame = { old, new -> old.commentId == new.commentId },
             onContentsTheSame = { old, new -> old == new }
         )
