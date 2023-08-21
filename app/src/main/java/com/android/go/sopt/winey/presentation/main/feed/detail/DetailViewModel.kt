@@ -59,6 +59,9 @@ class DetailViewModel @Inject constructor(
     private val _postFeedDetailLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postFeedDetailLikeState: StateFlow<UiState<Like>> = _postFeedDetailLikeState.asStateFlow()
 
+    val _deleteFeedDetailState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val deleteFeedDetailState: StateFlow<UiState<Unit>> = _deleteFeedDetailState.asStateFlow()
+
     fun likeFeed(feedId: Int, isLiked: Boolean) {
         val requestPostLikeDto = RequestPostLikeDto(isLiked)
         postLike(feedId, requestPostLikeDto)
@@ -100,6 +103,16 @@ class DetailViewModel @Inject constructor(
                     _postFeedDetailLikeState.emit(UiState.Success(response))
                 }
                 .onFailure { t -> handleFailureState(_postFeedDetailLikeState, t) }
+        }
+    }
+
+    fun deleteFeed(feedId: Int) {
+        viewModelScope.launch {
+            feedRepository.deleteFeed(feedId)
+                .onSuccess { response ->
+                    _deleteFeedDetailState.emit(UiState.Success(response))
+                }
+                .onFailure { t -> handleFailureState(_deleteFeedDetailState, t) }
         }
     }
 
