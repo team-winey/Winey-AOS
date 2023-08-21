@@ -28,6 +28,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val mainViewModel by viewModels<MainViewModel>()
     private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
     private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
+    private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,8 +40,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         syncBottomNavigationSelection()
 
         setupLogoutState()
-        showUploadSuccessSnackbar()
-        showDeleteSuccessSnackbar()
+        showSuccessSnackBar()
     }
 
     private fun initFragment() {
@@ -52,15 +52,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun showUploadSuccessSnackbar() {
+    private fun showSuccessSnackBar(){
         if (isUploadSuccess != null && isUploadSuccess == true) {
             wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
         }
-    }
-
-    private fun showDeleteSuccessSnackbar() {
         if (isDeleteSuccess != null && isDeleteSuccess == true) {
             wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
+        }
+        if (isReportSuccess != null && isReportSuccess == true) {
+            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_report_success))
         }
     }
 
@@ -127,5 +127,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     companion object {
         private const val EXTRA_UPLOAD_KEY = "upload"
         private const val EXTRA_DELETE_KEY = "delete"
+        private const val EXTRA_REPORT_KEY = "report"
     }
 }
