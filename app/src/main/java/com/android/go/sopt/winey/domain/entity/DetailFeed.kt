@@ -12,10 +12,10 @@ data class DetailFeed(
     val writerLevel: Int,
     val comments: Long,
     val timeAgo: String,
-    val commentList: List<CommentList>
+    val commentList: List<Comment>
 )
 
-data class CommentList(
+data class Comment(
     val commentId: Long,
     val author: String,
     val content: String,
