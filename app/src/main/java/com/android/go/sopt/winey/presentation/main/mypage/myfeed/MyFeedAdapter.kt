@@ -62,29 +62,13 @@ class MyFeedAdapter(
         parent: ViewGroup,
         viewType: Int
     ): MyFeedViewHolder {
-        val binding = ItemMyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemMyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyFeedViewHolder(binding, likeButtonClick, showPopupMenu, toFeedDetail)
     }
 
     override fun onBindViewHolder(holder: MyFeedViewHolder, position: Int) {
         holder.onBind(getItem(position))
-    }
-
-    fun updateLikeStatus(feedId: Int, isLiked: Boolean) {
-        currentData.let { data ->
-            val index = data.indexOfFirst { it?.feedId == feedId }
-            if (index != -1) {
-                data[index]?.let { item ->
-                    item.isLiked = isLiked
-                    if (isLiked) {
-                        item.likes++
-                    } else {
-                        item.likes--
-                    }
-                    notifyItemChanged(index)
-                }
-            }
-        }
     }
 
     companion object {

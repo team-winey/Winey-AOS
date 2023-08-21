@@ -178,10 +178,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    wineyFeedAdapter.updateLikeStatus(
-                        state.data.data.feedId,
-                        state.data.data.isLiked
-                    )
+                    wineyFeedAdapter.refresh()
                 }
 
                 is UiState.Failure -> {
