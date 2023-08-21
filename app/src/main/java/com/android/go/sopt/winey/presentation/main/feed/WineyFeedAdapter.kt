@@ -15,7 +15,7 @@ import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 class WineyFeedAdapter(
     private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
     private val showPopupMenu: (View, WineyFeed) -> Unit,
-    private val toFeedDetail: (feedId: Int, writerLevel: Int) -> Unit
+    private val toFeedDetail: (feedId: Int, writerId: Int) -> Unit
 ) : PagingDataAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
     private val currentData: ItemSnapshotList<WineyFeed>
         get() = snapshot()
