@@ -1,8 +1,10 @@
 package com.android.go.sopt.winey.data.service
 
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetFeedDetailDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponsePostCommentDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.model.remote.response.base.BaseResponse
@@ -51,4 +53,10 @@ interface FeedService {
     suspend fun getFeedDetail(
         @Path("feedId") feedId: Int
     ): BaseResponse<ResponseGetFeedDetailDto>
+
+    @POST("comment/{feedId}")
+    suspend fun postComment(
+        @Path("feedId") feedId: Int,
+        @Body requestPostCommentDto: RequestPostCommentDto
+    ): BaseResponse<ResponsePostCommentDto>
 }

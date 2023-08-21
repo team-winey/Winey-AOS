@@ -1,8 +1,10 @@
 package com.android.go.sopt.winey.domain.repository
 
 import androidx.paging.PagingData
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
+import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -25,4 +27,9 @@ interface FeedRepository {
     ): Result<ResponsePostWineyFeedDto?>
 
     suspend fun getFeedDetail(feedId: Int): Result<DetailFeed?>
+
+    suspend fun postComment(
+        feedId: Int,
+        requestPostCommentDto: RequestPostCommentDto
+    ): Result<Comment?>
 }

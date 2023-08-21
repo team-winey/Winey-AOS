@@ -27,6 +27,7 @@ import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import com.android.go.sopt.winey.presentation.main.notification.NotificationActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -65,6 +66,15 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         initFabClickListener()
         initPostLikeStateObserver()
         initGetFeedStateObserver()
+        binding.vm = mainViewModel
+        mainViewModel.getHasNewNoti()
+        initNotificationButtonClickListener()
+    }
+
+    // 상세 피드 갔다가 다시 돌아오면 갱신된 데이터가 보이도록
+    override fun onStart() {
+        super.onStart()
+        viewModel.getWineyFeed()
     }
 
     private fun initAdapter() {
@@ -77,7 +87,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
             },
-            toFeedDetail = { feedId, writerLevel -> navigateToDetail(feedId, writerLevel) }
+            toFeedDetail = { feedId, writerId -> navigateToDetail(feedId, writerId) }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
@@ -218,6 +228,14 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         }
     }
 
+    private fun initNotificationButtonClickListener() {
+        binding.ivWineyfeedNotification.setOnClickListener {
+            mainViewModel.patchCheckAllNoti()
+            val intent = Intent(context, NotificationActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
     private fun isGoalValid(data: User?) {
         if (data?.isOver == true) {
             val dialog = WineyDialogFragment(
@@ -254,10 +272,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         startActivity(intent)
     }
 
-    private fun navigateToDetail(feedId: Int, writerLevel: Int) {
+    private fun navigateToDetail(feedId: Int, writerId: Int) {
         val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra("feedId", feedId)
-        intent.putExtra("writerLevel", writerLevel)
+        intent.putExtra(KEY_FEED_ID, feedId)
+        intent.putExtra(KEY_FEED_WRITER_ID, writerId)
         startActivity(intent)
     }
 
@@ -265,5 +283,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
+
+        private const val KEY_FEED_ID = "feedId"
+        private const val KEY_FEED_WRITER_ID = "feedWriterId"
     }
 }

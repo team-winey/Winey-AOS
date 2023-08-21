@@ -41,11 +41,14 @@
 
         <TextView
             android:id="@+id/tv_notification_text"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:breakStrategy="simple"
+            android:paddingBottom="16dp"
             android:text="@{data.notiMessage}"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+            app:layout_constraintEnd_toEndOf="@id/tv_notification_time"
             app:layout_constraintStart_toStartOf="@id/tv_notification_what"
             app:layout_constraintTop_toBottomOf="@id/tv_notification_what"
             tools:text="님이 회원님의 게시글을 좋아해요." />

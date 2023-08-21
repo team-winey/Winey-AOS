@@ -1,6 +1,6 @@
 package com.android.go.sopt.winey.data.model.remote.response
 
-import com.android.go.sopt.winey.domain.entity.CommentList
+import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.domain.entity.DetailFeed
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -69,7 +69,7 @@ data class ResponseGetFeedDetailDto(
         comments = getFeedResponseDto.comments,
         timeAgo = getFeedResponseDto.timeAgo,
         commentList = getCommentResponseList.map { list ->
-            CommentList(
+            Comment(
                 commentId = list.commentId,
                 author = list.author,
                 content = list.content,

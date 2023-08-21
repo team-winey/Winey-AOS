@@ -3,12 +3,14 @@ package com.android.go.sopt.winey.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.service.FeedService
 import com.android.go.sopt.winey.data.source.FeedDataSource
 import com.android.go.sopt.winey.data.source.paging.MyFeedPagingSource
 import com.android.go.sopt.winey.data.source.paging.WineyFeedPagingSource
+import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -56,6 +58,14 @@ class FeedRepositoryImpl @Inject constructor(
     override suspend fun getFeedDetail(feedId: Int): Result<DetailFeed?> =
         runCatching {
             feedDataSource.getFeedDetail(feedId).data?.toDetailFeed()
+        }
+
+    override suspend fun postComment(
+        feedId: Int,
+        requestPostCommentDto: RequestPostCommentDto
+    ): Result<Comment?> =
+        runCatching {
+            feedDataSource.postComment(feedId, requestPostCommentDto).data?.toComment()
         }
 
     companion object {

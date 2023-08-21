@@ -25,21 +25,30 @@ import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-    private val viewModel by viewModels<MainViewModel>()
+    private val mainViewModel by viewModels<MainViewModel>()
     private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
-        viewModel.getUser()
+        mainViewModel.getUser()
 
-        navigateTo<WineyFeedFragment>()
+        initFragment()
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
 
         setupLogoutState()
         showUploadSuccessSnackbar()
+    }
+
+    private fun initFragment() {
+        if (intent.getBooleanExtra("navigateMypage", false)) {
+            navigateTo<MyPageFragment>()
+            binding.bnvMain.selectedItemId = R.id.menu_mypage
+        } else {
+            navigateTo<WineyFeedFragment>()
+        }
     }
 
     private fun showUploadSuccessSnackbar() {
@@ -75,7 +84,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun setupLogoutState() {
-        viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
+        mainViewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
                 }

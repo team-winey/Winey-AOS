@@ -18,10 +18,16 @@
     <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
 
     <!-- comment delete dialog -->
-    <string name="feed_comment_delete_dialog_title">삭제하시겠습니까?</string>
-    <string name="feed_comment_delete_dialog_subtitle">삭제한 글은 다시 복구할 수 없습니다.</string>
-    <string name="feed_comment_delete_dialog_negative_button">취소</string>
-    <string name="feed_comment_delete_dialog_positive_button">삭제하기</string>
+    <string name="comment_delete_dialog_title">삭제하시겠습니까?</string>
+    <string name="comment_delete_dialog_subtitle">삭제한 글은 다시 복구할 수 없습니다.</string>
+    <string name="comment_delete_dialog_negative_button">취소</string>
+    <string name="comment_delete_dialog_positive_button">삭제하기</string>
+
+    <!-- report dialog -->
+    <string name="report_dialog_title">신고하시겠습니까?</string>
+    <string name="report_dialog_subtitle">욕설/비하, 상업적 광고 및 판매,\n낚시/놀람/도배 글의 경우 신고할 수 있습니다.</string>
+    <string name="report_dialog_negative_button">취소</string>
+    <string name="report_dialog_positive_button">신고하기</string>
 
     <!-- feed delete dialog -->
     <string name="feed_delete_dialog_title">정말 게시물을 삭제하시겠어요?</string>
@@ -103,7 +109,7 @@
     <string name="help_rule_king">황제</string>
     <string name="help_rule_king_how">목표를 총 9번 이상 세우고 9번 달성 시 레벨업</string>
     <string name="help_warning">주의사항</string>
-    <string name="help_warning_how">귀족 레벨부터는 레벨을 유지하기 위해 주 3회이상 출석을 해야해요!\n절약 인증 사진을 삭제하면 목표기간 내에 누적된 절약 금액이 삭감되며 경우에 따라 레벨이 강등될 수 있어요! 삭제는 신중하게 해주세요.</string>
+    <string name="help_warning_how">귀족 레벨부터는 레벨을 유지하기 위해 주 3회이상 출석을 해야해요!\n절약 인증 사진을 삭제하면 목표기간 내에 누적된 절약 금액이 삭감되며\n경우에 따라 레벨이 강등될 수 있어요! 삭제는 신중하게 해주세요.</string>
 
     <!-- myfeed -->
     <string name="myfeed_head">마이피드</string>
@@ -189,9 +195,17 @@
     <string name="snackbar_upload_fail">죄송합니다. 업로드에 실패했습니다 :(</string>
 
     <!-- comment -->
-    <string name="comment_level_1">LV.평민 ㆍ </string>
-    <string name="comment_level_2">LV.기사 ㆍ </string>
-    <string name="comment_level_3">LV.귀족 ㆍ </string>
-    <string name="comment_level_4">LV.황제 ㆍ </string>
+    <string name="comment_level_1">LV. 평민 ㆍ </string>
+    <string name="comment_level_2">LV. 기사 ㆍ </string>
+    <string name="comment_level_3">LV. 귀족 ㆍ </string>
+    <string name="comment_level_4">LV. 황제 ㆍ </string>
     <string name="comment_empty">아직 댓글이 없어요</string>
+    <string name="comment_hint">댓글을 입력하세요</string>
+    <string name="comment_upload_btn_text">등록</string>
+    <string name="comment_counter">%d/500</string>
+    <string name="comment_counter_preview">450/500</string>
+
+    <!-- popup menu -->
+    <string name="popup_delete_title">삭제하기</string>
+    <string name="popup_report_title">신고하기</string>
 </resources>
