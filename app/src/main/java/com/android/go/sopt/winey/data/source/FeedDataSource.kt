@@ -41,6 +41,6 @@ class FeedDataSource @Inject constructor(
     ): BaseResponse<ResponsePostCommentDto> =
         feedService.postComment(feedId, requestPostCommentDto)
 
-    suspend fun deleteComment(commentId: Int): BaseResponse<Unit> =
+    suspend fun deleteComment(commentId: Long): BaseResponse<Unit> =
         feedService.deleteComment(commentId)
 }

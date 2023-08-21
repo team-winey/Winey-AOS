@@ -68,7 +68,7 @@ class FeedRepositoryImpl @Inject constructor(
             feedDataSource.postComment(feedId, requestPostCommentDto).data?.toComment()
         }
 
-    override suspend fun deleteComment(commentId: Int): Result<Unit> =
+    override suspend fun deleteComment(commentId: Long): Result<Unit> =
         runCatching {
             feedDataSource.deleteComment(commentId)
         }

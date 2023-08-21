@@ -62,6 +62,6 @@ interface FeedService {
 
     @DELETE("comment/{commentId}")
     suspend fun deleteComment(
-        @Path("commentId") commentId: Int
+        @Path("commentId") commentId: Long
     ): BaseResponse<Unit>
 }

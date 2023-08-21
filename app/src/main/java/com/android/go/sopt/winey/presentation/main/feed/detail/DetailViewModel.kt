@@ -86,7 +86,7 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun deleteComment(commentId: Int) {
+    fun deleteComment(commentId: Long) {
         viewModelScope.launch {
             feedRepository.deleteComment(commentId)
                 .onSuccess { response ->

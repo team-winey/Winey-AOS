@@ -33,6 +33,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private val feedId by lazy { intent.getIntExtra(KEY_FEED_ID, 0) }
     private val feedWriterId by lazy { intent.getIntExtra(KEY_FEED_WRITER_ID, 0) }
+    private var currentClickedPosition = 0
 
     private var _detailFeedAdapter: DetailFeedAdapter? = null
     private val detailFeedAdapter get() = requireNotNull(_detailFeedAdapter)
@@ -56,32 +57,36 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         initCommentAdapter()
         initCommentCreateButtonClickListener()
         initPostCommentStateObserver()
+        initDeleteCommentStateObserver()
     }
 
     private fun initCommentAdapter() {
         _commentAdapter = CommentAdapter(
-            onPopupMenuClicked = { anchorView, commentAuthorId ->
-                showPopupMenu(anchorView, commentAuthorId)
+            onPopupMenuClicked = { anchorView, commentAuthorId, commentId ->
+                showPopupMenu(anchorView, commentAuthorId, commentId)
+            },
+            onItemClicked = { position ->
+                currentClickedPosition = position
             }
         )
     }
 
-    private fun showPopupMenu(anchorView: View, commentAuthorId: Int) {
+    private fun showPopupMenu(anchorView: View, commentAuthorId: Int, commentId: Long) {
         lifecycleScope.launch {
             val currentUserId = dataStoreRepository.getUserId().first()
 
             if (isMyFeed(currentUserId)) {
                 if (isMyComment(currentUserId, commentAuthorId)) {
                     // 내 댓글 삭제
-                    showDeletePopupMenu(anchorView)
+                    showDeletePopupMenu(anchorView, commentId)
                 } else {
                     // 방문자 댓글 삭제/신고
-                    showAllPopupMenu(anchorView)
+                    showAllPopupMenu(anchorView, commentId)
                 }
             } else {
                 if (isMyComment(currentUserId, commentAuthorId)) {
                     // 내 댓글 삭제
-                    showDeletePopupMenu(anchorView)
+                    showDeletePopupMenu(anchorView, commentId)
                 } else {
                     // 다른 사람 댓글 신고
                     showReportPopupMenu(anchorView)
@@ -90,10 +95,10 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun showDeletePopupMenu(anchorView: View) {
+    private fun showDeletePopupMenu(anchorView: View, commentId: Long) {
         val deleteTitle = listOf(stringOf(R.string.popup_delete_title))
         WineyPopupMenu(context = anchorView.context, titles = deleteTitle) { _, _, _ ->
-            showCommentDeleteDialog()
+            showCommentDeleteDialog(commentId)
         }.apply {
             showCustomPosition(anchorView)
         }
@@ -108,14 +113,14 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun showAllPopupMenu(anchorView: View) {
+    private fun showAllPopupMenu(anchorView: View, commentId: Long) {
         val menuTitles = listOf(
             stringOf(R.string.popup_delete_title),
             stringOf(R.string.popup_report_title)
         )
         WineyPopupMenu(context = anchorView.context, titles = menuTitles) { _, _, position ->
             when (position) {
-                0 -> showCommentDeleteDialog()
+                0 -> showCommentDeleteDialog(commentId)
                 1 -> showCommentReportDialog()
             }
         }.apply {
@@ -127,14 +132,14 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         showAsDropDown(anchorView, -POPUP_MENU_OFFSET, -POPUP_MENU_OFFSET, Gravity.END)
     }
 
-    private fun showCommentDeleteDialog() {
+    private fun showCommentDeleteDialog(commentId: Long) {
         val dialog = WineyDialogFragment(
             stringOf(R.string.comment_delete_dialog_title),
             stringOf(R.string.comment_delete_dialog_subtitle),
             stringOf(R.string.comment_delete_dialog_negative_button),
             stringOf(R.string.comment_delete_dialog_positive_button),
             handleNegativeButton = {},
-            handlePositiveButton = { /* todo: 댓글 삭제하기 */ }
+            handlePositiveButton = { viewModel.deleteComment(commentId) }
         )
         dialog.show(supportFragmentManager, TAG_COMMENT_DELETE_DIALOG)
     }
@@ -155,6 +160,25 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun isMyComment(currentUserId: Int?, commentAuthorId: Int) =
         currentUserId == commentAuthorId
+
+    private fun initDeleteCommentStateObserver() {
+        viewModel.deleteCommentState.flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val commentNumber = commentAdapter.deleteItem(currentClickedPosition)
+                        detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {
+                    }
+                }
+            }.launchIn(lifecycleScope)
+    }
 
     private fun initCommentCreateButtonClickListener() {
         binding.tvCommentCreate.setOnClickListener {
