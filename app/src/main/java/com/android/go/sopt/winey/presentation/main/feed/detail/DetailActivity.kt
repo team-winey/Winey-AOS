@@ -18,7 +18,6 @@ import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.context.stringOf
-import com.android.go.sopt.winey.util.context.toast
 import com.android.go.sopt.winey.util.context.wineySnackbar
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.view.UiState
