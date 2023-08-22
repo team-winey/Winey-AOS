@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyfeedHeaderBinding
-import com.android.go.sopt.winey.domain.entity.DetailFeed
 import java.util.Random
 
 class WineyFeedHeaderAdapter(
@@ -21,11 +20,11 @@ class WineyFeedHeaderAdapter(
         private fun setRandomBannerImage(): Int {
             val random = Random()
             return when (random.nextInt(4)) {
-                1 -> R.drawable.img_wineyfeed_banner_1
-                2 -> R.drawable.img_wineyfeed_banner_2
-                3 -> R.drawable.img_wineyfeed_banner_3
-                4 -> R.drawable.img_wineyfeed_banner_4
-                else -> R.drawable.img_wineyfeed_banner_1
+                0 -> R.drawable.img_wineyfeed_banner_1
+                1 -> R.drawable.img_wineyfeed_banner_2
+                2 -> R.drawable.img_wineyfeed_banner_3
+                3 -> R.drawable.img_wineyfeed_banner_4
+                else -> throw IllegalArgumentException(MSG_INVALID_RANDOM_NUMBER)
             }
         }
     }
@@ -44,5 +43,6 @@ class WineyFeedHeaderAdapter(
 
     companion object {
         private const val HEADER_COUNT = 1
+        private const val MSG_INVALID_RANDOM_NUMBER = "Invalid random number"
     }
 }
