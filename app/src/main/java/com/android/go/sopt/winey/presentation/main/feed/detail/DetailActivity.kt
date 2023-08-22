@@ -270,7 +270,9 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.postFeedDetailLikeState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    viewModel.getFeedDetail(feedId)
+                    val isLiked = state.data.data.isLiked
+                    val likes = state.data.data.likes.toLong()
+                    detailFeedAdapter.updateLikeNumber(isLiked, likes)
                 }
 
                 is UiState.Failure -> {
