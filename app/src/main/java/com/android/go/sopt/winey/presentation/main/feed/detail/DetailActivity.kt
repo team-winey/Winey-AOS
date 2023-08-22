@@ -33,7 +33,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private val feedId by lazy { intent.getIntExtra(KEY_FEED_ID, 0) }
     private val feedWriterId by lazy { intent.getIntExtra(KEY_FEED_WRITER_ID, 0) }
-    private var currentClickedPosition = 0
 
     private var _detailFeedAdapter: DetailFeedAdapter? = null
     private val detailFeedAdapter get() = requireNotNull(_detailFeedAdapter)
@@ -64,9 +63,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         _commentAdapter = CommentAdapter(
             onPopupMenuClicked = { anchorView, commentAuthorId, commentId ->
                 showPopupMenu(anchorView, commentAuthorId, commentId)
-            },
-            onItemClicked = { position ->
-                currentClickedPosition = position
             }
         )
     }
@@ -166,8 +162,9 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        val commentNumber = commentAdapter.deleteItem(currentClickedPosition)
-                        detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
+                        // todo: 서버쪽에서 삭제한 댓글의 id를 보내주면 여기서 바로 넣으면 되는데..!!
+//                        val commentNumber = commentAdapter.deleteItem(state.data)
+//                        detailFeedAdapter.updateCommentNumber(commentNumber)
                     }
 
                     is UiState.Failure -> {

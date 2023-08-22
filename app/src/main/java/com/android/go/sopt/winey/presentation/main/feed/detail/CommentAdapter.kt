@@ -8,25 +8,16 @@ import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
 class CommentAdapter(
-    private val onPopupMenuClicked: (View, Int, Long) -> Unit,
-    private val onItemClicked: (Int) -> Unit
+    private val onPopupMenuClicked: (View, Int, Long) -> Unit
 ) : ListAdapter<Comment, CommentAdapter.CommentViewHolder>(diffUtil) {
 
     inner class CommentViewHolder(
         private val binding: ItemDetailCommentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        init {
-            itemView.setOnClickListener {
-                val position = absoluteAdapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    onItemClicked(position)
-                }
-            }
-        }
-
         fun onBind(comment: Comment) {
             binding.apply {
                 this.data = comment
+
                 ivCommentMore.setOnClickListener { view ->
                     onPopupMenuClicked(view, comment.authorId, comment.commentId)
                 }
@@ -54,9 +45,10 @@ class CommentAdapter(
         return newList.size
     }
 
-    fun deleteItem(position: Int): Int {
+    fun deleteItem(commentId: Long): Int {
+        val comment = currentList.find { it.commentId == commentId }
         val newList = currentList.toMutableList()
-        newList.removeAt(position)
+        newList.remove(comment)
         submitList(newList)
         return newList.size
     }
