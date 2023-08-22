@@ -18,6 +18,7 @@ import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.context.stringOf
+import com.android.go.sopt.winey.util.context.toast
 import com.android.go.sopt.winey.util.context.wineySnackbar
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.view.UiState
@@ -248,6 +249,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
+                    finish()
                 }
 
                 else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
