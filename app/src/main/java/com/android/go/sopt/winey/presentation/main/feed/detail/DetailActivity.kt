@@ -48,9 +48,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
-    // todo: 상세 피드 삭제/신고 -> 메인 액티비티에 스낵바 표시
-    //  댓글 삭제/신고 -> 디테일 액티비티에 스낵바 표시
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
@@ -329,10 +326,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         // todo: 서버쪽에서 삭제한 댓글의 id를 보내주면 여기서 바로 넣으면 되는데..!!
 //                        val commentNumber = commentAdapter.deleteItem(state.data)
 //                        detailFeedAdapter.updateCommentNumber(commentNumber)
+                        wineySnackbar(binding.root, true, stringOf(R.string.snackbar_comment_delete_success))
                     }
 
                     is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
+                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_delete_fail))
                     }
 
                     else -> {
