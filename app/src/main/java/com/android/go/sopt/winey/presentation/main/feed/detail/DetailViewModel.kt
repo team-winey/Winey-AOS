@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
 import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.entity.Like
@@ -64,8 +65,10 @@ class DetailViewModel @Inject constructor(
     private val _postCommentState = MutableStateFlow<UiState<Comment?>>(UiState.Loading)
     val postCommentState: StateFlow<UiState<Comment?>> = _postCommentState.asStateFlow()
 
-    private val _deleteCommentState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
-    val deleteCommentState: StateFlow<UiState<Unit>> = _deleteCommentState.asStateFlow()
+    private val _deleteCommentState =
+        MutableStateFlow<UiState<ResponseDeleteCommentDto?>>(UiState.Loading)
+    val deleteCommentState: StateFlow<UiState<ResponseDeleteCommentDto?>> =
+        _deleteCommentState.asStateFlow()
 
     fun getFeedDetail(feedId: Int) {
         viewModelScope.launch {
@@ -126,7 +129,7 @@ class DetailViewModel @Inject constructor(
             feedRepository.deleteComment(commentId)
                 .onSuccess { response ->
                     _deleteCommentState.value = UiState.Success(response)
-                    Timber.d("SUCCESS DELETE COMMENT")
+                    Timber.e("SUCCESS DELETE COMMENT: ${response?.commentId}")
                 }
                 .onFailure { t ->
                     _deleteCommentState.value = UiState.Failure(t.message.toString())

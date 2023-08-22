@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -57,12 +58,15 @@ class WineyFeedFragment :
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
+    private var rvLayoutManagerSavedState: Parcelable? = null
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Timber.e("onViewCreated called...")
+
         removeRecyclerviewItemChangeAnimation()
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
@@ -75,10 +79,41 @@ class WineyFeedFragment :
         initNotificationButtonClickListener()
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        Timber.e("onViewStateRestored called...")
+
+        if (savedInstanceState != null) {
+            rvLayoutManagerSavedState = savedInstanceState.getParcelable(KEY_SCROLL_POS)
+        }
+    }
+
     // 상세 피드 갔다가 다시 돌아오면 갱신된 데이터가 보이도록
     override fun onStart() {
         super.onStart()
+        Timber.e("onStart called...")
+
         viewModel.getWineyFeed()
+
+        // todo: 스크롤 위치가 보존되도록!
+        if (rvLayoutManagerSavedState != null) {
+            binding.rvWineyfeedPost.layoutManager?.onRestoreInstanceState(rvLayoutManagerSavedState)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Timber.e("onStop called...")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Timber.e("onSaveInstanceState called...")
+
+        outState.putParcelable(
+            KEY_SCROLL_POS,
+            binding.rvWineyfeedPost.layoutManager?.onSaveInstanceState()
+        )
     }
 
     private fun removeRecyclerviewItemChangeAnimation() {
@@ -297,5 +332,6 @@ class WineyFeedFragment :
 
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+        private const val KEY_SCROLL_POS = "KEY_SCROLL_POS"
     }
 }

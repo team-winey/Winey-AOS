@@ -66,6 +66,12 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         initDeleteCommentStateObserver()
     }
 
+    private fun initBackButtonClickListener() {
+        binding.ivDetailBack.setOnClickListener {
+            finish()
+        }
+    }
+
     private fun removeRecyclerviewItemChangeAnimation() {
         val animator = binding.rvDetail.itemAnimator
         if (animator is SimpleItemAnimator) {
@@ -211,7 +217,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             handleNegativeButton = {},
             handlePositiveButton = {
                 when (target) {
-                    TARGET_DETAIL_FEED -> navigateToMain(EXTRA_REPORT_KEY)
+                    TARGET_DETAIL_FEED -> navigateToMainWithBundle(EXTRA_REPORT_KEY)
                     TARGET_COMMENT -> showCommentReportSnackbar()
                 }
             }
@@ -296,7 +302,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.deleteFeedDetailState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    navigateToMain(EXTRA_DELETE_KEY)
+                    navigateToMainWithBundle(EXTRA_DELETE_KEY)
                 }
 
                 is UiState.Failure -> {
@@ -333,14 +339,12 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        // todo: 서버쪽에서 삭제한 댓글의 id를 보내주면 여기서 바로 넣으면 되는데..!!
-//                        val commentNumber = commentAdapter.deleteItem(state.data)
-//                        detailFeedAdapter.updateCommentNumber(commentNumber)
-                        wineySnackbar(
-                            binding.root,
-                            true,
-                            stringOf(R.string.snackbar_comment_delete_success)
-                        )
+                        if (state.data == null) return@onEach
+
+                        val commentNumber = commentAdapter.deleteItem(state.data.commentId)
+                        detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
+
+                        wineySnackbar(binding.root, true, stringOf(R.string.snackbar_comment_delete_success))
                     }
 
                     is UiState.Failure -> {
@@ -353,15 +357,9 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             }.launchIn(lifecycleScope)
     }
 
-    private fun initBackButtonClickListener() {
-        binding.ivDetailBack.setOnClickListener {
-            finish()
-        }
-    }
-
-    private fun navigateToMain(extraKey: String) {
+    private fun navigateToMainWithBundle(extraKey: String) {
         Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             putExtra(extraKey, true)
             startActivity(this)
         }

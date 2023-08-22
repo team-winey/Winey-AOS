@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.data.source
 
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponseGetFeedDetailDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostCommentDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
@@ -41,6 +42,6 @@ class FeedDataSource @Inject constructor(
     ): BaseResponse<ResponsePostCommentDto> =
         feedService.postComment(feedId, requestPostCommentDto)
 
-    suspend fun deleteComment(commentId: Long): BaseResponse<Unit> =
+    suspend fun deleteComment(commentId: Long): BaseResponse<ResponseDeleteCommentDto> =
         feedService.deleteComment(commentId)
 }
