@@ -78,24 +78,24 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             if (isMyFeed(currentUserId)) {
                 if (isMyComment(currentUserId, commentAuthorId)) {
                     // 내 댓글 삭제
-                    showDeletePopupMenu(anchorView, commentId)
+                    showCommentDeletePopupMenu(anchorView, commentId)
                 } else {
                     // 방문자 댓글 삭제/신고
-                    showAllPopupMenu(anchorView, commentId)
+                    showCommentAllPopupMenu(anchorView, commentId)
                 }
             } else {
                 if (isMyComment(currentUserId, commentAuthorId)) {
                     // 내 댓글 삭제
-                    showDeletePopupMenu(anchorView, commentId)
+                    showCommentDeletePopupMenu(anchorView, commentId)
                 } else {
                     // 다른 사람 댓글 신고
-                    showReportPopupMenu(anchorView)
+                    showCommentReportPopupMenu(anchorView)
                 }
             }
         }
     }
 
-    private fun showDeletePopupMenu(anchorView: View, commentId: Long) {
+    private fun showCommentDeletePopupMenu(anchorView: View, commentId: Long) {
         val deleteTitle = listOf(stringOf(R.string.popup_delete_title))
         WineyPopupMenu(context = anchorView.context, titles = deleteTitle) { _, _, _ ->
             showCommentDeleteDialog(commentId)
@@ -104,7 +104,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun showReportPopupMenu(anchorView: View) {
+    private fun showCommentReportPopupMenu(anchorView: View) {
         val reportTitle = listOf(stringOf(R.string.popup_report_title))
         WineyPopupMenu(context = anchorView.context, titles = reportTitle) { _, _, _ ->
             showCommentReportDialog()
@@ -113,7 +113,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun showAllPopupMenu(anchorView: View, commentId: Long) {
+    private fun showCommentAllPopupMenu(anchorView: View, commentId: Long) {
         val menuTitles = listOf(
             stringOf(R.string.popup_delete_title),
             stringOf(R.string.popup_report_title)
@@ -182,8 +182,15 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun initCommentCreateButtonClickListener() {
         binding.tvCommentCreate.setOnClickListener {
+            checkEmptyCommentList()
             val content = binding.etComment.text.toString()
             viewModel.postComment(feedId, content)
+        }
+    }
+
+    private fun checkEmptyCommentList() {
+        if (commentAdapter.currentList.size == 0) {
+            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
         }
     }
 
