@@ -48,6 +48,9 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
+    // todo: 상세 피드 삭제/신고 -> 메인 액티비티에 스낵바 표시
+    //  댓글 삭제/신고 -> 디테일 액티비티에 스낵바 표시
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
@@ -61,14 +64,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         initCommentCreateButtonClickListener()
         initPostCommentStateObserver()
         initDeleteCommentStateObserver()
-    }
-
-    private fun initCommentAdapter() {
-        _commentAdapter = CommentAdapter(
-            onPopupMenuClicked = { anchorView, commentAuthorId, commentId ->
-                showCommentPopupMenu(anchorView, commentAuthorId, commentId)
-            }
-        )
     }
 
     private fun initDetailFeedAdapter(detailFeed: DetailFeed?) {
@@ -86,6 +81,25 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     showFeedPopupMenu(anchorView)
                 }
             )
+    }
+
+    private fun showFeedPopupMenu(anchorView: View) {
+        lifecycleScope.launch {
+            val currentUserId = dataStoreRepository.getUserId().first()
+            if (isMyFeed(currentUserId)) {
+                showFeedDeletePopupMenu(anchorView)
+            } else {
+                showReportPopupMenu(anchorView)
+            }
+        }
+    }
+
+    private fun initCommentAdapter() {
+        _commentAdapter = CommentAdapter(
+            onPopupMenuClicked = { anchorView, commentAuthorId, commentId ->
+                showCommentPopupMenu(anchorView, commentAuthorId, commentId)
+            }
+        )
     }
 
     private fun showCommentPopupMenu(anchorView: View, commentAuthorId: Int, commentId: Long) {
@@ -106,19 +120,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     showCommentDeletePopupMenu(anchorView, commentId)
                 } else {
                     // 다른 사람 댓글 신고
-                    showCommentReportPopupMenu(anchorView)
+                    showReportPopupMenu(anchorView)
                 }
-            }
-        }
-    }
-
-    private fun showFeedPopupMenu(anchorView: View) {
-        lifecycleScope.launch {
-            val currentUserId = dataStoreRepository.getUserId().first()
-            if (isMyFeed(currentUserId)) {
-                showFeedDeletePopupMenu(anchorView)
-            } else {
-                showCommentReportPopupMenu(anchorView)
             }
         }
     }
@@ -141,7 +144,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun showCommentReportPopupMenu(anchorView: View) {
+    private fun showReportPopupMenu(anchorView: View) {
         val reportTitle = listOf(stringOf(R.string.popup_report_title))
         WineyPopupMenu(context = anchorView.context, titles = reportTitle) { _, _, _ ->
             showCommentReportDialog()
@@ -166,7 +169,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     }
 
     private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
-        showAsDropDown(anchorView, -POPUP_MENU_OFFSET, -POPUP_MENU_OFFSET, Gravity.END)
+        showAsDropDown(anchorView, -POPUP_MENU_POS_OFFSET, -POPUP_MENU_POS_OFFSET, Gravity.END)
     }
 
     private fun showCommentDeleteDialog(commentId: Long) {
@@ -211,26 +214,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     private fun isMyComment(currentUserId: Int?, commentAuthorId: Int) =
         currentUserId == commentAuthorId
 
-    private fun initDeleteCommentStateObserver() {
-        viewModel.deleteCommentState.flowWithLifecycle(lifecycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        // todo: 서버쪽에서 삭제한 댓글의 id를 보내주면 여기서 바로 넣으면 되는데..!!
-//                        val commentNumber = commentAdapter.deleteItem(state.data)
-//                        detailFeedAdapter.updateCommentNumber(commentNumber)
-                    }
-
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> {
-                    }
-                }
-            }.launchIn(lifecycleScope)
-    }
-
     private fun initCommentCreateButtonClickListener() {
         binding.tvCommentCreate.setOnClickListener {
             checkEmptyCommentList()
@@ -245,26 +228,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun initPostCommentStateObserver() {
-        viewModel.postCommentState.flowWithLifecycle(lifecycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        val comment = state.data ?: return@onEach
-                        val commentNumber = commentAdapter.addItem(comment)
-                        detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
-                        binding.etComment.text.clear()
-                    }
-
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
-                }
-            }.launchIn(lifecycleScope)
-    }
-
     private fun initGetFeedDetailObserver() {
         viewModel.getFeedDetailState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
@@ -272,6 +235,36 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     val detailFeed = state.data
                     initDetailFeedAdapter(detailFeed)
                     switchCommentContainer(detailFeed?.commentList)
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun switchCommentContainer(commentList: List<Comment>?) {
+        if (commentList == null) {
+            Timber.e("DETAIL COMMENT LIST IS NULL")
+            return
+        }
+
+        if (commentList.isEmpty()) {
+            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
+        } else {
+            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
+            commentAdapter.submitList(commentList)
+        }
+    }
+
+    private fun initPostLikeStateObserver() {
+        viewModel.postFeedDetailLikeState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    viewModel.getFeedDetail(feedId)
                 }
 
                 is UiState.Failure -> {
@@ -299,40 +292,50 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }.launchIn(lifecycleScope)
     }
 
-    private fun switchCommentContainer(commentList: List<Comment>?) {
-        if (commentList == null) {
-            Timber.e("DETAIL COMMENT LIST IS NULL")
-            return
-        }
+    private fun initPostCommentStateObserver() {
+        viewModel.postCommentState.flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val comment = state.data ?: return@onEach
+                        val commentNumber = commentAdapter.addItem(comment)
+                        detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
+                        binding.etComment.text.clear()
+                    }
 
-        if (commentList.isEmpty()) {
-            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
-        } else {
-            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
-            commentAdapter.submitList(commentList)
-        }
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
+                }
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun initDeleteCommentStateObserver() {
+        viewModel.deleteCommentState.flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        // todo: 서버쪽에서 삭제한 댓글의 id를 보내주면 여기서 바로 넣으면 되는데..!!
+//                        val commentNumber = commentAdapter.deleteItem(state.data)
+//                        detailFeedAdapter.updateCommentNumber(commentNumber)
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {
+                    }
+                }
+            }.launchIn(lifecycleScope)
     }
 
     private fun initBackButtonClickListener() {
         binding.ivDetailBack.setOnClickListener {
             finish()
         }
-    }
-
-    private fun initPostLikeStateObserver() {
-        viewModel.postFeedDetailLikeState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    viewModel.getFeedDetail(feedId)
-                }
-
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
-                }
-
-                else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
-            }
-        }.launchIn(lifecycleScope)
     }
 
     private fun navigateToMain(extraKey: String) {
@@ -346,14 +349,10 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_COMMENT_REPORT_DIALOG = "COMMENT_REPORT_DIALOG"
-
-        private const val POPUP_MENU_OFFSET = 65
-
+        private const val POPUP_MENU_POS_OFFSET = 65
         private const val MSG_DETAIL_ERROR = "ERROR"
-
         private const val EXTRA_DELETE_KEY = "delete"
         private const val EXTRA_REPORT_KEY = "report"
     }
