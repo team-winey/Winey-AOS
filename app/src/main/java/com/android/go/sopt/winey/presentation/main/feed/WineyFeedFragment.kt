@@ -3,12 +3,8 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.View
-import android.view.WindowManager
-import android.widget.PopupWindow
-import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -36,6 +32,7 @@ import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
+import com.android.go.sopt.winey.util.view.WineyPopupMenu
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,7 +42,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -87,8 +83,8 @@ class WineyFeedFragment :
             likeButtonClick = { feedId, isLiked ->
                 viewModel.likeFeed(feedId, isLiked)
             },
-            showPopupMenu = { view, wineyFeed ->
-                showPopupMenu(view, wineyFeed)
+            onPopupMenuClicked = { anchorView, wineyFeed ->
+                showFeedPopupMenu(anchorView, wineyFeed)
             },
             toFeedDetail = { feedId, writerId -> navigateToDetail(feedId, writerId) }
         )
@@ -98,33 +94,33 @@ class WineyFeedFragment :
         )
     }
 
-    private fun showPopupMenu(view: View, wineyFeed: WineyFeed) {
-        val inflater = LayoutInflater.from(requireContext())
-        val popupView = inflater.inflate(R.layout.menu_wineyfeed, null)
-        val popupWindow = PopupWindow(
-            popupView,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            WindowManager.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        val menuDelete =
-            popupView.findViewById<TextView>(R.id.tv_popup_delete)
-        val menuReport =
-            popupView.findViewById<TextView>(R.id.tv_popup_report)
-
-        if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() }) {
-            menuReport.isVisible = false
-        } else {
-            menuDelete.isVisible = false
+    private fun showFeedPopupMenu(anchorView: View, wineyFeed: WineyFeed) {
+        lifecycleScope.launch {
+            val currentUserId = dataStoreRepository.getUserId().first()
+            if (isMyFeed(currentUserId, wineyFeed.userId)) {
+                showFeedDeletePopupMenu(anchorView, wineyFeed)
+            } else {
+                showReportPopupMenu(anchorView)
+            }
         }
+    }
 
-        menuDelete.setOnSingleClickListener {
-            showDeleteDialog(wineyFeed.feedId)
-            popupWindow.dismiss()
+    private fun showFeedDeletePopupMenu(anchorView: View, wineyFeed: WineyFeed) {
+        val deleteTitle = listOf(stringOf(R.string.popup_delete_title))
+        WineyPopupMenu(context = anchorView.context, titles = deleteTitle) { _, _, _ ->
+            showFeedDeleteDialog(wineyFeed)
+        }.apply {
+            showCustomPosition(anchorView)
         }
+    }
 
-        popupWindow.showAsDropDown(view)
+    private fun showReportPopupMenu(anchorView: View) {
+        val reportTitle = listOf(stringOf(R.string.popup_report_title))
+        WineyPopupMenu(context = anchorView.context, titles = reportTitle) { _, _, _ ->
+            showFeedReportDialog()
+        }.apply {
+            showCustomPosition(anchorView)
+        }
     }
 
     private fun refreshWineyFeed() {
@@ -135,19 +131,40 @@ class WineyFeedFragment :
         }
     }
 
-    private fun showDeleteDialog(feedId: Int) {
-        val dialog = WineyDialogFragment(
-            getString(R.string.feed_delete_dialog_title),
-            getString(R.string.feed_delete_dialog_subtitle),
-            getString(R.string.feed_delete_dialog_negative_button),
-            getString(R.string.feed_delete_dialog_positive_button),
-            handleNegativeButton = {},
-            handlePositiveButton = { viewModel.deleteFeed(feedId) }
-        )
-        dialog.show(parentFragmentManager, TAG_DELETE_DIALOG)
+    private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
+        showAsDropDown(anchorView, -POPUP_MENU_OFFSET, -POPUP_MENU_OFFSET, Gravity.END)
+    }
 
+    private fun showFeedDeleteDialog(wineyFeed: WineyFeed) {
+        val dialog = WineyDialogFragment(
+            stringOf(R.string.feed_delete_dialog_title),
+            stringOf(R.string.feed_delete_dialog_subtitle),
+            stringOf(R.string.comment_delete_dialog_negative_button),
+            stringOf(R.string.comment_delete_dialog_positive_button),
+            handleNegativeButton = {},
+            handlePositiveButton = { viewModel.deleteFeed(wineyFeed.feedId) }
+        )
+        dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
         initDeleteFeedStateObserver()
     }
+
+    private fun showFeedReportDialog() {
+        val dialog = WineyDialogFragment(
+            stringOf(R.string.report_dialog_title),
+            stringOf(R.string.report_dialog_subtitle),
+            stringOf(R.string.report_dialog_negative_button),
+            stringOf(R.string.report_dialog_positive_button),
+            handleNegativeButton = {},
+            handlePositiveButton = { }
+        )
+        dialog.show(parentFragmentManager, TAG_FEED_REPORT_DIALOG)
+    }
+
+    private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
+
+    private fun isMyComment(currentUserId: Int?, commentAuthorId: Int) =
+        currentUserId == commentAuthorId
+
 
     private fun initDeleteFeedStateObserver() {
         viewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
@@ -285,7 +302,11 @@ class WineyFeedFragment :
     companion object {
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
-        private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
+        private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
+        private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
+
+
+        private const val POPUP_MENU_OFFSET = 65
 
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
