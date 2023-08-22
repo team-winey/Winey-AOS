@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import com.android.go.sopt.winey.domain.entity.Comment
+import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import com.android.go.sopt.winey.domain.entity.DetailFeed
+import com.android.go.sopt.winey.domain.entity.Like
 import com.android.go.sopt.winey.domain.repository.FeedRepository
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -57,6 +59,17 @@ class DetailViewModel @Inject constructor(
     private val _deleteCommentState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
     val deleteCommentState: StateFlow<UiState<Unit>> = _deleteCommentState.asStateFlow()
 
+    private val _postFeedDetailLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
+    val postFeedDetailLikeState: StateFlow<UiState<Like>> = _postFeedDetailLikeState.asStateFlow()
+
+    val _deleteFeedDetailState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val deleteFeedDetailState: StateFlow<UiState<Unit>> = _deleteFeedDetailState.asStateFlow()
+
+    fun likeFeed(feedId: Int, isLiked: Boolean) {
+        val requestPostLikeDto = RequestPostLikeDto(isLiked)
+        postLike(feedId, requestPostLikeDto)
+    }
+
     fun getFeedDetail(feedId: Int) {
         viewModelScope.launch {
             feedRepository.getFeedDetail(feedId)
@@ -102,6 +115,26 @@ class DetailViewModel @Inject constructor(
                     }
                     Timber.e("FAIL DELETE COMMENT: ${t.message}")
                 }
+        }
+    }
+
+    private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
+        viewModelScope.launch {
+            feedRepository.postFeedLike(feedId, requestPostLikeDto)
+                .onSuccess { response ->
+                    _postFeedDetailLikeState.emit(UiState.Success(response))
+                }
+                .onFailure { t -> handleFailureState(_postFeedDetailLikeState, t) }
+        }
+    }
+
+    fun deleteFeed(feedId: Int) {
+        viewModelScope.launch {
+            feedRepository.deleteFeed(feedId)
+                .onSuccess { response ->
+                    _deleteFeedDetailState.emit(UiState.Success(response))
+                }
+                .onFailure { t -> handleFailureState(_deleteFeedDetailState, t) }
         }
     }
 

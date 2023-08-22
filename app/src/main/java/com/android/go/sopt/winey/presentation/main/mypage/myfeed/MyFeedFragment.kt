@@ -59,7 +59,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             showPopupMenu = { view, wineyFeed ->
                 showPopupMenu(view, wineyFeed)
             },
-            toFeedDetail = { feedId, writerLevel -> navigateToDetail(feedId, writerLevel) }
+            toFeedDetail = { feedId, writerId -> navigateToDetail(feedId, writerId) }
         )
         binding.rvMyfeedPost.adapter = myFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
     }
@@ -162,10 +162,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    myFeedAdapter.updateLikeStatus(
-                        state.data.data.feedId,
-                        state.data.data.isLiked
-                    )
+                    myFeedAdapter.refresh()
                 }
 
                 is UiState.Failure -> {
@@ -185,10 +182,10 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    private fun navigateToDetail(feedId: Int, writerLevel: Int) {
+    private fun navigateToDetail(feedId: Int, writerId: Int) {
         val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra("feedId", feedId)
-        intent.putExtra("writerLevel", writerLevel)
+        intent.putExtra(KEY_FEED_ID, feedId)
+        intent.putExtra(KEY_FEED_WRITER_ID, writerId)
         startActivity(intent)
     }
 
@@ -201,7 +198,9 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val LV_KNIGHT = 2
+        private const val KEY_FEED_ID = "feedId"
+        private const val KEY_FEED_WRITER_ID = "feedWriterId"
+
         private const val MSG_MYFEED_ERROR = "ERROR"
         private const val TAG_DELETE_DIALOG = "DELETE_DIALOG"
     }
