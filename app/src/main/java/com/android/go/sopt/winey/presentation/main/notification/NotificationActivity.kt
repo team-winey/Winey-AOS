@@ -46,7 +46,7 @@ class NotificationActivity :
                 }
 
                 is UiState.Success -> {
-                    notificationAdapter.submitList(state.data)
+                    notificationAdapter.setData(state.data)
                 }
 
                 is UiState.Failure -> {
