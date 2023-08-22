@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityDetailBinding
 import com.android.go.sopt.winey.domain.entity.Comment
@@ -51,6 +52,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
+        removeRecyclerviewItemChangeAnimation()
+        initBackButtonClickListener()
 
         viewModel.getFeedDetail(feedId)
         initGetFeedDetailObserver()
@@ -61,8 +64,13 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         initCommentCreateButtonClickListener()
         initPostCommentStateObserver()
         initDeleteCommentStateObserver()
+    }
 
-        initBackButtonClickListener()
+    private fun removeRecyclerviewItemChangeAnimation() {
+        val animator = binding.rvDetail.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
     }
 
     private fun initDetailFeedAdapter(detailFeed: DetailFeed?) {
@@ -328,7 +336,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         // todo: 서버쪽에서 삭제한 댓글의 id를 보내주면 여기서 바로 넣으면 되는데..!!
 //                        val commentNumber = commentAdapter.deleteItem(state.data)
 //                        detailFeedAdapter.updateCommentNumber(commentNumber)
-                        wineySnackbar(binding.root, true, stringOf(R.string.snackbar_comment_delete_success))
+                        wineySnackbar(
+                            binding.root,
+                            true,
+                            stringOf(R.string.snackbar_comment_delete_success)
+                        )
                     }
 
                     is UiState.Failure -> {
