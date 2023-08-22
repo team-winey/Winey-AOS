@@ -2,7 +2,6 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -26,8 +25,6 @@ import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.notification.NotificationActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
-import com.android.go.sopt.winey.util.context.stringOf
-import com.android.go.sopt.winey.util.context.wineySnackbar
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.stringOf
@@ -62,7 +59,6 @@ class WineyFeedFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("Fragment Lifecycle", "onViewCreated 호출됨")
         initAdapter()
         setSwipeRefreshListener()
         initFabClickListener()
@@ -83,13 +79,13 @@ class WineyFeedFragment :
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
         wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         wineyFeedAdapter = WineyFeedAdapter(
-            likeButtonClick = { feedId, isLiked ->
-                viewModel.likeFeed(feedId, isLiked)
+            onlikeButtonClicked = { wineyFeed ->
+                viewModel.likeFeed(wineyFeed.feedId, !wineyFeed.isLiked)
             },
             onPopupMenuClicked = { anchorView, wineyFeed ->
                 showFeedPopupMenu(anchorView, wineyFeed)
             },
-            toFeedDetail = { feedId, writerId -> navigateToDetail(feedId, writerId) }
+            toFeedDetail = { wineyFeed -> navigateToDetail(wineyFeed) }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
@@ -158,7 +154,13 @@ class WineyFeedFragment :
             stringOf(R.string.report_dialog_negative_button),
             stringOf(R.string.report_dialog_positive_button),
             handleNegativeButton = {},
-            handlePositiveButton = { wineySnackbar(binding.root, true, stringOf(R.string.snackbar_report_success)) }
+            handlePositiveButton = {
+                wineySnackbar(
+                    binding.root,
+                    true,
+                    stringOf(R.string.snackbar_report_success)
+                )
+            }
         )
         dialog.show(parentFragmentManager, TAG_FEED_REPORT_DIALOG)
     }
@@ -170,7 +172,11 @@ class WineyFeedFragment :
             when (state) {
                 is UiState.Success -> {
                     refreshWineyFeed()
-                    wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
+                    wineySnackbar(
+                        binding.root,
+                        true,
+                        stringOf(R.string.snackbar_feed_delete_success)
+                    )
                 }
 
                 is UiState.Failure -> {
@@ -292,10 +298,10 @@ class WineyFeedFragment :
         startActivity(intent)
     }
 
-    private fun navigateToDetail(feedId: Int, writerId: Int) {
+    private fun navigateToDetail(wineyFeed: WineyFeed) {
         val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra(KEY_FEED_ID, feedId)
-        intent.putExtra(KEY_FEED_WRITER_ID, writerId)
+        intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
+        intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
         startActivity(intent)
     }
 

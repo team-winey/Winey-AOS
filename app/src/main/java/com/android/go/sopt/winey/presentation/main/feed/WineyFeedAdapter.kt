@@ -3,7 +3,6 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.ItemSnapshotList
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.R
@@ -13,16 +12,16 @@ import com.android.go.sopt.winey.util.view.ItemDiffCallback
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class WineyFeedAdapter(
-    private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
+    private val onlikeButtonClicked: (WineyFeed: WineyFeed) -> Unit,
     private val onPopupMenuClicked: (View, WineyFeed: WineyFeed) -> Unit,
-    private val toFeedDetail: (feedId: Int, writerId: Int) -> Unit
+    private val toFeedDetail: (WineyFeed: WineyFeed) -> Unit
 ) : PagingDataAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
 
     class WineyFeedViewHolder(
         private val binding: ItemWineyfeedPostBinding,
-        private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
+        private val onlikeButtonClicked: (WineyFeed: WineyFeed) -> Unit,
         private val onPopupMenuClicked: (View, WineyFeed: WineyFeed) -> Unit,
-        private val toFeedDetail: (feedId: Int, writerId: Int) -> Unit
+        private val toFeedDetail: (WineyFeed: WineyFeed) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(data: WineyFeed?) {
@@ -33,7 +32,7 @@ class WineyFeedAdapter(
                 }
                 ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
                 ivWineyfeedLike.setOnSingleClickListener {
-                    onLikeButtonClick(data.feedId, !data.isLiked)
+                    onlikeButtonClicked(data)
                 }
 
                 btnWineyfeedMore.setOnSingleClickListener { view ->
@@ -41,7 +40,7 @@ class WineyFeedAdapter(
                 }
 
                 lWineyfeedPost.setOnSingleClickListener {
-                    toFeedDetail(data.feedId, data.userId)
+                    toFeedDetail(data)
                 }
             }
         }
@@ -63,7 +62,7 @@ class WineyFeedAdapter(
     ): WineyFeedViewHolder {
         val binding =
             ItemWineyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return WineyFeedViewHolder(binding, likeButtonClick, onPopupMenuClicked, toFeedDetail)
+        return WineyFeedViewHolder(binding, onlikeButtonClicked, onPopupMenuClicked, toFeedDetail)
     }
 
     override fun onBindViewHolder(holder: WineyFeedViewHolder, position: Int) {
