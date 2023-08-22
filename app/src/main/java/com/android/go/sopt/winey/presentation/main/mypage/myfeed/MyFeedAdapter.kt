@@ -13,18 +13,18 @@ import com.android.go.sopt.winey.util.view.ItemDiffCallback
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class MyFeedAdapter(
-    private val likeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
-    private val showPopupMenu: (View, WineyFeed) -> Unit,
-    private val toFeedDetail: (feedId: Int, writerId: Int) -> Unit
+    private val onlikeButtonClicked: (WineyFeed: WineyFeed) -> Unit,
+    private val onPopupMenuClicked: (View, WineyFeed: WineyFeed) -> Unit,
+    private val toFeedDetail: (WineyFeed: WineyFeed) -> Unit
 ) : PagingDataAdapter<WineyFeed, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
     private val currentData: ItemSnapshotList<WineyFeed>
         get() = snapshot()
 
     class MyFeedViewHolder(
         private val binding: ItemMyfeedPostBinding,
-        private val onLikeButtonClick: (feedId: Int, isLiked: Boolean) -> Unit,
-        private val showPopupMenu: (View, WineyFeed) -> Unit,
-        private val toFeedDetail: (feedId: Int, writerId: Int) -> Unit
+        private val onlikeButtonClicked: (WineyFeed: WineyFeed) -> Unit,
+        private val onPopupMenuClicked: (View, WineyFeed: WineyFeed) -> Unit,
+        private val toFeedDetail: (WineyFeed: WineyFeed) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: WineyFeed?) {
             binding.apply {
@@ -34,13 +34,13 @@ class MyFeedAdapter(
                 }
                 ivMyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
                 ivMyfeedLike.setOnSingleClickListener {
-                    onLikeButtonClick(data.feedId, !data.isLiked)
+                    onlikeButtonClicked(data)
                 }
                 btnWineyfeedMore.setOnClickListener { view ->
-                    showPopupMenu(view, data)
+                    onPopupMenuClicked(view, data)
                 }
                 lMyfeedPost.setOnSingleClickListener {
-                    toFeedDetail(data.feedId, data.userId)
+                    toFeedDetail(data)
                 }
             }
         }
@@ -64,7 +64,7 @@ class MyFeedAdapter(
     ): MyFeedViewHolder {
         val binding =
             ItemMyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyFeedViewHolder(binding, likeButtonClick, showPopupMenu, toFeedDetail)
+        return MyFeedViewHolder(binding, onlikeButtonClicked, onPopupMenuClicked, toFeedDetail)
     }
 
     override fun onBindViewHolder(holder: MyFeedViewHolder, position: Int) {
