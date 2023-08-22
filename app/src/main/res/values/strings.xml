@@ -193,6 +193,11 @@
     <!-- snackbar -->
     <string name="snackbar_upload_success">업로드가 완료되었습니다 :)</string>
     <string name="snackbar_upload_fail">죄송합니다. 업로드에 실패했습니다 :(</string>
+    <string name="snackbar_feed_delete_success">게시물이 삭제되었습니다</string>
+    <string name="snackbar_comment_delete_success">댓글이 삭제되었습니다 :)</string>
+    <string name="snackbar_delete_fail">죄송합니다. 다시 시도해주세요.</string>
+    <string name="snackbar_report_success">정상적으로 신고되었습니다 :)</string>
+    <string name="snackbar_report_fail">죄송합니다. 신고접수에 실패하였습니다.</string>
 
     <!-- comment -->
     <string name="comment_level_1">LV. 평민 ㆍ </string>

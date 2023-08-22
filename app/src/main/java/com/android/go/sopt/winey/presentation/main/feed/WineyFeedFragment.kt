@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -49,7 +50,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
+class WineyFeedFragment :
+    BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
     private val viewModel by viewModels<WineyFeedViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
@@ -61,6 +63,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("Fragment Lifecycle", "onViewCreated 호출됨")
         initAdapter()
         setSwipeRefreshListener()
         initFabClickListener()
@@ -105,8 +108,10 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             true
         )
 
-        val menuDelete = popupView.findViewById<TextView>(R.id.tv_popup_delete)
-        val menuReport = popupView.findViewById<TextView>(R.id.tv_popup_report)
+        val menuDelete =
+            popupView.findViewById<TextView>(R.id.tv_popup_delete)
+        val menuReport =
+            popupView.findViewById<TextView>(R.id.tv_popup_report)
 
         if (wineyFeed.userId == runBlocking { dataStoreRepository.getUserId().first() }) {
             menuReport.isVisible = false
@@ -188,10 +193,7 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    wineyFeedAdapter.updateLikeStatus(
-                        state.data.data.feedId,
-                        state.data.data.isLiked
-                    )
+                    wineyFeedAdapter.refresh()
                 }
 
                 is UiState.Failure -> {
@@ -256,7 +258,8 @@ class WineyFeedFragment : BindingFragment<FragmentWineyFeedBinding>(R.layout.fra
         parentFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }
-        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
+        val bottomNav: BottomNavigationView =
+            requireActivity().findViewById(R.id.bnv_main)
         bottomNav.selectedItemId = R.id.menu_mypage
     }
 

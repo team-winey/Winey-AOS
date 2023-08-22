@@ -1,30 +1,24 @@
 package com.android.go.sopt.winey.presentation.main.feed.detail
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.databinding.ItemDetailFeedBinding
 import com.android.go.sopt.winey.domain.entity.DetailFeed
+import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class DetailFeedAdapter(
-    private val detailFeed: DetailFeed
-) : RecyclerView.Adapter<DetailFeedAdapter.DetailFeedViewHolder>() {
-    class DetailFeedViewHolder(
-        private val binding: ItemDetailFeedBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(data: DetailFeed) {
-            binding.data = data
-        }
-    }
+    private val detailFeed: DetailFeed,
+    private val onLikeButtonClicked: (feedId: Int, isLiked: Boolean) -> Unit,
+    private val onPopupMenuClicked: (View) -> Unit
+) :
+    RecyclerView.Adapter<DetailFeedAdapter.DetailFeedViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailFeedViewHolder {
-        return DetailFeedViewHolder(
-            ItemDetailFeedBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        )
+        val binding =
+            ItemDetailFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DetailFeedViewHolder(binding, onLikeButtonClicked, onPopupMenuClicked)
     }
 
     override fun getItemCount(): Int = FEED_ITEM_COUNT
@@ -36,6 +30,27 @@ class DetailFeedAdapter(
     fun updateCommentNumber(comments: Long) {
         detailFeed.comments = comments
         notifyItemChanged(0)
+    }
+
+    class DetailFeedViewHolder(
+        private val binding: ItemDetailFeedBinding,
+        private val onLikeButtonClicked: (feedId: Int, isLiked: Boolean) -> Unit,
+        private val onPopupMenuClicked: (View) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: DetailFeed?) {
+            binding.apply {
+                this.data = data
+                if (data == null) {
+                    return
+                }
+                ivDetailLike.setOnSingleClickListener {
+                    onLikeButtonClicked(data.feedId, !data.isLiked)
+                }
+                btnDetailMore.setOnSingleClickListener { view ->
+                    onPopupMenuClicked(view)
+                }
+            }
+        }
     }
 
     companion object {
