@@ -17,8 +17,6 @@ class WineyFeedAdapter(
     private val onPopupMenuClicked: (View, WineyFeed: WineyFeed) -> Unit,
     private val toFeedDetail: (feedId: Int, writerId: Int) -> Unit
 ) : PagingDataAdapter<WineyFeed, WineyFeedAdapter.WineyFeedViewHolder>(diffUtil) {
-    private val currentData: ItemSnapshotList<WineyFeed>
-        get() = snapshot()
 
     class WineyFeedViewHolder(
         private val binding: ItemWineyfeedPostBinding,

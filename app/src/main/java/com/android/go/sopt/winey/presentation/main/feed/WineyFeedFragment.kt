@@ -26,11 +26,14 @@ import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.notification.NotificationActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.context.stringOf
+import com.android.go.sopt.winey.util.context.wineySnackbar
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
+import com.android.go.sopt.winey.util.fragment.wineySnackbar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.WineyPopupMenu
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
@@ -155,22 +158,19 @@ class WineyFeedFragment :
             stringOf(R.string.report_dialog_negative_button),
             stringOf(R.string.report_dialog_positive_button),
             handleNegativeButton = {},
-            handlePositiveButton = { }
+            handlePositiveButton = { wineySnackbar(binding.root, true, stringOf(R.string.snackbar_report_success)) }
         )
         dialog.show(parentFragmentManager, TAG_FEED_REPORT_DIALOG)
     }
 
     private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
 
-    private fun isMyComment(currentUserId: Int?, commentAuthorId: Int) =
-        currentUserId == commentAuthorId
-
-
     private fun initDeleteFeedStateObserver() {
         viewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     refreshWineyFeed()
+                    wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
                 }
 
                 is UiState.Failure -> {
