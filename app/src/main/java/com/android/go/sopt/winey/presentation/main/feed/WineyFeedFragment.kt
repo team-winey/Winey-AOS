@@ -321,7 +321,6 @@ class WineyFeedFragment :
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
 
-
         private const val POPUP_MENU_OFFSET = 65
 
         private const val KEY_FEED_ID = "feedId"

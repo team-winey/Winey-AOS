@@ -68,7 +68,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private fun showFeedPopupMenu(anchorView: View, wineyFeed: WineyFeed) {
         lifecycleScope.launch {
             showFeedDeletePopupMenu(anchorView, wineyFeed)
-
         }
     }
 
@@ -104,7 +103,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             parentFragmentManager.popBackStack()
         }
     }
-
 
     private fun initDeleteFeedStateObserver() {
         viewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
@@ -142,7 +140,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                                     }
 
                                     is LoadState.Error -> {
-
+                                        Timber.tag("failure").e(MSG_MYFEED_ERROR)
                                     }
                                 }
                             }

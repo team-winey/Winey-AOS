@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.paging.ItemSnapshotList
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemMyfeedPostBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback

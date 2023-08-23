@@ -5,12 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyfeedPostBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
-import kotlin.properties.Delegates
 
 class WineyFeedAdapter(
     private val onlikeButtonClicked: (WineyFeed: WineyFeed) -> Unit,

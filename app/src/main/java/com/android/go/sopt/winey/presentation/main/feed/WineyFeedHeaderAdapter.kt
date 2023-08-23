@@ -7,9 +7,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyfeedHeaderBinding
 import java.util.Random
 
-class WineyFeedHeaderAdapter(
-) : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>(
-) {
+class WineyFeedHeaderAdapter() : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
     class HeaderViewHolder(
         private val binding: ItemWineyfeedHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
