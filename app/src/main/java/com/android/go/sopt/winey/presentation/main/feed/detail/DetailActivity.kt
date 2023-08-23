@@ -79,11 +79,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun initDetailFeedAdapter(detailFeed: DetailFeed?) {
-        if (detailFeed == null) {
-            Timber.e("DETAIL FEED IS NULL")
-            return
-        }
+    private fun initDetailFeedAdapter(detailFeed: DetailFeed) {
         _detailFeedAdapter =
             DetailFeedAdapter(
                 detailFeed,
@@ -252,9 +248,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.getFeedDetailState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    val detailFeed = state.data
+                    val detailFeed = state.data ?: return@onEach
                     initDetailFeedAdapter(detailFeed)
-                    switchCommentContainer(detailFeed?.commentList)
+
+                    val commentList = detailFeed.commentList
+                    switchCommentContainer(commentList)
                 }
 
                 is UiState.Failure -> {
@@ -266,12 +264,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }.launchIn(lifecycleScope)
     }
 
-    private fun switchCommentContainer(commentList: List<Comment>?) {
-        if (commentList == null) {
-            Timber.e("DETAIL COMMENT LIST IS NULL")
-            return
-        }
-
+    private fun switchCommentContainer(commentList: List<Comment>) {
         if (commentList.isEmpty()) {
             binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
         } else {
@@ -344,7 +337,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         val commentNumber = commentAdapter.deleteItem(state.data.commentId)
                         detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
 
-                        wineySnackbar(binding.root, true, stringOf(R.string.snackbar_comment_delete_success))
+                        wineySnackbar(
+                            binding.root,
+                            true,
+                            stringOf(R.string.snackbar_comment_delete_success)
+                        )
                     }
 
                     is UiState.Failure -> {
