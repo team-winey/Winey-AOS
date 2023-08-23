@@ -2,7 +2,6 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -152,7 +151,7 @@ class WineyFeedFragment :
             stringOf(R.string.comment_delete_dialog_negative_button),
             stringOf(R.string.comment_delete_dialog_positive_button),
             handleNegativeButton = {},
-            handlePositiveButton = { viewModel.deleteFeed(feedId) }
+            handlePositiveButton = { viewModel.deleteFeed(wineyFeed.feedId) }
         )
         dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
         initDeleteFeedStateObserver()

@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.LoadState
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -104,15 +105,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    private fun checkAndSetEmptyLayout() {
-        if (myFeedAdapter.itemCount == 0) {
-            binding.rvMyfeedPost.isVisible = false
-            binding.lMyfeedEmpty.isVisible = true
-        } else {
-            binding.rvMyfeedPost.isVisible = true
-            binding.lMyfeedEmpty.isVisible = false
-        }
-    }
 
     private fun initDeleteFeedStateObserver() {
         viewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
@@ -136,10 +128,23 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                 viewModel.getMyFeedListState.collectLatest { state ->
                     when (state) {
                         is UiState.Success -> {
-                            checkAndSetEmptyLayout()
                             myFeedAdapter.addLoadStateListener { loadState ->
-                                wineyFeedLoadAdapter.loadState = loadState.refresh
-                                checkAndSetEmptyLayout()
+                                when (loadState.refresh) {
+                                    is LoadState.Loading -> {
+                                        binding.lMyfeedEmpty.isVisible = false
+                                        binding.rvMyfeedPost.isVisible = false
+                                    }
+
+                                    is LoadState.NotLoading -> {
+                                        binding.rvMyfeedPost.isVisible = myFeedAdapter.itemCount > 0
+                                        binding.lMyfeedEmpty.isVisible =
+                                            myFeedAdapter.itemCount == 0
+                                    }
+
+                                    is LoadState.Error -> {
+
+                                    }
+                                }
                             }
                             myFeedAdapter.submitData(state.data)
                         }
