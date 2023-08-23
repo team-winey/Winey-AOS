@@ -45,7 +45,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun initFragment() {
         if (intent.getBooleanExtra("navigateMypage", false)) {
-            navigateTo<MyPageFragment>()
+            val bundle = Bundle()
+            bundle.putString("fromNoti", "true")
+            val myPageFragment = MyPageFragment()
+            myPageFragment.arguments = bundle
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fcv_main, myPageFragment)
+            transaction.commit()
             binding.bnvMain.selectedItemId = R.id.menu_mypage
         } else {
             navigateTo<WineyFeedFragment>()
