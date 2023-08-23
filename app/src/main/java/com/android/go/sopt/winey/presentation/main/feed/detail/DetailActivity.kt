@@ -79,11 +79,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun initDetailFeedAdapter(detailFeed: DetailFeed?) {
-        if (detailFeed == null) {
-            Timber.e("DETAIL FEED IS NULL")
-            return
-        }
+    private fun initDetailFeedAdapter(detailFeed: DetailFeed) {
         _detailFeedAdapter =
             DetailFeedAdapter(
                 detailFeed,
@@ -236,15 +232,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun initCommentCreateButtonClickListener() {
         binding.tvCommentCreate.setOnClickListener {
-            checkEmptyCommentList()
             val content = binding.etComment.text.toString()
             viewModel.postComment(feedId, content)
-        }
-    }
-
-    private fun checkEmptyCommentList() {
-        if (commentAdapter.currentList.size == 0) {
-            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
         }
     }
 
@@ -252,9 +241,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.getFeedDetailState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    val detailFeed = state.data
+                    val detailFeed = state.data ?: return@onEach
                     initDetailFeedAdapter(detailFeed)
-                    switchCommentContainer(detailFeed?.commentList)
+
+                    val commentList = detailFeed.commentList
+                    switchCommentContainer(commentList)
                 }
 
                 is UiState.Failure -> {
@@ -266,12 +257,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }.launchIn(lifecycleScope)
     }
 
-    private fun switchCommentContainer(commentList: List<Comment>?) {
-        if (commentList == null) {
-            Timber.e("DETAIL COMMENT LIST IS NULL")
-            return
-        }
-
+    private fun switchCommentContainer(commentList: List<Comment>) {
         if (commentList.isEmpty()) {
             binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
         } else {
@@ -320,6 +306,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 when (state) {
                     is UiState.Success -> {
                         val comment = state.data ?: return@onEach
+
+                        if (isCommentListEmpty()) {
+                            updateRecyclerViewAdapter(ACTION_COMMENT_POST)
+                        }
+
                         val commentNumber = commentAdapter.addItem(comment)
                         detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
                         binding.etComment.text.clear()
@@ -334,6 +325,21 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             }.launchIn(lifecycleScope)
     }
 
+    private fun isCommentListEmpty() = commentAdapter.currentList.isEmpty()
+
+    private fun updateRecyclerViewAdapter(action: String) {
+        when (action) {
+            ACTION_COMMENT_POST ->
+                binding.rvDetail.adapter =
+                    ConcatAdapter(detailFeedAdapter, commentAdapter)
+
+            ACTION_COMMENT_DELETE -> {
+                binding.rvDetail.adapter =
+                    ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
+            }
+        }
+    }
+
     private fun initDeleteCommentStateObserver() {
         viewModel.deleteCommentState.flowWithLifecycle(lifecycle)
             .onEach { state ->
@@ -341,10 +347,19 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     is UiState.Success -> {
                         if (state.data == null) return@onEach
 
-                        val commentNumber = commentAdapter.deleteItem(state.data.commentId)
+                        val commentId = state.data.commentId
+                        val commentNumber = commentAdapter.deleteItem(commentId)
                         detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
 
-                        wineySnackbar(binding.root, true, stringOf(R.string.snackbar_comment_delete_success))
+                        if (isCommentNumberZero(commentNumber)) {
+                            updateRecyclerViewAdapter(ACTION_COMMENT_DELETE)
+                        }
+
+                        wineySnackbar(
+                            binding.root,
+                            true,
+                            stringOf(R.string.snackbar_comment_delete_success)
+                        )
                     }
 
                     is UiState.Failure -> {
@@ -356,6 +371,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 }
             }.launchIn(lifecycleScope)
     }
+
+    private fun isCommentNumberZero(commentNumber: Int) = commentNumber == 0
 
     private fun navigateToMainWithBundle(extraKey: String) {
         Intent(this, MainActivity::class.java).apply {
@@ -384,5 +401,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
         private const val TARGET_DETAIL_FEED = "detailFeed"
         private const val TARGET_COMMENT = "comment"
+
+        private const val ACTION_COMMENT_POST = "POST"
+        private const val ACTION_COMMENT_DELETE = "DELETE"
     }
 }
