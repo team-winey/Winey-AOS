@@ -232,17 +232,27 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun initCommentCreateButtonClickListener() {
         binding.tvCommentCreate.setOnClickListener {
-            if (isCurrentCommentListEmpty()) {
-                updateRecyclerViewAdapter()
+            if (isCommentListEmpty()) {
+                updateRecyclerViewAdapter(ACTION_COMMENT_POST)
             }
             val content = binding.etComment.text.toString()
             viewModel.postComment(feedId, content)
         }
     }
-    private fun isCurrentCommentListEmpty() = commentAdapter.currentList.size == 0
 
-    private fun updateRecyclerViewAdapter() {
-        binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
+    private fun isCommentListEmpty() = commentAdapter.currentList.size == 0
+
+    private fun updateRecyclerViewAdapter(action: String) {
+        when (action) {
+            ACTION_COMMENT_POST ->
+                binding.rvDetail.adapter =
+                    ConcatAdapter(detailFeedAdapter, commentAdapter)
+
+            ACTION_COMMENT_DELETE -> {
+                binding.rvDetail.adapter =
+                    ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
+            }
+        }
     }
 
     private fun initGetFeedDetailObserver() {
@@ -335,8 +345,13 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     is UiState.Success -> {
                         if (state.data == null) return@onEach
 
-                        val commentNumber = commentAdapter.deleteItem(state.data.commentId)
+                        val commentId = state.data.commentId
+                        val commentNumber = commentAdapter.deleteItem(commentId)
                         detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
+
+                        if (isCommentNumberZero(commentNumber)) {
+                            updateRecyclerViewAdapter(ACTION_COMMENT_DELETE)
+                        }
 
                         wineySnackbar(
                             binding.root,
@@ -354,6 +369,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 }
             }.launchIn(lifecycleScope)
     }
+
+    private fun isCommentNumberZero(commentNumber: Int) = commentNumber == 0
 
     private fun navigateToMainWithBundle(extraKey: String) {
         Intent(this, MainActivity::class.java).apply {
@@ -382,5 +399,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
         private const val TARGET_DETAIL_FEED = "detailFeed"
         private const val TARGET_COMMENT = "comment"
+
+        private const val ACTION_COMMENT_POST = "POST"
+        private const val ACTION_COMMENT_DELETE = "DELETE"
     }
 }
