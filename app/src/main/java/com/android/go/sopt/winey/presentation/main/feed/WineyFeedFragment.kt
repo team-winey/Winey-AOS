@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
@@ -59,13 +61,15 @@ class WineyFeedFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        removeRecyclerviewItemChangeAnimation()
+        binding.vm = mainViewModel
+        mainViewModel.getHasNewNoti()
+
         initAdapter()
         setSwipeRefreshListener()
         initFabClickListener()
         initPostLikeStateObserver()
         initGetFeedStateObserver()
-        binding.vm = mainViewModel
-        mainViewModel.getHasNewNoti()
         initNotificationButtonClickListener()
     }
 
@@ -73,6 +77,13 @@ class WineyFeedFragment :
     override fun onStart() {
         super.onStart()
         viewModel.getWineyFeed()
+    }
+
+    private fun removeRecyclerviewItemChangeAnimation() {
+        val animator = binding.rvWineyfeedPost.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
     }
 
     private fun initAdapter() {
@@ -141,7 +152,7 @@ class WineyFeedFragment :
             stringOf(R.string.comment_delete_dialog_negative_button),
             stringOf(R.string.comment_delete_dialog_positive_button),
             handleNegativeButton = {},
-            handlePositiveButton = { viewModel.deleteFeed(wineyFeed.feedId) }
+            handlePositiveButton = { viewModel.deleteFeed(feedId) }
         )
         dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
         initDeleteFeedStateObserver()
@@ -316,5 +327,6 @@ class WineyFeedFragment :
 
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+        private const val KEY_SCROLL_POS = "KEY_SCROLL_POS"
     }
 }

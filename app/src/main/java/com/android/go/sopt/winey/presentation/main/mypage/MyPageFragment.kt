@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -17,6 +18,7 @@ import com.android.go.sopt.winey.domain.entity.User
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainViewModel
 import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
+import com.android.go.sopt.winey.presentation.main.notification.NotificationActivity
 import com.android.go.sopt.winey.presentation.nickname.NicknameActivity
 import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import com.android.go.sopt.winey.util.binding.BindingFragment
@@ -51,9 +53,23 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initLogoutButtonClickListener()
         initWithdrawButtonClickListener()
         initNicknameButtonClickListener()
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         setupGetUserState()
         setupDeleteUserState()
+    }
+    private val callback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val receivedBundle = arguments
+            if (receivedBundle != null) {
+                val value = receivedBundle.getString("fromNoti")
+                if (value == "true") {
+                    val intent = Intent(requireContext(), NotificationActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+            }
+            requireActivity().finish()
+        }
     }
 
     // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
@@ -182,10 +198,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initBottomSheetClickListener(data: User?) {
         binding.btnMypageTargetModify.setOnSingleClickListener {
-            val bottomSheet = TargetAmountBottomSheetFragment()
-            bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
-
-            /*when (data.isOver) {
+            when (data?.isOver) {
                 true -> {
                     val bottomSheet = TargetAmountBottomSheetFragment()
                     bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
@@ -195,7 +208,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     val dialog = MyPageDialogFragment()
                     dialog.show(this.childFragmentManager, dialog.tag)
                 }
-           }*/
+
+                null -> {
+                }
+            }
         }
     }
 

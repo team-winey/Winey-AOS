@@ -15,6 +15,17 @@ class NotificationAdapter(
 ) :
     ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(DiffUtil) {
 
+    fun setData(dataList: List<Notification>?) {
+        val filteredDataList = filterData(dataList)
+        submitList(filteredDataList)
+    }
+
+    private fun filterData(dataList: List<Notification>?): List<Notification>? {
+        return dataList?.filterNot { data ->
+            data.notiReceiver.length <= data.notiMessage.length &&
+                data.notiReceiver == data.notiMessage.substring(0, data.notiReceiver.length)
+        }
+    }
     class NotificationViewHolder(
         private val binding: ItemNotificationPostBinding,
         private val navigateFeedDetail: (feedId: Int?) -> Unit,

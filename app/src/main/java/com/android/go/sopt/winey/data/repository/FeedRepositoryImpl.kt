@@ -5,6 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.data.service.FeedService
 import com.android.go.sopt.winey.data.source.FeedDataSource
@@ -66,6 +67,11 @@ class FeedRepositoryImpl @Inject constructor(
     ): Result<Comment?> =
         runCatching {
             feedDataSource.postComment(feedId, requestPostCommentDto).data?.toComment()
+        }
+
+    override suspend fun deleteComment(commentId: Long): Result<ResponseDeleteCommentDto?> =
+        runCatching {
+            feedDataSource.deleteComment(commentId).data
         }
 
     companion object {
