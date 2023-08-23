@@ -198,10 +198,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initBottomSheetClickListener(data: User?) {
         binding.btnMypageTargetModify.setOnSingleClickListener {
-            val bottomSheet = TargetAmountBottomSheetFragment()
-            bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
-
-            /*when (data.isOver) {
+            when (data?.isOver) {
                 true -> {
                     val bottomSheet = TargetAmountBottomSheetFragment()
                     bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
@@ -211,7 +208,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     val dialog = MyPageDialogFragment()
                     dialog.show(this.childFragmentManager, dialog.tag)
                 }
-           }*/
+
+                null -> {
+                }
+            }
         }
     }
 
