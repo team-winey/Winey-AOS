@@ -250,6 +250,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
+                    finish() // 디테일 액티비티 종료
                 }
 
                 else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)

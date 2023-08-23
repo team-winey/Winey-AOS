@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import com.android.go.sopt.winey.domain.repository.AuthRepository
-import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_DUPLICATE
-import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_INVALID_LENGTH
-import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_SPACE_SPECIAL_CHAR
-import com.android.go.sopt.winey.util.code.NicknameErrorCode.CODE_UNCHECKED_DUPLICATION
+import com.android.go.sopt.winey.util.code.ErrorCode.CODE_DUPLICATE
+import com.android.go.sopt.winey.util.code.ErrorCode.CODE_INVALID_LENGTH
+import com.android.go.sopt.winey.util.code.ErrorCode.CODE_SPACE_SPECIAL_CHAR
+import com.android.go.sopt.winey.util.code.ErrorCode.CODE_UNCHECKED_DUPLICATION
 import com.android.go.sopt.winey.util.view.InputUiState
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
