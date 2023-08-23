@@ -10,6 +10,7 @@ import com.android.go.sopt.winey.databinding.ItemWineyfeedPostBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
+import kotlin.properties.Delegates
 
 class WineyFeedAdapter(
     private val onlikeButtonClicked: (WineyFeed: WineyFeed) -> Unit,
@@ -30,7 +31,6 @@ class WineyFeedAdapter(
                 if (data == null) {
                     return
                 }
-                ivWineyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
                 ivWineyfeedLike.setOnSingleClickListener {
                     onlikeButtonClicked(data)
                 }
@@ -42,16 +42,6 @@ class WineyFeedAdapter(
                 lWineyfeedPost.setOnSingleClickListener {
                     toFeedDetail(data)
                 }
-            }
-        }
-
-        private fun setUserProfile(userLevel: Int): Int {
-            return when (userLevel) {
-                1 -> R.drawable.img_wineyfeed_profile_1
-                2 -> R.drawable.img_wineyfeed_profile_2
-                3 -> R.drawable.img_wineyfeed_profile_3
-                4 -> R.drawable.img_wineyfeed_profile_4
-                else -> R.drawable.img_wineyfeed_profile
             }
         }
     }

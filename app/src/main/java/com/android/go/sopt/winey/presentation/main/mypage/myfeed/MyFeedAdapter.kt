@@ -32,7 +32,6 @@ class MyFeedAdapter(
                 if (data == null) {
                     return
                 }
-                ivMyfeedProfilephoto.setImageResource(setUserProfile(data.writerLevel))
                 ivMyfeedLike.setOnSingleClickListener {
                     onlikeButtonClicked(data)
                 }
@@ -41,18 +40,6 @@ class MyFeedAdapter(
                 }
                 lMyfeedPost.setOnSingleClickListener {
                     toFeedDetail(data)
-                }
-            }
-        }
-
-        private fun setUserProfile(userLevel: Int): Int {
-            return when (userLevel) {
-                1 -> R.drawable.img_wineyfeed_profile_1
-                2 -> R.drawable.img_wineyfeed_profile_2
-                3 -> R.drawable.img_wineyfeed_profile_3
-                4 -> R.drawable.img_wineyfeed_profile_4
-                else -> {
-                    R.drawable.img_wineyfeed_profile
                 }
             }
         }
