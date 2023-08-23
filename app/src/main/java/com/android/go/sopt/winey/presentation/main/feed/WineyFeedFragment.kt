@@ -2,7 +2,6 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -19,6 +18,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.ConcatAdapter
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import com.android.go.sopt.winey.domain.entity.User
@@ -63,14 +63,15 @@ class WineyFeedFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("Fragment Lifecycle", "onViewCreated 호출됨")
+        removeRecyclerviewItemChangeAnimation()
+        binding.vm = mainViewModel
+        mainViewModel.getHasNewNoti()
+
         initAdapter()
         setSwipeRefreshListener()
         initFabClickListener()
         initPostLikeStateObserver()
         initGetFeedStateObserver()
-        binding.vm = mainViewModel
-        mainViewModel.getHasNewNoti()
         initNotificationButtonClickListener()
     }
 
@@ -78,6 +79,13 @@ class WineyFeedFragment :
     override fun onStart() {
         super.onStart()
         viewModel.getWineyFeed()
+    }
+
+    private fun removeRecyclerviewItemChangeAnimation() {
+        val animator = binding.rvWineyfeedPost.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
     }
 
     private fun initAdapter() {
@@ -289,5 +297,6 @@ class WineyFeedFragment :
 
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+        private const val KEY_SCROLL_POS = "KEY_SCROLL_POS"
     }
 }

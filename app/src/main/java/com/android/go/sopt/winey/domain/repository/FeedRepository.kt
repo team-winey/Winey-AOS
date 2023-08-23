@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.domain.repository
 import androidx.paging.PagingData
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import com.android.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import com.android.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.domain.entity.DetailFeed
@@ -32,4 +33,6 @@ interface FeedRepository {
         feedId: Int,
         requestPostCommentDto: RequestPostCommentDto
     ): Result<Comment?>
+
+    suspend fun deleteComment(commentId: Long): Result<ResponseDeleteCommentDto?>
 }

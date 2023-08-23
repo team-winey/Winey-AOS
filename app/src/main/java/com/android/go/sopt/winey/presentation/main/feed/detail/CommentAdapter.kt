@@ -8,8 +8,9 @@ import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.util.view.ItemDiffCallback
 
 class CommentAdapter(
-    private val onPopupMenuClicked: (View, Int) -> Unit
+    private val onPopupMenuClicked: (View, Int, Long) -> Unit
 ) : ListAdapter<Comment, CommentAdapter.CommentViewHolder>(diffUtil) {
+
     inner class CommentViewHolder(
         private val binding: ItemDetailCommentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
@@ -17,9 +18,8 @@ class CommentAdapter(
             binding.apply {
                 this.data = comment
 
-                // 팝업 메뉴 버튼을 클릭하면, 해당 버튼의 뷰와 댓글 작성자의 아이디를 전달한다.
                 ivCommentMore.setOnClickListener { view ->
-                    onPopupMenuClicked(view, comment.authorId)
+                    onPopupMenuClicked(view, comment.authorId, comment.commentId)
                 }
             }
         }
@@ -45,10 +45,12 @@ class CommentAdapter(
         return newList.size
     }
 
-    fun deleteItem(position: Int) {
+    fun deleteItem(commentId: Long): Int {
+        val comment = currentList.find { it.commentId == commentId }
         val newList = currentList.toMutableList()
-        newList.removeAt(position)
+        newList.remove(comment)
         submitList(newList)
+        return newList.size
     }
 
     companion object {
