@@ -325,7 +325,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             }.launchIn(lifecycleScope)
     }
 
-    private fun isCommentListEmpty() = commentAdapter.currentList.size == 0
+    private fun isCommentListEmpty() = commentAdapter.currentList.isEmpty()
 
     private fun updateRecyclerViewAdapter(action: String) {
         when (action) {
