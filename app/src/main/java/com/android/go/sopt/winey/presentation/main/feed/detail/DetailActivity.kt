@@ -232,16 +232,17 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun initCommentCreateButtonClickListener() {
         binding.tvCommentCreate.setOnClickListener {
-            checkEmptyCommentList()
+            if (isCurrentCommentListEmpty()) {
+                updateRecyclerViewAdapter()
+            }
             val content = binding.etComment.text.toString()
             viewModel.postComment(feedId, content)
         }
     }
+    private fun isCurrentCommentListEmpty() = commentAdapter.currentList.size == 0
 
-    private fun checkEmptyCommentList() {
-        if (commentAdapter.currentList.size == 0) {
-            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
-        }
+    private fun updateRecyclerViewAdapter() {
+        binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
     }
 
     private fun initGetFeedDetailObserver() {
