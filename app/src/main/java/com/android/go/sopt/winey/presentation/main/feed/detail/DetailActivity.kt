@@ -232,26 +232,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun initCommentCreateButtonClickListener() {
         binding.tvCommentCreate.setOnClickListener {
-            if (isCommentListEmpty()) {
-                updateRecyclerViewAdapter(ACTION_COMMENT_POST)
-            }
             val content = binding.etComment.text.toString()
             viewModel.postComment(feedId, content)
-        }
-    }
-
-    private fun isCommentListEmpty() = commentAdapter.currentList.size == 0
-
-    private fun updateRecyclerViewAdapter(action: String) {
-        when (action) {
-            ACTION_COMMENT_POST ->
-                binding.rvDetail.adapter =
-                    ConcatAdapter(detailFeedAdapter, commentAdapter)
-
-            ACTION_COMMENT_DELETE -> {
-                binding.rvDetail.adapter =
-                    ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
-            }
         }
     }
 
@@ -324,6 +306,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 when (state) {
                     is UiState.Success -> {
                         val comment = state.data ?: return@onEach
+
+                        if (isCommentListEmpty()) {
+                            updateRecyclerViewAdapter(ACTION_COMMENT_POST)
+                        }
+
                         val commentNumber = commentAdapter.addItem(comment)
                         detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
                         binding.etComment.text.clear()
@@ -336,6 +323,21 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
                 }
             }.launchIn(lifecycleScope)
+    }
+
+    private fun isCommentListEmpty() = commentAdapter.currentList.size == 0
+
+    private fun updateRecyclerViewAdapter(action: String) {
+        when (action) {
+            ACTION_COMMENT_POST ->
+                binding.rvDetail.adapter =
+                    ConcatAdapter(detailFeedAdapter, commentAdapter)
+
+            ACTION_COMMENT_DELETE -> {
+                binding.rvDetail.adapter =
+                    ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
+            }
+        }
     }
 
     private fun initDeleteCommentStateObserver() {
