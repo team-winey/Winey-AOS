@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -63,18 +64,18 @@ class WineyFeedFragment :
         removeRecyclerviewItemChangeAnimation()
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
-
         initAdapter()
         setSwipeRefreshListener()
         initFabClickListener()
-        initPostLikeStateObserver()
         initGetFeedStateObserver()
+        initPostLikeStateObserver()
         initNotificationButtonClickListener()
     }
 
-    // 상세 피드 갔다가 다시 돌아오면 갱신된 데이터가 보이도록
-    override fun onStart() {
-        super.onStart()
+    //상세 피드 갔다가 다시 돌아오면 갱신된 데이터가 보이도록
+    override fun onResume() {
+        Log.e("resume", "resume")
+        super.onResume()
         viewModel.getWineyFeed()
     }
 
@@ -225,8 +226,11 @@ class WineyFeedFragment :
         viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    initGetFeedStateObserver()
-                    wineyFeedAdapter.refresh()
+                    wineyFeedAdapter.updateItem(
+                        state.data.data.feedId,
+                        state.data.data.isLiked,
+                        state.data.data.likes
+                    )
                 }
 
                 is UiState.Failure -> {
