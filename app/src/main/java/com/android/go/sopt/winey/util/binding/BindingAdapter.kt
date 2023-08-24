@@ -11,7 +11,7 @@ import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.android.go.sopt.winey.R
-import com.android.go.sopt.winey.util.code.NicknameErrorCode.*
+import com.android.go.sopt.winey.util.code.ErrorCode.*
 import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.drawableOf
 import com.android.go.sopt.winey.util.context.stringOf
@@ -66,8 +66,32 @@ fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
     }
 }
 
-@BindingAdapter("setBackground")
-fun EditText.setBackground(inputUiState: InputUiState) {
+@BindingAdapter("setUploadContentBackground")
+fun EditText.setUploadContentBackground(inputUiState: InputUiState) {
+    background = if (inputUiState is Empty || inputUiState is Success) {
+        context.drawableOf(R.drawable.sel_nickname_edittext_focus_color)
+    } else {
+        context.drawableOf(R.drawable.shape_red_line_5_rect)
+    }
+}
+
+@BindingAdapter("setUploadContentHelperText")
+fun TextView.setUploadContentHelperText(inputUiState: InputUiState) {
+    if (inputUiState is Empty || inputUiState is Success) {
+        visibility = View.INVISIBLE
+        return
+    }
+
+    if (inputUiState is Failure) {
+        visibility = View.VISIBLE
+        if (inputUiState.code == CODE_INVALID_LENGTH) {
+            text = context.stringOf(R.string.upload_content_error_text)
+        }
+    }
+}
+
+@BindingAdapter("setNicknameBackground")
+fun EditText.setNicknameBackground(inputUiState: InputUiState) {
     background = when (inputUiState) {
         is Empty -> context.drawableOf(R.drawable.sel_nickname_edittext_focus_color)
         is Success -> context.drawableOf(R.drawable.shape_blue_line_5_rect)
@@ -75,8 +99,8 @@ fun EditText.setBackground(inputUiState: InputUiState) {
     }
 }
 
-@BindingAdapter("setHelperText")
-fun TextView.setHelperText(inputUiState: InputUiState) {
+@BindingAdapter("setNicknameHelperText")
+fun TextView.setNicknameHelperText(inputUiState: InputUiState) {
     when (inputUiState) {
         is Empty -> {
             visibility = View.INVISIBLE
@@ -99,8 +123,8 @@ fun TextView.setHelperText(inputUiState: InputUiState) {
     }
 }
 
-@BindingAdapter("setHelperTextColor")
-fun TextView.setHelperTextColor(inputUiState: InputUiState) {
+@BindingAdapter("setNicknameHelperTextColor")
+fun TextView.setNicknameHelperTextColor(inputUiState: InputUiState) {
     when (inputUiState) {
         is Empty -> setTextColor(context.colorOf(R.color.gray_200))
         is Success -> setTextColor(context.colorOf(R.color.blue_500))

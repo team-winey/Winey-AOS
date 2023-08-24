@@ -5,7 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import com.android.go.sopt.winey.domain.repository.FeedRepository
+import com.android.go.sopt.winey.util.code.ErrorCode.CODE_INVALID_LENGTH
 import com.android.go.sopt.winey.util.multipart.UriToRequestBody
+import com.android.go.sopt.winey.util.view.InputUiState
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,15 +46,32 @@ class UploadViewModel @Inject constructor(
     /** Content Fragment */
     val _content = MutableStateFlow("")
     val content: String get() = _content.value
-    val isValidContent: StateFlow<Boolean> = _content.map { validateContent(it) }
+    val inputUiState: StateFlow<InputUiState> = _content.map { updateInputUiState(it) }
+        .stateIn(
+            initialValue = InputUiState.Empty,
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
+        )
+
+    val isValidContent: StateFlow<Boolean> = inputUiState.map { validateContent(it) }
         .stateIn(
             initialValue = false,
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
 
-    private fun validateContent(content: String): Boolean =
-        content.isEmpty() || content.length in MIN_CONTENT_LENGTH..MAX_CONTENT_LENGTH
+    private fun validateContent(state: InputUiState) = state == InputUiState.Success
+
+    private fun updateInputUiState(content: String): InputUiState {
+        if (content.isBlank()) return InputUiState.Empty
+        if (!checkContentLength((content))) {
+            return InputUiState.Failure(CODE_INVALID_LENGTH)
+        }
+        return InputUiState.Success
+    }
+
+    private fun checkContentLength(content: String) =
+        content.length in MIN_CONTENT_LENGTH..MAX_CONTENT_LENGTH
 
     /** Amount Fragment */
     val _amount = MutableStateFlow("")
