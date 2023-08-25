@@ -21,27 +21,27 @@
 
         <ImageView
             android:id="@+id/iv_nickname_close"
+            switchCloseButtonVisibility="@{vm.prevScreenName}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="12dp"
             android:paddingVertical="16dp"
-            switchCloseButtonVisibility="@{vm.prevScreenName}"
             android:src="@drawable/ic_upload_nickname_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_nickname_title"
+            switchTitleText="@{vm.prevScreenName}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="82dp"
-            switchTitleText="@{vm.prevScreenName}"
-            tools:text="@string/nickname_default_title"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/nickname_default_title" />
 
         <TextView
             android:id="@+id/tv_nickname_guide"
@@ -76,7 +76,6 @@
 
                 <EditText
                     android:id="@+id/et_nickname"
-                    style="?editTextStyle"
                     setNicknameBackground="@{vm.inputUiState}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -89,6 +88,7 @@
                     android:paddingVertical="12dp"
                     android:text="@={vm._nickname}"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                    android:textCursorDrawable="@drawable/shape_gray900_line_cursor"
                     android:textColor="@color/gray_900"
                     android:textColorHint="@color/gray_400" />
 
@@ -114,12 +114,13 @@
                 android:text="@string/nickname_duplicate_check"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/gray_700"
-                app:backgroundTint="@color/gray_50"
+                app:backgroundTint="@color/winey_yellow"
                 app:cornerRadius="5dp"
+                app:rippleColor="@android:color/transparent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:rippleColor="@color/purple_200" />
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -136,6 +137,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_nickname_complete"
+            switchCompleteButtonText="@{vm.prevScreenName}"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -146,12 +148,11 @@
             android:insetBottom="0dp"
             android:onClick="@{()->vm.patchNickname()}"
             android:stateListAnimator="@null"
-            switchCompleteButtonText="@{vm.prevScreenName}"
-            tools:text="@string/nickname_update_complete_btn_text"
             android:textColor="@drawable/sel_upload_nickname_btn_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/nickname_update_complete_btn_text" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
