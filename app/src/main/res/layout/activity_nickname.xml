@@ -79,7 +79,7 @@
                     setNicknameBackground="@{vm.inputUiState}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/nickname_hint"
+                    android:hint="@string/nickname_default_hint"
                     android:importantForAutofill="no"
                     android:inputType="text"
                     android:maxLength="@{vm.MAX_LENGTH}"

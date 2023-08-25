@@ -134,7 +134,7 @@
     <string name="nickname_default_title">위니제국에 들어온 당신,\n어떤 닉네임으로 불리고 싶나요?</string>
     <string name="nickname_mypage_title">위니제국의 국민인 당신,\n어떤 닉네임으로 바꾸고 싶나요?</string>
     <string name="nickname_input_guide">공백 또는 특수문자는 사용할 수 없습니다</string>
-    <string name="nickname_hint">닉네임 입력</string>
+    <string name="nickname_default_hint">닉네임 입력</string>
     <string name="nickname_counter">(%d/8)</string>
     <string name="nickname_duplicate_check">중복확인</string>
     <string name="nickname_update_complete_btn_text">확인</string>

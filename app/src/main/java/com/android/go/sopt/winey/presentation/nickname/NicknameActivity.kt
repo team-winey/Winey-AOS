@@ -10,19 +10,27 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityNicknameBinding
+import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.context.snackBar
+import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activity_nickname) {
     private val viewModel by viewModels<NicknameViewModel>()
     private val prevScreenName by lazy { intent.extras?.getString(EXTRA_KEY, "") }
+
+    @Inject
+    lateinit var dataStoreRepository: DataStoreRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,10 +38,23 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         viewModel.updatePrevScreenName(prevScreenName)
 
         initCloseButtonClickListener()
+        switchEditTextHint()
         initRootLayoutClickListener()
         initEditTextWatcher()
         initDuplicateCheckButtonClickListener()
         initPatchNicknameStateObserver()
+    }
+
+    private fun switchEditTextHint() {
+        lifecycleScope.launch {
+            when (prevScreenName) {
+                STORY_SCREEN -> binding.etNickname.hint = stringOf(R.string.nickname_default_hint)
+                MY_PAGE_SCREEN -> {
+                    val user = dataStoreRepository.getUserInfo().first() ?: return@launch
+                    binding.etNickname.hint = user.nickname
+                }
+            }
+        }
     }
 
     private fun initCloseButtonClickListener() {
