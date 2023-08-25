@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,7 +14,6 @@ import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.context.snackBar
-import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -29,39 +27,18 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
+        viewModel.updatePrevScreenName(prevScreenName)
 
-        switchCloseButtonVisibility()
         initCloseButtonClickListener()
-        switchTitleText()
-
         initRootLayoutClickListener()
         initEditTextWatcher()
         initDuplicateCheckButtonClickListener()
         initPatchNicknameStateObserver()
     }
 
-    private fun switchCloseButtonVisibility() {
-        when (prevScreenName) {
-            STORY_SCREEN -> binding.ivNicknameClose.visibility = View.GONE
-            MY_PAGE_SCREEN -> binding.ivNicknameClose.visibility = View.VISIBLE
-        }
-    }
-
     private fun initCloseButtonClickListener() {
         binding.ivNicknameClose.setOnClickListener {
             finish()
-        }
-    }
-
-    private fun switchTitleText() {
-        when (prevScreenName) {
-            STORY_SCREEN ->
-                binding.tvNicknameTitle.text =
-                    stringOf(R.string.nickname_default_title)
-
-            MY_PAGE_SCREEN ->
-                binding.tvNicknameTitle.text =
-                    stringOf(R.string.nickname_mypage_title)
         }
     }
 
@@ -127,7 +104,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     companion object {
         private const val EXTRA_KEY = "PREV_SCREEN_NAME"
-        private const val MY_PAGE_SCREEN = "MyPageFragment"
-        private const val STORY_SCREEN = "StoryActivity"
+        const val MY_PAGE_SCREEN = "MyPageFragment"
+        const val STORY_SCREEN = "StoryActivity"
     }
 }

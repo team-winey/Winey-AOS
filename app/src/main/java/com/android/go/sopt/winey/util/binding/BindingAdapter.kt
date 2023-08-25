@@ -11,6 +11,8 @@ import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.android.go.sopt.winey.R
+import com.android.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.MY_PAGE_SCREEN
+import com.android.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.STORY_SCREEN
 import com.android.go.sopt.winey.util.code.ErrorCode.*
 import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.drawableOf
@@ -129,6 +131,40 @@ fun TextView.setNicknameHelperTextColor(inputUiState: InputUiState) {
         is Empty -> setTextColor(context.colorOf(R.color.gray_200))
         is Success -> setTextColor(context.colorOf(R.color.blue_500))
         is Failure -> setTextColor(context.colorOf(R.color.red_500))
+    }
+}
+
+@BindingAdapter("switchCloseButtonVisibility")
+fun ImageView.switchCloseButtonVisibility(prevScreenName: String) {
+    when (prevScreenName) {
+        STORY_SCREEN -> visibility = View.GONE
+        MY_PAGE_SCREEN -> visibility = View.VISIBLE
+    }
+}
+
+@BindingAdapter("switchTitleText")
+fun TextView.switchTitleText(prevScreenName: String) {
+    when (prevScreenName) {
+        STORY_SCREEN ->
+            text =
+                context.stringOf(R.string.nickname_default_title)
+
+        MY_PAGE_SCREEN ->
+            text =
+                context.stringOf(R.string.nickname_mypage_title)
+    }
+}
+
+@BindingAdapter("switchCompleteButtonText")
+fun TextView.switchCompleteButtonText(prevScreenName: String) {
+    when (prevScreenName) {
+        STORY_SCREEN ->
+            text =
+                context.stringOf(R.string.nickname_start_btn_text)
+
+        MY_PAGE_SCREEN ->
+            text =
+                context.stringOf(R.string.nickname_update_complete_btn_text)
     }
 }
 

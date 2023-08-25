@@ -58,6 +58,12 @@ class NicknameViewModel @Inject constructor(
     private val _patchNicknameState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val patchNicknameState: StateFlow<UiState<Unit>> = _patchNicknameState.asStateFlow()
 
+    var prevScreenName: String? = null
+
+    fun updatePrevScreenName(name: String?) {
+        prevScreenName = name
+    }
+
     private fun validateNickname(state: InputUiState) = state == InputUiState.Success
 
     fun patchNickname() {
