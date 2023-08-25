@@ -4,6 +4,7 @@ import CommentAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -16,8 +17,8 @@ import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
+import com.android.go.sopt.winey.util.activity.hideKeyboard
 import com.android.go.sopt.winey.util.binding.BindingActivity
-import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.context.wineySnackbar
@@ -55,7 +56,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         binding.vm = viewModel
         removeRecyclerviewItemChangeAnimation()
         initBackButtonClickListener()
-        initRootLayoutClickListener()
 
         viewModel.getFeedDetail(feedId)
         initGetFeedDetailObserver()
@@ -66,6 +66,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         initCommentCreateButtonClickListener()
         initPostCommentStateObserver()
         initDeleteCommentStateObserver()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        hideKeyboard()
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun initBackButtonClickListener() {
@@ -387,13 +392,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
         showAsDropDown(anchorView, -POPUP_MENU_POS_OFFSET, -POPUP_MENU_POS_OFFSET, Gravity.END)
-    }
-
-    private fun initRootLayoutClickListener() {
-        binding.root.setOnClickListener {
-            hideKeyboard(binding.root)
-            binding.etComment.clearFocus()
-        }
     }
 
     companion object {
