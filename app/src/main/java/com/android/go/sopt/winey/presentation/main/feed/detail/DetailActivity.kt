@@ -17,6 +17,7 @@ import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import com.android.go.sopt.winey.util.context.hideKeyboard
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.context.wineySnackbar
@@ -54,6 +55,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         binding.vm = viewModel
         removeRecyclerviewItemChangeAnimation()
         initBackButtonClickListener()
+        initRootLayoutClickListener()
 
         viewModel.getFeedDetail(feedId)
         initGetFeedDetailObserver()
@@ -387,22 +389,25 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         showAsDropDown(anchorView, -POPUP_MENU_POS_OFFSET, -POPUP_MENU_POS_OFFSET, Gravity.END)
     }
 
+    private fun initRootLayoutClickListener() {
+        binding.root.setOnClickListener {
+            hideKeyboard(binding.root)
+            binding.etComment.clearFocus()
+        }
+    }
+
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_REPORT_DIALOG = "REPORT_DIALOG"
-
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val MSG_DETAIL_ERROR = "ERROR"
         private const val EXTRA_DELETE_KEY = "delete"
         private const val EXTRA_REPORT_KEY = "report"
-
         private const val TARGET_DETAIL_FEED = "detailFeed"
         private const val TARGET_COMMENT = "comment"
-
         private const val ACTION_COMMENT_POST = "POST"
         private const val ACTION_COMMENT_DELETE = "DELETE"
     }

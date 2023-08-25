@@ -164,5 +164,6 @@ class DetailViewModel @Inject constructor(
         private const val MIN_COMMENT_LENGTH = 1
         private const val LONG_TEXT_LENGTH = 450
         const val MAX_COMMENT_LENGTH = 500
+        const val MAX_COMMENT_LINE = 4
     }
 }
