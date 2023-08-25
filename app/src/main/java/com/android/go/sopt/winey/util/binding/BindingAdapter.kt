@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ImageView.ScaleType
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -165,6 +166,17 @@ fun TextView.switchCompleteButtonText(prevScreenName: String) {
         MY_PAGE_SCREEN ->
             text =
                 context.stringOf(R.string.nickname_update_complete_btn_text)
+    }
+}
+
+@BindingAdapter("switchCompleteButtonBackground")
+fun AppCompatButton.switchCompleteButtonBackground(isValidNickname: Boolean) {
+    if (isValidNickname) {
+        background = context.drawableOf(R.drawable.shape_yellow_fill_10_rect)
+        setTextColor(context.colorOf(R.color.gray_900))
+    } else {
+        background = context.drawableOf(R.drawable.shape_gray200_fill_10_rect)
+        setTextColor(context.colorOf(R.color.gray_500))
     }
 }
 
