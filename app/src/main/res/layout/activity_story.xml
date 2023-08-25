@@ -55,6 +55,18 @@
                     tools:text="@string/story_nav_num_preview" />
 
                 <TextView
+                    android:id="@+id/tv_story_skip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="4dp"
+                    android:paddingVertical="5dp"
+                    android:text="@string/story_skip_btn_text"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                    android:textColor="@color/gray_500"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
                     android:id="@+id/tv_story_nav_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

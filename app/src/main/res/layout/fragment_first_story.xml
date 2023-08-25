@@ -45,7 +45,6 @@
             android:text="@string/story_saver_first_speech_bubble"
             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
             app:layout_constraintEnd_toEndOf="@id/tv_story_saver_name"
-            app:layout_constraintStart_toTopOf="@id/tv_story_saver_name"
             app:layout_constraintTop_toBottomOf="@id/tv_story_saver_name" />
 
         <TextView
