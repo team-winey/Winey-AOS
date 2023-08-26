@@ -70,6 +70,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
         initEditTextFocusChangeListener()
         updateStatusBarColor()
+        binding.tvCommentCreate.bringToFront()
     }
 
     private fun updateStatusBarColor() {
