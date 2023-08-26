@@ -10,7 +10,6 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityStoryBinding
-import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.presentation.nickname.NicknameActivity
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.colorOf
@@ -33,7 +32,7 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
 
     private fun initSkipButtonClickListener() {
         binding.tvStorySkip.setOnClickListener {
-            navigateToMainScreen()
+            navigateToNicknameScreen()
         }
     }
 
@@ -88,13 +87,6 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         Intent(this, NicknameActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             putExtra(EXTRA_KEY, EXTRA_VALUE)
-            startActivity(this)
-        }
-    }
-
-    private fun navigateToMainScreen() {
-        Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
     }
