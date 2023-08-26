@@ -16,17 +16,12 @@ class GuideActivity : BindingActivity<ActivityGuideBinding>(R.layout.activity_gu
         super.onCreate(savedInstanceState)
 
         initViewPagerAdapter()
-        preventDefaultSwipe()
         observePageChange()
         initNextButtonClickListener()
     }
 
     private fun initViewPagerAdapter() {
         binding.vpGuide.adapter = GuideFragmentStateAdapter(this)
-    }
-
-    private fun preventDefaultSwipe() {
-        binding.vpGuide.isUserInputEnabled = false
     }
 
     private fun observePageChange() {

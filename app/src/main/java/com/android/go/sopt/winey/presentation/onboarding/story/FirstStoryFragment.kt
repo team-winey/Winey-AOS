@@ -11,10 +11,14 @@ class FirstStoryFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        bringSpeechBubbleToFront()
+        bringTextToFront()
     }
 
-    private fun bringSpeechBubbleToFront() {
-        binding.tvStoryWineyCountrySpeechBubble.bringToFront()
+    private fun bringTextToFront() {
+        with(binding) {
+            tvStorySaverSpeechBubble.bringToFront()
+            tvStoryWineyCountryName.bringToFront()
+            tvStoryWineyCountrySpeechBubble.bringToFront()
+        }
     }
 }

@@ -7,7 +7,6 @@ import com.android.go.sopt.winey.domain.repository.AuthRepository
 import com.android.go.sopt.winey.util.code.ErrorCode.CODE_DUPLICATE
 import com.android.go.sopt.winey.util.code.ErrorCode.CODE_INVALID_LENGTH
 import com.android.go.sopt.winey.util.code.ErrorCode.CODE_SPACE_SPECIAL_CHAR
-import com.android.go.sopt.winey.util.code.ErrorCode.CODE_UNCHECKED_DUPLICATION
 import com.android.go.sopt.winey.util.view.InputUiState
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,12 +31,11 @@ class NicknameViewModel @Inject constructor(
     val nickname: String get() = _nickname.value
 
     private val _inputUiState: MutableStateFlow<InputUiState> =
-        _nickname.map { updateInputUiState(it) }
+        _nickname.map { checkInputUiState(it) }
             .mutableStateIn(
                 initialValue = InputUiState.Empty,
                 scope = viewModelScope
             )
-
     val inputUiState: StateFlow<InputUiState> = _inputUiState.asStateFlow()
 
     val isValidNickname: StateFlow<Boolean> = _inputUiState.map { validateNickname(it) }
@@ -46,19 +44,29 @@ class NicknameViewModel @Inject constructor(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
+    private fun validateNickname(state: InputUiState) = state == InputUiState.Success
 
-    private val _isTextChanged = MutableStateFlow(false)
-    val isTextChanged: StateFlow<Boolean> = _isTextChanged.asStateFlow()
-
-    private val _isCheckBtnClicked = MutableStateFlow(false)
-    val isCheckBtnClicked: StateFlow<Boolean> = _isCheckBtnClicked.asStateFlow()
-
-    private var prevCheckResult: Pair<String, Boolean>? = null
+    private val _isDuplicateChecked = MutableStateFlow(false)
+    val isDuplicateChecked: StateFlow<Boolean> = _isDuplicateChecked.asStateFlow()
 
     private val _patchNicknameState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val patchNicknameState: StateFlow<UiState<Unit>> = _patchNicknameState.asStateFlow()
 
-    private fun validateNickname(state: InputUiState) = state == InputUiState.Success
+    private var prevCheckResult: Pair<String, Boolean>? = null
+
+    var prevScreenName: String? = null
+
+    fun updatePrevScreenName(name: String?) {
+        prevScreenName = name
+    }
+
+    fun updateInputUiState(inputUiState: InputUiState) {
+        _inputUiState.value = inputUiState
+    }
+
+    fun updateDuplicateCheckState(checked: Boolean) {
+        _isDuplicateChecked.value = checked
+    }
 
     fun patchNickname() {
         viewModelScope.launch {
@@ -87,10 +95,10 @@ class NicknameViewModel @Inject constructor(
                     if (response == null) return@onSuccess
 
                     response.isDuplicated.let {
-                        Timber.d("SUCCESS GET DUPLICATION CHECK: $it")
-                        updateDuplicateCheckState(it)
-                        saveDuplicateCheckState(it)
+                        showDuplicateCheckResult(it)
+                        saveDuplicateCheckResult(it)
                     }
+                    updateDuplicateCheckState(true)
                 }
                 .onFailure { t ->
                     Timber.e("${t.message}")
@@ -98,7 +106,7 @@ class NicknameViewModel @Inject constructor(
         }
     }
 
-    private fun updateDuplicateCheckState(isDuplicated: Boolean) {
+    private fun showDuplicateCheckResult(isDuplicated: Boolean) {
         _inputUiState.value = if (isDuplicated) {
             InputUiState.Failure(CODE_DUPLICATE)
         } else {
@@ -106,69 +114,23 @@ class NicknameViewModel @Inject constructor(
         }
     }
 
-    // 서버통신 할 때마다 현재 닉네임과 중복여부를 저장한다.
-    private fun saveDuplicateCheckState(isDuplicated: Boolean) {
+    private fun saveDuplicateCheckResult(isDuplicated: Boolean) {
         prevCheckResult = Pair(nickname, isDuplicated)
     }
 
-    private fun updateInputUiState(nickname: String): InputUiState {
+    private fun checkInputUiState(nickname: String): InputUiState {
         if (nickname.isEmpty()) return InputUiState.Empty
         if (!checkLength(nickname)) return InputUiState.Failure(CODE_INVALID_LENGTH)
         if (containsSpaceOrSpecialChar(nickname)) {
-            return InputUiState.Failure(
-                CODE_SPACE_SPECIAL_CHAR
-            )
+            return InputUiState.Failure(CODE_SPACE_SPECIAL_CHAR)
         }
-
-        // 텍스트가 바뀌었는데 중복체크 버튼을 누르지 않은 경우
-        if (isTextChanged.value && !isCheckBtnClicked.value) {
-            return comparePrevCheckResult()
-        }
-
         return InputUiState.Empty
-    }
-
-    private fun comparePrevCheckResult(): InputUiState {
-        // 이전에 서버통신 한 결과가 없는 경우
-        if (prevCheckResult == null) {
-            Timber.d("CASE 1")
-            return InputUiState.Failure(CODE_UNCHECKED_DUPLICATION)
-        }
-
-        // 현재 입력값이 이전에 서버통신 했던 닉네임과 일치하는 경우
-        if (nickname == prevCheckResult?.first) {
-            // 그때 당시의 서버통신 결과 그대로 반환
-            if (prevCheckResult?.second == true) {
-                Timber.d("CASE 2")
-                return InputUiState.Failure(CODE_DUPLICATE)
-            }
-
-            Timber.d("CASE 3")
-            return InputUiState.Success
-        }
-
-        // 이전에 서버통신한 결과가 있지만, 입력값이 다른 경우
-        Timber.d("CASE 4")
-        return InputUiState.Failure(CODE_UNCHECKED_DUPLICATION)
     }
 
     private fun checkLength(nickname: String) = nickname.length in MIN_LENGTH..MAX_LENGTH
 
     private fun containsSpaceOrSpecialChar(nickname: String) =
         !Regex(REGEX_PATTERN).matches(nickname)
-
-    fun updateTextChangedState(state: Boolean) { // updated in Activity
-        _isTextChanged.value = state
-    }
-
-    fun updateDuplicateCheckButtonState(state: Boolean) { // updated in Activity
-        _isCheckBtnClicked.value = state
-        initDuplicateCheckButtonState()
-    }
-
-    private fun initDuplicateCheckButtonState() {
-        _isCheckBtnClicked.value = false
-    }
 
     // _nickname.map{} Flow -> MutableStateFlow 변환을 위한 확장 함수
     private fun <T> Flow<T>.mutableStateIn(
