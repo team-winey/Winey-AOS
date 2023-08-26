@@ -85,7 +85,7 @@ class WineyFeedFragment :
     private fun restoreScrollPosition() {
         binding.rvWineyfeedPost.post {
             if (selectedItemIndex != -1) {
-                binding.rvWineyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex)
+                binding.rvWineyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex+1)
             }
         }
     }
