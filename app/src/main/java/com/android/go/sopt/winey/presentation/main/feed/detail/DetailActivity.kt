@@ -19,6 +19,7 @@ import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.activity.hideKeyboard
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.context.wineySnackbar
@@ -66,11 +67,28 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         initCommentCreateButtonClickListener()
         initPostCommentStateObserver()
         initDeleteCommentStateObserver()
+
+        initEditTextFocusChangeListener()
+        updateStatusBarColor()
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+    private fun updateStatusBarColor() {
+        window.statusBarColor = colorOf(R.color.white)
+    }
+
+    private fun initEditTextFocusChangeListener() {
+        binding.etComment.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                val commentListSize = commentAdapter.currentList.size
+                binding.rvDetail.smoothScrollToPosition(commentListSize + 1)
+            }
+        }
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
         hideKeyboard()
-        return super.dispatchTouchEvent(ev)
+        binding.etComment.clearFocus()
+        return super.dispatchTouchEvent(event)
     }
 
     private fun initBackButtonClickListener() {
