@@ -76,7 +76,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private fun restoreScrollPosition() {
         binding.rvMyfeedPost.post {
             if (selectedItemIndex != -1) {
-                binding.rvMyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex+1)
+                binding.rvMyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex + 1)
             }
         }
     }
