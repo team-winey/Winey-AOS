@@ -339,7 +339,9 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
                         val commentNumber = commentAdapter.addItem(comment)
                         detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
+
                         binding.etComment.text.clear()
+                        binding.rvDetail.smoothScrollToPosition(commentNumber + 1)
                     }
 
                     is UiState.Failure -> {
