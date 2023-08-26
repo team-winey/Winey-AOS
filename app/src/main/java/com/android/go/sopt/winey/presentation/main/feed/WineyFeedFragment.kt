@@ -3,7 +3,6 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
@@ -77,9 +76,8 @@ class WineyFeedFragment :
         initNotificationButtonClickListener()
     }
 
-    override fun onResume() {
-        super.onResume()
-        restoreScrollPosition()
+    override fun onStart() {
+        super.onStart()
         viewModel.getWineyFeed()
     }
 
@@ -249,7 +247,7 @@ class WineyFeedFragment :
     }
 
     private fun initPostLikeStateObserver() {
-        viewModel.postWineyFeedLikeState.onEach { state ->
+        viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     wineyFeedAdapter.updateItem(

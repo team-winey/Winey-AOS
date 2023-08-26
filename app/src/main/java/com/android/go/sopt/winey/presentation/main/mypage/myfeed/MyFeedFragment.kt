@@ -54,6 +54,11 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         initButtonClickListener()
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.getMyFeed()
+    }
+
     private fun initAdapter() {
         wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         myFeedAdapter = MyFeedAdapter(
@@ -195,6 +200,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
+        selectedItemIndex = myFeedAdapter.snapshot().indexOf(wineyFeed)
+        selectedScrollPosition = binding.rvMyfeedPost.layoutManager?.onSaveInstanceState()
         val intent = Intent(requireContext(), DetailActivity::class.java)
         intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
         intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
