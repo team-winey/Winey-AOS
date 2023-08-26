@@ -28,7 +28,7 @@ class WineyFeedViewModel @Inject constructor(
     val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
         _getWineyFeedListState.asStateFlow()
 
-    private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
+    private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Empty)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()
 
     val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
@@ -55,6 +55,7 @@ class WineyFeedViewModel @Inject constructor(
 
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
+            _postWineyFeedLikeState.emit(UiState.Loading)
             feedRepository.postFeedLike(feedId, requestPostLikeDto)
                 .onSuccess { response ->
                     _postWineyFeedLikeState.emit(UiState.Success(response))

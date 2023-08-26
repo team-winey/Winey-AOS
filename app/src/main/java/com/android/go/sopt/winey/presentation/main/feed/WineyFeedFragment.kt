@@ -3,6 +3,7 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
@@ -85,7 +86,7 @@ class WineyFeedFragment :
     private fun restoreScrollPosition() {
         binding.rvWineyfeedPost.post {
             if (selectedItemIndex != -1) {
-                binding.rvWineyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex+1)
+                binding.rvWineyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex + 1)
             }
         }
     }
@@ -248,7 +249,7 @@ class WineyFeedFragment :
     }
 
     private fun initPostLikeStateObserver() {
-        viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+        viewModel.postWineyFeedLikeState.onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     wineyFeedAdapter.updateItem(
