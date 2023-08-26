@@ -356,6 +356,5 @@ class WineyFeedFragment :
 
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-        private const val KEY_SCROLL_POS = "KEY_SCROLL_POS"
     }
 }

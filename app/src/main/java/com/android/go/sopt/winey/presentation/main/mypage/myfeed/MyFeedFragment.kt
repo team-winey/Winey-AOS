@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
@@ -39,6 +40,8 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
+    private var selectedScrollPosition: Parcelable? = null
+    private var selectedItemIndex: Int = -1
     private val viewModel by viewModels<MyFeedViewModel>()
     private lateinit var myFeedAdapter: MyFeedAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
@@ -65,6 +68,13 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         binding.rvMyfeedPost.adapter = myFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
     }
 
+    private fun restoreScrollPosition() {
+        binding.rvMyfeedPost.post {
+            if (selectedItemIndex != -1) {
+                binding.rvMyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex+1)
+            }
+        }
+    }
     private fun showFeedPopupMenu(anchorView: View, wineyFeed: WineyFeed) {
         lifecycleScope.launch {
             showFeedDeletePopupMenu(anchorView, wineyFeed)
@@ -137,6 +147,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                                         binding.rvMyfeedPost.isVisible = myFeedAdapter.itemCount > 0
                                         binding.lMyfeedEmpty.isVisible =
                                             myFeedAdapter.itemCount == 0
+                                        restoreScrollPosition()
                                     }
 
                                     is LoadState.Error -> {
