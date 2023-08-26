@@ -15,6 +15,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -48,6 +49,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        removeRecyclerviewItemChangeAnimation()
         initAdapter()
         initGetFeedStateObserver()
         initPostLikeStateObserver()
@@ -80,6 +82,14 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             }
         }
     }
+
+    private fun removeRecyclerviewItemChangeAnimation() {
+        val animator = binding.rvMyfeedPost.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
+    }
+
     private fun showFeedPopupMenu(anchorView: View, wineyFeed: WineyFeed) {
         lifecycleScope.launch {
             showFeedDeletePopupMenu(anchorView, wineyFeed)
