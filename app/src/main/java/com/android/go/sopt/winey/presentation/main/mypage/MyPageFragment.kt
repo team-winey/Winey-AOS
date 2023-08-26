@@ -128,7 +128,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initWithdrawButtonClickListener() {
-        binding.ivMypageWithdraw.setOnClickListener {
+        binding.tvMypageWithdraw.setOnClickListener {
             val dialog = WineyDialogFragment(
                 stringOf(R.string.mypage_withdraw_dialog_title),
                 stringOf(R.string.mypage_withdraw_dialog_subtitle),
