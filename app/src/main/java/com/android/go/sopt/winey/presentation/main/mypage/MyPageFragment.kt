@@ -197,7 +197,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initBottomSheetClickListener(data: User?) {
-        binding.cvMypageTargetmoney.setOnSingleClickListener {
+        binding.clMypageTargetmoney.setOnSingleClickListener {
             when (data?.isOver) {
                 true -> {
                     val bottomSheet = TargetAmountBottomSheetFragment()
