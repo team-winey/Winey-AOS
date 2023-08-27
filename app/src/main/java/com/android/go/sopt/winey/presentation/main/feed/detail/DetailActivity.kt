@@ -4,6 +4,7 @@ import CommentAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
@@ -16,7 +17,9 @@ import com.android.go.sopt.winey.domain.entity.Comment
 import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
+import com.android.go.sopt.winey.util.activity.hideKeyboard
 import com.android.go.sopt.winey.util.binding.BindingActivity
+import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.context.stringOf
 import com.android.go.sopt.winey.util.context.wineySnackbar
@@ -64,6 +67,29 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         initCommentCreateButtonClickListener()
         initPostCommentStateObserver()
         initDeleteCommentStateObserver()
+
+        initEditTextFocusChangeListener()
+        updateStatusBarColor()
+        binding.tvCommentCreate.bringToFront()
+    }
+
+    private fun updateStatusBarColor() {
+        window.statusBarColor = colorOf(R.color.white)
+    }
+
+    private fun initEditTextFocusChangeListener() {
+        binding.etComment.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                val commentListSize = commentAdapter.currentList.size
+                binding.rvDetail.smoothScrollToPosition(commentListSize + 1)
+            }
+        }
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        hideKeyboard()
+        binding.etComment.clearFocus()
+        return super.dispatchTouchEvent(event)
     }
 
     private fun initBackButtonClickListener() {
@@ -314,7 +340,9 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
                         val commentNumber = commentAdapter.addItem(comment)
                         detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
+
                         binding.etComment.text.clear()
+                        binding.rvDetail.smoothScrollToPosition(commentNumber + 1)
                     }
 
                     is UiState.Failure -> {
@@ -390,19 +418,15 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_REPORT_DIALOG = "REPORT_DIALOG"
-
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val MSG_DETAIL_ERROR = "ERROR"
         private const val EXTRA_DELETE_KEY = "delete"
         private const val EXTRA_REPORT_KEY = "report"
-
         private const val TARGET_DETAIL_FEED = "detailFeed"
         private const val TARGET_COMMENT = "comment"
-
         private const val ACTION_COMMENT_POST = "POST"
         private const val ACTION_COMMENT_DELETE = "DELETE"
     }
