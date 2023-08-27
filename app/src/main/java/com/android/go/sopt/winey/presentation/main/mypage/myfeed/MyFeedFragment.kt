@@ -2,6 +2,7 @@ package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
@@ -14,6 +15,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentMyfeedBinding
 import com.android.go.sopt.winey.domain.entity.WineyFeed
@@ -39,16 +41,24 @@ import timber.log.Timber
 
 @AndroidEntryPoint
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
+    private var selectedScrollPosition: Parcelable? = null
+    private var selectedItemIndex: Int = -1
     private val viewModel by viewModels<MyFeedViewModel>()
     private lateinit var myFeedAdapter: MyFeedAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        removeRecyclerviewItemChangeAnimation()
         initAdapter()
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         initButtonClickListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getMyFeed()
     }
 
     private fun initAdapter() {
@@ -63,6 +73,21 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             toFeedDetail = { wineyFeed -> navigateToDetail(wineyFeed) }
         )
         binding.rvMyfeedPost.adapter = myFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
+    }
+
+    private fun restoreScrollPosition() {
+        binding.rvMyfeedPost.post {
+            if (selectedItemIndex != -1) {
+                binding.rvMyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex + 1)
+            }
+        }
+    }
+
+    private fun removeRecyclerviewItemChangeAnimation() {
+        val animator = binding.rvMyfeedPost.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
     }
 
     private fun showFeedPopupMenu(anchorView: View, wineyFeed: WineyFeed) {
@@ -137,6 +162,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                                         binding.rvMyfeedPost.isVisible = myFeedAdapter.itemCount > 0
                                         binding.lMyfeedEmpty.isVisible =
                                             myFeedAdapter.itemCount == 0
+                                        restoreScrollPosition()
                                     }
 
                                     is LoadState.Error -> {
@@ -162,8 +188,11 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.postMyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    initGetFeedStateObserver()
-                    myFeedAdapter.refresh()
+                    myFeedAdapter.updateItem(
+                        state.data.data.feedId,
+                        state.data.data.isLiked,
+                        state.data.data.likes
+                    )
                 }
 
                 is UiState.Failure -> {
@@ -184,6 +213,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
+        selectedItemIndex = myFeedAdapter.snapshot().indexOf(wineyFeed)
+        selectedScrollPosition = binding.rvMyfeedPost.layoutManager?.onSaveInstanceState()
         val intent = Intent(requireContext(), DetailActivity::class.java)
         intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
         intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
