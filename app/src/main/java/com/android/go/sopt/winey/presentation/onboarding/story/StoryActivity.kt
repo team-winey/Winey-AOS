@@ -27,6 +27,13 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
         setUpDefaultNavigationText()
         setUpDefaultFragment(savedInstanceState)
         initNextButtonClickListener()
+        initSkipButtonClickListener()
+    }
+
+    private fun initSkipButtonClickListener() {
+        binding.tvStorySkip.setOnClickListener {
+            navigateToNicknameScreen()
+        }
     }
 
     private fun initNextButtonClickListener() {
