@@ -162,7 +162,8 @@ class DetailViewModel @Inject constructor(
 
         private const val PRODUCE_STOP_TIMEOUT = 5000L
         private const val MIN_COMMENT_LENGTH = 1
-        private const val LONG_TEXT_LENGTH = 450
+        private const val LONG_TEXT_LENGTH = 50
         const val MAX_COMMENT_LENGTH = 500
+        const val MAX_COMMENT_LINE = 4
     }
 }

@@ -15,12 +15,9 @@ class CommentAdapter(
         private val binding: ItemDetailCommentBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(comment: Comment) {
-            binding.apply {
-                this.data = comment
-
-                ivCommentMore.setOnClickListener { view ->
-                    onPopupMenuClicked(view, comment.authorId, comment.commentId)
-                }
+            binding.data = comment
+            binding.ivCommentMore.setOnClickListener { view ->
+                onPopupMenuClicked(view, comment.authorId, comment.commentId)
             }
         }
     }
