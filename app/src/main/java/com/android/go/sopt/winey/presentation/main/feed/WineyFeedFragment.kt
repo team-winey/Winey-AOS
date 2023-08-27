@@ -72,7 +72,6 @@ class WineyFeedFragment :
         initNotificationButtonClickListener()
     }
 
-    // 상세 피드 갔다가 다시 돌아오면 갱신된 데이터가 보이도록
     override fun onStart() {
         super.onStart()
         viewModel.getWineyFeed()
@@ -133,11 +132,7 @@ class WineyFeedFragment :
     }
 
     private fun refreshWineyFeed() {
-        val fragmentManager = parentFragmentManager
-        fragmentManager.beginTransaction().apply {
-            replace(R.id.fcv_main, WineyFeedFragment())
-            commit()
-        }
+        wineyFeedAdapter.refresh()
     }
 
     private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
@@ -226,7 +221,7 @@ class WineyFeedFragment :
             when (state) {
                 is UiState.Success -> {
                     initGetFeedStateObserver()
-                    wineyFeedAdapter.refresh()
+                    refreshWineyFeed()
                 }
 
                 is UiState.Failure -> {
@@ -298,7 +293,7 @@ class WineyFeedFragment :
 
     private fun setSwipeRefreshListener() {
         binding.layoutWineyfeedRefresh.setOnRefreshListener {
-            wineyFeedAdapter.refresh()
+            refreshWineyFeed()
             binding.layoutWineyfeedRefresh.isRefreshing = false
         }
     }
