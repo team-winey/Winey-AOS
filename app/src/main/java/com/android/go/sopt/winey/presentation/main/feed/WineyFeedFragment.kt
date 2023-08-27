@@ -144,6 +144,7 @@ class WineyFeedFragment :
     }
 
     private fun refreshWineyFeed() {
+        wineyFeedHeaderAdapter.notifyItemChanged(0)
         wineyFeedAdapter.refresh()
     }
 
