@@ -128,7 +128,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initWithdrawButtonClickListener() {
-        binding.ivMypageWithdraw.setOnClickListener {
+        binding.tvMypageWithdraw.setOnClickListener {
             val dialog = WineyDialogFragment(
                 stringOf(R.string.mypage_withdraw_dialog_title),
                 stringOf(R.string.mypage_withdraw_dialog_subtitle),
@@ -197,7 +197,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initBottomSheetClickListener(data: User?) {
-        binding.btnMypageTargetModify.setOnSingleClickListener {
+        binding.clMypageTargetmoney.setOnSingleClickListener {
             when (data?.isOver) {
                 true -> {
                     val bottomSheet = TargetAmountBottomSheetFragment()
@@ -281,7 +281,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val LEVEL_KING = "황제"
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
         private const val TERMS_URL =
-            "https://empty-weaver-a9f.notion.site/62b37962c661488ba5f60958c24753e1?pvs=4"
+            "https://empty-weaver-a9f.notion.site/iney-9dbfe130c7df4fb9a0903481c3e377e6?pvs=4"
         private const val EXTRA_KEY = "PREV_SCREEN_NAME"
         private const val EXTRA_VALUE = "MyPageFragment"
         private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"

@@ -72,7 +72,7 @@ fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
 @BindingAdapter("setUploadContentBackground")
 fun EditText.setUploadContentBackground(inputUiState: InputUiState) {
     background = if (inputUiState is Empty || inputUiState is Success) {
-        context.drawableOf(R.drawable.sel_nickname_edittext_focus_color)
+        context.drawableOf(R.drawable.sel_upload_edittext_focus_color)
     } else {
         context.drawableOf(R.drawable.shape_red_line_5_rect)
     }

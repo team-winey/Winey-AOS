@@ -42,6 +42,10 @@ class AuthInterceptor @Inject constructor(
                     saveAccessToken("", "")
                 }
             }
+
+            CODE_INVALID_USER -> {
+                saveAccessToken("", "")
+            }
         }
         return response
     }
@@ -95,6 +99,7 @@ class AuthInterceptor @Inject constructor(
     companion object {
         private const val HEADER_TOKEN = "accessToken"
         private const val CODE_TOKEN_EXPIRED = 401
+        private const val CODE_INVALID_USER = 404
         private const val REFRESH_TOKEN = "refreshToken"
     }
 }
