@@ -21,16 +21,20 @@ class AmplitudeUtils @Inject constructor(
         }
     }
 
-    fun logEvent(eventType: String, properties: JSONObject? = null) {
-        if (properties == null) {
+    fun logEvent(eventType: String, eventProperties: JSONObject? = null) {
+        if (eventProperties == null) {
             client.logEvent(eventType)
         } else {
-            client.logEvent(eventType, properties)
+            client.logEvent(eventType, eventProperties)
         }
     }
 
     fun <T : Any> setUserProperties(propertyName: String, values: T) {
         val identify = Identify().set(propertyName, values)
         client.identify(identify)
+    }
+
+    fun uploadEvents() {
+        client.uploadEvents()
     }
 }
