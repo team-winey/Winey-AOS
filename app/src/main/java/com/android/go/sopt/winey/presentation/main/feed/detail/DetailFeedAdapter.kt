@@ -27,10 +27,11 @@ class DetailFeedAdapter(
         holder.bind(detailFeed)
     }
 
-    fun updateLikeNumber(isLiked: Boolean, likes: Long) {
+    fun updateLikeNumber(isLiked: Boolean, likes: Long): DetailFeed {
         detailFeed.isLiked = isLiked // 이미지 변경
         detailFeed.likes = likes // 개수 변경
         notifyItemChanged(0)
+        return detailFeed
     }
 
     fun updateCommentNumber(comments: Long) {

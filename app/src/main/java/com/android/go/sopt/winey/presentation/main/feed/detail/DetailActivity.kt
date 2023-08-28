@@ -18,6 +18,8 @@ import com.android.go.sopt.winey.domain.entity.DetailFeed
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.util.activity.hideKeyboard
+import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
+import com.android.go.sopt.winey.util.amplitude.type.EventType
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.snackBar
@@ -31,6 +33,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -52,25 +56,28 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
+    @Inject
+    lateinit var amplitudeUtils: AmplitudeUtils
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.vm = viewModel
-        removeRecyclerviewItemChangeAnimation()
-        initBackButtonClickListener()
 
+        binding.vm = viewModel
         viewModel.getFeedDetail(feedId)
+
         initGetFeedDetailObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
-
-        initCommentAdapter()
-        initCommentCreateButtonClickListener()
         initPostCommentStateObserver()
         initDeleteCommentStateObserver()
 
+        initCommentAdapter()
+        initCommentCreateButtonClickListener()
         initEditTextFocusChangeListener()
         updateStatusBarColor()
-        binding.tvCommentCreate.bringToFront()
+
+        removeRecyclerviewItemChangeAnimation()
+        initBackButtonClickListener()
     }
 
     private fun updateStatusBarColor() {
@@ -272,6 +279,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
                     val commentList = detailFeed.commentList
                     switchCommentContainer(commentList)
+
+                    sendEventToAmplitude(EventType.TYPE_VIEW_SCREEN, detailFeed)
                 }
 
                 is UiState.Failure -> {
@@ -299,7 +308,8 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 is UiState.Success -> {
                     val isLiked = state.data.data.isLiked
                     val likes = state.data.data.likes.toLong()
-                    detailFeedAdapter.updateLikeNumber(isLiked, likes)
+                    val feed = detailFeedAdapter.updateLikeNumber(isLiked, likes)
+                    sendEventToAmplitude(EventType.TYPE_CLICK_LIKE, feed)
                 }
 
                 is UiState.Failure -> {
@@ -413,6 +423,33 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
         showAsDropDown(anchorView, -POPUP_MENU_POS_OFFSET, -POPUP_MENU_POS_OFFSET, Gravity.END)
+    }
+
+    private fun sendEventToAmplitude(type: EventType, feed: DetailFeed) {
+        val eventProperties = JSONObject()
+
+        try {
+            eventProperties.put("article_id", feed.feedId)
+                .put("like_count", feed.likes)
+                .put("comment_count", feed.comments)
+
+            if (type == EventType.TYPE_CLICK_LIKE) {
+                eventProperties.put("from", "article")
+            }
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+
+        when (type) {
+            EventType.TYPE_VIEW_SCREEN -> amplitudeUtils.logEvent(
+                "view_detail_contents",
+                eventProperties
+            )
+
+            EventType.TYPE_CLICK_LIKE -> amplitudeUtils.logEvent("click_like", eventProperties)
+            else -> {}
+        }
     }
 
     companion object {
