@@ -11,12 +11,20 @@ import com.android.go.sopt.winey.databinding.LayoutWineyfeedBanner4Binding
 import java.util.Random
 
 class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
-    class HeaderViewHolder(
+    private var isInitialState = true
+
+    inner class HeaderViewHolder(
         private val binding: ItemWineyfeedHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind() {
-            val randomIndex = Random().nextInt(4)
-            changeBannerLayout(randomIndex)
+            if (isInitialState) {
+                changeBannerLayout(0)
+                isInitialState = false
+            } else {
+                val randomIndex = Random().nextInt(4)
+                changeBannerLayout(randomIndex)
+            }
         }
 
         private fun changeBannerLayout(index: Int) {
