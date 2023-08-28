@@ -23,7 +23,7 @@ class GuideActivity : BindingActivity<ActivityGuideBinding>(R.layout.activity_gu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        amplitudeUtils.logEvent("view_onboarding")
+        amplitudeUtils.logEvent("view_onboard")
 
         initViewPagerAdapter()
         observePageChange()
