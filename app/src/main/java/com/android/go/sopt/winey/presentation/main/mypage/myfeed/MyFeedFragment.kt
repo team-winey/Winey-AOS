@@ -23,11 +23,14 @@ import com.android.go.sopt.winey.presentation.main.feed.WineyFeedLoadAdapter
 import com.android.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.util.binding.BindingFragment
+import com.android.go.sopt.winey.util.context.stringOf
+import com.android.go.sopt.winey.util.context.wineySnackbar
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
 import com.android.go.sopt.winey.util.fragment.stringOf
 import com.android.go.sopt.winey.util.fragment.viewLifeCycle
 import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
+import com.android.go.sopt.winey.util.fragment.wineySnackbar
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.WineyPopupMenu
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
@@ -134,6 +137,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             when (state) {
                 is UiState.Success -> {
                     refreshMyFeed()
+                    wineySnackbar(requireView(), true, stringOf(R.string.snackbar_feed_delete_success))
                 }
 
                 is UiState.Failure -> {
