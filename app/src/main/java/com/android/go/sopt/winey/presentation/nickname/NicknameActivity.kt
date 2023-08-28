@@ -12,6 +12,7 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityNicknameBinding
 import com.android.go.sopt.winey.domain.repository.DataStoreRepository
 import com.android.go.sopt.winey.presentation.main.MainActivity
+import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.code.ErrorCode
 import com.android.go.sopt.winey.util.context.hideKeyboard
@@ -24,6 +25,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,8 +37,13 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
+    @Inject
+    lateinit var amplitudeUtils: AmplitudeUtils
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        amplitudeUtils.logEvent("view_set_nickname")
+
         binding.vm = viewModel
         viewModel.updatePrevScreenName(prevScreenName)
 
@@ -47,6 +55,18 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         initDuplicateCheckButtonClickListener()
         initCompleteButtonClickListener()
         initPatchNicknameStateObserver()
+    }
+
+    private fun sendEventToAmplitude() {
+        val eventProperties = JSONObject()
+        try {
+            eventProperties.put("button_name", "nickname_next_button")
+                .put("paging_number", 1)
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+        amplitudeUtils.logEvent("click_button", eventProperties)
     }
 
     private fun initEditTextWatcher() {
@@ -84,6 +104,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
             // 서버통신 결과 중복되지 않은 닉네임인 경우에만 PATCH 서버통신 진행
             if (viewModel.isValidNickname.value) {
+                sendEventToAmplitude()
                 viewModel.patchNickname()
             }
         }
