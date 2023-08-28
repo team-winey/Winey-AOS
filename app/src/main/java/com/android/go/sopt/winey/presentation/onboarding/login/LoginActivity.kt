@@ -56,7 +56,7 @@ class LoginActivity :
                 TYPE_VIEW_SCREEN -> eventProperties.put("screen_name", "sign_up")
                 TYPE_CLICK_BUTTON -> {
                     eventProperties.put("button_name", "kakao_signup_button")
-                        .put("page_number", 1)
+                        .put("paging_number", 1)
                 }
             }
         } catch (e: JSONException) {

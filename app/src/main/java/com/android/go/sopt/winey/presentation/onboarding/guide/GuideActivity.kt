@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GuideActivity : BindingActivity<ActivityGuideBinding>(R.layout.activity_guide) {
-    private var currentPosition = 0
+    private var currentPageIndex = 0
 
     @Inject
     lateinit var amplitudeUtils: AmplitudeUtils
@@ -38,7 +38,7 @@ class GuideActivity : BindingActivity<ActivityGuideBinding>(R.layout.activity_gu
         binding.vpGuide.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                currentPosition = position
+                currentPageIndex = position
 
                 when (position) {
                     LAST_PAGE_INDEX ->
@@ -53,13 +53,13 @@ class GuideActivity : BindingActivity<ActivityGuideBinding>(R.layout.activity_gu
 
     private fun initNextButtonClickListener() {
         binding.btnGuideNext.setOnClickListener {
-            if (currentPosition == LAST_PAGE_INDEX) {
+            if (currentPageIndex == LAST_PAGE_INDEX) {
                 navigateToLoginScreen()
                 return@setOnClickListener
             }
 
+            binding.vpGuide.setCurrentItem(++currentPageIndex, true)
             sendEventToAmplitude()
-            binding.vpGuide.setCurrentItem(++currentPosition, true)
         }
     }
 
@@ -67,7 +67,7 @@ class GuideActivity : BindingActivity<ActivityGuideBinding>(R.layout.activity_gu
         val eventProperties = JSONObject()
         try {
             eventProperties.put("button_name", "onboarding_next_button")
-                .put("page_number", currentPosition + 1)
+                .put("paging_number", currentPageIndex + 1)
         } catch (e: JSONException) {
             System.err.println("Invalid JSON")
             e.printStackTrace()
