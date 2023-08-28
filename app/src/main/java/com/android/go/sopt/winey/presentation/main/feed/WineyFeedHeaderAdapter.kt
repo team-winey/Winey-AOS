@@ -35,24 +35,40 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
                 0 -> {
                     val layoutBanner1Binding =
                         LayoutWineyfeedBanner1Binding.inflate(inflater, null, false)
+                    layoutBanner1Binding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
                     binding.flWineyfeedBannerContainer.addView(layoutBanner1Binding.root)
                 }
 
                 1 -> {
                     val layoutBanner2Binding =
                         LayoutWineyfeedBanner2Binding.inflate(inflater, null, false)
+                    layoutBanner2Binding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
                     binding.flWineyfeedBannerContainer.addView(layoutBanner2Binding.root)
                 }
 
                 2 -> {
                     val layoutBanner3Binding =
                         LayoutWineyfeedBanner3Binding.inflate(inflater, null, false)
+                    layoutBanner3Binding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
                     binding.flWineyfeedBannerContainer.addView(layoutBanner3Binding.root)
                 }
 
                 3 -> {
                     val layoutBanner4Binding =
                         LayoutWineyfeedBanner4Binding.inflate(inflater, null, false)
+                    layoutBanner4Binding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
                     binding.flWineyfeedBannerContainer.addView(layoutBanner4Binding.root)
                 }
 
