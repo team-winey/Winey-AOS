@@ -28,6 +28,7 @@ import com.android.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.notification.NotificationActivity
+import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -63,17 +64,23 @@ class WineyFeedFragment :
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
+    @Inject
+    lateinit var amplitudeUtils: AmplitudeUtils
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        removeRecyclerviewItemChangeAnimation()
+        amplitudeUtils.logEvent("view_homefeed")
+
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
+
         initAdapter()
         setSwipeRefreshListener()
         initFabClickListener()
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         initNotificationButtonClickListener()
+        removeRecyclerviewItemChangeAnimation()
     }
 
     override fun onStart() {

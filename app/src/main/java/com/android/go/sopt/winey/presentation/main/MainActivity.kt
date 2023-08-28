@@ -14,7 +14,6 @@ import com.android.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import com.android.go.sopt.winey.presentation.onboarding.login.LoginActivity
-import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.context.stringOf
@@ -23,7 +22,6 @@ import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -32,13 +30,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
     private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
 
-    @Inject
-    lateinit var amplitude: AmplitudeUtils
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        amplitude.logEvent("view_mainfeed")
 
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
         mainViewModel.getUser()
