@@ -49,6 +49,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        amplitudeUtils.logEvent("view_mypage")
 
         init1On1ButtonClickListener()
         initTermsButtonClickListener()
@@ -61,6 +62,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         setupGetUserState()
         setupDeleteUserState()
     }
+
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             val receivedBundle = arguments
@@ -84,12 +86,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initNicknameButtonClickListener() {
         binding.ivMypageNickname.setOnClickListener {
+            amplitudeUtils.logEvent("click_edit_nickname")
             navigateToNicknameScreen()
         }
     }
 
     private fun initToMyFeedButtonClickListener() {
         binding.clMypageToMyfeed.setOnSingleClickListener {
+            amplitudeUtils.logEvent("click_myfeed")
             navigateAndBackStack<MyFeedFragment>()
         }
     }
@@ -112,6 +116,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initLevelHelpButtonClickListener() {
         binding.btnMypageLevelHelp.setOnClickListener {
+            amplitudeUtils.logEvent("click_info")
             val intent = Intent(context, MypageHelpActivity::class.java)
             startActivity(intent)
         }
@@ -119,6 +124,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
+            amplitudeUtils.logEvent("click_logout")
             val dialog = WineyDialogFragment(
                 stringOf(R.string.mypage_logout_dialog_title),
                 stringOf(R.string.mypage_logout_dialog_subtitle),
@@ -202,6 +208,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initBottomSheetClickListener(data: User?) {
         binding.clMypageTargetmoney.setOnSingleClickListener {
+            amplitudeUtils.logEvent("click_goalsetting")
+
             when (data?.isOver) {
                 true -> {
                     val bottomSheet = TargetAmountBottomSheetFragment()
