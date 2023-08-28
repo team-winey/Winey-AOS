@@ -182,6 +182,7 @@
                             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_mypage_target"
                             tools:text="10,000원" />
 
                         <ImageView
