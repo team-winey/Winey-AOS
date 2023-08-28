@@ -128,6 +128,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="5dp"
+            android:minHeight="44dp"
             android:text="@{data.feedTitle}"
             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
             android:textColor="@color/gray_900"

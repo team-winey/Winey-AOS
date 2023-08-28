@@ -53,21 +53,18 @@ object KaptDependencies {
 
 object ThirdPartyDependencies {
     const val coil = "io.coil-kt:coil:${Versions.coilVersion}"
-
     const val okHttpBom = "com.squareup.okhttp3:okhttp-bom:${Versions.okHttpVersion}"
     const val okHttp = "com.squareup.okhttp3:okhttp"
     const val okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor"
     const val retrofit = "com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}"
     const val retrofitJsonConverter =
         "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.kotlinSerializationConverterVersion}"
-
     const val timber = "com.jakewharton.timber:timber:${Versions.timberVersion}"
     const val ossLicense =
         "com.google.android.gms:play-services-oss-licenses:${Versions.ossVersion}"
     const val progressView = "com.github.skydoves:progressview:${Versions.progressViewVersion}"
     const val balloon = "com.github.skydoves:balloon:${Versions.balloonVersion}"
     const val lottie = "com.airbnb.android:lottie:${Versions.lottieVersion}"
-
     const val flipper = "com.facebook.flipper:flipper:${Versions.flipperVersion}"
     const val flipperNetwork =
         "com.facebook.flipper:flipper-network-plugin:${Versions.flipperVersion}"
@@ -78,6 +75,7 @@ object ThirdPartyDependencies {
     const val soloader = "com.facebook.soloader:soloader:${Versions.soloaderVersion}"
     const val circleImageView = "de.hdodenhof:circleimageview:${Versions.circleImageViewVersion}"
     const val kakaoLogin = "com.kakao.sdk:v2-user:${Versions.kakaoLoginVersion}"
+    const val amplitude = "com.amplitude:android-sdk:${Versions.amplitudeVersion}"
 }
 
 object FirebaseDependencies {

@@ -122,6 +122,7 @@ dependencies {
         implementation(lottie)
         implementation(circleImageView)
         implementation(kakaoLogin)
+        implementation(amplitude)
 
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)

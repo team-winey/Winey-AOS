@@ -36,13 +36,12 @@ object Versions {
     const val progressViewVersion = "1.1.3"
     const val balloonVersion = "1.4.5"
     const val lottieVersion = "6.0.0"
-
     const val flipperVersion = "0.193.0"
     const val soloaderVersion = "0.10.5"
     const val leakCanaryVersion = "2.11"
-
     const val circleImageViewVersion = "3.1.0"
     const val kakaoLoginVersion = "2.10.0"
+    const val amplitudeVersion = "2.34.0"
 
     val javaVersion = JavaVersion.VERSION_17
     const val jvmVersion = "17"
