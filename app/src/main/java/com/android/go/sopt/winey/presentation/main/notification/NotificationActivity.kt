@@ -27,6 +27,7 @@ class NotificationActivity :
         initNotificationAdapter()
         viewModel.getNotification()
         initBackButtonClickListener()
+        initSwipeRefreshListener()
         setupGetNotificationStateObserver()
     }
 
@@ -62,6 +63,13 @@ class NotificationActivity :
     private fun initBackButtonClickListener() {
         binding.ivNotificationBack.setOnClickListener {
             finish()
+        }
+    }
+
+    private fun initSwipeRefreshListener() {
+        binding.layoutNotificationRefresh.setOnRefreshListener {
+            viewModel.getNotification()
+            binding.layoutNotificationRefresh.isRefreshing = false
         }
     }
 
