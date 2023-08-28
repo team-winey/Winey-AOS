@@ -21,6 +21,7 @@ import com.android.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import com.android.go.sopt.winey.presentation.main.notification.NotificationActivity
 import com.android.go.sopt.winey.presentation.nickname.NicknameActivity
 import com.android.go.sopt.winey.presentation.onboarding.guide.GuideActivity
+import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -42,6 +43,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
+
+    @Inject
+    lateinit var amplitudeUtils: AmplitudeUtils
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -202,6 +206,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 true -> {
                     val bottomSheet = TargetAmountBottomSheetFragment()
                     bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
+                    amplitudeUtils.logEvent("view_goalsetting")
                 }
 
                 false -> {
