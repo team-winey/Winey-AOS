@@ -31,6 +31,11 @@ android {
             "KAKAO_NATIVE_KEY",
             gradleLocalProperties(rootDir).getProperty("kakao.native.key")
         )
+        buildConfigField(
+            "String",
+            "AMPLITUDE_API_KEY",
+            gradleLocalProperties(rootDir).getProperty("amplitude.api.key")
+        )
 
         manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir).getProperty("kakaoNativeKey")
 
