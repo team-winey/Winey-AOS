@@ -17,7 +17,7 @@ class AmplitudeUtils @Inject constructor(
     private fun setDefaultConfig() {
         client.apply {
             trackSessionEvents(true)
-            setEventUploadPeriodMillis(1000)
+            setEventUploadPeriodMillis(100)
         }
     }
 

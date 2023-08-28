@@ -10,20 +10,32 @@ import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityLoginBinding
 import com.android.go.sopt.winey.presentation.main.MainActivity
 import com.android.go.sopt.winey.presentation.onboarding.story.StoryActivity
+import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
+import com.android.go.sopt.winey.util.amplitude.type.EventType
+import com.android.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_BUTTON
+import com.android.go.sopt.winey.util.amplitude.type.EventType.TYPE_VIEW_SCREEN
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.snackBar
 import com.android.go.sopt.winey.util.view.UiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.json.JSONException
+import org.json.JSONObject
 import timber.log.Timber
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginActivity :
     BindingActivity<ActivityLoginBinding>(R.layout.activity_login) {
     val viewModel: LoginViewModel by viewModels()
+
+    @Inject
+    lateinit var amplitudeUtils: AmplitudeUtils
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sendEventToAmplitude(TYPE_VIEW_SCREEN)
 
         initKakaoLoginButtonClickListener()
         initLoginObserver()
@@ -31,7 +43,30 @@ class LoginActivity :
 
     private fun initKakaoLoginButtonClickListener() {
         binding.btnLoginKakao.setOnClickListener {
+            sendEventToAmplitude(TYPE_CLICK_BUTTON)
             viewModel.loginKakao(this)
+        }
+    }
+
+    private fun sendEventToAmplitude(type: EventType) {
+        val eventProperties = JSONObject()
+
+        try {
+            when (type) {
+                TYPE_VIEW_SCREEN -> eventProperties.put("screen_name", "sign_up")
+                TYPE_CLICK_BUTTON -> {
+                    eventProperties.put("button_name", "kakao_signup_button")
+                        .put("page_number", 1)
+                }
+            }
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+
+        when (type) {
+            TYPE_VIEW_SCREEN -> amplitudeUtils.logEvent("view_signup", eventProperties)
+            TYPE_CLICK_BUTTON -> amplitudeUtils.logEvent("click_button", eventProperties)
         }
     }
 

@@ -59,14 +59,12 @@ class GuideActivity : BindingActivity<ActivityGuideBinding>(R.layout.activity_gu
             }
 
             sendEventToAmplitude()
-
             binding.vpGuide.setCurrentItem(++currentPosition, true)
         }
     }
 
     private fun sendEventToAmplitude() {
         val eventProperties = JSONObject()
-
         try {
             eventProperties.put("button_name", "onboarding_next_button")
                 .put("page_number", currentPosition + 1)
@@ -74,7 +72,6 @@ class GuideActivity : BindingActivity<ActivityGuideBinding>(R.layout.activity_gu
             System.err.println("Invalid JSON")
             e.printStackTrace()
         }
-
         amplitudeUtils.logEvent("click_button", eventProperties)
     }
 
