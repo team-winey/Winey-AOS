@@ -29,6 +29,9 @@ import com.android.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import com.android.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import com.android.go.sopt.winey.presentation.main.notification.NotificationActivity
 import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
+import com.android.go.sopt.winey.util.amplitude.type.EventType
+import com.android.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
+import com.android.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_LIKE
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.fragment.WineyDialogFragment
 import com.android.go.sopt.winey.util.fragment.snackBar
@@ -47,6 +50,8 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.json.JSONException
+import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -113,7 +118,10 @@ class WineyFeedFragment :
             onPopupMenuClicked = { anchorView, wineyFeed ->
                 showFeedPopupMenu(anchorView, wineyFeed)
             },
-            toFeedDetail = { wineyFeed -> navigateToDetail(wineyFeed) }
+            toFeedDetail = { wineyFeed ->
+                sendEventToAmplitude(TYPE_CLICK_FEED_ITEM, wineyFeed)
+                navigateToDetail(wineyFeed)
+            }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
@@ -254,11 +262,13 @@ class WineyFeedFragment :
         viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    wineyFeedAdapter.updateItem(
+                    val item = wineyFeedAdapter.updateItem(
                         state.data.data.feedId,
                         state.data.data.isLiked,
                         state.data.data.likes
-                    )
+                    ) ?: return@onEach
+
+                    sendEventToAmplitude(TYPE_CLICK_LIKE, item)
                 }
 
                 is UiState.Failure -> {
@@ -270,8 +280,38 @@ class WineyFeedFragment :
         }.launchIn(viewLifeCycleScope)
     }
 
+    private fun sendEventToAmplitude(type: EventType, feed: WineyFeed) {
+        val eventProperties = JSONObject()
+
+        try {
+            eventProperties.put("article_id", feed.feedId)
+                .put("like_count", feed.likes)
+                .put("comment_count", feed.comments)
+
+            if (type == TYPE_CLICK_LIKE) {
+                eventProperties.put("from", "feed")
+            }
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+
+        when (type) {
+            TYPE_CLICK_FEED_ITEM -> amplitudeUtils.logEvent(
+                "click_homefeed_contents",
+                eventProperties
+            )
+
+            TYPE_CLICK_LIKE ->
+                amplitudeUtils.logEvent("click_like", eventProperties)
+
+            else -> {}
+        }
+    }
+
     private fun initFabClickListener() {
         binding.btnWineyfeedFloating.setOnSingleClickListener {
+            amplitudeUtils.logEvent("click_write_contents")
             initGetUserStateObserver()
         }
     }

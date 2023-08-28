@@ -58,6 +58,7 @@ class LoginActivity :
                     eventProperties.put("button_name", "kakao_signup_button")
                         .put("paging_number", 1)
                 }
+                else -> {}
             }
         } catch (e: JSONException) {
             System.err.println("Invalid JSON")
@@ -67,6 +68,7 @@ class LoginActivity :
         when (type) {
             TYPE_VIEW_SCREEN -> amplitudeUtils.logEvent("view_signup", eventProperties)
             TYPE_CLICK_BUTTON -> amplitudeUtils.logEvent("click_button", eventProperties)
+            else -> {}
         }
     }
 
