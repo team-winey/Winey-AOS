@@ -144,11 +144,8 @@ class WineyFeedFragment :
     }
 
     private fun refreshWineyFeed() {
-        val fragmentManager = parentFragmentManager
-        fragmentManager.beginTransaction().apply {
-            replace(R.id.fcv_main, WineyFeedFragment())
-            commit()
-        }
+        wineyFeedHeaderAdapter.notifyItemChanged(0)
+        wineyFeedAdapter.refresh()
     }
 
     private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
@@ -326,7 +323,7 @@ class WineyFeedFragment :
 
     private fun setSwipeRefreshListener() {
         binding.layoutWineyfeedRefresh.setOnRefreshListener {
-            wineyFeedAdapter.refresh()
+            refreshWineyFeed()
             binding.layoutWineyfeedRefresh.isRefreshing = false
         }
     }
