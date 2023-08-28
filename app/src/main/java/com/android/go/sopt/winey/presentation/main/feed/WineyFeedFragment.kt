@@ -119,7 +119,7 @@ class WineyFeedFragment :
                 showFeedPopupMenu(anchorView, wineyFeed)
             },
             toFeedDetail = { wineyFeed ->
-                sendEventToAmplitude(TYPE_CLICK_FEED_ITEM, wineyFeed)
+                sendWineyFeedEvent(TYPE_CLICK_FEED_ITEM, wineyFeed)
                 navigateToDetail(wineyFeed)
             }
         )
@@ -268,7 +268,7 @@ class WineyFeedFragment :
                         state.data.data.likes
                     ) ?: return@onEach
 
-                    sendEventToAmplitude(TYPE_CLICK_LIKE, item)
+                    sendWineyFeedEvent(TYPE_CLICK_LIKE, item)
                 }
 
                 is UiState.Failure -> {
@@ -278,35 +278,6 @@ class WineyFeedFragment :
                 else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
             }
         }.launchIn(viewLifeCycleScope)
-    }
-
-    private fun sendEventToAmplitude(type: EventType, feed: WineyFeed) {
-        val eventProperties = JSONObject()
-
-        try {
-            eventProperties.put("article_id", feed.feedId)
-                .put("like_count", feed.likes)
-                .put("comment_count", feed.comments)
-
-            if (type == TYPE_CLICK_LIKE) {
-                eventProperties.put("from", "feed")
-            }
-        } catch (e: JSONException) {
-            System.err.println("Invalid JSON")
-            e.printStackTrace()
-        }
-
-        when (type) {
-            TYPE_CLICK_FEED_ITEM -> amplitudeUtils.logEvent(
-                "click_homefeed_contents",
-                eventProperties
-            )
-
-            TYPE_CLICK_LIKE ->
-                amplitudeUtils.logEvent("click_like", eventProperties)
-
-            else -> {}
-        }
     }
 
     private fun initFabClickListener() {
@@ -345,18 +316,46 @@ class WineyFeedFragment :
 
     private fun isGoalValid(data: User?) {
         if (data?.isOver == true) {
-            val dialog = WineyDialogFragment(
-                stringOf(R.string.wineyfeed_goal_dialog_title),
-                stringOf(R.string.wineyfeed_goal_dialog_subtitle),
-                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-                stringOf(R.string.wineyfeed_goal_dialog_positive_button),
-                handleNegativeButton = {},
-                handlePositiveButton = { navigateTo<MyPageFragment>() }
-            )
-            dialog.show(parentFragmentManager, TAG_GOAL_DIALOG)
+            showGoalSettingDialog()
         } else {
             navigateToUpload()
         }
+    }
+
+    private fun showGoalSettingDialog() {
+        amplitudeUtils.logEvent("view_goalsetting_popup")
+
+        val dialog = WineyDialogFragment(
+            stringOf(R.string.wineyfeed_goal_dialog_title),
+            stringOf(R.string.wineyfeed_goal_dialog_subtitle),
+            stringOf(R.string.wineyfeed_goal_dialog_negative_button),
+            stringOf(R.string.wineyfeed_goal_dialog_positive_button),
+            handleNegativeButton = {
+                sendDialogClickEvent(false)
+            },
+            handlePositiveButton = {
+                sendDialogClickEvent(true)
+                navigateTo<MyPageFragment>()
+            }
+        )
+        dialog.show(parentFragmentManager, TAG_GOAL_DIALOG)
+    }
+
+    private fun sendDialogClickEvent(isNavigate: Boolean) {
+        val eventProperties = JSONObject()
+
+        try {
+            if (isNavigate) {
+                eventProperties.put("method", "yes")
+            } else {
+                eventProperties.put("method", "no")
+            }
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+
+        amplitudeUtils.logEvent("click_goalsetting", eventProperties)
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
@@ -387,6 +386,35 @@ class WineyFeedFragment :
         intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
         intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
         startActivity(intent)
+    }
+
+    private fun sendWineyFeedEvent(type: EventType, feed: WineyFeed) {
+        val eventProperties = JSONObject()
+
+        try {
+            eventProperties.put("article_id", feed.feedId)
+                .put("like_count", feed.likes)
+                .put("comment_count", feed.comments)
+
+            if (type == TYPE_CLICK_LIKE) {
+                eventProperties.put("from", "feed")
+            }
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+
+        when (type) {
+            TYPE_CLICK_FEED_ITEM -> amplitudeUtils.logEvent(
+                "click_homefeed_contents",
+                eventProperties
+            )
+
+            TYPE_CLICK_LIKE ->
+                amplitudeUtils.logEvent("click_like", eventProperties)
+
+            else -> {}
+        }
     }
 
     companion object {
