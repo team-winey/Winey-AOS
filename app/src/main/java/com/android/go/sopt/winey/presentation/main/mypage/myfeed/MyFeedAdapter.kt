@@ -3,7 +3,6 @@ package com.android.go.sopt.winey.presentation.main.mypage.myfeed
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.paging.ItemSnapshotList
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.go.sopt.winey.databinding.ItemMyfeedPostBinding
@@ -12,18 +11,13 @@ import com.android.go.sopt.winey.util.view.ItemDiffCallback
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 
 class MyFeedAdapter(
-    private val onlikeButtonClicked: (WineyFeed: WineyFeed) -> Unit,
-    private val onPopupMenuClicked: (View, WineyFeed: WineyFeed) -> Unit,
-    private val toFeedDetail: (WineyFeed: WineyFeed) -> Unit
+    private val onlikeButtonClicked: (WineyFeed) -> Unit,
+    private val onPopupMenuClicked: (View, WineyFeed) -> Unit,
+    private val toFeedDetail: (WineyFeed) -> Unit
 ) : PagingDataAdapter<WineyFeed, MyFeedAdapter.MyFeedViewHolder>(diffUtil) {
-    private val currentData: ItemSnapshotList<WineyFeed>
-        get() = snapshot()
 
-    class MyFeedViewHolder(
-        private val binding: ItemMyfeedPostBinding,
-        private val onlikeButtonClicked: (WineyFeed: WineyFeed) -> Unit,
-        private val onPopupMenuClicked: (View, WineyFeed: WineyFeed) -> Unit,
-        private val toFeedDetail: (WineyFeed: WineyFeed) -> Unit
+    inner class MyFeedViewHolder(
+        private val binding: ItemMyfeedPostBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         fun onBind(data: WineyFeed?) {
             binding.apply {
@@ -50,7 +44,7 @@ class MyFeedAdapter(
     ): MyFeedViewHolder {
         val binding =
             ItemMyfeedPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return MyFeedViewHolder(binding, onlikeButtonClicked, onPopupMenuClicked, toFeedDetail)
+        return MyFeedViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MyFeedViewHolder, position: Int) {
@@ -65,6 +59,14 @@ class MyFeedAdapter(
                 notifyItemChanged(index)
             }
         }
+    }
+
+    fun deleteItem(feedId: Int): MutableList<WineyFeed> {
+        val currentList = snapshot().items
+        val newList = currentList.toMutableList()
+        val feed = currentList.find { it.feedId == feedId }
+        newList.remove(feed)
+        return newList
     }
 
     companion object {
