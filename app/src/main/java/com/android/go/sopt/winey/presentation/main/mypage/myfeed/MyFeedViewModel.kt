@@ -23,16 +23,15 @@ import javax.inject.Inject
 class MyFeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository
 ) : ViewModel() {
-
     private val _getMyFeedListState =
-        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
+        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Empty)
     val getMyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
         _getMyFeedListState.asStateFlow()
 
     private val _postMyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Empty)
     val postMyFeedLikeState: StateFlow<UiState<Like>> = _postMyFeedLikeState.asStateFlow()
 
-    val _deleteMyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    private val _deleteMyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteMyFeedState: StateFlow<UiState<Unit>> = _deleteMyFeedState.asStateFlow()
 
     init {
@@ -47,6 +46,7 @@ class MyFeedViewModel @Inject constructor(
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
             _postMyFeedLikeState.emit(UiState.Loading)
+
             feedRepository.postFeedLike(feedId, requestPostLikeDto)
                 .onSuccess { response ->
                     _postMyFeedLikeState.emit(UiState.Success(response))
@@ -58,6 +58,7 @@ class MyFeedViewModel @Inject constructor(
     fun getMyFeed() {
         viewModelScope.launch {
             _getMyFeedListState.emit(UiState.Loading)
+
             feedRepository.getMyFeedList().cachedIn(viewModelScope)
                 .collectLatest { response ->
                     _getMyFeedListState.emit(UiState.Success(response))
