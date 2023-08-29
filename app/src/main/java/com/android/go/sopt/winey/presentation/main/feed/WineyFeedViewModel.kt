@@ -24,14 +24,14 @@ class WineyFeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository
 ) : ViewModel() {
     private val _getWineyFeedListState =
-        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Loading)
+        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Empty)
     val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
         _getWineyFeedListState.asStateFlow()
 
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Empty)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()
 
-    val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
+    val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteWineyFeedState: StateFlow<UiState<Unit>> = _deleteWineyFeedState.asStateFlow()
 
     init {
@@ -45,6 +45,8 @@ class WineyFeedViewModel @Inject constructor(
 
     fun deleteFeed(feedId: Int) {
         viewModelScope.launch {
+            _deleteWineyFeedState.emit(UiState.Loading)
+
             feedRepository.deleteFeed(feedId)
                 .onSuccess { response ->
                     _deleteWineyFeedState.emit(UiState.Success(response))
@@ -56,6 +58,7 @@ class WineyFeedViewModel @Inject constructor(
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
             _postWineyFeedLikeState.emit(UiState.Loading)
+
             feedRepository.postFeedLike(feedId, requestPostLikeDto)
                 .onSuccess { response ->
                     _postWineyFeedLikeState.emit(UiState.Success(response))
@@ -67,6 +70,7 @@ class WineyFeedViewModel @Inject constructor(
     fun getWineyFeed() {
         viewModelScope.launch {
             _getWineyFeedListState.emit(UiState.Loading)
+
             feedRepository.getWineyFeedList().cachedIn(viewModelScope)
                 .collectLatest { response ->
                     _getWineyFeedListState.emit(UiState.Success(response))

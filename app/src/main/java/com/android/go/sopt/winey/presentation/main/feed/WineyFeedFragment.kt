@@ -16,6 +16,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
+import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.go.sopt.winey.R
@@ -82,9 +83,11 @@ class WineyFeedFragment :
         initAdapter()
         setSwipeRefreshListener()
         initFabClickListener()
+        initNotificationButtonClickListener()
+
         initGetFeedStateObserver()
         initPostLikeStateObserver()
-        initNotificationButtonClickListener()
+        initDeleteFeedStateObserver()
         removeRecyclerviewItemChangeAnimation()
     }
 
@@ -167,17 +170,26 @@ class WineyFeedFragment :
         showAsDropDown(anchorView, -POPUP_MENU_OFFSET, -POPUP_MENU_OFFSET, Gravity.END)
     }
 
-    private fun showFeedDeleteDialog(wineyFeed: WineyFeed) {
+    private fun showFeedDeleteDialog(feed: WineyFeed) {
         val dialog = WineyDialogFragment(
             stringOf(R.string.feed_delete_dialog_title),
             stringOf(R.string.feed_delete_dialog_subtitle),
             stringOf(R.string.comment_delete_dialog_negative_button),
             stringOf(R.string.comment_delete_dialog_positive_button),
             handleNegativeButton = {},
-            handlePositiveButton = { viewModel.deleteFeed(wineyFeed.feedId) }
+            handlePositiveButton = {
+                viewModel.deleteFeed(feed.feedId)
+                deletePagingDataItem(feed.feedId)
+            }
         )
         dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
-        initDeleteFeedStateObserver()
+    }
+
+    private fun deletePagingDataItem(feedId: Int) {
+        viewLifeCycleScope.launch {
+            val newList = wineyFeedAdapter.deleteItem(feedId)
+            wineyFeedAdapter.submitData(PagingData.from(newList))
+        }
     }
 
     private fun showFeedReportDialog() {
@@ -201,24 +213,24 @@ class WineyFeedFragment :
     private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
 
     private fun initDeleteFeedStateObserver() {
-        viewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    refreshWineyFeed()
-                    wineySnackbar(
-                        binding.root,
-                        true,
-                        stringOf(R.string.snackbar_feed_delete_success)
-                    )
-                }
+        viewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        wineySnackbar(
+                            binding.root,
+                            true,
+                            stringOf(R.string.snackbar_feed_delete_success)
+                        )
+                    }
 
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
-                }
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
 
-                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
-            }
-        }.launchIn(viewLifeCycleScope)
+                    else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+                }
+            }.launchIn(viewLifeCycleScope)
     }
 
     private fun initGetFeedStateObserver() {
