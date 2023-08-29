@@ -57,14 +57,16 @@ class WineyFeedAdapter(
         holder.onBind(getItem(position))
     }
 
-    fun updateItem(feedId: Int, isLiked: Boolean, likes: Int) {
+    fun updateItem(feedId: Int, isLiked: Boolean, likes: Int): WineyFeed? {
         snapshot().items.forEachIndexed { index, wineyFeed ->
             if (wineyFeed.feedId == feedId) {
                 wineyFeed.isLiked = isLiked
                 wineyFeed.likes = likes.toLong()
                 notifyItemChanged(index)
+                return wineyFeed
             }
         }
+        return null
     }
 
     companion object {

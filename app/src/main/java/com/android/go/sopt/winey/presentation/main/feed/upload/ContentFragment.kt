@@ -6,11 +6,20 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.FragmentContentBinding
+import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
 import com.android.go.sopt.winey.util.binding.BindingFragment
 import com.android.go.sopt.winey.util.context.hideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONException
+import org.json.JSONObject
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragment_content) {
     private val uploadViewModel by activityViewModels<UploadViewModel>()
+
+    @Inject
+    lateinit var amplitudeUtils: AmplitudeUtils
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -23,6 +32,7 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
 
     private fun initNextButtonClickListener() {
         binding.btnContentNext.setOnClickListener {
+            sendEventToAmplitude()
             navigateToNext()
         }
     }
@@ -49,5 +59,19 @@ class ContentFragment : BindingFragment<FragmentContentBinding>(R.layout.fragmen
 
     private fun focusOutEditText() {
         binding.etUploadContent.clearFocus()
+    }
+
+    private fun sendEventToAmplitude() {
+        val eventProperties = JSONObject()
+
+        try {
+            eventProperties.put("button_name", "upload_next_button")
+                .put("paging_number", 3)
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+
+        amplitudeUtils.logEvent("click_button", eventProperties)
     }
 }

@@ -11,17 +11,27 @@ import androidx.fragment.app.replace
 import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ActivityStoryBinding
 import com.android.go.sopt.winey.presentation.nickname.NicknameActivity
+import com.android.go.sopt.winey.util.amplitude.AmplitudeUtils
 import com.android.go.sopt.winey.util.binding.BindingActivity
 import com.android.go.sopt.winey.util.context.colorOf
 import com.android.go.sopt.winey.util.context.stringOf
+import dagger.hilt.android.AndroidEntryPoint
+import org.json.JSONException
+import org.json.JSONObject
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_story) {
     private val viewModel by viewModels<StoryViewModel>()
     private var currentPageNumber = FIRST_PAGE_NUM
 
+    @Inject
+    lateinit var amplitudeUtils: AmplitudeUtils
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.vm = viewModel
+        amplitudeUtils.logEvent("view_storytelling")
 
         updateStatusBarColor()
         setUpDefaultNavigationText()
@@ -41,11 +51,13 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
             when (supportFragmentManager.findFragmentById(R.id.fcv_story)) {
                 is FirstStoryFragment -> {
                     updateNavigationText(R.string.story_second_detail_text)
+                    sendEventToAmplitude()
                     navigateTo<SecondStoryFragment>()
                 }
 
                 is SecondStoryFragment -> {
                     updateNavigationText(R.string.story_third_detail_text)
+                    sendEventToAmplitude()
                     navigateTo<ThirdStoryFragment>()
                 }
 
@@ -59,6 +71,20 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
             updatePageNumber(++currentPageNumber)
             updateDetailText(stringOf(resId))
         }
+    }
+
+    private fun sendEventToAmplitude() {
+        val eventProperties = JSONObject()
+
+        try {
+            eventProperties.put("button_name", "storytelling_next_button")
+                .put("paging_number", currentPageNumber)
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+
+        amplitudeUtils.logEvent("click_button", eventProperties)
     }
 
     private fun updateStatusBarColor() {
