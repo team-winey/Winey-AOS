@@ -69,6 +69,7 @@
     <string name="mypage_amount">원</string>
     <string name="mypage_dday">D-</string>
     <string name="mypage_count">번</string>
+    <string name="mypage_formatted_number">%s%s%s</string>
     <string name="mypage_level_token">LV. %s</string>
     <string name="impossible_dialog_message">절약 목표 기간이 지나지 않아\n 목표를 수정할 수 없어요</string>
     <string name="impossible_dialog_close">닫기</string>

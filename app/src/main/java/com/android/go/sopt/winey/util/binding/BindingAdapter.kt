@@ -39,10 +39,9 @@ fun applyNumberFormat(view: TextView, amount: Long) {
 fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) {
     val pre = prefix ?: ""
     val suf = suffix ?: ""
-
     val decimalFormat = DecimalFormat("#,###")
     val formattedNumber = decimalFormat.format(amount)
-    text = "$pre$formattedNumber$suf"
+    text = context.getString(R.string.mypage_formatted_number, pre, formattedNumber, suf)
 }
 
 @BindingAdapter("imageUrl")
