@@ -3,25 +3,75 @@ package com.android.go.sopt.winey.presentation.main.feed
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.android.go.sopt.winey.R
 import com.android.go.sopt.winey.databinding.ItemWineyfeedHeaderBinding
+import com.android.go.sopt.winey.databinding.LayoutWineyfeedBanner1Binding
+import com.android.go.sopt.winey.databinding.LayoutWineyfeedBanner2Binding
+import com.android.go.sopt.winey.databinding.LayoutWineyfeedBanner3Binding
+import com.android.go.sopt.winey.databinding.LayoutWineyfeedBanner4Binding
 import java.util.Random
 
-class WineyFeedHeaderAdapter() : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
-    class HeaderViewHolder(
+class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
+    private var isInitialState = true
+
+    inner class HeaderViewHolder(
         private val binding: ItemWineyfeedHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind() {
-            binding.ivWineyfeedBanner.setImageResource(setRandomBannerImage())
+            if (isInitialState) {
+                changeBannerLayout(0)
+                isInitialState = false
+            } else {
+                val randomIndex = Random().nextInt(4)
+                changeBannerLayout(randomIndex)
+            }
         }
 
-        private fun setRandomBannerImage(): Int {
-            val random = Random()
-            return when (random.nextInt(4)) {
-                0 -> R.drawable.img_wineyfeed_banner_1
-                1 -> R.drawable.img_wineyfeed_banner_2
-                2 -> R.drawable.img_wineyfeed_banner_3
-                3 -> R.drawable.img_wineyfeed_banner_4
+        private fun changeBannerLayout(index: Int) {
+            binding.flWineyfeedBannerContainer.removeAllViews()
+            val inflater = LayoutInflater.from(binding.root.context)
+
+            when (index) {
+                0 -> {
+                    val layoutBanner1Binding =
+                        LayoutWineyfeedBanner1Binding.inflate(inflater, null, false)
+                    layoutBanner1Binding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
+                    binding.flWineyfeedBannerContainer.addView(layoutBanner1Binding.root)
+                }
+
+                1 -> {
+                    val layoutBanner2Binding =
+                        LayoutWineyfeedBanner2Binding.inflate(inflater, null, false)
+                    layoutBanner2Binding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
+                    binding.flWineyfeedBannerContainer.addView(layoutBanner2Binding.root)
+                }
+
+                2 -> {
+                    val layoutBanner3Binding =
+                        LayoutWineyfeedBanner3Binding.inflate(inflater, null, false)
+                    layoutBanner3Binding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
+                    binding.flWineyfeedBannerContainer.addView(layoutBanner3Binding.root)
+                }
+
+                3 -> {
+                    val layoutBanner4Binding =
+                        LayoutWineyfeedBanner4Binding.inflate(inflater, null, false)
+                    layoutBanner4Binding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
+                    binding.flWineyfeedBannerContainer.addView(layoutBanner4Binding.root)
+                }
+
                 else -> throw IllegalArgumentException(MSG_INVALID_RANDOM_NUMBER)
             }
         }
