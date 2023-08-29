@@ -81,19 +81,59 @@
             app:layout_constraintStart_toStartOf="@id/tv_photo_title"
             app:layout_constraintTop_toBottomOf="@id/tv_photo_title" />
 
-        <ImageView
-            android:id="@+id/iv_upload_photo"
-            setDefaultDrawable="@{@drawable/img_upload_photo}"
-            setImageUriWithCoil="@{vm.imageUri}"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_upload_plus"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="16dp"
+            android:layout_marginHorizontal="20dp"
             android:layout_marginTop="24dp"
-            app:layout_constraintDimensionRatio="H, 2:1"
+            app:layout_constraintDimensionRatio="H, 4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_photo_detail"
-            tools:src="@drawable/img_upload_photo" />
+            app:layout_constraintTop_toBottomOf="@id/tv_photo_detail">
+
+            <ImageView
+                android:id="@+id/iv_upload_photo"
+                setUploadImageUri="@{vm.imageUri}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ll_upload_plus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_purple100_fill_5_rect"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/iv_upload_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_upload_plus" />
+
+                <TextView
+                    android:id="@+id/tv_upload_plus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:text="@string/upload_plus_text"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                    android:textColor="@color/purple_400" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_photo_next"

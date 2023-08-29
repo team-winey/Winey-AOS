@@ -50,7 +50,7 @@
                         app:strokeWidth="1dp">
 
                         <ImageView
-                            imageUrl="@{data.image}"
+                            setImageUrl="@{data.image}"
                             android:layout_width="59dp"
                             android:layout_height="59dp"
                             android:scaleType="centerCrop"

@@ -75,7 +75,7 @@
 
                 <ImageView
                     android:id="@+id/iv_detail_image"
-                    imageUrl="@{data.feedImage}"
+                    setImageUrl="@{data.feedImage}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scaleType="centerCrop"

@@ -35,6 +35,15 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
         registerBackPressedCallback()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        // 내용 작성 프래그먼트에서 뒤로가기 눌렀을 때, 기존에 선택했던 이미지가 보이도록
+        if (uploadViewModel.imageUri.value != null) {
+            binding.llUploadPlus.visibility = View.INVISIBLE
+        }
+    }
+
     private fun registerBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -59,24 +68,17 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
     private fun initImageSelectButtonClickListener() {
         val launcher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { imageUri ->
-                if (imageUri == null) {
-                    showDefaultImage()
-                    return@registerForActivityResult
-                }
-
+                if (imageUri == null) return@registerForActivityResult
                 uploadViewModel.apply {
                     updateImageUri(imageUri)
                     activateNextButton()
                 }
+                binding.llUploadPlus.visibility = View.INVISIBLE
             }
 
-        binding.ivUploadPhoto.setOnClickListener {
+        binding.clUploadPlus.setOnClickListener {
             launcher.launch(IMAGE_FILE)
         }
-    }
-
-    private fun showDefaultImage() {
-        binding.ivUploadPhoto.setImageResource(R.drawable.img_upload_photo)
     }
 
     private fun initNextButtonClickListener() {

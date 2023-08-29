@@ -69,7 +69,7 @@
 
             <ImageView
                 android:id="@+id/iv_wineyfeed_image"
-                imageUrl="@{data.feedImage}"
+                setImageUrl="@{data.feedImage}"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:scaleType="centerCrop"

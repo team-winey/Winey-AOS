@@ -1,11 +1,9 @@
 package com.android.go.sopt.winey.util.binding
 
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.ImageView.ScaleType
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.BindingAdapter
@@ -44,27 +42,26 @@ fun TextView.setFormattedNumber(amount: Long, prefix: String?, suffix: String?) 
     text = context.getString(R.string.mypage_formatted_number, pre, formattedNumber, suf)
 }
 
-@BindingAdapter("imageUrl")
-fun loadImager(view: ImageView, imageurl: String?) {
-    if (imageurl != null) {
-        val uri = Uri.parse(imageurl)
-        view.load(uri) {
-            placeholder(R.drawable.img_wineyfeed_default)
-            transformations(RoundedCornersTransformation(10F))
-        }
+@BindingAdapter("setImageUrl")
+fun ImageView.setImageUrl(imageUrl: String?) {
+    if (imageUrl == null) return
+    load(imageUrl) {
+        placeholder(R.drawable.img_wineyfeed_default)
+        transformations(RoundedCornersTransformation(10F))
     }
 }
 
-@BindingAdapter("setImageUriWithCoil", "setDefaultDrawable")
-fun ImageView.setRoundedImage(imageUri: Uri?, drawable: Drawable) {
+@BindingAdapter("setUploadImageUri")
+fun ImageView.setUploadImageUri(imageUri: Uri?) {
     if (imageUri == null) {
-        setImageDrawable(drawable)
+        visibility = View.INVISIBLE
         return
     }
 
-    scaleType = ScaleType.CENTER_CROP
+    visibility = View.VISIBLE
     load(imageUri) {
-        transformations(RoundedCornersTransformation(10f))
+        placeholder(R.drawable.img_wineyfeed_default)
+        transformations(RoundedCornersTransformation(10F))
     }
 }
 
