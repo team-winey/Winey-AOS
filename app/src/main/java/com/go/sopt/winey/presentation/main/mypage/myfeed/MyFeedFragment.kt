@@ -129,6 +129,30 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
     }
 
+    private fun initBackButtonClickListener() {
+        binding.imgMyfeedBack.setOnSingleClickListener {
+            navigateTo<MyPageFragment>()
+            parentFragmentManager.popBackStack()
+        }
+    }
+
+    private fun initDeleteFeedStateObserver() {
+        viewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
+                    viewModel.initDeleteFeedState()
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
+            }
+        }.launchIn(viewLifeCycleScope)
+    }
+
     private fun deletePagingDataItem(feedId: Int) {
         viewLifeCycleScope.launch {
             val newList = myFeedAdapter.deleteItem(feedId)
@@ -142,29 +166,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             binding.rvMyfeedPost.isVisible = false
             binding.clMyfeedEmpty.isVisible = true
         }
-    }
-
-    private fun initBackButtonClickListener() {
-        binding.imgMyfeedBack.setOnSingleClickListener {
-            navigateTo<MyPageFragment>()
-            parentFragmentManager.popBackStack()
-        }
-    }
-
-    private fun initDeleteFeedStateObserver() {
-        viewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    wineySnackbar(requireView(), true, stringOf(R.string.snackbar_feed_delete_success))
-                }
-
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
-                }
-
-                else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
-            }
-        }.launchIn(viewLifeCycleScope)
     }
 
     private fun initGetFeedStateObserver() {

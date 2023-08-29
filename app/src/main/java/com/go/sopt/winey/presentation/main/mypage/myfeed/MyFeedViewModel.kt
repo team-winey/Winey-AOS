@@ -38,6 +38,10 @@ class MyFeedViewModel @Inject constructor(
         getMyFeed()
     }
 
+    fun initDeleteFeedState() {
+        _deleteMyFeedState.value = UiState.Empty
+    }
+
     fun likeFeed(feedId: Int, isLiked: Boolean) {
         val requestPostLikeDto = RequestPostLikeDto(isLiked)
         postLike(feedId, requestPostLikeDto)

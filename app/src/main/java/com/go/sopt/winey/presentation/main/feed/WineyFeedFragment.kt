@@ -84,10 +84,10 @@ class WineyFeedFragment :
         setSwipeRefreshListener()
         initFabClickListener()
         initNotificationButtonClickListener()
+        initDeleteFeedStateObserver()
 
         initGetFeedStateObserver()
         initPostLikeStateObserver()
-        initDeleteFeedStateObserver()
         removeRecyclerviewItemChangeAnimation()
     }
 
@@ -185,13 +185,6 @@ class WineyFeedFragment :
         dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
     }
 
-    private fun deletePagingDataItem(feedId: Int) {
-        viewLifeCycleScope.launch {
-            val newList = wineyFeedAdapter.deleteItem(feedId)
-            wineyFeedAdapter.submitData(PagingData.from(newList))
-        }
-    }
-
     private fun showFeedReportDialog() {
         val dialog = WineyDialogFragment(
             stringOf(R.string.report_dialog_title),
@@ -222,15 +215,23 @@ class WineyFeedFragment :
                             true,
                             stringOf(R.string.snackbar_feed_delete_success)
                         )
+                        viewModel.initDeleteFeedState()
                     }
 
                     is UiState.Failure -> {
                         snackBar(binding.root) { state.msg }
                     }
 
-                    else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+                    else -> {}
                 }
             }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun deletePagingDataItem(feedId: Int) {
+        viewLifeCycleScope.launch {
+            val newList = wineyFeedAdapter.deleteItem(feedId)
+            wineyFeedAdapter.submitData(PagingData.from(newList))
+        }
     }
 
     private fun initGetFeedStateObserver() {
@@ -394,6 +395,7 @@ class WineyFeedFragment :
     private fun navigateToDetail(wineyFeed: WineyFeed) {
         selectedItemIndex = wineyFeedAdapter.snapshot().indexOf(wineyFeed)
         selectedScrollPosition = binding.rvWineyfeedPost.layoutManager?.onSaveInstanceState()
+
         val intent = Intent(requireContext(), DetailActivity::class.java)
         intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
         intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)

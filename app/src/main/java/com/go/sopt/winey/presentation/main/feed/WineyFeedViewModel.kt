@@ -31,8 +31,12 @@ class WineyFeedViewModel @Inject constructor(
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Empty)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()
 
-    val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
+    private val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteWineyFeedState: StateFlow<UiState<Unit>> = _deleteWineyFeedState.asStateFlow()
+
+    fun initDeleteFeedState() {
+        _deleteWineyFeedState.value = UiState.Empty
+    }
 
     init {
         getWineyFeed()
