@@ -1,5 +1,5 @@
 object DefaultConfig {
-    const val packageName = "com.android.go.sopt.winey"
+    const val packageName = "com.go.sopt.winey"
     const val compileSdk = 33
     const val minSdk = 28
     const val targetSdk = 33
