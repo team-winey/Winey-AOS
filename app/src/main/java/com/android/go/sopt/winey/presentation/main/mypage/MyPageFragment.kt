@@ -30,7 +30,7 @@ import com.android.go.sopt.winey.util.fragment.viewLifeCycleScope
 import com.android.go.sopt.winey.util.view.UiState
 import com.android.go.sopt.winey.util.view.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -57,6 +57,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         setupGetUserState()
         setupDeleteUserState()
     }
+
     private val callback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             val receivedBundle = arguments
@@ -181,7 +182,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 }
 
                 is UiState.Success -> {
-                    val data = dataStoreRepository.getUserInfo().firstOrNull()
+                    val data = dataStoreRepository.getUserInfo().first()
                     updateUserInfo(data)
                     initBottomSheetClickListener(data)
                 }
@@ -217,28 +218,26 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun updateUserInfo(data: User?) {
         binding.data = data
+
+        // todo: 기간 내 목표 달성하면 누적위니, 위니횟수도 0으로 초기화 되도록
+
         handleIsOver(data)
         handleUserLevel(data)
     }
 
     private fun handleIsOver(data: User?) {
-        when (data?.isOver) {
-            true -> {
-                binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
-                binding.tvMypagePeriodValue.text = getString(R.string.mypage_not_yet_set)
-            }
+        if (data == null) return
 
-            false -> {
-                if (data.dday == 0) {
-                    binding.tvMypagePeriodValue.text = getString(R.string.mypage_d_day)
-                    binding.targetMoney = data
-                } else {
-                    binding.targetMoney = data
-                    binding.dday = data
-                }
-            }
-
-            null -> {
+        if (data.isOver) {
+            binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
+            binding.tvMypagePeriodValue.text = getString(R.string.mypage_not_yet_set)
+        } else {
+            if (data.dday == 0) {
+                binding.tvMypagePeriodValue.text = getString(R.string.mypage_d_day)
+                binding.targetMoney = data
+            } else {
+                binding.targetMoney = data
+                binding.dday = data
             }
         }
     }
