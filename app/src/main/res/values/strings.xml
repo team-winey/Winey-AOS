@@ -51,7 +51,7 @@
     <string name="upload_amount_unit_text">원</string>
     <string name="upload_amount_hint_text">0</string>
     <string name="upload_last_btn_text">업로드</string>
-    <string name="upload_loading_title">오늘은\n %s 값을 \n절약했어요</string>
+    <string name="upload_loading_title">%s 값을</string>
     <string name="upload_dialog_title">지금 나가시면 작성하신 게 지워져요</string>
     <string name="upload_dialog_subtitle">절약 실천 게시물을 올리면 레벨업에 가까워져요\n그래도 나가시겠습니까?</string>
     <string name="upload_dialog_negative_button">취소</string>

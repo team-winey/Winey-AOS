@@ -26,8 +26,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_loading_title"
+        <FrameLayout
+            android:id="@+id/fl_loading_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -35,39 +35,74 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_loading_down_arrow">
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="34dp"
-                android:src="@drawable/shape_yellow_fill_rect"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_loading_title_first"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@{@string/upload_loading_title(saveItem)}"
-                android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="오늘은\n 추파춥스 값을 \n절약했어요" />
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_yellow_fill_rect"
+                    android:paddingHorizontal="10dp"
+                    android:text="티끌 모아 태산"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="조금 더 아껴볼까요?"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/cl_loading_title_other"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="오늘은"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:background="@drawable/shape_yellow_fill_rect"
+                    android:paddingHorizontal="10dp"
+                    android:text="@{@string/upload_loading_title(saveItem)}"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
+                    tools:text="추파춥스 값을" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="절약했어요"
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="312dp"
             android:layout_height="0dp"
             android:layout_marginStart="52dp"
-            android:layout_marginTop="4dp"
             android:layout_marginEnd="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_loading_title"
+            app:layout_constraintTop_toBottomOf="@id/fl_loading_title"
             app:lottie_autoPlay="true"
             app:lottie_rawRes="@raw/lottie_upload_loading" />
 
