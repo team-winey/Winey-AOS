@@ -7,15 +7,15 @@
 
         <variable
             name="data"
-            type="com.android.go.sopt.winey.domain.entity.User" />
+            type="com.go.sopt.winey.domain.entity.User" />
 
         <variable
             name="targetMoney"
-            type="com.android.go.sopt.winey.domain.entity.User" />
+            type="com.go.sopt.winey.domain.entity.User" />
 
         <variable
             name="dday"
-            type="com.android.go.sopt.winey.domain.entity.User" />
+            type="com.go.sopt.winey.domain.entity.User" />
 
         <variable
             name="pre"

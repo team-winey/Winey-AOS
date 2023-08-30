@@ -4,7 +4,7 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.android.go.sopt.winey",
+  "applicationId": "com.go.sopt.winey",
   "variantName": "release",
   "elements": [
     {
