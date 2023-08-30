@@ -1,10 +1,13 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
-    id(Plugins.androidApplication)
-    id(Plugins.kotlinAndroid)
-    id(Plugins.kotlinParcelize)
-    id(Plugins.kotlinKapt)
-    id(Plugins.hiltPlugin)
-    id(Plugins.ossLicensesPlugin)
+    id(ModulePlugins.androidApplication)
+    id(ModulePlugins.kotlinAndroid)
+    id(ModulePlugins.kotlinParcelize)
+    id(ModulePlugins.kotlinKapt)
+    id(ModulePlugins.kotlinSerialization)
+    id(ModulePlugins.hilt)
+    id(ModulePlugins.oss)
 }
 
 android {
@@ -17,6 +20,24 @@ android {
         targetSdk = DefaultConfig.targetSdk
         versionCode = DefaultConfig.versionCode
         versionName = DefaultConfig.versionName
+
+        buildConfigField(
+            "String",
+            "AUTH_BASE_URL",
+            gradleLocalProperties(rootDir).getProperty("auth.base.url")
+        )
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_KEY",
+            gradleLocalProperties(rootDir).getProperty("kakao.native.key")
+        )
+        buildConfigField(
+            "String",
+            "AMPLITUDE_API_KEY",
+            gradleLocalProperties(rootDir).getProperty("amplitude.api.key")
+        )
+
+        manifestPlaceholders["KAKAO_NATIVE_KEY"] = gradleLocalProperties(rootDir).getProperty("kakaoNativeKey")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,9 +62,9 @@ android {
     }
 
     buildFeatures {
-        buildConfig = true
-        dataBinding = true
         viewBinding = true
+        dataBinding = true
+        buildConfig = true
     }
 }
 
@@ -59,30 +80,37 @@ dependencies {
         implementation(coreKtx)
         implementation(appCompat)
         implementation(constraintLayout)
-        implementation(fragment)
+        implementation(swipeRefreshLayout)
         implementation(startup)
+        implementation(hilt)
+        implementation(activity)
+        implementation(fragment)
         implementation(legacy)
         implementation(security)
-        implementation(hilt)
-        implementation(lifeCycleKtx)
+        implementation(lifecycleKtx)
+        implementation(lifecycleLiveDataKtx)
+        implementation(lifecycleViewModelKtx)
         implementation(lifecycleJava8)
         implementation(splashScreen)
         implementation(pagingRuntime)
         implementation(workManager)
         implementation(hiltWorkManager)
+        implementation(exif)
+        implementation(dataStore)
+        implementation(dataStoreCore)
     }
-
-    KaptDependencies.run {
-        kapt(hiltCompiler)
-        kapt(hiltWorkManagerCompiler)
-    }
-
-    implementation(MaterialDesignDependencies.materialDesign)
 
     TestDependencies.run {
         testImplementation(jUnit)
         androidTestImplementation(androidTest)
         androidTestImplementation(espresso)
+    }
+
+    implementation(MaterialDesignDependencies.materialDesign)
+
+    KaptDependencies.run {
+        kapt(hiltAndroidCompiler)
+        kapt(hiltWorkManagerCompiler)
     }
 
     ThirdPartyDependencies.run {
@@ -97,10 +125,13 @@ dependencies {
         implementation(progressView)
         implementation(balloon)
         implementation(lottie)
+        implementation(circleImageView)
+        implementation(kakaoLogin)
+        implementation(amplitude)
+
         debugImplementation(flipper)
         debugImplementation(flipperNetwork)
         debugImplementation(flipperLeakCanary)
-        debugImplementation(leakCanary)
         debugImplementation(soloader)
     }
 }

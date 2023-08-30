@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.go.sopt.winey.domain.entity.Recommend" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="10dp"
+        app:cardCornerRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_recommend_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/iv_recommend_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp"
+                    android:paddingBottom="21dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:elevation="0dp"
+                        android:paddingBottom="21dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:strokeColor="@color/gray_200"
+                        app:strokeWidth="1dp">
+
+                        <ImageView
+                            setImageUrl="@{data.image}"
+                            android:layout_width="59dp"
+                            android:layout_height="59dp"
+                            android:scaleType="centerCrop"
+                            tools:src="@drawable/ic_recommend_item_dummy" />
+                    </com.google.android.material.card.MaterialCardView>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_recommend_amount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="19dp"
+                    android:stateListAnimator="@null"
+                    android:text="@{@string/recommend_discount(data.discount)}"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                    android:textColor="@color/purple_400"
+                    app:layout_constraintStart_toEndOf="@id/iv_recommend_image"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="5,000,000원 절약" />
+
+                <TextView
+                    android:id="@+id/tv_recommend_info"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="15dp"
+                    android:paddingBottom="16dp"
+                    android:text="@{data.title}"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+                    android:textColor="@color/gray_900"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/tv_recommend_amount"
+                    app:layout_constraintTop_toBottomOf="@id/tv_recommend_amount"
+                    tools:text="배달팁도 없고, 첫 주문시 5,000원 할인되는 배달서비스 두잇 사용하기" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <View
+                android:id="@+id/v_recommend_line2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_100"
+                app:layout_constraintTop_toBottomOf="@id/cl_recommend_post" />
+
+            <TextView
+                android:id="@+id/tv_recommend_where"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:paddingBottom="13dp"
+                android:text="@{data.subtitle}"
+                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                android:textColor="@color/gray_600"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_recommend_line2"
+                tools:text="캐리비안베이 홈페이지 신규가입 우대" />
+
+
+            <TextView
+                android:id="@+id/tv_recommend_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:text="보러가기"
+                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                android:textColor="@color/gray_500"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_recommend_line2" />
+
+
+            <ImageView
+                android:id="@+id/iv_recommend_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="1dp"
+                android:src="@drawable/ic_recommend_item_link"
+                app:layout_constraintEnd_toStartOf="@id/tv_recommend_link"
+                app:layout_constraintTop_toTopOf="@id/tv_recommend_link" />
+
+            <Button
+                android:id="@+id/btn_recommend_link"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:backgroundTint="@drawable/sel_recommend_link_btn_bg_color"
+                android:elevation="0dp"
+                android:enabled="false"
+                android:stateListAnimator="@null"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/v_recommend_line2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

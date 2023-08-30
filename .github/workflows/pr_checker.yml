@@ -1,0 +1,91 @@
+name: Winey PR Checker
+
+on:
+  pull_request:
+    branches: [ develop, main ]
+
+defaults:
+  run:
+    shell: bash
+    working-directory: .
+
+jobs:
+  build:
+    name: PR Checker
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Add Local Properties
+        env:
+          AUTH_BASE_URL: ${{ secrets.AUTH_BASE_URL }}
+          KAKAO_NATIVE_KEY: ${{ secrets.KAKAO_NATIVE_KEY }}
+          AMPLITUDE_API_KEY: ${{ secrets.AMPLITUDE_API_KEY }}
+        run: |
+          echo auth.base.url=\"$AUTH_BASE_URL\" >> ./local.properties
+          echo kakao.native.key=\"$KAKAO_NATIVE_KEY\" >> ./local.properties
+          echo kakaoNativeKey=$KAKAO_NATIVE_KEY >> ./local.properties
+          echo amplitude.api.key=\"AMPLITUDE_API_KEY\" >> ./local.properties
+
+#      - name: Access Firebase Service
+#        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > ./app/google-services.json
+
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --stacktrace
+
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v1
+#        with:
+#            name: app
+#            path: app/build/outputs/apk/debug
+
+      - name: Run ktlint
+        run: ./gradlew ktlintCheck
+
+      - name: On Success, Notify in Slack
+        if: ${{ success() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: '#53A551'
+          SLACK_ICON: https://github.com/team-winey/Winey-AOS/assets/68090939/d9f94086-84f5-4ef2-80b4-acf27b59c21b?size=48
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_TITLE: 'ALL Winey Android Makers checks have passed ✅'
+          MSG_MINIMAL: true
+          SLACK_USERNAME: Winey Android
+          SLACK_MESSAGE: 'Winey Android PR check 성공 🎉🎉🎉'
+
+      - name: On Failed, Notify in Slack
+        if: ${{ failure() }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_COLOR: '#ff0000'
+          SLACK_ICON: https://github.com/team-winey/Winey-AOS/assets/68090939/d9f94086-84f5-4ef2-80b4-acf27b59c21b?size=48
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_TITLE: 'Winey checks have failed 🚫'
+          MSG_MINIMAL: true
+          SLACK_USERNAME: Winey Android
+          SLACK_MESSAGE: '버그 잡자 🐛'

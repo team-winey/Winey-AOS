@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_feed"
+        android:icon="@drawable/ic_main_feed"
+        android:title="@string/main_feed" />
+    <item
+        android:id="@+id/menu_recommend"
+        android:icon="@drawable/ic_main_recommend"
+        android:title="@string/main_recommend" />
+    <item
+        android:id="@+id/menu_mypage"
+        android:icon="@drawable/ic_main_mypage"
+        android:title="@string/main_mypage" />
+</menu>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="save_amount_range">
+        <item>0</item>
+        <item>500</item>
+        <item>1000</item>
+        <item>1500</item>
+        <item>2500</item>
+        <item>4500</item>
+        <item>6000</item>
+        <item>8000</item>
+        <item>10000</item>
+        <item>12000</item>
+        <item>14000</item>
+        <item>16000</item>
+        <item>18000</item>
+        <item>20000</item>
+        <item>40000</item>
+    </integer-array>
+</resources>
