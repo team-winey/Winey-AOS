@@ -7,7 +7,7 @@
 
         <variable
             name="vm"
-            type="com.android.go.sopt.winey.presentation.main.feed.detail.DetailViewModel" />
+            type="com.go.sopt.winey.presentation.main.feed.detail.DetailViewModel" />
 
         <import type="android.view.View" />
     </data>

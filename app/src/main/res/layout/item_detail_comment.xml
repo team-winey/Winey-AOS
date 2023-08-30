@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.android.go.sopt.winey.domain.entity.Comment" />
+            type="com.go.sopt.winey.domain.entity.Comment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
