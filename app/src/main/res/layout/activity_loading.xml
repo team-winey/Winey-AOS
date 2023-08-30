@@ -48,19 +48,19 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_yellow_fill_rect"
                     android:paddingHorizontal="10dp"
-                    android:text="티끌 모아 태산"
+                    android:text="@string/upload_loading_title_first__line1"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="조금 더 아껴볼까요?"
+                    android:text="@string/upload_loading_title_first_line2"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/cl_loading_title_other"
+                android:id="@+id/ll_loading_title_other"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
@@ -70,7 +70,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="오늘은"
+                    android:text="@string/upload_loading_title_other_line1"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
 
                 <TextView
@@ -87,7 +87,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="절약했어요"
+                    android:text="@string/upload_loading_title_other_line3"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
 
             </LinearLayout>
