@@ -3,6 +3,7 @@ package com.go.sopt.winey.presentation.splash
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.go.sopt.winey.R
 import com.go.sopt.winey.databinding.ActivitySplashBinding
@@ -23,6 +24,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     lateinit var dataStoreRepository: DataStoreRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
