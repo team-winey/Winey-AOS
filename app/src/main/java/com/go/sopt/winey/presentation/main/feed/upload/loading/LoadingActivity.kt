@@ -31,9 +31,8 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
                 if (isFirstAmountRange(index)) return
 
                 binding.apply {
-                    saveItem = itemCategories[index]
-                    llLoadingTitleFirst.visibility = View.INVISIBLE
-                    llLoadingTitleOther.visibility = View.VISIBLE
+                    showOtherCategoryLoading()
+                    saveItem = itemCategories[index - 1]
                 }
                 return
             }
@@ -42,8 +41,7 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
 
     private fun isFirstAmountRange(index: Int): Boolean {
         if (index == 0) {
-            binding.llLoadingTitleFirst.visibility = View.VISIBLE
-            binding.llLoadingTitleOther.visibility = View.INVISIBLE
+            showFirstCategoryLoading()
             return true
         }
         return false
@@ -51,10 +49,21 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
 
     private fun isLastAmountRange(index: Int): Boolean {
         if (index == amountRange.size - 1) {
+            showOtherCategoryLoading()
             binding.saveItem = itemCategories[index - 1]
             return true
         }
         return false
+    }
+
+    private fun showFirstCategoryLoading() {
+        binding.llLoadingTitleFirst.visibility = View.VISIBLE
+        binding.llLoadingTitleOther.visibility = View.INVISIBLE
+    }
+
+    private fun showOtherCategoryLoading() {
+        binding.llLoadingTitleFirst.visibility = View.INVISIBLE
+        binding.llLoadingTitleOther.visibility = View.VISIBLE
     }
 
     private fun delayMillis() {
