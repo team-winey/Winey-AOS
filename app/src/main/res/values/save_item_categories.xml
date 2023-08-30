@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="save_item_categories">
-        <item>계란빵</item>
+
         <item>추파춥스</item>
         <item>삼각김밥</item>
         <item>음료수</item>

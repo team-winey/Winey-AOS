@@ -27,13 +27,11 @@
         <item name="bottomSheetStyle">@style/Widget.Winey.BottomSheet.Modal</item>
     </style>
 
-    <style name="Theme.Winey.SplashScreen" parent="Theme.Winey">
+    <style name="Theme.Winey.SplashScreen" parent="Theme.SplashScreen">
         <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/black</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">
             @android:color/transparent
         </item>
         <item name="postSplashScreenTheme">@style/Theme.Winey</item>
-        <item name="android:statusBarColor">@color/black</item>
-        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

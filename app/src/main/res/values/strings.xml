@@ -16,6 +16,14 @@
     <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
     <string name="wineyfeed_goal_dialog_negative_button">취소</string>
     <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
+    <string name="wineyfeed_banner1_title">위니와 절약을 더 쉽고 재밌게!</string>
+    <string name="wineyfeed_banner1_subtitle">절약한 소비를 피드에 올리고\n사람들과 소통해요</string>
+    <string name="wineyfeed_banner2_subtitle">하단 버튼을 통해</string>
+    <string name="wineyfeed_banner2_title">나만의 절약방법을 사람들과\n공유할 수 있어요</string>
+    <string name="wineyfeed_banner3_subtitle">서로의 절약방법을 피드백해요</string>
+    <string name="wineyfeed_banner3_title">좋아요를 눌러 서로의 절약을\n응원해주세요!</string>
+    <string name="wineyfeed_banner4_subtitle">찾기 힘든 국가기관 금융혜택도</string>
+    <string name="wineyfeed_banner4_title">위니 추천피드에서\n한번에 볼 수 있어요!</string>
 
     <!-- comment delete dialog -->
     <string name="comment_delete_dialog_title">삭제하시겠습니까?</string>
@@ -51,7 +59,7 @@
     <string name="upload_amount_unit_text">원</string>
     <string name="upload_amount_hint_text">0</string>
     <string name="upload_last_btn_text">업로드</string>
-    <string name="upload_loading_title">오늘은\n %s 값을 \n절약했어요</string>
+    <string name="upload_loading_title">%s 값을</string>
     <string name="upload_dialog_title">지금 나가시면 작성하신 게 지워져요</string>
     <string name="upload_dialog_subtitle">절약 실천 게시물을 올리면 레벨업에 가까워져요\n그래도 나가시겠습니까?</string>
     <string name="upload_dialog_negative_button">취소</string>
@@ -216,4 +224,8 @@
     <string name="popup_delete_title">삭제하기</string>
     <string name="popup_report_title">신고하기</string>
     <string name="story_skip_btn_text">건너뛰기</string>
+    <string name="upload_loading_title_first__line1">티끌 모아 태산</string>
+    <string name="upload_loading_title_first_line2">조금 더 아껴볼까요?</string>
+    <string name="upload_loading_title_other_line1">오늘은</string>
+    <string name="upload_loading_title_other_line3">절약했어요</string>
 </resources>
