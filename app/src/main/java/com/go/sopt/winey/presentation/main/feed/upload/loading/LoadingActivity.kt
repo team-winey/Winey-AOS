@@ -2,6 +2,7 @@ package com.go.sopt.winey.presentation.main.feed.upload.loading
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.go.sopt.winey.R
 import com.go.sopt.winey.databinding.ActivityLoadingBinding
@@ -11,30 +12,49 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
+    private val amountString by lazy { intent.extras?.getString(EXTRA_AMOUNT_KEY, "") }
+    private val amountRange by lazy { resources.getIntArray(R.array.save_amount_range) }
+    private val itemCategories by lazy { resources.getStringArray(R.array.save_item_categories) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         classifySaveItemCategory()
         delayMillis()
     }
 
     private fun classifySaveItemCategory() {
-        val amountString = intent.extras?.getString(EXTRA_AMOUNT_KEY, "") ?: return
-        val amount = amountString.toLong()
-        val amountRange = resources.getIntArray(R.array.save_amount_range)
-        val itemCategories = resources.getStringArray(R.array.save_item_categories)
+        for (index in amountRange.indices) {
+            val amount = amountString?.toLong() ?: return
+            if (isLastAmountRange(index)) return
 
-        for (idx in amountRange.indices) {
-            if (idx == amountRange.size - 1) {
-                binding.saveItem = itemCategories[idx]
-                return
-            }
+            if (amount >= amountRange[index] && amount < amountRange[index + 1]) {
+                if (isFirstAmountRange(index)) return
 
-            if (amount >= amountRange[idx] && amount < amountRange[idx + 1]) {
-                binding.saveItem = itemCategories[idx]
+                binding.apply {
+                    saveItem = itemCategories[index]
+                    llLoadingTitleFirst.visibility = View.INVISIBLE
+                    llLoadingTitleOther.visibility = View.VISIBLE
+                }
                 return
             }
         }
+    }
+
+    private fun isFirstAmountRange(index: Int): Boolean {
+        if (index == 0) {
+            binding.llLoadingTitleFirst.visibility = View.VISIBLE
+            binding.llLoadingTitleOther.visibility = View.INVISIBLE
+            return true
+        }
+        return false
+    }
+
+    private fun isLastAmountRange(index: Int): Boolean {
+        if (index == amountRange.size - 1) {
+            binding.saveItem = itemCategories[index - 1]
+            return true
+        }
+        return false
     }
 
     private fun delayMillis() {
