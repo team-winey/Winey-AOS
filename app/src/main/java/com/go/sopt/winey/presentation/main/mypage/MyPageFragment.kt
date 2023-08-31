@@ -187,75 +187,44 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setupGetUserState() {
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
-                is UiState.Loading -> {
-                }
-
                 is UiState.Success -> {
-                    val data = dataStoreRepository.getUserInfo().first()
+                    val data = dataStoreRepository.getUserInfo().first() ?: return@onEach
                     updateUserInfo(data)
-                    initBottomSheetClickListener(data)
+                    initTargetModifyButtonClickListener(data)
                 }
 
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
                 }
 
-                is UiState.Empty -> {
-                }
+                else -> {}
             }
         }.launchIn(lifecycleScope)
     }
 
-    private fun initBottomSheetClickListener(data: User?) {
-        binding.clMypageTargetmoney.setOnSingleClickListener {
-            amplitudeUtils.logEvent("click_goalsetting")
-
-            when (data?.isOver) {
-                true -> {
-                    val bottomSheet = TargetAmountBottomSheetFragment()
-                    bottomSheet.show(this.childFragmentManager, bottomSheet.tag)
-                    amplitudeUtils.logEvent("view_goalsetting")
-                }
-
-                false -> {
-                    val dialog = MyPageDialogFragment()
-                    dialog.show(this.childFragmentManager, dialog.tag)
-                }
-
-                null -> {
-                }
-            }
-        }
-    }
-
-    private fun updateUserInfo(data: User?) {
+    private fun updateUserInfo(data: User) {
         binding.data = data
-
-        // todo: 기간 내 목표 달성하면 누적위니, 위니횟수도 0으로 초기화 되도록
-
-        handleIsOver(data)
-        handleUserLevel(data)
+        updateTargetInfo(data)
+        updateUserLevel(data)
     }
 
-    private fun handleIsOver(data: User?) {
-        if (data == null) return
-
+    private fun updateTargetInfo(data: User) {
+        // 목표를 설정한 적이 없는 경우 (초기 상태)
         if (data.isOver) {
             binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
             binding.tvMypagePeriodValue.text = getString(R.string.mypage_not_yet_set)
         } else {
+            binding.targetMoney = data
             if (data.dday == 0) {
                 binding.tvMypagePeriodValue.text = getString(R.string.mypage_d_day)
-                binding.targetMoney = data
             } else {
-                binding.targetMoney = data
                 binding.dday = data
             }
         }
     }
 
-    private fun handleUserLevel(data: User?) {
-        when (data?.userLevel) {
+    private fun updateUserLevel(data: User) {
+        when (data.userLevel) {
             LEVEL_COMMON -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
                 binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv1_profile)
@@ -274,6 +243,22 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             LEVEL_KING -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
                 binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv4_profile)
+            }
+        }
+    }
+
+    private fun initTargetModifyButtonClickListener(user: User) {
+        binding.clMypageTargetmoney.setOnSingleClickListener {
+            amplitudeUtils.logEvent("click_goalsetting")
+
+            // 목표를 설정한 적 없거나, 기간이 종료되었거나, 기간 내 목표를 달성한 경우
+            if (user.isOver || user.isAttained) {
+                val bottomSheet = TargetAmountBottomSheetFragment()
+                bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+                amplitudeUtils.logEvent("view_goalsetting")
+            } else {
+                val dialog = MyPageNotOverDialogFragment()
+                dialog.show(parentFragmentManager, dialog.tag)
             }
         }
     }
