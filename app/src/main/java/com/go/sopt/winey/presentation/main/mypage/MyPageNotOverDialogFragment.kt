@@ -6,7 +6,7 @@ import com.go.sopt.winey.R
 import com.go.sopt.winey.databinding.FragmentMypageNotOverDialogBinding
 import com.go.sopt.winey.util.binding.BindingDialogFragment
 
-class MyPageDialogFragment :
+class MyPageNotOverDialogFragment :
     BindingDialogFragment<FragmentMypageNotOverDialogBinding>(R.layout.fragment_mypage_not_over_dialog) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
