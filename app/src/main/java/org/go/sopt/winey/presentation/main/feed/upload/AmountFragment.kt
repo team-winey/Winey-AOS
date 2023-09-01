@@ -44,12 +44,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun updateRequestBody() {
         val imageUri = uploadViewModel.imageUri.value ?: return
         val requestBody = UriToRequestBody(requireContext(), imageUri)
-
-//        val compressor = ImageCompressor(requireContext(), imageUri)
-//        val adjustedImageBitmap = compressor.adjustImageFormat()
-//        val bitmapRequestBody =
-//            BitmapRequestBody(requireContext(), imageUri, adjustedImageBitmap)
-
         uploadViewModel.updateRequestBody(requestBody)
     }
 
