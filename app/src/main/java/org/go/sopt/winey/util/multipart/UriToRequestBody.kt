@@ -51,12 +51,12 @@ class UriToRequestBody(
     private fun compressImage() {
         val inputStream = contentResolver.openInputStream(imageUri)
         val originalBitmap = BitmapFactory.decodeStream(inputStream)
+
+        // 필요한 경우 회전 각도를 조정한다.
         val rotatedBitmap = rotateImageIfRequired(originalBitmap)
 
         val outputStream = ByteArrayOutputStream()
         val imageSizeMb = fileSize / (KB_PER_ONE_MB * KB_PER_ONE_MB).toDouble()
-
-        Timber.e("$imageSizeMb")
 
         // 최대 크기를 넘지 않도록 이미지 파일을 압축한다.
         outputStream.use { byteArrayOutputStream ->
