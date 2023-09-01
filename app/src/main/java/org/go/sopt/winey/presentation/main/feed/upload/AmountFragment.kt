@@ -19,8 +19,7 @@ import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
-import org.go.sopt.winey.util.multipart.BitmapRequestBody
-import org.go.sopt.winey.util.multipart.ImageCompressor
+import org.go.sopt.winey.util.multipart.UriToRequestBody
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
 import java.text.DecimalFormat
@@ -44,14 +43,14 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
     private fun updateRequestBody() {
         val imageUri = uploadViewModel.imageUri.value ?: return
-//        val requestBody = UriToRequestBody(requireContext(), imageUri)
+        val requestBody = UriToRequestBody(requireContext(), imageUri)
 
-        val compressor = ImageCompressor(requireContext(), imageUri)
-        val adjustedImageBitmap = compressor.adjustImageFormat()
-        val bitmapRequestBody =
-            BitmapRequestBody(requireContext(), imageUri, adjustedImageBitmap)
+//        val compressor = ImageCompressor(requireContext(), imageUri)
+//        val adjustedImageBitmap = compressor.adjustImageFormat()
+//        val bitmapRequestBody =
+//            BitmapRequestBody(requireContext(), imageUri, adjustedImageBitmap)
 
-        uploadViewModel.updateRequestBody(bitmapRequestBody)
+        uploadViewModel.updateRequestBody(requestBody)
     }
 
     private fun initUploadButtonClickListener() {

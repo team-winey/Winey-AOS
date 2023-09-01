@@ -18,7 +18,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import org.go.sopt.winey.domain.repository.FeedRepository
 import org.go.sopt.winey.util.code.ErrorCode
-import org.go.sopt.winey.util.multipart.BitmapRequestBody
+import org.go.sopt.winey.util.multipart.UriToRequestBody
 import org.go.sopt.winey.util.view.InputUiState
 import org.go.sopt.winey.util.view.UiState
 import retrofit2.HttpException
@@ -96,13 +96,13 @@ class UploadViewModel @Inject constructor(
     private fun checkAmountRange(amountNumber: Long) = amountNumber in MIN_AMOUNT..MAX_AMOUNT
 
     /** Multipart */
-    private var imageRequestBody: BitmapRequestBody? = null
+    private var imageRequestBody: UriToRequestBody? = null
     private val _postWineyFeedState =
         MutableStateFlow<UiState<ResponsePostWineyFeedDto?>>(UiState.Empty)
     val postWineyFeedState: StateFlow<UiState<ResponsePostWineyFeedDto?>> =
         _postWineyFeedState.asStateFlow()
 
-    fun updateRequestBody(requestBody: BitmapRequestBody) {
+    fun updateRequestBody(requestBody: UriToRequestBody) {
         this.imageRequestBody = requestBody
     }
 
