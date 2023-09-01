@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.WindowInsetsController
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
@@ -52,17 +51,6 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
             val windowInsetController = ViewCompat.getWindowInsetsController(window.decorView)
             windowInsetController?.isAppearanceLightStatusBars = false
         }
-    }
-
-    @Suppress("DEPRECATION")
-    fun setLightStatusBar(view: View, isLight: Boolean) {
-        var flags = view.systemUiVisibility
-        flags = if (isLight) {
-            flags or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-        } else {
-            flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
-        }
-        view.systemUiVisibility = flags
     }
 
     private suspend fun checkAutoLogin() {
