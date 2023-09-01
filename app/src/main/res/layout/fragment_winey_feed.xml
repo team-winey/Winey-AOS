@@ -6,7 +6,7 @@
     <data>
         <variable
             name="vm"
-            type="com.go.sopt.winey.presentation.main.MainViewModel" />
+            type="org.go.sopt.winey.presentation.main.MainViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

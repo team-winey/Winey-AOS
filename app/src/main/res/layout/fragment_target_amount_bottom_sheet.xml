@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.go.sopt.winey.presentation.main.mypage.TargetAmountViewModel" />
+            type="org.go.sopt.winey.presentation.main.mypage.TargetAmountViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
