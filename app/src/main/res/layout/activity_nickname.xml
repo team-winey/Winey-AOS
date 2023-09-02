@@ -7,11 +7,11 @@
 
         <variable
             name="vm"
-            type="com.go.sopt.winey.presentation.nickname.NicknameViewModel" />
+            type="org.go.sopt.winey.presentation.nickname.NicknameViewModel" />
 
         <import type="android.view.View" />
 
-        <import type="com.go.sopt.winey.util.view.InputUiState" />
+        <import type="org.go.sopt.winey.util.view.InputUiState" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

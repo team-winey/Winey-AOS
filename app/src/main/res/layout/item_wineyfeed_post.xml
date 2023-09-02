@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.go.sopt.winey.domain.entity.WineyFeed" />
+            type="org.go.sopt.winey.domain.entity.WineyFeed" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
