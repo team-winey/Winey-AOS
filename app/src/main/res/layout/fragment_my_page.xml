@@ -7,15 +7,15 @@
 
         <variable
             name="data"
-            type="com.go.sopt.winey.domain.entity.User" />
+            type="org.go.sopt.winey.domain.entity.User" />
 
         <variable
             name="targetMoney"
-            type="com.go.sopt.winey.domain.entity.User" />
+            type="org.go.sopt.winey.domain.entity.User" />
 
         <variable
             name="dday"
-            type="com.go.sopt.winey.domain.entity.User" />
+            type="org.go.sopt.winey.domain.entity.User" />
 
         <variable
             name="pre"

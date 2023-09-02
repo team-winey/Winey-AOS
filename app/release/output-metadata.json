@@ -4,14 +4,14 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.go.sopt.winey",
+  "applicationId": "org.go.sopt.winey",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 100,
+      "versionCode": 2,
       "versionName": "1.0.0",
       "outputFile": "app-release.apk"
     }
