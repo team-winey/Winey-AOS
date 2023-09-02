@@ -1,11 +1,9 @@
 package com.go.sopt.winey.data.interceptor
 
-import android.content.Context
 import com.go.sopt.winey.BuildConfig.AUTH_BASE_URL
 import com.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import com.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import com.go.sopt.winey.domain.repository.DataStoreRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -18,7 +16,6 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    @ApplicationContext context: Context,
     private val json: Json,
     private val dataStoreRepository: DataStoreRepository
 ) : Interceptor {
@@ -32,7 +29,7 @@ class AuthInterceptor @Inject constructor(
         val response = chain.proceed(headerRequest)
 
         when (response.code) {
-            com.go.sopt.winey.data.interceptor.AuthInterceptor.Companion.CODE_TOKEN_EXPIRED -> {
+            CODE_TOKEN_EXPIRED -> {
                 try {
                     Timber.e("액세스 토큰 만료, 토큰 재발급 합니다.")
                     response.close()
@@ -43,7 +40,7 @@ class AuthInterceptor @Inject constructor(
                 }
             }
 
-            com.go.sopt.winey.data.interceptor.AuthInterceptor.Companion.CODE_INVALID_USER -> {
+            CODE_INVALID_USER -> {
                 saveAccessToken("", "")
             }
         }
@@ -51,7 +48,7 @@ class AuthInterceptor @Inject constructor(
     }
 
     private fun Request.newAuthBuilder() =
-        this.newBuilder().addHeader(com.go.sopt.winey.data.interceptor.AuthInterceptor.Companion.HEADER_TOKEN, runBlocking(Dispatchers.IO) { getAccessToken() })
+        this.newBuilder().addHeader(HEADER_TOKEN, runBlocking(Dispatchers.IO) { getAccessToken() })
 
     private suspend fun getAccessToken(): String {
         return dataStoreRepository.getAccessToken().first() ?: ""
@@ -69,7 +66,7 @@ class AuthInterceptor @Inject constructor(
     private fun handleTokenExpired(chain: Interceptor.Chain, originalRequest: Request, headerRequest: Request): Response {
         val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
             .url("$AUTH_BASE_URL/auth/token")
-            .addHeader(com.go.sopt.winey.data.interceptor.AuthInterceptor.Companion.REFRESH_TOKEN, runBlocking(Dispatchers.IO) { getRefreshToken() })
+            .addHeader(REFRESH_TOKEN, runBlocking(Dispatchers.IO) { getRefreshToken() })
             .build()
         val refreshTokenResponse = chain.proceed(refreshTokenRequest)
         Timber.e("리프레시 토큰 : $refreshTokenResponse")
