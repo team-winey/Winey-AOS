@@ -384,6 +384,7 @@ class WineyFeedFragment :
         binding.layoutWineyfeedRefresh.setOnRefreshListener {
             refreshWineyFeed()
             binding.layoutWineyfeedRefresh.isRefreshing = false
+            selectedItemIndex = -1
         }
     }
 
