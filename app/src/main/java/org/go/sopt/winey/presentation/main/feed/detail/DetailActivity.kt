@@ -337,7 +337,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }.launchIn(lifecycleScope)
     }
 
-
     private fun initPostCommentStateObserver() {
         viewModel.postCommentState.flowWithLifecycle(lifecycle)
             .onEach { state ->
