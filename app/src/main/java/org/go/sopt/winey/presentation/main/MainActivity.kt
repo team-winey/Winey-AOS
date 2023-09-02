@@ -15,6 +15,7 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityMainBinding
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import org.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import org.go.sopt.winey.util.binding.BindingActivity
@@ -29,6 +30,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
     private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
     private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +57,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             transaction.commit()
             binding.bnvMain.selectedItemId = R.id.menu_mypage
         } else {
-            navigateTo<WineyFeedFragment>()
+            if (prevScreenName == MY_FEED_SCREEN) {
+                navigateTo<MyFeedFragment>()
+            } else {
+                navigateTo<WineyFeedFragment>()
+            }
         }
     }
 
@@ -135,5 +141,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val EXTRA_UPLOAD_KEY = "upload"
         private const val EXTRA_DELETE_KEY = "delete"
         private const val EXTRA_REPORT_KEY = "report"
+
+        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+
+        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
+        private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }
