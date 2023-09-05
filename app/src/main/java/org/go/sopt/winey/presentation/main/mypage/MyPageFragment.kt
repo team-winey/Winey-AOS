@@ -50,7 +50,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
-
+        initNavigation()
         init1On1ButtonClickListener()
         initTermsButtonClickListener()
         initLevelHelpButtonClickListener()
@@ -98,6 +98,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun initNavigation(){
+        val receivedBundle = arguments
+        if (receivedBundle != null) {
+            val value = receivedBundle.getString("toMyFeed")
+            if (value == "true") {
+                navigateAndBackStack<MyFeedFragment>()
+            }
+        }
+    }
     private fun init1On1ButtonClickListener() {
         binding.clMypageTo1on1.setOnClickListener {
             val url = ONE_ON_ONE_URL
