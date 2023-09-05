@@ -50,7 +50,7 @@ https://github.com/team-winey/Winey-AOS/assets/68090939/785df9d2-bf77-4dae-a607-
 
 ### 알림 목록
 
-todo
+https://github.com/team-winey/Winey-AOS/assets/68090939/d190e491-efe5-4a02-89d1-bca4410e49f8
 
 ## 🛠 Tech Stack
 
