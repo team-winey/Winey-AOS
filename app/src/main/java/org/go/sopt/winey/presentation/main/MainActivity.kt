@@ -15,7 +15,6 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityMainBinding
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
-import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import org.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import org.go.sopt.winey.util.binding.BindingActivity
@@ -48,17 +47,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun initFragment() {
         if (intent.getBooleanExtra("navigateMypage", false)) {
-            val bundle = Bundle()
-            bundle.putString("fromNoti", "true")
-            val myPageFragment = MyPageFragment()
-            myPageFragment.arguments = bundle
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fcv_main, myPageFragment)
-            transaction.commit()
-            binding.bnvMain.selectedItemId = R.id.menu_mypage
+            navigateToMyPageWithBundle("fromNoti","true")
         } else {
             if (prevScreenName == MY_FEED_SCREEN) {
-                navigateTo<MyFeedFragment>()
+                navigateToMyPageWithBundle("toMyFeed","true")
             } else {
                 navigateTo<WineyFeedFragment>()
             }
@@ -137,6 +129,19 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
+    private fun navigateToMyPageWithBundle(key:String, value: String) {
+        supportFragmentManager.commit {
+            val bundle = Bundle()
+            bundle.putString(key, value)
+            val myPageFragment = MyPageFragment()
+            myPageFragment.arguments = bundle
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fcv_main, myPageFragment)
+            transaction.commit()
+            binding.bnvMain.selectedItemId = R.id.menu_mypage
+        }
+    }
+
     companion object {
         private const val EXTRA_UPLOAD_KEY = "upload"
         private const val EXTRA_DELETE_KEY = "delete"
@@ -144,7 +149,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
 
-        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
         private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }
