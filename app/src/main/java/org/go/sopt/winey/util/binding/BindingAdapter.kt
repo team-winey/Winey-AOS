@@ -132,6 +132,33 @@ fun TextView.setNicknameHelperTextColor(inputUiState: InputUiState) {
     }
 }
 
+@BindingAdapter(
+    "app:prevScreenName",
+    "app:inputNicknameLength",
+    "app:originalNicknameLength",
+    requireAll = false
+)
+fun TextView.setNicknameCounter(
+    prevScreenName: String,
+    inputNicknameLength: Int,
+    originalNicknameLength: Int
+) {
+    when (prevScreenName) {
+        STORY_SCREEN -> {
+            text = context.getString(R.string.nickname_counter, inputNicknameLength)
+        }
+
+        MY_PAGE_SCREEN -> {
+            text = if (inputNicknameLength == 0) {
+                // 입력 값이 비어있을 때는 원래 닉네임의 글자 수 표시
+                context.getString(R.string.nickname_counter, originalNicknameLength)
+            } else {
+                context.getString(R.string.nickname_counter, inputNicknameLength)
+            }
+        }
+    }
+}
+
 @BindingAdapter("switchCloseButtonVisibility")
 fun ImageView.switchCloseButtonVisibility(prevScreenName: String) {
     when (prevScreenName) {
