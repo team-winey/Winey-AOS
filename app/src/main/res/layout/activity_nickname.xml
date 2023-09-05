@@ -9,6 +9,10 @@
             name="vm"
             type="org.go.sopt.winey.presentation.nickname.NicknameViewModel" />
 
+        <variable
+            name="originalNicknameLength"
+            type="Integer" />
+
         <import type="android.view.View" />
 
         <import type="org.go.sopt.winey.util.view.InputUiState" />
@@ -98,9 +102,12 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
                     android:layout_marginEnd="8dp"
-                    android:text="@{@string/nickname_counter(vm._nickname.length)}"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-                    android:textColor="@color/gray_300" />
+                    android:textColor="@color/gray_300"
+                    app:inputNicknameLength="@{vm._nickname.length}"
+                    app:originalNicknameLength="@{originalNicknameLength}"
+                    app:prevScreenName="@{vm.prevScreenName}"
+                    tools:text="(0/8)" />
 
             </FrameLayout>
 

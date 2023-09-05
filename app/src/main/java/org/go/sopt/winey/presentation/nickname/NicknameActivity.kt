@@ -135,10 +135,14 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     private fun switchEditTextHint() {
         lifecycleScope.launch {
             when (prevScreenName) {
-                STORY_SCREEN -> binding.etNickname.hint = stringOf(R.string.nickname_default_hint)
+                STORY_SCREEN -> {
+                    binding.etNickname.hint = stringOf(R.string.nickname_default_hint)
+                }
+
                 MY_PAGE_SCREEN -> {
                     val user = dataStoreRepository.getUserInfo().first() ?: return@launch
                     binding.etNickname.hint = user.nickname
+                    binding.originalNicknameLength = user.nickname.length
                 }
             }
         }
