@@ -47,10 +47,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun initFragment() {
         if (intent.getBooleanExtra("navigateMypage", false)) {
-            navigateToMyPageWithBundle("fromNoti","true")
+            navigateToMyPageWithBundle("fromNoti", "true")
         } else {
             if (prevScreenName == MY_FEED_SCREEN) {
-                navigateToMyPageWithBundle("toMyFeed","true")
+                navigateToMyPageWithBundle("toMyFeed", "true")
             } else {
                 navigateTo<WineyFeedFragment>()
             }
@@ -129,7 +129,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun navigateToMyPageWithBundle(key:String, value: String) {
+    private fun navigateToMyPageWithBundle(key: String, value: String) {
         supportFragmentManager.commit {
             val bundle = Bundle()
             bundle.putString(key, value)

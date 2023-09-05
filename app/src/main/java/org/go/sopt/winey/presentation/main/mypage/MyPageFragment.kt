@@ -98,7 +98,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initNavigation(){
+    private fun initNavigation() {
         val receivedBundle = arguments
         if (receivedBundle != null) {
             val value = receivedBundle.getString("toMyFeed")
