@@ -13,6 +13,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okio.BufferedSink
+import okio.source
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
@@ -21,9 +22,10 @@ class UriToRequestBody(
     private val imageUri: Uri
 ) : RequestBody() {
     private val contentResolver = context.contentResolver
-    private var fileName = ""
     private var fileSize = -1L
-    private lateinit var compressedImage: ByteArray
+    private var fileName = ""
+    private var isLargeImage = false
+    private var compressedImageByteArray: ByteArray? = null
 
     init {
         try {
@@ -56,21 +58,33 @@ class UriToRequestBody(
         val rotatedBitmap = rotateImageIfRequired(originalBitmap)
 
         val outputStream = ByteArrayOutputStream()
-        val imageSizeMb = fileSize / (KB_PER_ONE_MB * KB_PER_ONE_MB).toDouble()
+        val imageMbSize = calcMbSize(fileSize)
+        Timber.e("BEFORE IMAGE SIZE: $imageMbSize")
 
-        // 최대 크기를 넘지 않도록 이미지 파일을 압축한다.
-        outputStream.use { byteArrayOutputStream ->
-            val compressRate = calcCompressRate(imageSizeMb)
-            rotatedBitmap.compress(
-                Bitmap.CompressFormat.JPEG,
-                if (imageSizeMb >= MAX_MB_SIZE) compressRate else 100,
-                byteArrayOutputStream
-            )
+        // 최대 크기를 넘는 경우에만 압축한다.
+        if (imageMbSize >= MAX_MB_SIZE) {
+            isLargeImage = true
+            outputStream.use { byteArrayOutputStream ->
+                rotatedBitmap.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    calcCompressQuality(imageMbSize),
+                    byteArrayOutputStream
+                )
+            }
+            calcCompressedImageSize(outputStream.toByteArray())
         }
-
-        compressedImage = outputStream.toByteArray()
-        fileSize = compressedImage.size.toLong()
     }
+
+    private fun calcCompressQuality(imageSizeMb: Double) =
+        ((MAX_MB_SIZE / imageSizeMb) * 100).toInt()
+
+    private fun calcCompressedImageSize(byteArray: ByteArray) {
+        compressedImageByteArray = byteArray
+        fileSize = byteArray.size.toLong()
+        Timber.e("AFTER IMAGE SIZE: ${calcMbSize(fileSize)}")
+    }
+
+    private fun calcMbSize(fileSize: Long) = fileSize / (KB_PER_ONE_MB * KB_PER_ONE_MB).toDouble()
 
     private fun rotateImageIfRequired(originalBitmap: Bitmap): Bitmap {
         val inputStream = contentResolver.openInputStream(imageUri)
@@ -104,16 +118,25 @@ class UriToRequestBody(
         return originalBitmap
     }
 
-    private fun calcCompressRate(imageSizeMb: Double) =
-        ((MAX_MB_SIZE / imageSizeMb) * 100).toInt()
-
     override fun contentLength(): Long = fileSize
 
     override fun contentType(): MediaType? =
         contentResolver.getType(imageUri)?.toMediaTypeOrNull()
 
     override fun writeTo(sink: BufferedSink) {
-        compressedImage.let(sink::write)
+        if (isLargeImage) {
+            compressedImageByteArray?.let(sink::write)
+            return
+        }
+
+        try {
+            contentResolver.openInputStream(imageUri).use { inputStream ->
+                val source = inputStream?.source()
+                if (source != null) sink.writeAll(source)
+            }
+        } catch (e: IllegalStateException) {
+            "Couldn't open content URI for reading: $imageUri"
+        }
     }
 
     fun toFormData() = MultipartBody.Part.createFormData(KEY_NAME, fileName, this)
