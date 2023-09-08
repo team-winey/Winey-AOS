@@ -462,9 +462,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_REPORT_DIALOG = "REPORT_DIALOG"
 
-        private const val MY_FEED_SCREEN = "MyFeedFragment"
-        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
-
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val MSG_DETAIL_ERROR = "ERROR"
         private const val EXTRA_DELETE_KEY = "delete"
