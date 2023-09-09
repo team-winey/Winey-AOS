@@ -133,9 +133,9 @@ fun TextView.setNicknameHelperTextColor(inputUiState: InputUiState) {
 }
 
 @BindingAdapter(
-    "app:prevScreenName",
-    "app:inputNicknameLength",
-    "app:originalNicknameLength",
+    "prevScreenName",
+    "inputNicknameLength",
+    "originalNicknameLength",
     requireAll = false
 )
 fun TextView.setNicknameCounter(
