@@ -12,6 +12,7 @@ import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.common.config.GservicesValue.value
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -67,8 +68,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         override fun handleOnBackPressed() {
             val receivedBundle = arguments
             if (receivedBundle != null) {
-                val value = receivedBundle.getString("fromNoti")
-                if (value == "true") {
+                val value = receivedBundle.getBoolean("fromNoti")
+                if (value) {
                     val intent = Intent(requireContext(), NotificationActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
@@ -101,8 +102,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initNavigation() {
         val receivedBundle = arguments
         if (receivedBundle != null) {
-            val value = receivedBundle.getString("toMyFeed")
-            if (value == "true") {
+            val value = receivedBundle.getBoolean("toMyFeed")
+            if (value) {
                 navigateAndBackStack<MyFeedFragment>()
                 arguments = null
             }

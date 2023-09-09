@@ -47,10 +47,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun initFragment() {
         if (intent.getBooleanExtra("navigateMypage", false)) {
-            navigateToMyPageWithBundle("fromNoti", "true")
+            navigateToMyPageWithBundle("fromNoti", true)
         } else {
             if (prevScreenName == MY_FEED_SCREEN) {
-                navigateToMyPageWithBundle("toMyFeed", "true")
+                navigateToMyPageWithBundle("toMyFeed", true)
             } else {
                 navigateTo<WineyFeedFragment>()
             }
@@ -129,20 +129,17 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun navigateToMyPageWithBundle(key: String, value: String) {
-        val bundle = Bundle().apply {
-            putString(key, value)
-        }
-        val myPageFragment = MyPageFragment().apply {
-            arguments = bundle
-        }
+    private fun navigateToMyPageWithBundle(key: String, value: Boolean) {
         supportFragmentManager.commit {
-            replace(R.id.fcv_main, myPageFragment)
-            setReorderingAllowed(true)
-            addToBackStack(null)
+            val bundle = Bundle()
+            bundle.putBoolean(key, value)
+            val myPageFragment = MyPageFragment()
+            myPageFragment.arguments = bundle
+            val transaction = supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fcv_main, myPageFragment)
+            transaction.commit()
+            binding.bnvMain.selectedItemId = R.id.menu_mypage
         }
-        binding.bnvMain.selectedItemId = R.id.menu_mypage
-
     }
 
     companion object {
