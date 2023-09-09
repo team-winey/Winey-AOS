@@ -135,9 +135,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             bundle.putBoolean(key, value)
             val myPageFragment = MyPageFragment()
             myPageFragment.arguments = bundle
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fcv_main, myPageFragment)
-            transaction.commit()
+            replace(R.id.fcv_main, myPageFragment)
             binding.bnvMain.selectedItemId = R.id.menu_mypage
         }
     }
