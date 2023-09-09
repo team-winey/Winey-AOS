@@ -46,11 +46,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initFragment() {
-        if (intent.getBooleanExtra("navigateMypage", false)) {
-            navigateToMyPageWithBundle("fromNoti", true)
+        if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
+            navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
         } else {
             if (prevScreenName == MY_FEED_SCREEN) {
-                navigateToMyPageWithBundle("toMyFeed", true)
+                navigateToMyPageWithBundle(KEY_TO_MYFEED, true)
             } else {
                 navigateTo<WineyFeedFragment>()
             }
@@ -148,6 +148,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val EXTRA_REPORT_KEY = "report"
 
         private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val KEY_FROM_NOTI = "fromNoti"
+        private const val KEY_TO_MYFEED = "toMyFeed"
+        private const val KEY_TO_MYPAGE = "navigateMypage"
 
         private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
