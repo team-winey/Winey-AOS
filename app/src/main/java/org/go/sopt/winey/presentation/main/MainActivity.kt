@@ -46,11 +46,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initFragment() {
-        if (intent.getBooleanExtra("navigateMypage", false)) {
-            navigateToMyPageWithBundle("fromNoti", "true")
+        if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
+            navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
         } else {
             if (prevScreenName == MY_FEED_SCREEN) {
-                navigateToMyPageWithBundle("toMyFeed", "true")
+                navigateToMyPageWithBundle(KEY_TO_MYFEED, true)
             } else {
                 navigateTo<WineyFeedFragment>()
             }
@@ -129,15 +129,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun navigateToMyPageWithBundle(key: String, value: String) {
+    private fun navigateToMyPageWithBundle(key: String, value: Boolean) {
         supportFragmentManager.commit {
             val bundle = Bundle()
-            bundle.putString(key, value)
+            bundle.putBoolean(key, value)
             val myPageFragment = MyPageFragment()
             myPageFragment.arguments = bundle
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fcv_main, myPageFragment)
-            transaction.commit()
+            replace(R.id.fcv_main, myPageFragment)
             binding.bnvMain.selectedItemId = R.id.menu_mypage
         }
     }
@@ -148,6 +146,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val EXTRA_REPORT_KEY = "report"
 
         private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val KEY_FROM_NOTI = "fromNoti"
+        private const val KEY_TO_MYFEED = "toMyFeed"
+        private const val KEY_TO_MYPAGE = "navigateMypage"
 
         private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
