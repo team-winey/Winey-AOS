@@ -400,6 +400,7 @@ class WineyFeedFragment :
         val intent = Intent(requireContext(), DetailActivity::class.java)
         intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
         intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
+        intent.putExtra(KEY_PREV_SCREEN, WINEY_FEED_SCREEN)
         startActivity(intent)
     }
 
@@ -440,5 +441,7 @@ class WineyFeedFragment :
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
     }
 }

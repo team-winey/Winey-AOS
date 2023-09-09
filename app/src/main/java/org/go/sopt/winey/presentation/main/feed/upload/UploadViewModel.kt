@@ -130,6 +130,10 @@ class UploadViewModel @Inject constructor(
         }
     }
 
+    fun initPostWineyFeedState() {
+        _postWineyFeedState.value = UiState.Empty
+    }
+
     private fun createRequestBody(
         content: String,
         amount: String

@@ -43,6 +43,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private val feedId by lazy { intent.getIntExtra(KEY_FEED_ID, 0) }
     private val feedWriterId by lazy { intent.getIntExtra(KEY_FEED_WRITER_ID, 0) }
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
 
     private var _detailFeedAdapter: DetailFeedAdapter? = null
     private val detailFeedAdapter get() = requireNotNull(_detailFeedAdapter)
@@ -416,6 +417,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             putExtra(extraKey, true)
+            putExtra(KEY_PREV_SCREEN, prevScreenName)
             startActivity(this)
         }
     }
@@ -454,9 +456,12 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_REPORT_DIALOG = "REPORT_DIALOG"
+
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val MSG_DETAIL_ERROR = "ERROR"
         private const val EXTRA_DELETE_KEY = "delete"
