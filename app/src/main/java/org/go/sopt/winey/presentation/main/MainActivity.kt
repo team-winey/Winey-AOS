@@ -130,16 +130,19 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun navigateToMyPageWithBundle(key: String, value: String) {
-        supportFragmentManager.commit {
-            val bundle = Bundle()
-            bundle.putString(key, value)
-            val myPageFragment = MyPageFragment()
-            myPageFragment.arguments = bundle
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fcv_main, myPageFragment)
-            transaction.commit()
-            binding.bnvMain.selectedItemId = R.id.menu_mypage
+        val bundle = Bundle().apply {
+            putString(key, value)
         }
+        val myPageFragment = MyPageFragment().apply {
+            arguments = bundle
+        }
+        supportFragmentManager.commit {
+            replace(R.id.fcv_main, myPageFragment)
+            setReorderingAllowed(true)
+            addToBackStack(null)
+        }
+        binding.bnvMain.selectedItemId = R.id.menu_mypage
+
     }
 
     companion object {
