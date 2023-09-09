@@ -16,7 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentMyPageBinding
 import org.go.sopt.winey.domain.entity.User
@@ -88,10 +88,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initUserData() {
-        val data = runBlocking { dataStoreRepository.getUserInfo().first() }
-        if (data != null) {
-            updateUserInfo(data)
-            initTargetModifyButtonClickListener(data)
+        viewLifeCycleScope.launch {
+            val data = dataStoreRepository.getUserInfo().first()
+            if (data != null) {
+                updateUserInfo(data)
+                initTargetModifyButtonClickListener(data)
+            }
         }
     }
 
