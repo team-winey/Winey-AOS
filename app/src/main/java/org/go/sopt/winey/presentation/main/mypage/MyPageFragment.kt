@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentMyPageBinding
 import org.go.sopt.winey.domain.entity.User
@@ -50,6 +51,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
+
+        initUserData()
         initNavigation()
         init1On1ButtonClickListener()
         initTermsButtonClickListener()
@@ -82,6 +85,16 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onStart() {
         super.onStart()
         mainViewModel.getUser()
+    }
+
+    private fun initUserData() {
+        viewLifeCycleScope.launch {
+            val data = dataStoreRepository.getUserInfo().first()
+            if (data != null) {
+                updateUserInfo(data)
+                initTargetModifyButtonClickListener(data)
+            }
+        }
     }
 
     private fun initNicknameButtonClickListener() {
