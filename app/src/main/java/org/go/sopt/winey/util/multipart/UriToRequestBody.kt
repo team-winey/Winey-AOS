@@ -1,7 +1,6 @@
 package org.go.sopt.winey.util.multipart
 
 import android.content.Context
-import android.database.sqlite.SQLiteBindOrColumnIndexOutOfRangeException
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -28,23 +27,19 @@ class UriToRequestBody(
     private var compressedImageByteArray: ByteArray? = null
 
     init {
-        try {
-            contentResolver.query(
-                imageUri,
-                arrayOf(MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DISPLAY_NAME),
-                null,
-                null,
-                null
-            )?.use { cursor ->
-                if (cursor.moveToFirst()) {
-                    fileSize =
-                        cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
-                    fileName =
-                        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
-                }
+        contentResolver.query(
+            imageUri,
+            arrayOf(MediaStore.Images.Media.SIZE, MediaStore.Images.Media.DISPLAY_NAME),
+            null,
+            null,
+            null
+        )?.use { cursor ->
+            if (cursor.moveToFirst()) {
+                fileSize =
+                    cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE))
+                fileName =
+                    cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME))
             }
-        } catch (e: SQLiteBindOrColumnIndexOutOfRangeException) {
-            Timber.e(e.message)
         }
 
         compressImage()
@@ -129,13 +124,8 @@ class UriToRequestBody(
             return
         }
 
-        try {
-            contentResolver.openInputStream(imageUri).use { inputStream ->
-                val source = inputStream?.source()
-                if (source != null) sink.writeAll(source)
-            }
-        } catch (e: IllegalStateException) {
-            "Couldn't open content URI for reading: $imageUri"
+        contentResolver.openInputStream(imageUri).use { inputStream ->
+            inputStream?.source()?.let(sink::writeAll)
         }
     }
 
