@@ -104,9 +104,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             val value = receivedBundle.getString("toMyFeed")
             if (value == "true") {
                 navigateAndBackStack<MyFeedFragment>()
+                arguments = null
             }
         }
     }
+
     private fun init1On1ButtonClickListener() {
         binding.clMypageTo1on1.setOnClickListener {
             val url = ONE_ON_ONE_URL
