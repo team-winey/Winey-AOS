@@ -104,7 +104,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             val value = receivedBundle.getBoolean(KEY_TO_MYFEED)
             if (value) {
                 navigateAndBackStack<MyFeedFragment>()
-                arguments = null
+                arguments?.clear()
             }
         }
     }
