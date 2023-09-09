@@ -140,7 +140,11 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
+                    wineySnackbar(
+                        binding.root,
+                        true,
+                        stringOf(R.string.snackbar_feed_delete_success)
+                    )
                     viewModel.initDeleteFeedState()
                 }
 
@@ -183,7 +187,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
                                     is LoadState.NotLoading -> {
                                         binding.rvMyfeedPost.isVisible = myFeedAdapter.itemCount > 0
-                                        binding.clMyfeedEmpty.isVisible = myFeedAdapter.itemCount == 0
+                                        binding.clMyfeedEmpty.isVisible =
+                                            myFeedAdapter.itemCount == 0
                                         restoreScrollPosition()
                                     }
 
@@ -232,6 +237,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         val intent = Intent(requireContext(), DetailActivity::class.java)
         intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
         intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
+        intent.putExtra(KEY_PREV_SCREEN, MY_FEED_SCREEN)
         startActivity(intent)
     }
 
@@ -246,8 +252,12 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+
         private const val POPUP_MENU_OFFSET = 65
         private const val MSG_MYFEED_ERROR = "ERROR"
         private const val TAG_FEED_DELETE_DIALOG = "DELETE_DIALOG"
+
+        private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }

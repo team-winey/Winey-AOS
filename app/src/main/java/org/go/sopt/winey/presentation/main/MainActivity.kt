@@ -29,6 +29,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
     private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
     private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,17 +46,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initFragment() {
-        if (intent.getBooleanExtra("navigateMypage", false)) {
-            val bundle = Bundle()
-            bundle.putString("fromNoti", "true")
-            val myPageFragment = MyPageFragment()
-            myPageFragment.arguments = bundle
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fcv_main, myPageFragment)
-            transaction.commit()
-            binding.bnvMain.selectedItemId = R.id.menu_mypage
+        if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
+            navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
         } else {
-            navigateTo<WineyFeedFragment>()
+            if (prevScreenName == MY_FEED_SCREEN) {
+                navigateToMyPageWithBundle(KEY_TO_MYFEED, true)
+            } else {
+                navigateTo<WineyFeedFragment>()
+            }
         }
     }
 
@@ -131,9 +129,27 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
+    private fun navigateToMyPageWithBundle(key: String, value: Boolean) {
+        supportFragmentManager.commit {
+            val bundle = Bundle()
+            bundle.putBoolean(key, value)
+            val myPageFragment = MyPageFragment()
+            myPageFragment.arguments = bundle
+            replace(R.id.fcv_main, myPageFragment)
+            binding.bnvMain.selectedItemId = R.id.menu_mypage
+        }
+    }
+
     companion object {
         private const val EXTRA_UPLOAD_KEY = "upload"
         private const val EXTRA_DELETE_KEY = "delete"
         private const val EXTRA_REPORT_KEY = "report"
+
+        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val KEY_FROM_NOTI = "fromNoti"
+        private const val KEY_TO_MYFEED = "toMyFeed"
+        private const val KEY_TO_MYPAGE = "navigateMypage"
+
+        private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }
