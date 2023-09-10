@@ -391,7 +391,7 @@ class WineyFeedFragment :
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
         val currentItemSnapshotList = wineyFeedAdapter.snapshot()
-        Timber.e("CURRENT PAGE SIZE: ${currentItemSnapshotList.size}")
+        Timber.e("CURRENT ITEM SIZE: ${currentItemSnapshotList.size}")
 
         selectedItemIndex = currentItemSnapshotList.indexOf(wineyFeed)
         Timber.e("CLICKED ITEM INDEX: $selectedItemIndex")
