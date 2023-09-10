@@ -2,7 +2,6 @@ package org.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
@@ -59,7 +58,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class WineyFeedFragment :
     BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
-    private var selectedScrollPosition: Parcelable? = null
     private var selectedItemIndex: Int = -1
     private val viewModel by viewModels<WineyFeedViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
@@ -91,12 +89,8 @@ class WineyFeedFragment :
         removeRecyclerviewItemChangeAnimation()
     }
 
-    override fun onStart() {
-        super.onStart()
-        viewModel.getWineyFeed()
-    }
-
     private fun restoreScrollPosition() {
+        Timber.e("RESTORE ITEM INDEX: $selectedItemIndex")
         binding.rvWineyfeedPost.post {
             if (selectedItemIndex != -1) {
                 binding.rvWineyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex + 1)
@@ -235,28 +229,12 @@ class WineyFeedFragment :
     }
 
     private fun initGetFeedStateObserver() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifeCycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getWineyFeedListState.collectLatest { state ->
                     when (state) {
                         is UiState.Success -> {
-                            wineyFeedAdapter.addLoadStateListener { loadState ->
-                                when (loadState.refresh) {
-                                    is LoadState.Loading -> {
-                                        binding.rvWineyfeedPost.isVisible = false
-                                    }
-
-                                    is LoadState.NotLoading -> {
-                                        binding.rvWineyfeedPost.isVisible =
-                                            wineyFeedAdapter.itemCount > 0
-                                        restoreScrollPosition()
-                                    }
-
-                                    is LoadState.Error -> {
-                                        Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
-                                    }
-                                }
-                            }
+                            initPagingLoadStateListener()
                             wineyFeedAdapter.submitData(state.data)
                         }
 
@@ -266,6 +244,25 @@ class WineyFeedFragment :
 
                         else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                     }
+                }
+            }
+        }
+    }
+
+    private fun initPagingLoadStateListener() {
+        wineyFeedAdapter.addLoadStateListener { loadState ->
+            when (loadState.refresh) {
+                is LoadState.Loading -> {
+                    binding.rvWineyfeedPost.isVisible = false
+                }
+
+                is LoadState.NotLoading -> {
+                    binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
+                    restoreScrollPosition()
+                }
+
+                is LoadState.Error -> {
+                    Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                 }
             }
         }
@@ -394,14 +391,18 @@ class WineyFeedFragment :
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
-        selectedItemIndex = wineyFeedAdapter.snapshot().indexOf(wineyFeed)
-        selectedScrollPosition = binding.rvWineyfeedPost.layoutManager?.onSaveInstanceState()
+        val currentItemSnapshotList = wineyFeedAdapter.snapshot()
+        Timber.e("CURRENT PAGE SIZE: ${currentItemSnapshotList.size}")
 
-        val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
-        intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-        intent.putExtra(KEY_PREV_SCREEN, WINEY_FEED_SCREEN)
-        startActivity(intent)
+        selectedItemIndex = currentItemSnapshotList.indexOf(wineyFeed)
+        Timber.e("CLICKED ITEM INDEX: $selectedItemIndex")
+
+        Intent(requireContext(), DetailActivity::class.java).apply {
+            putExtra(KEY_FEED_ID, wineyFeed.feedId)
+            putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
+            putExtra(KEY_PREV_SCREEN, WINEY_FEED_SCREEN)
+            startActivity(this)
+        }
     }
 
     private fun sendWineyFeedEvent(type: EventType, feed: WineyFeed) {
