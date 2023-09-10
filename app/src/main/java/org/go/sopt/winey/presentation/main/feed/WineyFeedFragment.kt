@@ -93,6 +93,7 @@ class WineyFeedFragment :
         binding.rvWineyfeedPost.post {
             if (selectedItemIndex != -1) {
                 binding.rvWineyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex + 1)
+                selectedItemIndex = -1
             }
         }
     }
