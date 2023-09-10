@@ -58,12 +58,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class WineyFeedFragment :
     BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
-    private var selectedItemIndex: Int = -1
-    private val viewModel by viewModels<WineyFeedViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
+    private val wineyFeedViewModel by viewModels<WineyFeedViewModel>()
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
+    private var selectedItemIndex: Int = -1
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -74,7 +74,6 @@ class WineyFeedFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_homefeed")
-
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
 
@@ -82,8 +81,8 @@ class WineyFeedFragment :
         setSwipeRefreshListener()
         initFabClickListener()
         initNotificationButtonClickListener()
-        initDeleteFeedStateObserver()
 
+        initDeleteFeedStateObserver()
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         removeRecyclerviewItemChangeAnimation()
@@ -110,7 +109,7 @@ class WineyFeedFragment :
         wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         wineyFeedAdapter = WineyFeedAdapter(
             onlikeButtonClicked = { wineyFeed ->
-                viewModel.likeFeed(wineyFeed.feedId, !wineyFeed.isLiked)
+                wineyFeedViewModel.likeFeed(wineyFeed.feedId, !wineyFeed.isLiked)
             },
             onPopupMenuClicked = { anchorView, wineyFeed ->
                 showFeedPopupMenu(anchorView, wineyFeed)
@@ -172,7 +171,7 @@ class WineyFeedFragment :
             stringOf(R.string.comment_delete_dialog_positive_button),
             handleNegativeButton = {},
             handlePositiveButton = {
-                viewModel.deleteFeed(feed.feedId)
+                wineyFeedViewModel.deleteFeed(feed.feedId)
                 deletePagingDataItem(feed.feedId)
             }
         )
@@ -200,7 +199,7 @@ class WineyFeedFragment :
     private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
 
     private fun initDeleteFeedStateObserver() {
-        viewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle)
+        wineyFeedViewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
@@ -209,7 +208,7 @@ class WineyFeedFragment :
                             true,
                             stringOf(R.string.snackbar_feed_delete_success)
                         )
-                        viewModel.initDeleteFeedState()
+                        wineyFeedViewModel.initDeleteFeedState()
                     }
 
                     is UiState.Failure -> {
@@ -231,7 +230,7 @@ class WineyFeedFragment :
     private fun initGetFeedStateObserver() {
         viewLifeCycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getWineyFeedListState.collectLatest { state ->
+                wineyFeedViewModel.getWineyFeedListState.collectLatest { state ->
                     when (state) {
                         is UiState.Success -> {
                             initPagingLoadStateListener()
@@ -269,7 +268,7 @@ class WineyFeedFragment :
     }
 
     private fun initPostLikeStateObserver() {
-        viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+        wineyFeedViewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     val item = wineyFeedAdapter.updateItem(
