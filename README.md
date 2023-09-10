@@ -60,7 +60,7 @@ https://github.com/team-winey/Winey-AOS/assets/68090939/d190e491-efe5-4a02-89d1-
 | Design Pattern          | Observer Pattern, Repository Pattern, State Pattern                       |
 | JetPack Components      | LifeCycle, ViewModel, LiveData, StateFlow, DataBinding, DataStore, Paging |
 | Dependency Injection    | Hilt                                                                      |
-| Network                 | Retrofit, OkHttp, KotlinSerialization                                     |
+| Network                 | Retrofit, OkHttp, kotlinx.serialization                                     |
 | Asynchronous Processing | Coroutine, Flow                                                           |
 | Third Party Library     | Kakao Login, Coil, Lottie, Timber, CircleImageView                        |
 | Branch Strategy         | Git Flow                                                                  |
