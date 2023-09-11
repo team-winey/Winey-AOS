@@ -93,6 +93,18 @@ class WineyFeedFragment :
         initPagingLoadStateListener()
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (viewModel.isItemClicked.value) {
+//            Timber.e("REFRESH !!!")
+//            wineyFeedAdapter.refresh()
+
+            Timber.e("GET WINEY FEED LIST !!!")
+            viewModel.getWineyFeedList()
+            viewModel.updateItemClickedState(false)
+        }
+    }
+
     private fun removeRecyclerviewItemChangeAnimation() {
         val animator = binding.rvWineyfeedPost.itemAnimator
         if (animator is SimpleItemAnimator) {
@@ -245,19 +257,6 @@ class WineyFeedFragment :
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (viewModel.isItemClicked.value) {
-//            Timber.e("REFRESH !!!")
-//            wineyFeedAdapter.refresh()
-
-            Timber.e("GET WINEY FEED LIST !!!")
-            viewModel.getWineyFeedList()
-
-            viewModel.updateItemClickedState(false)
-        }
-    }
-
     private fun initPagingLoadStateListener() {
         wineyFeedAdapter.addLoadStateListener { loadStates ->
             when (loadStates.refresh) {
@@ -278,7 +277,8 @@ class WineyFeedFragment :
                         return@addLoadStateListener
                     }
 
-                    // 현재 로딩된 리스트 사이즈 > 클릭한 아이템의 인덱스 -> 스크롤 위치 복원
+                    // 클릭한 아이템의 인덱스가 40 미만인 경우 (두 페이지 이내)
+                    // 스크롤 위치 복원
                     viewLifeCycleScope.launch {
                         if (currentItemSize > selectedItemIndex) {
                             withContext(Dispatchers.Main) {
@@ -291,7 +291,12 @@ class WineyFeedFragment :
                         }
                     }
 
-                    // todo: 전체 리스트 다시 조회했는데 두번째 페이지까지만 로딩된 경우
+                    // todo: 클릭한 아이템의 인덱스가 40 이상인 경우, 스크롤 초기화
+                    if (selectedItemIndex >= 40) {
+                        initScrollPosition()
+                        dismissLoadingDialog()
+                        binding.rvWineyfeedPost.isVisible = true
+                    }
                 }
 
                 is LoadState.Error -> {
@@ -300,6 +305,11 @@ class WineyFeedFragment :
                 }
             }
         }
+    }
+
+    private fun initScrollPosition() {
+        binding.rvWineyfeedPost.scrollToPosition(0)
+        selectedItemIndex = -1
     }
 
     private fun showLoadingDialog() {
