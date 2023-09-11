@@ -263,28 +263,35 @@ class WineyFeedFragment :
             when (loadStates.refresh) {
                 is LoadState.Loading -> {
                     Timber.d("LOADING")
-
-                    // todo: 전체 화면 -> 로딩 다이얼로그 띄우기
-                    binding.rvWineyfeedPost.isVisible = false
-                    loadingDialog.show(parentFragmentManager, TAG_FEED_LOADING_DIALOG)
+                    showLoadingDialog()
                 }
 
                 is LoadState.NotLoading -> {
                     Timber.d("NOT LOADING")
+                    Timber.d("ITEM SIZE: ${wineyFeedAdapter.itemCount}")
+                    val currentItemSize = wineyFeedAdapter.itemCount
 
+                    // 초기 상태
+                    if (selectedItemIndex == -1) {
+                        dismissLoadingDialog()
+                        binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
+                        return@addLoadStateListener
+                    }
+
+                    // 현재 로딩된 리스트 사이즈 > 클릭한 아이템의 인덱스 -> 스크롤 위치 복원
                     viewLifeCycleScope.launch {
-                        Timber.d("ITEM SIZE: ${wineyFeedAdapter.itemCount}")
-                        val currentItemSize = wineyFeedAdapter.itemCount
-
-                        if (checkRestoreScrollCondition(currentItemSize)) {
+                        if (currentItemSize > selectedItemIndex) {
                             withContext(Dispatchers.Main) {
                                 restoreScrollPosition()
                             }
-                        }
 
-                        dismissLoadingDialog()
-                        binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
+                            // 복원 완료되고 나서 다이얼로그 종료
+                            dismissLoadingDialog()
+                            binding.rvWineyfeedPost.isVisible = true
+                        }
                     }
+
+                    // todo: 전체 리스트 다시 조회했는데 두번째 페이지까지만 로딩된 경우
                 }
 
                 is LoadState.Error -> {
@@ -295,8 +302,10 @@ class WineyFeedFragment :
         }
     }
 
-    private fun checkRestoreScrollCondition(currentItemSize: Int) =
-        selectedItemIndex != -1 && currentItemSize > selectedItemIndex
+    private fun showLoadingDialog() {
+        binding.rvWineyfeedPost.isVisible = false
+        loadingDialog.show(parentFragmentManager, TAG_FEED_LOADING_DIALOG)
+    }
 
     private fun restoreScrollPosition() {
         Timber.e("RESTORE ITEM INDEX: $selectedItemIndex")
