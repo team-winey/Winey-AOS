@@ -26,12 +26,12 @@ class FeedRepositoryImpl @Inject constructor(
     private val feedService: FeedService
 ) : FeedRepository {
     override suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>> =
-        Pager(PagingConfig(WINEYFEED_PAGE_SIZE, prefetchDistance = LOAD_DISTANCE)) {
+        Pager(PagingConfig(pageSize = WINEYFEED_PAGE_SIZE)) {
             WineyFeedPagingSource(feedService)
         }.flow
 
     override suspend fun getMyFeedList(): Flow<PagingData<WineyFeed>> =
-        Pager(PagingConfig(MYFEED_PAGE_SIZE, prefetchDistance = LOAD_DISTANCE)) {
+        Pager(PagingConfig(pageSize = MYFEED_PAGE_SIZE)) {
             MyFeedPagingSource(feedService)
         }.flow
 

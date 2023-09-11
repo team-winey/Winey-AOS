@@ -222,15 +222,14 @@ class WineyFeedFragment :
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        if (viewModel.isItemClicked.value) {
-            Timber.e("onStart에서 위니피드 다시 조회합니다.")
-            viewModel.getWineyFeedList()
-            viewModel.updateItemClickedState(false)
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        if (viewModel.isItemClicked.value) {
+//            Timber.e("onStart에서 위니피드 다시 조회합니다.")
+//            viewModel.getWineyFeedList()
+//            viewModel.updateItemClickedState(false)
+//        }
+//    }
 
     private fun initGetFeedStateObserver() {
         viewLifeCycleScope.launch {
@@ -257,18 +256,17 @@ class WineyFeedFragment :
         wineyFeedAdapter.addLoadStateListener { loadStates ->
             when (loadStates.refresh) {
                 is LoadState.Loading -> {
-                    Timber.e("LOAD STATE IS LOADING")
+                    Timber.d("LOAD STATE IS LOADING")
                     binding.rvWineyfeedPost.isVisible = false
                 }
 
                 is LoadState.NotLoading -> {
-                    Timber.e("LOAD STATE IS NOT LOADING")
+                    Timber.d("LOAD STATE IS NOT LOADING")
                     binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
-                    restoreScrollPosition()
                 }
 
                 is LoadState.Error -> {
-                    Timber.e("LOAD STATE IS ERROR")
+                    Timber.d("LOAD STATE IS ERROR")
                     Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                 }
             }
@@ -277,7 +275,7 @@ class WineyFeedFragment :
 
     private fun restoreScrollPosition() {
         if (selectedItemIndex != -1) {
-            Timber.e("TOTAL ITEM SIZE: ${wineyFeedAdapter.snapshot().items.size}")
+            Timber.e("ITEM SIZE: ${wineyFeedAdapter.snapshot().items.size}")
             Timber.e("INDEX: $selectedItemIndex")
             binding.rvWineyfeedPost.scrollToPosition(selectedItemIndex + 1)
             selectedItemIndex = -1
