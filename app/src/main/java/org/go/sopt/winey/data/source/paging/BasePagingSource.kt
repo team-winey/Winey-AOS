@@ -19,11 +19,10 @@ abstract class BasePagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, WineyFeed> {
-        val pageNumber = params.key ?: FIRST_PAGE_NUM
-//        if (pageNumber != FIRST_PAGE_NUM) delay(DELAY_MILLIS)
-
         return try {
+            val pageNumber = params.key ?: FIRST_PAGE_NUM
             val feeds = getFeedList(pageNumber)
+
             LoadResult.Page(
                 data = feeds,
                 prevKey = if (pageNumber == FIRST_PAGE_NUM) null else pageNumber - 1,

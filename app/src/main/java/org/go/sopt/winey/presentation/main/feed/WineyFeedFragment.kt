@@ -20,12 +20,14 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import org.go.sopt.winey.domain.entity.User
@@ -222,15 +224,6 @@ class WineyFeedFragment :
         }
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        if (viewModel.isItemClicked.value) {
-//            Timber.e("onStart에서 위니피드 다시 조회합니다.")
-//            viewModel.getWineyFeedList()
-//            viewModel.updateItemClickedState(false)
-//        }
-//    }
-
     private fun initGetFeedStateObserver() {
         viewLifeCycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -252,34 +245,63 @@ class WineyFeedFragment :
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (viewModel.isItemClicked.value) {
+//            Timber.e("REFRESH !!!")
+//            wineyFeedAdapter.refresh()
+
+            Timber.e("GET WINEY FEED LIST !!!")
+            viewModel.getWineyFeedList()
+
+            viewModel.updateItemClickedState(false)
+        }
+    }
+
     private fun initPagingLoadStateListener() {
         wineyFeedAdapter.addLoadStateListener { loadStates ->
             when (loadStates.refresh) {
                 is LoadState.Loading -> {
-                    Timber.d("LOAD STATE IS LOADING")
+                    Timber.d("LOADING")
+
+                    // todo: 전체 화면 -> 로딩 다이얼로그 띄우기
                     binding.rvWineyfeedPost.isVisible = false
+                    loadingDialog.show(parentFragmentManager, TAG_FEED_LOADING_DIALOG)
                 }
 
                 is LoadState.NotLoading -> {
-                    Timber.d("LOAD STATE IS NOT LOADING")
-                    binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
+                    Timber.d("NOT LOADING")
+
+                    viewLifeCycleScope.launch {
+                        Timber.d("ITEM SIZE: ${wineyFeedAdapter.itemCount}")
+                        val currentItemSize = wineyFeedAdapter.itemCount
+
+                        if (checkRestoreScrollCondition(currentItemSize)) {
+                            withContext(Dispatchers.Main) {
+                                restoreScrollPosition()
+                            }
+                        }
+
+                        dismissLoadingDialog()
+                        binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
+                    }
                 }
 
                 is LoadState.Error -> {
-                    Timber.d("LOAD STATE IS ERROR")
+                    dismissLoadingDialog()
                     Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                 }
             }
         }
     }
 
+    private fun checkRestoreScrollCondition(currentItemSize: Int) =
+        selectedItemIndex != -1 && currentItemSize > selectedItemIndex
+
     private fun restoreScrollPosition() {
-        if (selectedItemIndex != -1) {
-            Timber.e("ITEM SIZE: ${wineyFeedAdapter.snapshot().items.size}")
-            Timber.e("INDEX: $selectedItemIndex")
-            binding.rvWineyfeedPost.scrollToPosition(selectedItemIndex + 1)
-            selectedItemIndex = -1
-        }
+        Timber.e("RESTORE ITEM INDEX: $selectedItemIndex")
+        binding.rvWineyfeedPost.scrollToPosition(selectedItemIndex + 1)
+        selectedItemIndex = -1
     }
 
     private fun dismissLoadingDialog() {
@@ -455,7 +477,7 @@ class WineyFeedFragment :
         private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
-        private const val TAG_FEED_LIST_LOADING_DIALOG = "FEED_LIST_LOADING_DIALOG"
+        private const val TAG_FEED_LOADING_DIALOG = "FEED_LIST_LOADING_DIALOG"
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
