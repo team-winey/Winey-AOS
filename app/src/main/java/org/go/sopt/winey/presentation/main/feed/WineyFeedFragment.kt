@@ -259,7 +259,6 @@ class WineyFeedFragment :
                 is LoadState.NotLoading -> {
                     binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
                     restoreScrollPosition()
-                    selectedItemIndex = -1
                 }
 
                 is LoadState.Error -> {
