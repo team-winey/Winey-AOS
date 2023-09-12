@@ -93,25 +93,7 @@ class WineyFeedFragment :
         super.onStart()
         if (selectedItemId != -1) {
             wineyFeedViewModel.getFeedDetail(selectedItemId)
-            updateFeed()
-        }
-    }
-    private fun updateFeed() {
-        viewLifeCycleScope.launch {
-            wineyFeedViewModel.getFeedDetailState.flowWithLifecycle(viewLifeCycle).collectLatest { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        val detailFeed = state.data ?: return@collectLatest
-                        wineyFeedAdapter.updateSelectedItem(detailFeed)
-                    }
-
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> Timber.tag("failure").e("DetailActivity.MSG_DETAIL_ERROR")
-                }
-            }
+            initGetFeedDetailObserver()
         }
     }
 
@@ -348,6 +330,25 @@ class WineyFeedFragment :
             mainViewModel.patchCheckAllNoti()
             val intent = Intent(context, NotificationActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun initGetFeedDetailObserver() {
+        viewLifeCycleScope.launch {
+            wineyFeedViewModel.getFeedDetailState.flowWithLifecycle(viewLifeCycle).collectLatest { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val detailFeed = state.data ?: return@collectLatest
+                        wineyFeedAdapter.updateSelectedItem(detailFeed)
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> Timber.tag("failure").e("DetailActivity.MSG_DETAIL_ERROR")
+                }
+            }
         }
     }
 
