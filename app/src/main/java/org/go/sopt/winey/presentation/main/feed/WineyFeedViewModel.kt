@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.domain.entity.Like
@@ -37,6 +37,9 @@ class WineyFeedViewModel @Inject constructor(
     private val _isItemClicked = MutableStateFlow(false)
     val isItemClicked: StateFlow<Boolean> = _isItemClicked.asStateFlow()
 
+    private lateinit var _wineyFeedPagingData: Flow<PagingData<WineyFeed>>
+    val wineyFeedPagingData get() = _wineyFeedPagingData
+
     init {
         getWineyFeedList()
     }
@@ -47,15 +50,17 @@ class WineyFeedViewModel @Inject constructor(
 
     fun getWineyFeedList() {
         viewModelScope.launch {
-            _getWineyFeedListState.emit(UiState.Loading)
-
-            // todo: 캐싱을 하면 항상 서버통신 결과가 프래그먼트에서 수집되어서
-            //  위니피드에서 삭제했던 아이템이 돌아가면 다시 뜬다...
-            feedRepository.getWineyFeedList().cachedIn(viewModelScope).collectLatest { response ->
-                Timber.e("PAGING DATA COLLECT in ViewModel")
-                _getWineyFeedListState.emit(UiState.Success(response))
-            }
+            Timber.e("PAGING DATA LOAD in ViewModel")
+            _wineyFeedPagingData = feedRepository.getWineyFeedList().cachedIn(viewModelScope)
         }
+
+//        viewModelScope.launch {
+//            _getWineyFeedListState.emit(UiState.Loading)
+//            feedRepository.getWineyFeedList().cachedIn(viewModelScope).collect { response ->
+//                Timber.e("PAGING DATA COLLECT in ViewModel")
+//                _getWineyFeedListState.emit(UiState.Success(response))
+//            }
+//        }
     }
 
     fun likeFeed(feedId: Int, isLiked: Boolean) {

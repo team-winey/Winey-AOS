@@ -10,10 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
@@ -163,10 +161,7 @@ class WineyFeedFragment :
 
     private fun refreshWineyFeed() {
         wineyFeedHeaderAdapter.notifyItemChanged(0)
-//        wineyFeedAdapter.refresh()
-
-        // todo: 피드 재조회 -> 프래그먼트에서 컬렉트 -> UI에 표시
-        viewModel.getWineyFeedList()
+        wineyFeedAdapter.refresh()
     }
 
     private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
@@ -243,23 +238,30 @@ class WineyFeedFragment :
 
     private fun initGetFeedStateObserver() {
         viewLifeCycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getWineyFeedListState.collectLatest { state ->
-                    when (state) {
-                        is UiState.Success -> {
-                            Timber.e("PAGING DATA COLLECT in Fragment")
-                            wineyFeedAdapter.submitData(state.data)
-                        }
-
-                        is UiState.Failure -> {
-                            snackBar(binding.root) { state.msg }
-                        }
-
-                        else -> {}
-                    }
-                }
+            viewModel.wineyFeedPagingData.collectLatest { pagingData ->
+                Timber.e("PAGING DATA COLLECT in Fragment")
+                wineyFeedAdapter.submitData(pagingData)
             }
         }
+
+//        viewLifeCycleScope.launch {
+//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.getWineyFeedListState.collect { state ->
+//                    when (state) {
+//                        is UiState.Success -> {
+//                            Timber.e("PAGING DATA COLLECT in Fragment")
+//                            wineyFeedAdapter.submitData(state.data)
+//                        }
+//
+//                        is UiState.Failure -> {
+//                            snackBar(binding.root) { state.msg }
+//                        }
+//
+//                        else -> {}
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun initPagingLoadStateListener() {
