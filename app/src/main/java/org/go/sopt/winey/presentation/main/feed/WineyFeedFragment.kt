@@ -61,12 +61,8 @@ class WineyFeedFragment :
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
-
     private var clickedFeedId = -1
-    private var clickedFeedIndex = -1
     private var deleteFeedId = -1
-
-    private val loadingDialog by lazy { WineyFeedLoadingDialogFragment() }
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -96,9 +92,7 @@ class WineyFeedFragment :
 
     override fun onStart() {
         super.onStart()
-
         if (clickedFeedId != -1) {
-            Timber.e("클릭한 아이템만 다시 조회합니다.")
             viewModel.getDetailFeed(clickedFeedId)
         }
     }
@@ -142,7 +136,7 @@ class WineyFeedFragment :
             toFeedDetail = { wineyFeed ->
                 sendWineyFeedEvent(TYPE_CLICK_FEED_ITEM, wineyFeed)
                 navigateToDetail(wineyFeed)
-                saveClickedItemInfo(wineyFeed)
+                saveClickedItemId(wineyFeed)
             }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
@@ -151,8 +145,7 @@ class WineyFeedFragment :
         )
     }
 
-    private fun saveClickedItemInfo(wineyFeed: WineyFeed) {
-        clickedFeedIndex = wineyFeedAdapter.snapshot().indexOf(wineyFeed)
+    private fun saveClickedItemId(wineyFeed: WineyFeed) {
         clickedFeedId = wineyFeed.feedId
     }
 
@@ -234,9 +227,7 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        // todo: 어댑터 리스트 갱신
                         deletePagingDataItem()
-
                         wineySnackbar(
                             binding.root,
                             true,
@@ -269,25 +260,6 @@ class WineyFeedFragment :
                 wineyFeedAdapter.submitData(pagingData)
             }
         }
-
-//        viewLifeCycleScope.launch {
-//            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.getWineyFeedListState.collect { state ->
-//                    when (state) {
-//                        is UiState.Success -> {
-//                            Timber.e("PAGING DATA COLLECT in Fragment")
-//                            wineyFeedAdapter.submitData(state.data)
-//                        }
-//
-//                        is UiState.Failure -> {
-//                            snackBar(binding.root) { state.msg }
-//                        }
-//
-//                        else -> {}
-//                    }
-//                }
-//            }
-//        }
     }
 
     private fun initPagingLoadStateListener() {
@@ -308,26 +280,6 @@ class WineyFeedFragment :
                 }
             }
         }
-    }
-
-    private fun initScrollPosition() {
-        binding.rvWineyfeedPost.scrollToPosition(0)
-        clickedFeedIndex = -1
-    }
-
-    private fun showLoadingDialog() {
-        binding.rvWineyfeedPost.isVisible = false
-        loadingDialog.show(parentFragmentManager, TAG_FEED_LOADING_DIALOG)
-    }
-
-    private fun restoreScrollPosition() {
-        Timber.e("RESTORE ITEM INDEX: $clickedFeedIndex")
-        binding.rvWineyfeedPost.scrollToPosition(clickedFeedIndex + 1)
-        clickedFeedIndex = -1
-    }
-
-    private fun dismissLoadingDialog() {
-        if (loadingDialog.isAdded) loadingDialog.dismiss()
     }
 
     private fun initPostLikeStateObserver() {
@@ -443,7 +395,6 @@ class WineyFeedFragment :
         binding.layoutWineyfeedRefresh.setOnRefreshListener {
             refreshWineyFeed()
             binding.layoutWineyfeedRefresh.isRefreshing = false
-            clickedFeedIndex = -1
         }
     }
 
@@ -495,7 +446,6 @@ class WineyFeedFragment :
         private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
-        private const val TAG_FEED_LOADING_DIALOG = "FEED_LIST_LOADING_DIALOG"
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"

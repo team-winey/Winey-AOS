@@ -10,7 +10,6 @@ import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.util.view.ItemDiffCallback
 import org.go.sopt.winey.util.view.setOnSingleClickListener
-import timber.log.Timber
 
 class WineyFeedAdapter(
     private val onlikeButtonClicked: (WineyFeed) -> Unit,
@@ -67,8 +66,6 @@ class WineyFeedAdapter(
     }
 
     fun updateItem(clickedItemId: Int, newFeed: DetailFeed) {
-        Timber.e("UPDATE ID: $clickedItemId")
-
         val currentList = snapshot().items
         currentList.forEachIndexed { index, currentFeed ->
             if (currentFeed.feedId == clickedItemId) {

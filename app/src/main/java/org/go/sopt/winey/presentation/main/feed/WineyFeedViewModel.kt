@@ -24,11 +24,6 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository
 ) : ViewModel() {
-//    private val _getWineyFeedListState =
-//        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Empty)
-//    val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
-//        _getWineyFeedListState.asStateFlow()
-
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Empty)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()
 
@@ -47,19 +42,11 @@ class WineyFeedViewModel @Inject constructor(
         getWineyFeedList()
     }
 
-    fun getWineyFeedList() {
+    private fun getWineyFeedList() {
         viewModelScope.launch {
             Timber.e("PAGING DATA LOAD in ViewModel")
             _wineyFeedPagingData = feedRepository.getWineyFeedList().cachedIn(viewModelScope)
         }
-
-//        viewModelScope.launch {
-//            _getWineyFeedListState.emit(UiState.Loading)
-//            feedRepository.getWineyFeedList().cachedIn(viewModelScope).collect { response ->
-//                Timber.e("PAGING DATA COLLECT in ViewModel")
-//                _getWineyFeedListState.emit(UiState.Success(response))
-//            }
-//        }
     }
 
     fun getDetailFeed(feedId: Int) {
