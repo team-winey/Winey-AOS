@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.FeedRepository
@@ -23,6 +24,11 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository
 ) : ViewModel() {
+    private val _getFeedDetailState =
+        MutableStateFlow<UiState<DetailFeed?>>(UiState.Loading)
+    val getFeedDetailState: StateFlow<UiState<DetailFeed?>> =
+        _getFeedDetailState.asStateFlow()
+
     private val _getWineyFeedListState =
         MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Empty)
     val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
@@ -41,6 +47,16 @@ class WineyFeedViewModel @Inject constructor(
     fun likeFeed(feedId: Int, isLiked: Boolean) {
         val requestPostLikeDto = RequestPostLikeDto(isLiked)
         postLike(feedId, requestPostLikeDto)
+    }
+
+    fun getFeedDetail(feedId: Int) {
+        viewModelScope.launch {
+            feedRepository.getFeedDetail(feedId)
+                .onSuccess { response ->
+                    _getFeedDetailState.emit(UiState.Success(response))
+                }
+                .onFailure { t -> handleFailureState(_getFeedDetailState, t) }
+        }
     }
 
     fun deleteFeed(feedId: Int) {
