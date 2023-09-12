@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.go.sopt.winey.databinding.ItemWineyfeedPostBinding
+import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.util.view.ItemDiffCallback
 import org.go.sopt.winey.util.view.setOnSingleClickListener
+import timber.log.Timber
 
 class WineyFeedAdapter(
     private val onlikeButtonClicked: (WineyFeed) -> Unit,
@@ -52,7 +54,7 @@ class WineyFeedAdapter(
         holder.onBind(getItem(position))
     }
 
-    fun updateItem(feedId: Int, isLiked: Boolean, likes: Int): WineyFeed? {
+    fun updateLikeNumber(feedId: Int, isLiked: Boolean, likes: Int): WineyFeed? {
         snapshot().items.forEachIndexed { index, wineyFeed ->
             if (wineyFeed.feedId == feedId) {
                 wineyFeed.isLiked = isLiked
@@ -62,6 +64,22 @@ class WineyFeedAdapter(
             }
         }
         return null
+    }
+
+    fun updateItem(clickedItemId: Int, newFeed: DetailFeed) {
+        Timber.e("UPDATE ID: $clickedItemId")
+
+        val currentList = snapshot().items
+        currentList.forEachIndexed { index, currentFeed ->
+            if (currentFeed.feedId == clickedItemId) {
+                currentFeed.isLiked = newFeed.isLiked
+                currentFeed.likes = newFeed.likes
+                currentFeed.comments = newFeed.comments
+                currentFeed.timeAgo = newFeed.timeAgo
+                notifyItemChanged(index)
+                return@forEachIndexed
+            }
+        }
     }
 
     fun deleteItem(feedId: Int): MutableList<WineyFeed> {

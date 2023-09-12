@@ -61,9 +61,12 @@ class WineyFeedFragment :
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
-    private var selectedItemIndex: Int = -1
-    private val loadingDialog by lazy { WineyFeedLoadingDialogFragment() }
+
+    private var clickedFeedId = -1
+    private var clickedFeedIndex = -1
     private var deleteFeedId = -1
+
+    private val loadingDialog by lazy { WineyFeedLoadingDialogFragment() }
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -88,18 +91,36 @@ class WineyFeedFragment :
         removeRecyclerviewItemChangeAnimation()
 
         initPagingLoadStateListener()
+        initGetDetailFeedStateObserver()
     }
 
-//    override fun onStart() {
-//        super.onStart()
-//        if (viewModel.isItemClicked.value) {
-////            Timber.e("REFRESH !!!")
-////            wineyFeedAdapter.refresh()
-//            Timber.e("GET WINEY FEED LIST !!!")
-//            viewModel.getWineyFeedList()
-//            viewModel.updateItemClickedState(false)
-//        }
-//    }
+    override fun onStart() {
+        super.onStart()
+
+        if (clickedFeedId != -1) {
+            Timber.e("클릭한 아이템만 다시 조회합니다.")
+            viewModel.getDetailFeed(clickedFeedId)
+        }
+    }
+
+    private fun initGetDetailFeedStateObserver() {
+        viewModel.getDetailFeedState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val detailFeed = state.data ?: return@onEach
+                        wineyFeedAdapter.updateItem(clickedFeedId, detailFeed)
+                        clickedFeedId = -1
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
 
     private fun removeRecyclerviewItemChangeAnimation() {
         val animator = binding.rvWineyfeedPost.itemAnimator
@@ -121,13 +142,18 @@ class WineyFeedFragment :
             toFeedDetail = { wineyFeed ->
                 sendWineyFeedEvent(TYPE_CLICK_FEED_ITEM, wineyFeed)
                 navigateToDetail(wineyFeed)
-//                viewModel.updateItemClickedState(true)
+                saveClickedItemInfo(wineyFeed)
             }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
             wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
         )
+    }
+
+    private fun saveClickedItemInfo(wineyFeed: WineyFeed) {
+        clickedFeedIndex = wineyFeedAdapter.snapshot().indexOf(wineyFeed)
+        clickedFeedId = wineyFeed.feedId
     }
 
     private fun showFeedPopupMenu(anchorView: View, wineyFeed: WineyFeed) {
@@ -286,7 +312,7 @@ class WineyFeedFragment :
 
     private fun initScrollPosition() {
         binding.rvWineyfeedPost.scrollToPosition(0)
-        selectedItemIndex = -1
+        clickedFeedIndex = -1
     }
 
     private fun showLoadingDialog() {
@@ -295,9 +321,9 @@ class WineyFeedFragment :
     }
 
     private fun restoreScrollPosition() {
-        Timber.e("RESTORE ITEM INDEX: $selectedItemIndex")
-        binding.rvWineyfeedPost.scrollToPosition(selectedItemIndex + 1)
-        selectedItemIndex = -1
+        Timber.e("RESTORE ITEM INDEX: $clickedFeedIndex")
+        binding.rvWineyfeedPost.scrollToPosition(clickedFeedIndex + 1)
+        clickedFeedIndex = -1
     }
 
     private fun dismissLoadingDialog() {
@@ -308,7 +334,7 @@ class WineyFeedFragment :
         viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    val item = wineyFeedAdapter.updateItem(
+                    val item = wineyFeedAdapter.updateLikeNumber(
                         state.data.data.feedId,
                         state.data.data.isLiked,
                         state.data.data.likes
@@ -417,7 +443,7 @@ class WineyFeedFragment :
         binding.layoutWineyfeedRefresh.setOnRefreshListener {
             refreshWineyFeed()
             binding.layoutWineyfeedRefresh.isRefreshing = false
-            selectedItemIndex = -1
+            clickedFeedIndex = -1
         }
     }
 
@@ -427,10 +453,6 @@ class WineyFeedFragment :
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
-        val currentItemSnapshotList = wineyFeedAdapter.snapshot()
-        selectedItemIndex = currentItemSnapshotList.indexOf(wineyFeed)
-        Timber.e("CLICKED ITEM INDEX: $selectedItemIndex")
-
         Intent(requireContext(), DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.FeedRepository
@@ -23,10 +24,10 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository
 ) : ViewModel() {
-    private val _getWineyFeedListState =
-        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Empty)
-    val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
-        _getWineyFeedListState.asStateFlow()
+//    private val _getWineyFeedListState =
+//        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Empty)
+//    val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
+//        _getWineyFeedListState.asStateFlow()
 
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Empty)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()
@@ -34,18 +35,16 @@ class WineyFeedViewModel @Inject constructor(
     private val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteWineyFeedState: StateFlow<UiState<Unit>> = _deleteWineyFeedState.asStateFlow()
 
-    private val _isItemClicked = MutableStateFlow(false)
-    val isItemClicked: StateFlow<Boolean> = _isItemClicked.asStateFlow()
-
     private lateinit var _wineyFeedPagingData: Flow<PagingData<WineyFeed>>
     val wineyFeedPagingData get() = _wineyFeedPagingData
 
+    private val _getDetailFeedState =
+        MutableStateFlow<UiState<DetailFeed?>>(UiState.Loading)
+    val getDetailFeedState: StateFlow<UiState<DetailFeed?>> =
+        _getDetailFeedState.asStateFlow()
+
     init {
         getWineyFeedList()
-    }
-
-    fun updateItemClickedState(clicked: Boolean) {
-        _isItemClicked.value = clicked
     }
 
     fun getWineyFeedList() {
@@ -61,6 +60,18 @@ class WineyFeedViewModel @Inject constructor(
 //                _getWineyFeedListState.emit(UiState.Success(response))
 //            }
 //        }
+    }
+
+    fun getDetailFeed(feedId: Int) {
+        viewModelScope.launch {
+            _getDetailFeedState.emit(UiState.Loading)
+
+            feedRepository.getFeedDetail(feedId)
+                .onSuccess { response ->
+                    _getDetailFeedState.emit(UiState.Success(response))
+                }
+                .onFailure { t -> handleFailureState(_getDetailFeedState, t) }
+        }
     }
 
     fun likeFeed(feedId: Int, isLiked: Boolean) {
