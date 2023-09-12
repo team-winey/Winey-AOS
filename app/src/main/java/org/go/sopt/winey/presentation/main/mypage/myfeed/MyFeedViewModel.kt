@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.FeedRepository
@@ -33,6 +34,11 @@ class MyFeedViewModel @Inject constructor(
 
     private val _deleteMyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteMyFeedState: StateFlow<UiState<Unit>> = _deleteMyFeedState.asStateFlow()
+
+    private val _getFeedDetailState =
+        MutableStateFlow<UiState<DetailFeed?>>(UiState.Loading)
+    val getFeedDetailState: StateFlow<UiState<DetailFeed?>> =
+        _getFeedDetailState.asStateFlow()
 
     init {
         getMyFeed()
@@ -67,6 +73,16 @@ class MyFeedViewModel @Inject constructor(
                 .collectLatest { response ->
                     _getMyFeedListState.emit(UiState.Success(response))
                 }
+        }
+    }
+
+    fun getFeedDetail(feedId: Int) {
+        viewModelScope.launch {
+            feedRepository.getFeedDetail(feedId)
+                .onSuccess { response ->
+                    _getFeedDetailState.emit(UiState.Success(response))
+                }
+                .onFailure { t -> handleFailureState(_getFeedDetailState, t) }
         }
     }
 

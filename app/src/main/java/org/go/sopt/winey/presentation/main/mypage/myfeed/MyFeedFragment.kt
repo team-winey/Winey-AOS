@@ -43,6 +43,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private val viewModel by viewModels<MyFeedViewModel>()
     private lateinit var myFeedAdapter: MyFeedAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
+    private var selectedItemId: Int = -1
     private var selectedItemIndex: Int = -1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,6 +56,13 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
+    }
+    override fun onStart() {
+        super.onStart()
+        if (selectedItemId != -1) {
+            viewModel.getFeedDetail(selectedItemId)
+            initGetFeedDetailObserver()
+        }
     }
 
     private fun initAdapter() {
@@ -227,10 +235,29 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }.launchIn(viewLifeCycleScope)
     }
 
+    private fun initGetFeedDetailObserver() {
+        viewLifeCycleScope.launch {
+            viewModel.getFeedDetailState.flowWithLifecycle(viewLifeCycle).collectLatest { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val detailFeed = state.data ?: return@collectLatest
+                        myFeedAdapter.updateSelectedItem(detailFeed)
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> Timber.tag("failure").e("DetailActivity.MSG_DETAIL_ERROR")
+                }
+            }
+        }
+    }
+
     private fun navigateToDetail(wineyFeed: WineyFeed) {
         val currentItemSnapshotList = myFeedAdapter.snapshot()
         Timber.e("CURRENT ITEM SIZE: ${currentItemSnapshotList.size}")
-
+        selectedItemId = wineyFeed.feedId
         selectedItemIndex = currentItemSnapshotList.indexOf(wineyFeed)
         Timber.e("CLICKED ITEM INDEX: $selectedItemIndex")
 
