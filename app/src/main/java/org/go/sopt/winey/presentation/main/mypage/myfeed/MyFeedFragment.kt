@@ -2,7 +2,6 @@ package org.go.sopt.winey.presentation.main.mypage.myfeed
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
@@ -17,7 +16,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
@@ -38,16 +36,14 @@ import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.WineyPopupMenu
-import org.go.sopt.winey.util.view.setOnSingleClickListener
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
-    private var selectedScrollPosition: Parcelable? = null
-    private var selectedItemIndex: Int = -1
     private val viewModel by viewModels<MyFeedViewModel>()
     private lateinit var myFeedAdapter: MyFeedAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
+    private var selectedItemIndex: Int = -1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,11 +55,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        viewModel.getMyFeed()
     }
 
     private fun initAdapter() {
@@ -81,6 +72,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun restoreScrollPosition() {
+        Timber.e("RESTORE ITEM INDEX: $selectedItemIndex")
         binding.rvMyfeedPost.post {
             if (selectedItemIndex != -1) {
                 binding.rvMyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex + 1)
@@ -130,7 +122,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initBackButtonClickListener() {
-        binding.imgMyfeedBack.setOnSingleClickListener {
+        binding.imgMyfeedBack.setOnClickListener {
             navigateTo<MyPageFragment>()
             parentFragmentManager.popBackStack()
         }
@@ -178,25 +170,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                 viewModel.getMyFeedListState.collectLatest { state ->
                     when (state) {
                         is UiState.Success -> {
-                            myFeedAdapter.addLoadStateListener { loadState ->
-                                when (loadState.refresh) {
-                                    is LoadState.Loading -> {
-                                        binding.clMyfeedEmpty.isVisible = false
-                                        binding.rvMyfeedPost.isVisible = false
-                                    }
-
-                                    is LoadState.NotLoading -> {
-                                        binding.rvMyfeedPost.isVisible = myFeedAdapter.itemCount > 0
-                                        binding.clMyfeedEmpty.isVisible =
-                                            myFeedAdapter.itemCount == 0
-                                        restoreScrollPosition()
-                                    }
-
-                                    is LoadState.Error -> {
-                                        Timber.tag("failure").e(MSG_MYFEED_ERROR)
-                                    }
-                                }
-                            }
+                            initPagingLoadStateListener()
                             myFeedAdapter.submitData(state.data)
                         }
 
@@ -206,6 +180,28 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
                         else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
                     }
+                }
+            }
+        }
+    }
+
+    private fun initPagingLoadStateListener() {
+        myFeedAdapter.addLoadStateListener { loadState ->
+            when (loadState.refresh) {
+                is LoadState.Loading -> {
+                    binding.clMyfeedEmpty.isVisible = false
+                    binding.rvMyfeedPost.isVisible = false
+                }
+
+                is LoadState.NotLoading -> {
+                    binding.rvMyfeedPost.isVisible = myFeedAdapter.itemCount > 0
+                    binding.clMyfeedEmpty.isVisible =
+                        myFeedAdapter.itemCount == 0
+                    restoreScrollPosition()
+                }
+
+                is LoadState.Error -> {
+                    Timber.tag("failure").e(MSG_MYFEED_ERROR)
                 }
             }
         }
@@ -232,32 +228,33 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
-        selectedItemIndex = myFeedAdapter.snapshot().indexOf(wineyFeed)
-        selectedScrollPosition = binding.rvMyfeedPost.layoutManager?.onSaveInstanceState()
-        val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
-        intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-        intent.putExtra(KEY_PREV_SCREEN, MY_FEED_SCREEN)
-        startActivity(intent)
+        val currentItemSnapshotList = myFeedAdapter.snapshot()
+        Timber.e("CURRENT ITEM SIZE: ${currentItemSnapshotList.size}")
+
+        selectedItemIndex = currentItemSnapshotList.indexOf(wineyFeed)
+        Timber.e("CLICKED ITEM INDEX: $selectedItemIndex")
+
+        Intent(requireContext(), DetailActivity::class.java).apply {
+            putExtra(KEY_FEED_ID, wineyFeed.feedId)
+            putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
+            putExtra(KEY_PREV_SCREEN, MY_FEED_SCREEN)
+            startActivity(this)
+        }
     }
 
     private inline fun <reified T : Fragment> navigateTo() {
         parentFragmentManager.commit {
             replace<T>(R.id.fcv_main, T::class.simpleName)
         }
-        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
-        bottomNav.selectedItemId = R.id.menu_mypage
     }
 
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
         private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
-
         private const val POPUP_MENU_OFFSET = 65
         private const val MSG_MYFEED_ERROR = "ERROR"
         private const val TAG_FEED_DELETE_DIALOG = "DELETE_DIALOG"
-
         private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }

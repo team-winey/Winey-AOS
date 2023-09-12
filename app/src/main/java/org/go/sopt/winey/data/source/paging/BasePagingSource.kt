@@ -2,7 +2,6 @@ package org.go.sopt.winey.data.source.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import kotlinx.coroutines.delay
 import org.go.sopt.winey.data.service.FeedService
 import org.go.sopt.winey.domain.entity.WineyFeed
 import java.io.IOException
@@ -10,6 +9,7 @@ import java.io.IOException
 abstract class BasePagingSource(
     protected val feedService: FeedService
 ) : PagingSource<Int, WineyFeed>() {
+    abstract suspend fun getFeedList(pageNumber: Int): List<WineyFeed>
 
     override fun getRefreshKey(state: PagingState<Int, WineyFeed>): Int? {
         return state.anchorPosition?.let { position ->
@@ -18,18 +18,15 @@ abstract class BasePagingSource(
         }
     }
 
-    abstract suspend fun getFeedList(position: Int): List<WineyFeed>
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, WineyFeed> {
-        val position = params.key ?: STARTING_KEY
-        if (position != STARTING_KEY) delay(DELAY_MILLIS)
-
         return try {
-            val feedData = getFeedList(position)
+            val pageNumber = params.key ?: FIRST_PAGE_NUM
+            val feeds = getFeedList(pageNumber)
+
             LoadResult.Page(
-                data = feedData,
-                prevKey = if (position == STARTING_KEY) null else position - 1,
-                nextKey = if (feedData.isEmpty() || feedData.first().isEnd) null else position + 1
+                data = feeds,
+                prevKey = if (pageNumber == FIRST_PAGE_NUM) null else pageNumber - 1,
+                nextKey = if (feeds.isEmpty() || feeds.first().isEnd) null else pageNumber + 1
             )
         } catch (e: IOException) {
             return LoadResult.Error(e)
@@ -37,7 +34,7 @@ abstract class BasePagingSource(
     }
 
     companion object {
-        private const val STARTING_KEY = 1
+        private const val FIRST_PAGE_NUM = 1
         private const val DELAY_MILLIS = 1_000L
     }
 }

@@ -2,7 +2,6 @@ package org.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
@@ -21,12 +20,14 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import org.go.sopt.winey.domain.entity.User
@@ -59,13 +60,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class WineyFeedFragment :
     BindingFragment<FragmentWineyFeedBinding>(R.layout.fragment_winey_feed) {
-    private var selectedScrollPosition: Parcelable? = null
-    private var selectedItemIndex: Int = -1
     private val viewModel by viewModels<WineyFeedViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
+    private var selectedItemIndex: Int = -1
+    private val loadingDialog by lazy { WineyFeedLoadingDialogFragment() }
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -76,7 +77,6 @@ class WineyFeedFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_homefeed")
-
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
 
@@ -84,23 +84,24 @@ class WineyFeedFragment :
         setSwipeRefreshListener()
         initFabClickListener()
         initNotificationButtonClickListener()
-        initDeleteFeedStateObserver()
 
+        initDeleteFeedStateObserver()
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         removeRecyclerviewItemChangeAnimation()
+
+        initPagingLoadStateListener()
     }
 
     override fun onStart() {
         super.onStart()
-        viewModel.getWineyFeed()
-    }
+        if (viewModel.isItemClicked.value) {
+//            Timber.e("REFRESH !!!")
+//            wineyFeedAdapter.refresh()
 
-    private fun restoreScrollPosition() {
-        binding.rvWineyfeedPost.post {
-            if (selectedItemIndex != -1) {
-                binding.rvWineyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex + 1)
-            }
+            Timber.e("GET WINEY FEED LIST !!!")
+            viewModel.getWineyFeedList()
+            viewModel.updateItemClickedState(false)
         }
     }
 
@@ -124,6 +125,7 @@ class WineyFeedFragment :
             toFeedDetail = { wineyFeed ->
                 sendWineyFeedEvent(TYPE_CLICK_FEED_ITEM, wineyFeed)
                 navigateToDetail(wineyFeed)
+                viewModel.updateItemClickedState(true)
             }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
@@ -235,28 +237,12 @@ class WineyFeedFragment :
     }
 
     private fun initGetFeedStateObserver() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifeCycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.getWineyFeedListState.collectLatest { state ->
                     when (state) {
                         is UiState.Success -> {
-                            wineyFeedAdapter.addLoadStateListener { loadState ->
-                                when (loadState.refresh) {
-                                    is LoadState.Loading -> {
-                                        binding.rvWineyfeedPost.isVisible = false
-                                    }
-
-                                    is LoadState.NotLoading -> {
-                                        binding.rvWineyfeedPost.isVisible =
-                                            wineyFeedAdapter.itemCount > 0
-                                        restoreScrollPosition()
-                                    }
-
-                                    is LoadState.Error -> {
-                                        Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
-                                    }
-                                }
-                            }
+                            Timber.e("UiState Success")
                             wineyFeedAdapter.submitData(state.data)
                         }
 
@@ -264,11 +250,81 @@ class WineyFeedFragment :
                             snackBar(binding.root) { state.msg }
                         }
 
-                        else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+                        else -> {}
                     }
                 }
             }
         }
+    }
+
+    private fun initPagingLoadStateListener() {
+        wineyFeedAdapter.addLoadStateListener { loadStates ->
+            when (loadStates.refresh) {
+                is LoadState.Loading -> {
+                    Timber.d("LOADING")
+                    showLoadingDialog()
+                }
+
+                is LoadState.NotLoading -> {
+                    Timber.d("NOT LOADING")
+                    Timber.d("ITEM SIZE: ${wineyFeedAdapter.itemCount}")
+                    val currentItemSize = wineyFeedAdapter.itemCount
+
+                    // 초기 상태
+                    if (selectedItemIndex == -1) {
+                        dismissLoadingDialog()
+                        binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
+                        return@addLoadStateListener
+                    }
+
+                    // 클릭한 아이템의 인덱스가 40 미만인 경우 (두 페이지 이내)
+                    // 스크롤 위치 복원
+                    viewLifeCycleScope.launch {
+                        if (currentItemSize > selectedItemIndex) {
+                            withContext(Dispatchers.Main) {
+                                restoreScrollPosition()
+                            }
+
+                            // 복원 완료되고 나서 다이얼로그 종료
+                            dismissLoadingDialog()
+                            binding.rvWineyfeedPost.isVisible = true
+                        }
+                    }
+
+                    // todo: 클릭한 아이템의 인덱스가 40 이상인 경우, 스크롤 초기화
+                    if (selectedItemIndex >= 40) {
+                        initScrollPosition()
+                        dismissLoadingDialog()
+                        binding.rvWineyfeedPost.isVisible = true
+                    }
+                }
+
+                is LoadState.Error -> {
+                    dismissLoadingDialog()
+                    Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+                }
+            }
+        }
+    }
+
+    private fun initScrollPosition() {
+        binding.rvWineyfeedPost.scrollToPosition(0)
+        selectedItemIndex = -1
+    }
+
+    private fun showLoadingDialog() {
+        binding.rvWineyfeedPost.isVisible = false
+        loadingDialog.show(parentFragmentManager, TAG_FEED_LOADING_DIALOG)
+    }
+
+    private fun restoreScrollPosition() {
+        Timber.e("RESTORE ITEM INDEX: $selectedItemIndex")
+        binding.rvWineyfeedPost.scrollToPosition(selectedItemIndex + 1)
+        selectedItemIndex = -1
+    }
+
+    private fun dismissLoadingDialog() {
+        if (loadingDialog.isAdded) loadingDialog.dismiss()
     }
 
     private fun initPostLikeStateObserver() {
@@ -394,14 +450,16 @@ class WineyFeedFragment :
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
-        selectedItemIndex = wineyFeedAdapter.snapshot().indexOf(wineyFeed)
-        selectedScrollPosition = binding.rvWineyfeedPost.layoutManager?.onSaveInstanceState()
+        val currentItemSnapshotList = wineyFeedAdapter.snapshot()
+        selectedItemIndex = currentItemSnapshotList.indexOf(wineyFeed)
+        Timber.e("CLICKED ITEM INDEX: $selectedItemIndex")
 
-        val intent = Intent(requireContext(), DetailActivity::class.java)
-        intent.putExtra(KEY_FEED_ID, wineyFeed.feedId)
-        intent.putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-        intent.putExtra(KEY_PREV_SCREEN, WINEY_FEED_SCREEN)
-        startActivity(intent)
+        Intent(requireContext(), DetailActivity::class.java).apply {
+            putExtra(KEY_FEED_ID, wineyFeed.feedId)
+            putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
+            putExtra(KEY_PREV_SCREEN, WINEY_FEED_SCREEN)
+            startActivity(this)
+        }
     }
 
     private fun sendWineyFeedEvent(type: EventType, feed: WineyFeed) {
@@ -438,6 +496,7 @@ class WineyFeedFragment :
         private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
+        private const val TAG_FEED_LOADING_DIALOG = "FEED_LIST_LOADING_DIALOG"
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"

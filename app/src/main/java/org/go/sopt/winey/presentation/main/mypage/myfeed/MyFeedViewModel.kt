@@ -59,7 +59,7 @@ class MyFeedViewModel @Inject constructor(
         }
     }
 
-    fun getMyFeed() {
+    private fun getMyFeed() {
         viewModelScope.launch {
             _getMyFeedListState.emit(UiState.Loading)
 

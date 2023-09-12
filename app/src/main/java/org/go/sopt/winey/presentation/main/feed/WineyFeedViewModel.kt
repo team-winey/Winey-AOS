@@ -34,12 +34,28 @@ class WineyFeedViewModel @Inject constructor(
     private val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteWineyFeedState: StateFlow<UiState<Unit>> = _deleteWineyFeedState.asStateFlow()
 
-    fun initDeleteFeedState() {
-        _deleteWineyFeedState.value = UiState.Empty
-    }
+    private val _isItemClicked = MutableStateFlow(false)
+    val isItemClicked: StateFlow<Boolean> = _isItemClicked.asStateFlow()
 
     init {
-        getWineyFeed()
+        getWineyFeedList()
+    }
+
+    fun updateItemClickedState(clicked: Boolean) {
+        _isItemClicked.value = clicked
+    }
+
+    fun getWineyFeedList() {
+        viewModelScope.launch {
+            _getWineyFeedListState.emit(UiState.Loading)
+
+            // 뷰모델의 라이프사이클에 따라 UiState 값이 캐싱된다.
+            feedRepository.getWineyFeedList().cachedIn(viewModelScope)
+                .collectLatest { response ->
+                    Timber.e("ViewModel collect")
+                    _getWineyFeedListState.emit(UiState.Success(response))
+                }
+        }
     }
 
     fun likeFeed(feedId: Int, isLiked: Boolean) {
@@ -59,6 +75,10 @@ class WineyFeedViewModel @Inject constructor(
         }
     }
 
+    fun initDeleteFeedState() {
+        _deleteWineyFeedState.value = UiState.Empty
+    }
+
     private fun postLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto) {
         viewModelScope.launch {
             _postWineyFeedLikeState.emit(UiState.Loading)
@@ -68,17 +88,6 @@ class WineyFeedViewModel @Inject constructor(
                     _postWineyFeedLikeState.emit(UiState.Success(response))
                 }
                 .onFailure { t -> handleFailureState(_postWineyFeedLikeState, t) }
-        }
-    }
-
-    fun getWineyFeed() {
-        viewModelScope.launch {
-            _getWineyFeedListState.emit(UiState.Loading)
-
-            feedRepository.getWineyFeedList().cachedIn(viewModelScope)
-                .collectLatest { response ->
-                    _getWineyFeedListState.emit(UiState.Success(response))
-                }
         }
     }
 
