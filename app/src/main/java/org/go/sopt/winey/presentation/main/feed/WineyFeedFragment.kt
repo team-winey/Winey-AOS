@@ -20,14 +20,12 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentWineyFeedBinding
 import org.go.sopt.winey.domain.entity.User
@@ -67,6 +65,7 @@ class WineyFeedFragment :
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
     private var selectedItemIndex: Int = -1
     private val loadingDialog by lazy { WineyFeedLoadingDialogFragment() }
+    private var deleteFeedId = -1
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -93,17 +92,16 @@ class WineyFeedFragment :
         initPagingLoadStateListener()
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (viewModel.isItemClicked.value) {
-//            Timber.e("REFRESH !!!")
-//            wineyFeedAdapter.refresh()
-
-            Timber.e("GET WINEY FEED LIST !!!")
-            viewModel.getWineyFeedList()
-            viewModel.updateItemClickedState(false)
-        }
-    }
+//    override fun onStart() {
+//        super.onStart()
+//        if (viewModel.isItemClicked.value) {
+////            Timber.e("REFRESH !!!")
+////            wineyFeedAdapter.refresh()
+//            Timber.e("GET WINEY FEED LIST !!!")
+//            viewModel.getWineyFeedList()
+//            viewModel.updateItemClickedState(false)
+//        }
+//    }
 
     private fun removeRecyclerviewItemChangeAnimation() {
         val animator = binding.rvWineyfeedPost.itemAnimator
@@ -125,7 +123,7 @@ class WineyFeedFragment :
             toFeedDetail = { wineyFeed ->
                 sendWineyFeedEvent(TYPE_CLICK_FEED_ITEM, wineyFeed)
                 navigateToDetail(wineyFeed)
-                viewModel.updateItemClickedState(true)
+//                viewModel.updateItemClickedState(true)
             }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
@@ -165,7 +163,10 @@ class WineyFeedFragment :
 
     private fun refreshWineyFeed() {
         wineyFeedHeaderAdapter.notifyItemChanged(0)
-        wineyFeedAdapter.refresh()
+//        wineyFeedAdapter.refresh()
+
+        // todo: 피드 재조회 -> 프래그먼트에서 컬렉트 -> UI에 표시
+        viewModel.getWineyFeedList()
     }
 
     private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
@@ -180,8 +181,8 @@ class WineyFeedFragment :
             stringOf(R.string.comment_delete_dialog_positive_button),
             handleNegativeButton = {},
             handlePositiveButton = {
+                deleteFeedId = feed.feedId
                 viewModel.deleteFeed(feed.feedId)
-                deletePagingDataItem(feed.feedId)
             }
         )
         dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
@@ -212,6 +213,9 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
+                        // todo: 어댑터 리스트 갱신
+                        deletePagingDataItem()
+
                         wineySnackbar(
                             binding.root,
                             true,
@@ -229,10 +233,11 @@ class WineyFeedFragment :
             }.launchIn(viewLifeCycleScope)
     }
 
-    private fun deletePagingDataItem(feedId: Int) {
+    private fun deletePagingDataItem() {
         viewLifeCycleScope.launch {
-            val newList = wineyFeedAdapter.deleteItem(feedId)
+            val newList = wineyFeedAdapter.deleteItem(deleteFeedId)
             wineyFeedAdapter.submitData(PagingData.from(newList))
+            deleteFeedId = -1
         }
     }
 
@@ -242,7 +247,7 @@ class WineyFeedFragment :
                 viewModel.getWineyFeedListState.collectLatest { state ->
                     when (state) {
                         is UiState.Success -> {
-                            Timber.e("UiState Success")
+                            Timber.e("PAGING DATA COLLECT in Fragment")
                             wineyFeedAdapter.submitData(state.data)
                         }
 
@@ -262,45 +267,15 @@ class WineyFeedFragment :
             when (loadStates.refresh) {
                 is LoadState.Loading -> {
                     Timber.d("LOADING")
-                    showLoadingDialog()
+                    binding.rvWineyfeedPost.isVisible = false
                 }
 
                 is LoadState.NotLoading -> {
                     Timber.d("NOT LOADING")
-                    Timber.d("ITEM SIZE: ${wineyFeedAdapter.itemCount}")
-                    val currentItemSize = wineyFeedAdapter.itemCount
-
-                    // 초기 상태
-                    if (selectedItemIndex == -1) {
-                        dismissLoadingDialog()
-                        binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
-                        return@addLoadStateListener
-                    }
-
-                    // 클릭한 아이템의 인덱스가 40 미만인 경우 (두 페이지 이내)
-                    // 스크롤 위치 복원
-                    viewLifeCycleScope.launch {
-                        if (currentItemSize > selectedItemIndex) {
-                            withContext(Dispatchers.Main) {
-                                restoreScrollPosition()
-                            }
-
-                            // 복원 완료되고 나서 다이얼로그 종료
-                            dismissLoadingDialog()
-                            binding.rvWineyfeedPost.isVisible = true
-                        }
-                    }
-
-                    // todo: 클릭한 아이템의 인덱스가 40 이상인 경우, 스크롤 초기화
-                    if (selectedItemIndex >= 40) {
-                        initScrollPosition()
-                        dismissLoadingDialog()
-                        binding.rvWineyfeedPost.isVisible = true
-                    }
+                    binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
                 }
 
                 is LoadState.Error -> {
-                    dismissLoadingDialog()
                     Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
                 }
             }

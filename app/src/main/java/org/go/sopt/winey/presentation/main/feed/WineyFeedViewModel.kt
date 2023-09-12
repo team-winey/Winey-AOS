@@ -49,12 +49,12 @@ class WineyFeedViewModel @Inject constructor(
         viewModelScope.launch {
             _getWineyFeedListState.emit(UiState.Loading)
 
-            // 뷰모델의 라이프사이클에 따라 UiState 값이 캐싱된다.
-            feedRepository.getWineyFeedList().cachedIn(viewModelScope)
-                .collectLatest { response ->
-                    Timber.e("ViewModel collect")
-                    _getWineyFeedListState.emit(UiState.Success(response))
-                }
+            // todo: 캐싱을 하면 항상 서버통신 결과가 프래그먼트에서 수집되어서
+            //  위니피드에서 삭제했던 아이템이 돌아가면 다시 뜬다...
+            feedRepository.getWineyFeedList().cachedIn(viewModelScope).collectLatest { response ->
+                Timber.e("PAGING DATA COLLECT in ViewModel")
+                _getWineyFeedListState.emit(UiState.Success(response))
+            }
         }
     }
 
