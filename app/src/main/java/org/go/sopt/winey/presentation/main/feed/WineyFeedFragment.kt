@@ -63,6 +63,7 @@ class WineyFeedFragment :
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
+    private var selectedItemId: Int = -1
     private var selectedItemIndex: Int = -1
 
     @Inject
@@ -86,6 +87,32 @@ class WineyFeedFragment :
         initGetFeedStateObserver()
         initPostLikeStateObserver()
         removeRecyclerviewItemChangeAnimation()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (selectedItemId != -1) {
+            wineyFeedViewModel.getFeedDetail(selectedItemId)
+            updateFeed()
+        }
+    }
+    private fun updateFeed() {
+        viewLifeCycleScope.launch {
+            wineyFeedViewModel.getFeedDetailState.flowWithLifecycle(viewLifeCycle).collectLatest { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val detailFeed = state.data ?: return@collectLatest
+                        wineyFeedAdapter.updateSelectedItem(detailFeed)
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> Timber.tag("failure").e("DetailActivity.MSG_DETAIL_ERROR")
+                }
+            }
+        }
     }
 
     private fun restoreScrollPosition() {
@@ -393,7 +420,7 @@ class WineyFeedFragment :
     private fun navigateToDetail(wineyFeed: WineyFeed) {
         val currentItemSnapshotList = wineyFeedAdapter.snapshot()
         Timber.e("CURRENT ITEM SIZE: ${currentItemSnapshotList.size}")
-
+        selectedItemId = wineyFeed.feedId
         selectedItemIndex = currentItemSnapshotList.indexOf(wineyFeed)
         Timber.e("CLICKED ITEM INDEX: $selectedItemIndex")
 
