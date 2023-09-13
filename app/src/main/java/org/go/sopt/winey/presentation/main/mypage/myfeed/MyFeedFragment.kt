@@ -9,10 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -43,18 +41,48 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private val viewModel by viewModels<MyFeedViewModel>()
     private lateinit var myFeedAdapter: MyFeedAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
-    private var selectedItemIndex: Int = -1
+    private var clickedFeedId = -1
+    private var deleteFeedId = -1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         removeRecyclerviewItemChangeAnimation()
         initAdapter()
         initBackButtonClickListener()
 
-        initGetFeedStateObserver()
+        collectMyFeedPagingData()
+        initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
+        initPagingLoadStateListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (clickedFeedId != -1) {
+            Timber.d("onStart getDetailFeed")
+            viewModel.getDetailFeed(clickedFeedId)
+        }
+    }
+
+    private fun initGetDetailFeedStateObserver() {
+        viewModel.getDetailFeedState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val detailFeed = state.data ?: return@onEach
+                        myFeedAdapter.updateItem(clickedFeedId, detailFeed)
+                        clickedFeedId = -1
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
     }
 
     private fun initAdapter() {
@@ -66,18 +94,17 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             onPopupMenuClicked = { anchorView, wineyFeed ->
                 showFeedPopupMenu(anchorView, wineyFeed)
             },
-            toFeedDetail = { wineyFeed -> navigateToDetail(wineyFeed) }
+            toFeedDetail = { wineyFeed ->
+                navigateToDetail(wineyFeed)
+                saveClickedFeedId(wineyFeed.feedId)
+            }
         )
         binding.rvMyfeedPost.adapter = myFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
     }
 
-    private fun restoreScrollPosition() {
-        Timber.e("RESTORE ITEM INDEX: $selectedItemIndex")
-        binding.rvMyfeedPost.post {
-            if (selectedItemIndex != -1) {
-                binding.rvMyfeedPost.layoutManager?.scrollToPosition(selectedItemIndex + 1)
-            }
-        }
+    private fun saveClickedFeedId(feedId: Int) {
+        Timber.d("CLICKED FEED ID: $feedId")
+        clickedFeedId = feedId
     }
 
     private fun removeRecyclerviewItemChangeAnimation() {
@@ -115,7 +142,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             handleNegativeButton = {},
             handlePositiveButton = {
                 viewModel.deleteFeed(feed.feedId)
-                deletePagingDataItem(feed.feedId)
+                deleteFeedId = feed.feedId
             }
         )
         dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
@@ -132,6 +159,9 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
+                    // todo: 서버에서 응답값으로 삭제된 피드 아이디 보내줄 예정
+                    deletePagingDataItem(deleteFeedId)
+
                     wineySnackbar(
                         binding.root,
                         true,
@@ -154,6 +184,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             val newList = myFeedAdapter.deleteItem(feedId)
             checkEmptyList(newList)
             myFeedAdapter.submitData(PagingData.from(newList))
+            deleteFeedId = -1
         }
     }
 
@@ -164,23 +195,11 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    private fun initGetFeedStateObserver() {
+    private fun collectMyFeedPagingData() {
         viewLifeCycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getMyFeedListState.collectLatest { state ->
-                    when (state) {
-                        is UiState.Success -> {
-                            initPagingLoadStateListener()
-                            myFeedAdapter.submitData(state.data)
-                        }
-
-                        is UiState.Failure -> {
-                            snackBar(binding.root) { state.msg }
-                        }
-
-                        else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
-                    }
-                }
+            viewModel.myFeedPagingData.collectLatest { pagingData ->
+                Timber.e("PAGING DATA COLLECT in Fragment")
+                myFeedAdapter.submitData(pagingData)
             }
         }
     }
@@ -189,15 +208,18 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         myFeedAdapter.addLoadStateListener { loadState ->
             when (loadState.refresh) {
                 is LoadState.Loading -> {
+                    Timber.d("LOADING")
                     binding.clMyfeedEmpty.isVisible = false
                     binding.rvMyfeedPost.isVisible = false
                 }
 
                 is LoadState.NotLoading -> {
-                    binding.rvMyfeedPost.isVisible = myFeedAdapter.itemCount > 0
-                    binding.clMyfeedEmpty.isVisible =
-                        myFeedAdapter.itemCount == 0
-                    restoreScrollPosition()
+                    Timber.d("NOT LOADING")
+                    if (myFeedAdapter.itemCount > 0) {
+                        binding.rvMyfeedPost.isVisible = true
+                    } else {
+                        binding.clMyfeedEmpty.isVisible = true
+                    }
                 }
 
                 is LoadState.Error -> {
@@ -211,7 +233,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.postMyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    myFeedAdapter.updateItem(
+                    myFeedAdapter.updateLikeNumber(
                         state.data.data.feedId,
                         state.data.data.isLiked,
                         state.data.data.likes
@@ -228,12 +250,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
-        val currentItemSnapshotList = myFeedAdapter.snapshot()
-        Timber.e("CURRENT ITEM SIZE: ${currentItemSnapshotList.size}")
-
-        selectedItemIndex = currentItemSnapshotList.indexOf(wineyFeed)
-        Timber.e("CLICKED ITEM INDEX: $selectedItemIndex")
-
         Intent(requireContext(), DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)

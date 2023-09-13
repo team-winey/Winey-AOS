@@ -93,6 +93,7 @@ class WineyFeedFragment :
     override fun onStart() {
         super.onStart()
         if (clickedFeedId != -1) {
+            Timber.d("onStart getDetailFeed")
             viewModel.getDetailFeed(clickedFeedId)
         }
     }
@@ -136,7 +137,7 @@ class WineyFeedFragment :
             toFeedDetail = { wineyFeed ->
                 sendWineyFeedEvent(TYPE_CLICK_FEED_ITEM, wineyFeed)
                 navigateToDetail(wineyFeed)
-                saveClickedItemId(wineyFeed)
+                saveClickedFeedId(wineyFeed.feedId)
             }
         )
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
@@ -145,8 +146,9 @@ class WineyFeedFragment :
         )
     }
 
-    private fun saveClickedItemId(wineyFeed: WineyFeed) {
-        clickedFeedId = wineyFeed.feedId
+    private fun saveClickedFeedId(feedId: Int) {
+        Timber.d("CLICKED FEED ID: $feedId")
+        clickedFeedId = feedId
     }
 
     private fun showFeedPopupMenu(anchorView: View, wineyFeed: WineyFeed) {
@@ -222,7 +224,9 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
+                        // todo: 서버에서 응답값으로 삭제된 피드 아이디 보내줄 예정
                         deletePagingDataItem()
+
                         wineySnackbar(
                             binding.root,
                             true,
