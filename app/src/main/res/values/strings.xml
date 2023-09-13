@@ -230,5 +230,5 @@
     <string name="upload_loading_title_other_line3">절약했어요</string>
 
     <!-- error -->
-    <string name="error_winey_feed_loading">Can\'t loading winey feed list…</string>
+    <string name="error_winey_feed_loading">Can\'t loading winey feed list</string>
 </resources>

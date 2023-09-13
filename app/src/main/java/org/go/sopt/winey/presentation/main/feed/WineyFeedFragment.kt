@@ -60,7 +60,6 @@ class WineyFeedFragment :
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
-    private val loadingDialog by lazy { WineyFeedLoadingDialogFragment() }
     private var clickedFeedId = -1
     private var deleteFeedId = -1
 
@@ -276,30 +275,19 @@ class WineyFeedFragment :
             when (loadStates.refresh) {
                 is LoadState.Loading -> {
                     Timber.d("LOADING")
-                    showLoadingDialog()
+                    binding.rvWineyfeedPost.isVisible = false
                 }
 
                 is LoadState.NotLoading -> {
                     Timber.d("NOT LOADING")
-                    dismissLoadingDialog()
                     binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
                 }
 
                 is LoadState.Error -> {
-                    dismissLoadingDialog()
                     snackBar(binding.root) { stringOf(R.string.error_winey_feed_loading) }
                 }
             }
         }
-    }
-
-    private fun showLoadingDialog() {
-        binding.rvWineyfeedPost.isVisible = false
-        loadingDialog.show(parentFragmentManager, TAG_LOADING_DIALOG)
-    }
-
-    private fun dismissLoadingDialog() {
-        if (loadingDialog.isAdded) loadingDialog.dismiss()
     }
 
     private fun initPostLikeStateObserver() {
@@ -471,7 +459,6 @@ class WineyFeedFragment :
         private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
-        private const val TAG_LOADING_DIALOG = "WINEY_FEED_LOADING_DIALOG"
         private const val POPUP_MENU_POS_OFFSET = 65
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
