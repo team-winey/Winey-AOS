@@ -5,10 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.domain.entity.DetailFeed
@@ -24,11 +25,13 @@ import javax.inject.Inject
 class WineyFeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository
 ) : ViewModel() {
-    private val _wineyFeedPagingData: Flow<PagingData<WineyFeed>> by lazy { getWineyFeedList() }
-    val wineyFeedPagingData get() = _wineyFeedPagingData
+    private val _getWineyFeedListState =
+        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Empty)
+    val getWineyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
+        _getWineyFeedListState.asStateFlow()
 
     private val _getDetailFeedState =
-        MutableStateFlow<UiState<DetailFeed?>>(UiState.Loading)
+        MutableStateFlow<UiState<DetailFeed?>>(UiState.Empty)
     val getDetailFeedState: StateFlow<UiState<DetailFeed?>> =
         _getDetailFeedState.asStateFlow()
 
@@ -38,9 +41,27 @@ class WineyFeedViewModel @Inject constructor(
     private val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteWineyFeedState: StateFlow<UiState<Unit>> = _deleteWineyFeedState.asStateFlow()
 
-    private fun getWineyFeedList(): Flow<PagingData<WineyFeed>> {
-        Timber.e("PAGING DATA LOAD in ViewModel")
-        return feedRepository.getWineyFeedList().cachedIn(viewModelScope)
+    init {
+        getWineyFeedList()
+    }
+
+    private fun getWineyFeedList() {
+        viewModelScope.launch {
+            _getWineyFeedListState.emit(UiState.Loading)
+
+            feedRepository.getWineyFeedList().cachedIn(viewModelScope)
+                .catch { t ->
+                    handleFailureState(_getWineyFeedListState, t)
+                }
+                .collectLatest { pagingData ->
+                    Timber.e("PAGING DATA COLLECT in ViewModel")
+                    _getWineyFeedListState.emit(UiState.Success(pagingData))
+                }
+        }
+    }
+
+    fun initGetWineyFeedListState() {
+        _getWineyFeedListState.value = UiState.Empty
     }
 
     fun getDetailFeed(feedId: Int) {
@@ -104,5 +125,6 @@ class WineyFeedViewModel @Inject constructor(
         private const val CODE_WINEYFEED_INVALID_USER = 404
         private const val CODE_WINEYFEED_INVALID_REQUEST = 400
         private const val MSG_WINEYFEED_FAIL = "FAIL"
+        private const val ERROR_GET_WINEY_FEED_LIST = "error get winey feed list"
     }
 }

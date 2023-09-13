@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
@@ -81,7 +80,7 @@ class WineyFeedFragment :
         initNotificationButtonClickListener()
         removeRecyclerviewItemChangeAnimation()
 
-        collectWineyFeedPagingData()
+        initGetWineyFeedListStateObserver()
         initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
@@ -226,7 +225,6 @@ class WineyFeedFragment :
                     is UiState.Success -> {
                         // todo: 서버에서 응답값으로 삭제된 피드 아이디 보내줄 예정
                         deletePagingDataItem()
-
                         wineySnackbar(
                             binding.root,
                             true,
@@ -252,13 +250,24 @@ class WineyFeedFragment :
         }
     }
 
-    private fun collectWineyFeedPagingData() {
-        viewLifeCycleScope.launch {
-            viewModel.wineyFeedPagingData.collectLatest { pagingData ->
-                Timber.e("PAGING DATA COLLECT in Fragment")
-                wineyFeedAdapter.submitData(pagingData)
-            }
-        }
+    private fun initGetWineyFeedListStateObserver() {
+        viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        Timber.e("PAGING DATA SUBMIT in Fragment")
+                        val pagingData = state.data
+                        wineyFeedAdapter.submitData(pagingData)
+                        viewModel.initGetWineyFeedListState()
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
     }
 
     private fun initPagingLoadStateListener() {
