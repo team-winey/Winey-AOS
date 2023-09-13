@@ -77,17 +77,17 @@ class WineyFeedFragment :
         mainViewModel.getHasNewNoti()
 
         initAdapter()
-        setSwipeRefreshListener()
         initFabClickListener()
         initNotificationButtonClickListener()
-
-        initDeleteFeedStateObserver()
-        initGetFeedStateObserver()
-        initPostLikeStateObserver()
         removeRecyclerviewItemChangeAnimation()
 
-        initPagingLoadStateListener()
+        collectWineyFeedPagingData()
         initGetDetailFeedStateObserver()
+        initPostLikeStateObserver()
+        initDeleteFeedStateObserver()
+
+        initSwipeRefreshListener()
+        initPagingLoadStateListener()
     }
 
     override fun onStart() {
@@ -155,7 +155,7 @@ class WineyFeedFragment :
             if (isMyFeed(currentUserId, wineyFeed.userId)) {
                 showFeedDeletePopupMenu(anchorView, wineyFeed)
             } else {
-                showReportPopupMenu(anchorView)
+                showFeedReportPopupMenu(anchorView)
             }
         }
     }
@@ -169,18 +169,13 @@ class WineyFeedFragment :
         }
     }
 
-    private fun showReportPopupMenu(anchorView: View) {
+    private fun showFeedReportPopupMenu(anchorView: View) {
         val reportTitle = listOf(stringOf(R.string.popup_report_title))
         WineyPopupMenu(context = anchorView.context, titles = reportTitle) { _, _, _ ->
             showFeedReportDialog()
         }.apply {
             showCustomPosition(anchorView)
         }
-    }
-
-    private fun refreshWineyFeed() {
-        wineyFeedHeaderAdapter.notifyItemChanged(0)
-        wineyFeedAdapter.refresh()
     }
 
     private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
@@ -253,7 +248,7 @@ class WineyFeedFragment :
         }
     }
 
-    private fun initGetFeedStateObserver() {
+    private fun collectWineyFeedPagingData() {
         viewLifeCycleScope.launch {
             viewModel.wineyFeedPagingData.collectLatest { pagingData ->
                 Timber.e("PAGING DATA COLLECT in Fragment")
@@ -365,6 +360,41 @@ class WineyFeedFragment :
         dialog.show(parentFragmentManager, TAG_GOAL_DIALOG)
     }
 
+    private inline fun <reified T : Fragment> navigateTo() {
+        parentFragmentManager.commit {
+            replace<T>(R.id.fcv_main, T::class.simpleName)
+        }
+        val bottomNav: BottomNavigationView =
+            requireActivity().findViewById(R.id.bnv_main)
+        bottomNav.selectedItemId = R.id.menu_mypage
+    }
+
+    private fun initSwipeRefreshListener() {
+        binding.layoutWineyfeedRefresh.setOnRefreshListener {
+            refreshWineyFeed()
+            binding.layoutWineyfeedRefresh.isRefreshing = false
+        }
+    }
+
+    private fun refreshWineyFeed() {
+        wineyFeedHeaderAdapter.notifyItemChanged(0)
+        wineyFeedAdapter.refresh()
+    }
+
+    private fun navigateToUpload() {
+        val intent = Intent(requireContext(), UploadActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToDetail(wineyFeed: WineyFeed) {
+        Intent(requireContext(), DetailActivity::class.java).apply {
+            putExtra(KEY_FEED_ID, wineyFeed.feedId)
+            putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
+            putExtra(KEY_PREV_SCREEN, WINEY_FEED_SCREEN)
+            startActivity(this)
+        }
+    }
+
     private fun sendDialogClickEvent(isNavigate: Boolean) {
         val eventProperties = JSONObject()
 
@@ -380,36 +410,6 @@ class WineyFeedFragment :
         }
 
         amplitudeUtils.logEvent("click_goalsetting", eventProperties)
-    }
-
-    private inline fun <reified T : Fragment> navigateTo() {
-        parentFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
-        }
-        val bottomNav: BottomNavigationView =
-            requireActivity().findViewById(R.id.bnv_main)
-        bottomNav.selectedItemId = R.id.menu_mypage
-    }
-
-    private fun setSwipeRefreshListener() {
-        binding.layoutWineyfeedRefresh.setOnRefreshListener {
-            refreshWineyFeed()
-            binding.layoutWineyfeedRefresh.isRefreshing = false
-        }
-    }
-
-    private fun navigateToUpload() {
-        val intent = Intent(requireContext(), UploadActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun navigateToDetail(wineyFeed: WineyFeed) {
-        Intent(requireContext(), DetailActivity::class.java).apply {
-            putExtra(KEY_FEED_ID, wineyFeed.feedId)
-            putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-            putExtra(KEY_PREV_SCREEN, WINEY_FEED_SCREEN)
-            startActivity(this)
-        }
     }
 
     private fun sendWineyFeedEvent(type: EventType, feed: WineyFeed) {
