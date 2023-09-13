@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.go.sopt.winey.databinding.ItemMyfeedPostBinding
+import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.util.view.ItemDiffCallback
 import org.go.sopt.winey.util.view.setOnSingleClickListener
@@ -51,12 +52,26 @@ class MyFeedAdapter(
         holder.onBind(getItem(position))
     }
 
-    fun updateItem(feedId: Int, isLiked: Boolean, likes: Int) {
+    fun updateLikeNumber(feedId: Int, isLiked: Boolean, likes: Int) {
         snapshot().items.forEachIndexed { index, wineyFeed ->
             if (wineyFeed.feedId == feedId) {
                 wineyFeed.isLiked = isLiked
                 wineyFeed.likes = likes.toLong()
                 notifyItemChanged(index)
+            }
+        }
+    }
+
+    fun updateItem(clickedItemId: Int, newFeed: DetailFeed) {
+        val currentList = snapshot().items
+        currentList.forEachIndexed { index, currentFeed ->
+            if (currentFeed.feedId == clickedItemId) {
+                currentFeed.isLiked = newFeed.isLiked
+                currentFeed.likes = newFeed.likes
+                currentFeed.comments = newFeed.comments
+                currentFeed.timeAgo = newFeed.timeAgo
+                notifyItemChanged(index)
+                return@forEachIndexed
             }
         }
     }

@@ -40,17 +40,14 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_detail) {
     private val viewModel by viewModels<DetailViewModel>()
-
     private val feedId by lazy { intent.getIntExtra(KEY_FEED_ID, 0) }
     private val feedWriterId by lazy { intent.getIntExtra(KEY_FEED_WRITER_ID, 0) }
     private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
 
     private var _detailFeedAdapter: DetailFeedAdapter? = null
     private val detailFeedAdapter get() = requireNotNull(_detailFeedAdapter)
-
     private var _commentAdapter: CommentAdapter? = null
     private val commentAdapter get() = requireNotNull(_commentAdapter)
-
     private val commentEmptyAdapter by lazy { CommentEmptyAdapter() }
 
     @Inject
@@ -61,7 +58,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding.vm = viewModel
         viewModel.getFeedDetail(feedId)
 

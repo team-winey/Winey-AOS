@@ -14,9 +14,9 @@ import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
 
 interface FeedRepository {
-    suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>>
+    fun getWineyFeedList(): Flow<PagingData<WineyFeed>>
 
-    suspend fun getMyFeedList(): Flow<PagingData<WineyFeed>>
+    fun getMyFeedList(): Flow<PagingData<WineyFeed>>
 
     suspend fun postFeedLike(feedId: Int, requestPostLikeDto: RequestPostLikeDto): Result<Like>
 
