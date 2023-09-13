@@ -5,10 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.domain.entity.DetailFeed
@@ -24,8 +25,10 @@ import javax.inject.Inject
 class MyFeedViewModel @Inject constructor(
     private val feedRepository: FeedRepository
 ) : ViewModel() {
-    private val _myFeedPagingData: Flow<PagingData<WineyFeed>> by lazy { getMyFeedList() }
-    val myFeedPagingData get() = _myFeedPagingData
+    private val _getMyFeedListState =
+        MutableStateFlow<UiState<PagingData<WineyFeed>>>(UiState.Empty)
+    val getMyFeedListState: StateFlow<UiState<PagingData<WineyFeed>>> =
+        _getMyFeedListState.asStateFlow()
 
     private val _getDetailFeedState =
         MutableStateFlow<UiState<DetailFeed?>>(UiState.Loading)
@@ -38,9 +41,27 @@ class MyFeedViewModel @Inject constructor(
     private val _deleteMyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteMyFeedState: StateFlow<UiState<Unit>> = _deleteMyFeedState.asStateFlow()
 
-    private fun getMyFeedList(): Flow<PagingData<WineyFeed>> {
-        Timber.e("PAGING DATA LOAD in ViewModel")
-        return feedRepository.getMyFeedList().cachedIn(viewModelScope)
+    init {
+        getMyFeedList()
+    }
+
+    private fun getMyFeedList() {
+        viewModelScope.launch {
+            _getMyFeedListState.emit(UiState.Loading)
+
+            feedRepository.getMyFeedList().cachedIn(viewModelScope)
+                .catch { t ->
+                    handleFailureState(_getMyFeedListState, t)
+                }
+                .collectLatest { pagingData ->
+                    Timber.e("PAGING DATA COLLECT in ViewModel")
+                    _getMyFeedListState.emit(UiState.Success(pagingData))
+                }
+        }
+    }
+
+    fun initGetMyFeedListState() {
+        _getMyFeedListState.value = UiState.Empty
     }
 
     fun getDetailFeed(feedId: Int) {

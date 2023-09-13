@@ -15,7 +15,6 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.SimpleItemAnimator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -50,7 +49,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         initAdapter()
         initBackButtonClickListener()
 
-        collectMyFeedPagingData()
+        initGetMyFeedListStateObserver()
         initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
@@ -195,13 +194,24 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         }
     }
 
-    private fun collectMyFeedPagingData() {
-        viewLifeCycleScope.launch {
-            viewModel.myFeedPagingData.collectLatest { pagingData ->
-                Timber.e("PAGING DATA COLLECT in Fragment")
-                myFeedAdapter.submitData(pagingData)
-            }
-        }
+    private fun initGetMyFeedListStateObserver() {
+        viewModel.getMyFeedListState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        Timber.e("PAGING DATA SUBMIT in Fragment")
+                        val pagingData = state.data
+                        myFeedAdapter.submitData(pagingData)
+                        viewModel.initGetMyFeedListState()
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
     }
 
     private fun initPagingLoadStateListener() {
