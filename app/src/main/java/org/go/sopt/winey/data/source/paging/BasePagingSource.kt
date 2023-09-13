@@ -35,6 +35,5 @@ abstract class BasePagingSource(
 
     companion object {
         private const val FIRST_PAGE_NUM = 1
-        private const val DELAY_MILLIS = 1_000L
     }
 }
