@@ -61,7 +61,6 @@ class WineyFeedFragment :
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
     private var clickedFeedId = -1
-    private var deleteFeedId = -1
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -191,7 +190,6 @@ class WineyFeedFragment :
             stringOf(R.string.comment_delete_dialog_positive_button),
             handleNegativeButton = {},
             handlePositiveButton = {
-                deleteFeedId = feed.feedId
                 viewModel.deleteFeed(feed.feedId)
             }
         )
@@ -223,8 +221,9 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        // todo: 서버에서 응답값으로 삭제된 피드 아이디 보내줄 예정
-                        deletePagingDataItem()
+                        val response = state.data ?: return@onEach
+                        deletePagingDataItem(response.feedId.toInt())
+
                         wineySnackbar(
                             binding.root,
                             true,
@@ -242,11 +241,10 @@ class WineyFeedFragment :
             }.launchIn(viewLifeCycleScope)
     }
 
-    private fun deletePagingDataItem() {
+    private fun deletePagingDataItem(feedId: Int) {
         viewLifeCycleScope.launch {
-            val newList = wineyFeedAdapter.deleteItem(deleteFeedId)
+            val newList = wineyFeedAdapter.deleteItem(feedId)
             wineyFeedAdapter.submitData(PagingData.from(newList))
-            deleteFeedId = -1
         }
     }
 
