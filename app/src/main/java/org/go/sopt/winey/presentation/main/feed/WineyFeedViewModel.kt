@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
+import org.go.sopt.winey.data.model.remote.response.ResponseDeleteFeedDto
 import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
@@ -38,8 +39,10 @@ class WineyFeedViewModel @Inject constructor(
     private val _postWineyFeedLikeState = MutableStateFlow<UiState<Like>>(UiState.Empty)
     val postWineyFeedLikeState: StateFlow<UiState<Like>> = _postWineyFeedLikeState.asStateFlow()
 
-    private val _deleteWineyFeedState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
-    val deleteWineyFeedState: StateFlow<UiState<Unit>> = _deleteWineyFeedState.asStateFlow()
+    private val _deleteWineyFeedState =
+        MutableStateFlow<UiState<ResponseDeleteFeedDto?>>(UiState.Empty)
+    val deleteWineyFeedState: StateFlow<UiState<ResponseDeleteFeedDto?>> =
+        _deleteWineyFeedState.asStateFlow()
 
     init {
         getWineyFeedList()

@@ -41,7 +41,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     private lateinit var myFeedAdapter: MyFeedAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
     private var clickedFeedId = -1
-    private var deleteFeedId = -1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -141,7 +140,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             handleNegativeButton = {},
             handlePositiveButton = {
                 viewModel.deleteFeed(feed.feedId)
-                deleteFeedId = feed.feedId
             }
         )
         dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
@@ -158,8 +156,8 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         viewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    // todo: 서버에서 응답값으로 삭제된 피드 아이디 보내줄 예정
-                    deletePagingDataItem(deleteFeedId)
+                    val response = state.data ?: return@onEach
+                    deletePagingDataItem(response.feedId.toInt())
 
                     wineySnackbar(
                         binding.root,
@@ -183,7 +181,6 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
             val newList = myFeedAdapter.deleteItem(feedId)
             checkEmptyList(newList)
             myFeedAdapter.submitData(PagingData.from(newList))
-            deleteFeedId = -1
         }
     }
 
