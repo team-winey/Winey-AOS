@@ -9,6 +9,7 @@ import okhttp3.RequestBody
 import org.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
+import org.go.sopt.winey.data.model.remote.response.ResponseDeleteFeedDto
 import org.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import org.go.sopt.winey.data.service.FeedService
 import org.go.sopt.winey.data.source.FeedDataSource
@@ -43,9 +44,9 @@ class FeedRepositoryImpl @Inject constructor(
             feedDataSource.postWineyFeedList(file, requestMap).data
         }
 
-    override suspend fun deleteFeed(feedId: Int): Result<Unit> =
+    override suspend fun deleteFeed(feedId: Int): Result<ResponseDeleteFeedDto?> =
         runCatching {
-            feedDataSource.deleteFeed(feedId)
+            feedDataSource.deleteFeed(feedId).data
         }
 
     override suspend fun postFeedLike(
