@@ -27,6 +27,7 @@ import org.go.sopt.winey.util.view.InputUiState
 import org.go.sopt.winey.util.view.UiState
 import org.json.JSONException
 import org.json.JSONObject
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -43,7 +44,6 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         amplitudeUtils.logEvent("view_set_nickname")
-
         binding.vm = viewModel
         viewModel.updatePrevScreenName(prevScreenName)
 
@@ -57,18 +57,6 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
         initPatchNicknameStateObserver()
     }
 
-    private fun sendEventToAmplitude() {
-        val eventProperties = JSONObject()
-        try {
-            eventProperties.put("button_name", "nickname_next_button")
-                .put("paging_number", 1)
-        } catch (e: JSONException) {
-            System.err.println("Invalid JSON")
-            e.printStackTrace()
-        }
-        amplitudeUtils.logEvent("click_button", eventProperties)
-    }
-
     private fun initEditTextWatcher() {
         var prevText = ""
         binding.etNickname.addTextChangedListener(object : TextWatcher {
@@ -78,9 +66,12 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
             // 텍스트가 바뀌면 중복체크 상태 false로 초기화
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val inputText = s.toString()
+
                 if (inputText.isNotBlank() && inputText != prevText) {
                     viewModel.updateDuplicateCheckState(false)
+                    Timber.d("DUPLICATE CHECK: ${viewModel.duplicateChecked.value}")
                 }
+
                 prevText = inputText
             }
         })
@@ -88,21 +79,25 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     private fun initDuplicateCheckButtonClickListener() {
         binding.btnNicknameDuplicateCheck.setOnClickListener {
-            viewModel.getNicknameDuplicateCheck()
+            viewModel.apply {
+                if (checkValidInput()) {
+                    getNicknameDuplicateCheck()
+                }
+            }
         }
     }
 
     private fun initCompleteButtonClickListener() {
         binding.btnNicknameComplete.setOnClickListener {
-            // 중복체크를 하지 않은 상태에서 완료 버튼을 클릭하면 에러 표시
-            if (!viewModel.isDuplicateChecked.value) {
+            // 중복체크 하지 않고 시작하기 버튼 누르면 에러 표시
+            if (!viewModel.duplicateChecked.value) {
                 viewModel.updateInputUiState(
                     InputUiState.Failure(ErrorCode.CODE_UNCHECKED_DUPLICATION)
                 )
                 return@setOnClickListener
             }
 
-            // 서버통신 결과 중복되지 않은 닉네임인 경우에만 PATCH 서버통신 진행
+            // 유효한 닉네임인 경우에만 PATCH 서버통신 진행
             if (viewModel.isValidNickname.value) {
                 sendEventToAmplitude()
                 viewModel.patchNickname()
@@ -133,13 +128,13 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     }
 
     private fun switchEditTextHint() {
-        lifecycleScope.launch {
-            when (prevScreenName) {
-                STORY_SCREEN -> {
-                    binding.etNickname.hint = stringOf(R.string.nickname_default_hint)
-                }
+        when (prevScreenName) {
+            STORY_SCREEN -> {
+                binding.etNickname.hint = stringOf(R.string.nickname_default_hint)
+            }
 
-                MY_PAGE_SCREEN -> {
+            MY_PAGE_SCREEN -> {
+                lifecycleScope.launch {
                     val user = dataStoreRepository.getUserInfo().first() ?: return@launch
                     binding.etNickname.hint = user.nickname
                     binding.originalNicknameLength = user.nickname.length
@@ -166,6 +161,18 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
+    }
+
+    private fun sendEventToAmplitude() {
+        val eventProperties = JSONObject()
+        try {
+            eventProperties.put("button_name", "nickname_next_button")
+                .put("paging_number", 1)
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+        amplitudeUtils.logEvent("click_button", eventProperties)
     }
 
     companion object {
