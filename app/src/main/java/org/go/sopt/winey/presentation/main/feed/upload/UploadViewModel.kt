@@ -46,7 +46,8 @@ class UploadViewModel @Inject constructor(
     /** Content Fragment */
     val _content = MutableStateFlow("")
     val content: String get() = _content.value
-    val inputUiState: StateFlow<InputUiState> = _content.map { updateInputUiState(it) }
+
+    val inputUiState: StateFlow<InputUiState> = _content.map { checkInputUiState(it) }
         .stateIn(
             initialValue = InputUiState.Empty,
             scope = viewModelScope,
@@ -62,7 +63,7 @@ class UploadViewModel @Inject constructor(
 
     private fun validateContent(state: InputUiState) = state == InputUiState.Success
 
-    private fun updateInputUiState(content: String): InputUiState {
+    private fun checkInputUiState(content: String): InputUiState {
         if (content.isBlank()) return InputUiState.Empty
         if (!checkContentLength((content))) {
             return InputUiState.Failure(ErrorCode.CODE_INVALID_LENGTH)
