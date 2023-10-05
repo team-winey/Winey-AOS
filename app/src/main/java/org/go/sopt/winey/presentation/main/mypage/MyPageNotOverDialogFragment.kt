@@ -11,17 +11,15 @@ class MyPageNotOverDialogFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        isCancelable = false
+        dialog?.setCanceledOnTouchOutside(false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initCancelButtonClickListener()
     }
 
-    fun initCancelButtonClickListener() {
+    private fun initCancelButtonClickListener() {
         binding.btnImpossibleDialogCancel.setOnClickListener {
             this.dismiss()
         }

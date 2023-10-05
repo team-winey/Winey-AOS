@@ -15,59 +15,64 @@ GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
 
 한마디로 위니는 '좌충우돌 나만의 절약 방법을 공유하는 게임형 절약 SNS' 서비스입니다.
 
+## 🎉 Play Store Download (v1.0.0)
+
+[구글 플레이 스토어에서 바로 만나보세요 ✔](https://play.google.com/store/apps/details?id=org.go.sopt.winey)
+
 ## 🌱 Contributors
 
-|                                         [@leeeha](https://github.com/leeeha)                                          |                                          [@sxunea](https://github.com/sxunea)                                           |                                      [@Sangwook123](https://github.com/Sangwook123)                                      |
-|:---------------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------------------------------------------------------------------------:|:------------------------------------------------------------------------------------------------------------------------:|
-|<img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/b3b69c84-407c-4db7-8290-92c52a5d2d5b" /> | <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/7eb22b00-ef67-4ad0-9ae9-1bc5e579524b" /> | <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/352352e9-9a4c-4de8-8fdb-dc73c26a271e" />   |
-|                                            위니 업로드, 스플래쉬                                                            |                                               위니 피드, 마이 피드                                                           |                                                                                 마이페이지, 추천 위니                                   |
+|                                          [@leeeha](https://github.com/leeeha)                                          |                                          [@sxunea](https://github.com/sxunea)                                          |                                     [@Sangwook123](https://github.com/Sangwook123)                                     |
+|:----------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------:|
+| <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/c393f52d-2e3f-42c8-9f38-a935184831f1" /> | <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/7eb22b00-ef67-4ad0-9ae9-1bc5e579524b" /> | <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/352352e9-9a4c-4de8-8fdb-dc73c26a271e" /> |
+|                                         스플래시, 온보딩, 피드 업로드 <br> 댓글 생성/삭제, 회원 탈퇴                                         |                                             위니 피드, 마이 피드 <br> 상세 피드, 댓글 조회                                             |                                            카카오 로그인, 마이페이지 <br> 추천 피드, 알림 목록                                            |
 
-## 📸 Screenshot
+## 📸 Demo Video
 
-### Splash
+### 온보딩, 로그인
 
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/eae3ccb6-7094-46de-ae3d-479a5b9cfac8" width="250">
+https://github.com/team-winey/Winey-AOS/assets/68090939/dfbfc25e-8359-4ab7-ba37-2f19704ba180
 
-### Winey Feed
+### 위니 피드, 상세 피드, 댓글
 
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/e9555ea3-d4b9-4d45-8248-9092e5cb44cd" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/f5dc5912-32f9-4a37-bf03-7b40a863bb95" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/72fb6b57-d58a-433e-a241-1ed475bd1964" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/bdb92229-52af-4fae-8748-8fc5933fcd34" width="250">
+https://github.com/team-winey/Winey-AOS/assets/68090939/b901af11-5b14-42ea-b426-dc8dedbbee73
 
-### Winey Upload
+### 마이페이지
 
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/7e4b673e-f7a8-411f-80fb-676318dbbf25" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/dec1fa6c-fb48-4964-beaf-79703b0bfaa7" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/e3c3459b-26f8-4b2e-bbaf-a6b0e4962021" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/ee2e1100-4086-4d6b-aead-088164f3ed65" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/671d45b6-4522-45bf-a7a6-e71d3949c9fe" width="250">
+https://github.com/team-winey/Winey-AOS/assets/68090939/c49e0369-7595-47f0-992f-566813dc8deb
 
-### My Page
+### 레벨업
 
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/44abdfa5-f5d0-4c83-94e1-5d313703e091" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/abf27e26-4fcc-47c6-9698-eacfe22436d0" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/0f3a6394-a1c1-4eb4-b15a-a2579065bd85" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/93a10820-8354-4962-aec1-29b35daa8def" width="250">
+https://github.com/team-winey/Winey-AOS/assets/68090939/c178c9f8-d113-448e-8813-cf42f4f6fb6e
 
-### Recommend Feed
+### 마이 피드
 
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/a13bdf85-dd7f-48e0-ae00-3fdd038da1ed" width="250">
-<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/778a0d07-5ffc-4577-9ec2-d05892933adc" width="250">
+https://github.com/team-winey/Winey-AOS/assets/68090939/1be2cdb5-3f69-449e-924f-6fecb25e819c
 
-## 🛠 Tech Stack 
-| Architecture | Clean Architecture, MVVM |
-| ------------ | ------------------------ |
-| `Design Pattern` | Observer Pattern, Repository Pattern, State Pattern |
-| `JetPack Components` | LiveData, LifeCycle, ViewModel, DataBinding |
-| `Dependency Injections` | Hilt |
-| `NetWork` | Retrofit, OkHttp |
-| `Asynchronous Processing` | Coroutine |
-| `Third Party Library` | Coil, Lottie, Timber, CircleImageView |
-| `Strategy` | Git Flow |
-| `Communication Tool` | Notion, Slack, Figma, Swagger |
+### 추천 피드
 
-## 📌 Convention 
+https://github.com/team-winey/Winey-AOS/assets/68090939/785df9d2-bf77-4dae-a607-7bbbebbd0d72
+
+### 알림 목록
+
+https://github.com/team-winey/Winey-AOS/assets/68090939/d190e491-efe5-4a02-89d1-bca4410e49f8
+
+## 🛠 Tech Stack
+
+| 구분                      | 기술 스택                                                                     |
+|-------------------------|---------------------------------------------------------------------------|
+| Architecture            | MVVM                                                                      |
+| Design Pattern          | Observer Pattern, Repository Pattern, State Pattern                       |
+| JetPack Components      | LifeCycle, ViewModel, LiveData, StateFlow, DataBinding, DataStore, Paging |
+| Dependency Injection    | Hilt                                                                      |
+| Network                 | Retrofit, OkHttp, kotlinx.serialization                                     |
+| Asynchronous Processing | Coroutine, Flow                                                           |
+| Third Party Library     | Kakao Login, Coil, Lottie, Timber, CircleImageView                        |
+| Branch Strategy         | Git Flow                                                                  |
+| CI/CD                   | GitHub Actions (KtLint, Compile Check)                                    |
+| Data Analytics          | Amplitude                                                                 |
+| Communication Tool      | Notion, Slack, Figma, Postman, Swagger                                    |
+
+## ✨ Convention
 
 - [Git Convention](https://www.notion.so/Git-Convention-8b890a83aed94c9fbf727b4088bc2670?pvs=4)
 - [Code Convention](https://www.notion.so/Code-Convention-d39ec34c2d1240f297f6027b8f9839c3?pvs=4)
@@ -76,3 +81,45 @@ GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
 ## 📋 Kanban Board
 
 - [Github Projects](https://github.com/orgs/team-winey/projects/2)
+
+## 📂 Foldering
+
+```
+📂 org.go.sopt.winey
+┣ 📂 data
+┃ ┣ 📂 interceptor
+┃ ┣ 📂 model
+┃ ┣ 📂 repository
+┃ ┣ 📂 service
+┃ ┣ 📂 source
+┣ 📂 di
+┃ ┣ 📂 qualifier
+┣ 📂 domain
+┃ ┣ 📂 entity
+┃ ┣ 📂 repository
+┣ 📂 presentation
+┃ ┣ 📂 main
+┃ ┃ ┣ 📂 feed
+┃ ┃ ┃ ┣ 📂 detail
+┃ ┃ ┃ ┣ 📂 upload
+┃ ┃ ┣ 📂 mypage
+┃ ┃ ┃ ┣ 📂 myfeed
+┃ ┃ ┣ 📂 notification
+┃ ┃ ┣ 📂 recommend
+┃ ┣ 📂 nickname
+┃ ┣ 📂 onboarding
+┃ ┃ ┣ 📂 guide
+┃ ┃ ┣ 📂 login
+┃ ┃ ┣ 📂 story
+┃ ┣ 📂 splash
+┣ 📂 util
+┃ ┣ 📂 activity
+┃ ┣ 📂 amplitude
+┃ ┣ 📂 binding
+┃ ┣ 📂 code
+┃ ┣ 📂 context
+┃ ┣ 📂 fragment
+┃ ┣ 📂 intent
+┃ ┣ 📂 multipart
+┃ ┣ 📂 view
+```

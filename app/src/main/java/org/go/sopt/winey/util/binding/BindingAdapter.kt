@@ -13,7 +13,6 @@ import de.hdodenhof.circleimageview.CircleImageView
 import org.go.sopt.winey.R
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.MY_PAGE_SCREEN
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.STORY_SCREEN
-import org.go.sopt.winey.util.code.ErrorCode
 import org.go.sopt.winey.util.code.ErrorCode.*
 import org.go.sopt.winey.util.context.colorOf
 import org.go.sopt.winey.util.context.drawableOf
@@ -84,7 +83,7 @@ fun TextView.setUploadContentHelperText(inputUiState: InputUiState) {
 
     if (inputUiState is Failure) {
         visibility = View.VISIBLE
-        if (inputUiState.code == ErrorCode.CODE_INVALID_LENGTH) {
+        if (inputUiState.code == CODE_INVALID_LENGTH) {
             text = context.stringOf(R.string.upload_content_error_text)
         }
     }
@@ -114,10 +113,11 @@ fun TextView.setNicknameHelperText(inputUiState: InputUiState) {
         is Failure -> {
             visibility = View.VISIBLE
             text = when (inputUiState.code) {
+                CODE_BLANK_INPUT -> context.stringOf(R.string.nickname_blank_input_error)
                 CODE_INVALID_LENGTH -> context.stringOf(R.string.nickname_invalid_length_error)
                 CODE_SPACE_SPECIAL_CHAR -> context.stringOf(R.string.nickname_space_special_char_error)
                 CODE_UNCHECKED_DUPLICATION -> context.stringOf(R.string.nickname_unchecked_duplication_error)
-                CODE_DUPLICATE -> context.stringOf(R.string.nickname_duplicate_error)
+                CODE_DUPLICATED -> context.stringOf(R.string.nickname_duplicated_error)
             }
         }
     }
@@ -129,6 +129,33 @@ fun TextView.setNicknameHelperTextColor(inputUiState: InputUiState) {
         is Empty -> setTextColor(context.colorOf(R.color.gray_200))
         is Success -> setTextColor(context.colorOf(R.color.blue_500))
         is Failure -> setTextColor(context.colorOf(R.color.red_500))
+    }
+}
+
+@BindingAdapter(
+    "prevScreenName",
+    "inputNicknameLength",
+    "originalNicknameLength",
+    requireAll = false
+)
+fun TextView.setNicknameCounter(
+    prevScreenName: String,
+    inputNicknameLength: Int,
+    originalNicknameLength: Int
+) {
+    when (prevScreenName) {
+        STORY_SCREEN -> {
+            text = context.getString(R.string.nickname_counter, inputNicknameLength)
+        }
+
+        MY_PAGE_SCREEN -> {
+            text = if (inputNicknameLength == 0) {
+                // 입력 값이 비어있을 때는 원래 닉네임의 글자 수 표시
+                context.getString(R.string.nickname_counter, originalNicknameLength)
+            } else {
+                context.getString(R.string.nickname_counter, inputNicknameLength)
+            }
+        }
     }
 }
 
