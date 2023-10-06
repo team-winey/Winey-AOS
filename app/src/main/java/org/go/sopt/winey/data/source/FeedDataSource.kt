@@ -5,6 +5,7 @@ import okhttp3.RequestBody
 import org.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
+import org.go.sopt.winey.data.model.remote.response.ResponseDeleteFeedDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetFeedDetailDto
 import org.go.sopt.winey.data.model.remote.response.ResponsePostCommentDto
 import org.go.sopt.winey.data.model.remote.response.ResponsePostLikeDto
@@ -22,7 +23,7 @@ class FeedDataSource @Inject constructor(
     ): ResponsePostLikeDto =
         feedService.postFeedLike(feedId, requestPostLikeDto)
 
-    suspend fun deleteFeed(feedId: Int): BaseResponse<Unit> =
+    suspend fun deleteFeed(feedId: Int): BaseResponse<ResponseDeleteFeedDto> =
         feedService.deleteFeed(feedId)
 
     suspend fun postWineyFeedList(

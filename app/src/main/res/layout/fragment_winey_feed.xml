@@ -71,7 +71,6 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_wineyfeed_floating"
             android:layout_width="wrap_content"
@@ -84,7 +83,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/black" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,6 +5,7 @@ import okhttp3.RequestBody
 import org.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
+import org.go.sopt.winey.data.model.remote.response.ResponseDeleteFeedDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetFeedDetailDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetWineyFeedListDto
 import org.go.sopt.winey.data.model.remote.response.ResponsePostCommentDto
@@ -41,7 +42,7 @@ interface FeedService {
     @DELETE("feed/{feedId}")
     suspend fun deleteFeed(
         @Path("feedId") feedId: Int
-    ): BaseResponse<Unit>
+    ): BaseResponse<ResponseDeleteFeedDto>
 
     @Multipart
     @POST("feed")

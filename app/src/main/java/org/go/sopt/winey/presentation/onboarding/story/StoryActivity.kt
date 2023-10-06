@@ -97,9 +97,7 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
 
     private fun setUpDefaultFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            supportFragmentManager.commit {
-                replace(R.id.fcv_story, FirstStoryFragment())
-            }
+            navigateTo<FirstStoryFragment>()
         }
     }
 

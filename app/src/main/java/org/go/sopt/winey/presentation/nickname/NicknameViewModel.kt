@@ -26,14 +26,15 @@ class NicknameViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
     val _nickname = MutableStateFlow("")
-    val nickname: String get() = _nickname.value
+    private val nickname: String get() = _nickname.value
 
-    private val _inputUiState: MutableStateFlow<InputUiState> =
-        _nickname.map { checkInputUiState(it) }
-            .mutableStateIn(
-                initialValue = InputUiState.Empty,
-                scope = viewModelScope
-            )
+    // Why MutableStateFlow -> map 이외의 함수에서도 값을 바꿀 수 있도록
+    private val _inputUiState: MutableStateFlow<InputUiState> = _nickname.map { checkInputUiState(it) }
+        .mutableStateIn(
+            initialValue = InputUiState.Empty,
+            scope = viewModelScope
+        )
+
     val inputUiState: StateFlow<InputUiState> = _inputUiState.asStateFlow()
 
     val isValidNickname: StateFlow<Boolean> = _inputUiState.map { validateNickname(it) }
@@ -42,28 +43,82 @@ class NicknameViewModel @Inject constructor(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
+
     private fun validateNickname(state: InputUiState) = state == InputUiState.Success
 
-    private val _isDuplicateChecked = MutableStateFlow(false)
-    val isDuplicateChecked: StateFlow<Boolean> = _isDuplicateChecked.asStateFlow()
+    private val _duplicateChecked = MutableStateFlow(false)
+    val duplicateChecked: StateFlow<Boolean> = _duplicateChecked.asStateFlow()
 
     private val _patchNicknameState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val patchNicknameState: StateFlow<UiState<Unit>> = _patchNicknameState.asStateFlow()
 
-    private var prevCheckResult: Pair<String, Boolean>? = null
-
     var prevScreenName: String? = null
 
-    fun updatePrevScreenName(name: String?) {
-        prevScreenName = name
+    private fun checkInputUiState(nickname: String): InputUiState {
+        if (nickname.isBlank()) return InputUiState.Empty
+        if (!checkLength(nickname)) return InputUiState.Failure(ErrorCode.CODE_INVALID_LENGTH)
+        if (containsSpaceOrSpecialChar(nickname)) {
+            return InputUiState.Failure(ErrorCode.CODE_SPACE_SPECIAL_CHAR)
+        }
+        return InputUiState.Empty
     }
 
+    private fun checkLength(nickname: String) = nickname.length in MIN_LENGTH..MAX_LENGTH
+
+    private fun containsSpaceOrSpecialChar(nickname: String) =
+        !Regex(REGEX_PATTERN).matches(nickname)
+
+    // 액티비티에서 전달 -> XML 바인딩 어댑터에 사용
+    fun updatePrevScreenName(intentExtraValue: String?) {
+        prevScreenName = intentExtraValue
+    }
+
+    // 중복체크 하지 않고 시작하기 버튼 눌렀을 때 -> Failure 상태로 갱신
     fun updateInputUiState(inputUiState: InputUiState) {
         _inputUiState.value = inputUiState
     }
 
+    // 액티비티, 뷰모델에서 갱신
     fun updateDuplicateCheckState(checked: Boolean) {
-        _isDuplicateChecked.value = checked
+        _duplicateChecked.value = checked
+    }
+
+    fun checkValidInput(): Boolean {
+        if (nickname.isBlank()) {
+            _inputUiState.value = InputUiState.Failure(ErrorCode.CODE_BLANK_INPUT)
+            return false
+        }
+
+        if (containsSpaceOrSpecialChar(nickname)) {
+            _inputUiState.value = InputUiState.Failure(ErrorCode.CODE_SPACE_SPECIAL_CHAR)
+            return false
+        }
+
+        return true
+    }
+
+    fun getNicknameDuplicateCheck() {
+        viewModelScope.launch {
+            authRepository.getNicknameDuplicateCheck(nickname)
+                .onSuccess { response ->
+                    if (response == null) return@onSuccess
+                    showDuplicateCheckResult(response.isDuplicated)
+
+                    updateDuplicateCheckState(true)
+                    Timber.d("DUPLICATE CHECK: ${duplicateChecked.value}")
+                }
+                .onFailure { t ->
+                    Timber.e("${t.message}")
+                }
+        }
+    }
+
+    private fun showDuplicateCheckResult(isDuplicated: Boolean) {
+        _inputUiState.value = if (isDuplicated) {
+            InputUiState.Failure(ErrorCode.CODE_DUPLICATED)
+        } else {
+            InputUiState.Success
+        }
     }
 
     fun patchNickname() {
@@ -85,50 +140,6 @@ class NicknameViewModel @Inject constructor(
                 }
         }
     }
-
-    fun getNicknameDuplicateCheck() {
-        viewModelScope.launch {
-            authRepository.getNicknameDuplicateCheck(nickname)
-                .onSuccess { response ->
-                    if (response == null) return@onSuccess
-
-                    response.isDuplicated.let {
-                        showDuplicateCheckResult(it)
-                        saveDuplicateCheckResult(it)
-                    }
-                    updateDuplicateCheckState(true)
-                }
-                .onFailure { t ->
-                    Timber.e("${t.message}")
-                }
-        }
-    }
-
-    private fun showDuplicateCheckResult(isDuplicated: Boolean) {
-        _inputUiState.value = if (isDuplicated) {
-            InputUiState.Failure(ErrorCode.CODE_DUPLICATE)
-        } else {
-            InputUiState.Success
-        }
-    }
-
-    private fun saveDuplicateCheckResult(isDuplicated: Boolean) {
-        prevCheckResult = Pair(nickname, isDuplicated)
-    }
-
-    private fun checkInputUiState(nickname: String): InputUiState {
-        if (nickname.isEmpty()) return InputUiState.Empty
-        if (!checkLength(nickname)) return InputUiState.Failure(ErrorCode.CODE_INVALID_LENGTH)
-        if (containsSpaceOrSpecialChar(nickname)) {
-            return InputUiState.Failure(ErrorCode.CODE_SPACE_SPECIAL_CHAR)
-        }
-        return InputUiState.Empty
-    }
-
-    private fun checkLength(nickname: String) = nickname.length in MIN_LENGTH..MAX_LENGTH
-
-    private fun containsSpaceOrSpecialChar(nickname: String) =
-        !Regex(REGEX_PATTERN).matches(nickname)
 
     // _nickname.map{} Flow -> MutableStateFlow 변환을 위한 확장 함수
     private fun <T> Flow<T>.mutableStateIn(

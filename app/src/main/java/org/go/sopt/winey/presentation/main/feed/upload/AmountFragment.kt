@@ -49,7 +49,9 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
-            uploadViewModel.postWineyFeed(uploadViewModel.content, uploadViewModel.amount.removeComma())
+            uploadViewModel.apply {
+                postWineyFeed(content, amount.removeComma())
+            }
         }
     }
 
@@ -67,6 +69,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
                     is UiState.Failure -> {
                         wineySnackbar(binding.root, false, stringOf(R.string.snackbar_upload_fail))
+                        uploadViewModel.initPostWineyFeedState()
                     }
 
                     is UiState.Empty -> {
