@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentMyPageBinding
 import org.go.sopt.winey.domain.entity.User
@@ -51,6 +52,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
 
+        initUserData()
+        initNavigation()
         init1On1ButtonClickListener()
         initTermsButtonClickListener()
         initLevelHelpButtonClickListener()
@@ -67,8 +70,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         override fun handleOnBackPressed() {
             val receivedBundle = arguments
             if (receivedBundle != null) {
-                val value = receivedBundle.getString("fromNoti")
-                if (value == "true") {
+                val value = receivedBundle.getBoolean(KEY_FROM_NOTI)
+                if (value) {
                     val intent = Intent(requireContext(), NotificationActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
@@ -84,6 +87,16 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         mainViewModel.getUser()
     }
 
+    private fun initUserData() {
+        viewLifeCycleScope.launch {
+            val data = dataStoreRepository.getUserInfo().first()
+            if (data != null) {
+                updateUserInfo(data)
+                initTargetModifyButtonClickListener(data)
+            }
+        }
+    }
+
     private fun initNicknameButtonClickListener() {
         binding.ivMypageNickname.setOnClickListener {
             amplitudeUtils.logEvent("click_edit_nickname")
@@ -95,6 +108,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.clMypageToMyfeed.setOnSingleClickListener {
             amplitudeUtils.logEvent("click_myfeed")
             navigateAndBackStack<MyFeedFragment>()
+        }
+    }
+
+    private fun initNavigation() {
+        val receivedBundle = arguments
+        if (receivedBundle != null) {
+            val value = receivedBundle.getBoolean(KEY_TO_MYFEED)
+            if (value) {
+                navigateAndBackStack<MyFeedFragment>()
+                arguments?.clear()
+            }
         }
     }
 
@@ -282,5 +306,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val EXTRA_VALUE = "MyPageFragment"
         private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
         private const val TAGE_WITHDRAW_DIALOG = "WITHDRAW_DIALOG"
+
+        private const val KEY_FROM_NOTI = "fromNoti"
+        private const val KEY_TO_MYFEED = "toMyFeed"
     }
 }

@@ -8,7 +8,7 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.go.sopt.winey.databinding.ItemFeedLoadingFooterBinding
 
-class WineyFeedLoadAdapter() : LoadStateAdapter<WineyFeedLoadAdapter.LoadStateViewHolder>() {
+class WineyFeedLoadAdapter : LoadStateAdapter<WineyFeedLoadAdapter.LoadStateViewHolder>() {
 
     class LoadStateViewHolder(private val binding: ItemFeedLoadingFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {

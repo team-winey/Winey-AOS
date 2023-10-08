@@ -12,6 +12,6 @@ data class WineyFeed(
     val writerLevel: Int,
     val totalPageSize: Int,
     val isEnd: Boolean,
-    val comments: Long,
-    val timeAgo: String
+    var comments: Long,
+    var timeAgo: String
 )

@@ -9,6 +9,7 @@ import okhttp3.RequestBody
 import org.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
+import org.go.sopt.winey.data.model.remote.response.ResponseDeleteFeedDto
 import org.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import org.go.sopt.winey.data.service.FeedService
 import org.go.sopt.winey.data.source.FeedDataSource
@@ -25,13 +26,13 @@ class FeedRepositoryImpl @Inject constructor(
     private val feedDataSource: FeedDataSource,
     private val feedService: FeedService
 ) : FeedRepository {
-    override suspend fun getWineyFeedList(): Flow<PagingData<WineyFeed>> =
-        Pager(PagingConfig(WINEYFEED_PAGE_SIZE, prefetchDistance = LOAD_DISTANCE)) {
+    override fun getWineyFeedList(): Flow<PagingData<WineyFeed>> =
+        Pager(PagingConfig(pageSize = WINEYFEED_PAGE_SIZE, prefetchDistance = PRE_FETCH_DISTANCE)) {
             WineyFeedPagingSource(feedService)
         }.flow
 
-    override suspend fun getMyFeedList(): Flow<PagingData<WineyFeed>> =
-        Pager(PagingConfig(MYFEED_PAGE_SIZE, prefetchDistance = LOAD_DISTANCE)) {
+    override fun getMyFeedList(): Flow<PagingData<WineyFeed>> =
+        Pager(PagingConfig(pageSize = MYFEED_PAGE_SIZE, prefetchDistance = PRE_FETCH_DISTANCE)) {
             MyFeedPagingSource(feedService)
         }.flow
 
@@ -43,9 +44,9 @@ class FeedRepositoryImpl @Inject constructor(
             feedDataSource.postWineyFeedList(file, requestMap).data
         }
 
-    override suspend fun deleteFeed(feedId: Int): Result<Unit> =
+    override suspend fun deleteFeed(feedId: Int): Result<ResponseDeleteFeedDto?> =
         runCatching {
-            feedDataSource.deleteFeed(feedId)
+            feedDataSource.deleteFeed(feedId).data
         }
 
     override suspend fun postFeedLike(
@@ -77,6 +78,8 @@ class FeedRepositoryImpl @Inject constructor(
     companion object {
         const val WINEYFEED_PAGE_SIZE = 20
         const val MYFEED_PAGE_SIZE = 10
-        const val LOAD_DISTANCE = 2
+
+        // 현재 페이지 맨 밑에서 5번째 아이템에 도달하면, 다음 페이지 로딩
+        const val PRE_FETCH_DISTANCE = 5
     }
 }

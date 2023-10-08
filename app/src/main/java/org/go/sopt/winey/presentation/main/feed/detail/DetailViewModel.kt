@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPostCommentDto
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.data.model.remote.response.ResponseDeleteCommentDto
+import org.go.sopt.winey.data.model.remote.response.ResponseDeleteFeedDto
 import org.go.sopt.winey.domain.entity.Comment
 import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
@@ -58,8 +59,10 @@ class DetailViewModel @Inject constructor(
     private val _postFeedDetailLikeState = MutableStateFlow<UiState<Like>>(UiState.Loading)
     val postFeedDetailLikeState: StateFlow<UiState<Like>> = _postFeedDetailLikeState.asStateFlow()
 
-    private val _deleteFeedDetailState = MutableStateFlow<UiState<Unit>>(UiState.Loading)
-    val deleteFeedDetailState: StateFlow<UiState<Unit>> = _deleteFeedDetailState.asStateFlow()
+    private val _deleteFeedDetailState =
+        MutableStateFlow<UiState<ResponseDeleteFeedDto?>>(UiState.Loading)
+    val deleteFeedDetailState: StateFlow<UiState<ResponseDeleteFeedDto?>> =
+        _deleteFeedDetailState.asStateFlow()
 
     /** Comment */
     private val _postCommentState = MutableStateFlow<UiState<Comment?>>(UiState.Loading)

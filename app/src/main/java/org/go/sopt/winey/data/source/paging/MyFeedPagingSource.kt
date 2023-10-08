@@ -7,7 +7,7 @@ import javax.inject.Inject
 class MyFeedPagingSource @Inject constructor(
     feedService: FeedService
 ) : BasePagingSource(feedService) {
-    override suspend fun getFeedList(position: Int): List<WineyFeed> {
-        return feedService.getMyFeedList(position).toWineyFeed()
+    override suspend fun getFeedList(pageNumber: Int): List<WineyFeed> {
+        return feedService.getMyFeedList(pageNumber).toWineyFeed()
     }
 }
