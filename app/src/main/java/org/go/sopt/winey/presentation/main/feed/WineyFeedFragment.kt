@@ -1,6 +1,7 @@
 package org.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -123,7 +124,11 @@ class WineyFeedFragment :
     }
 
     private fun initAdapter() {
-        wineyFeedHeaderAdapter = WineyFeedHeaderAdapter()
+        wineyFeedHeaderAdapter = WineyFeedHeaderAdapter(
+            onBannerClicked = { ->
+                initHeaderClickListener()
+            }
+        )
         wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         wineyFeedAdapter = WineyFeedAdapter(
             onlikeButtonClicked = { wineyFeed ->
@@ -406,6 +411,12 @@ class WineyFeedFragment :
         }
     }
 
+    private fun initHeaderClickListener() {
+        val url = INSTAGRAM_URL
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
+    }
+
     private fun sendDialogClickEvent(isNavigate: Boolean) {
         val eventProperties = JSONObject()
 
@@ -462,5 +473,8 @@ class WineyFeedFragment :
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
         private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
         private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
+
+        private const val INSTAGRAM_URL =
+            "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
     }
 }
