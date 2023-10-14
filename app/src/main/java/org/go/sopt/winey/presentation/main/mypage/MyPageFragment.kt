@@ -233,7 +233,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun updateTargetInfo(data: User) {
-        // 목표를 설정한 적이 없는 경우 (초기 상태)
+        // 목표를 설정한 적이 없거나, 기간이 종료된 경우
+        // 아직 없어요 뷰 띄우기
         if (data.isOver) {
             binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
             binding.tvMypagePeriodValue.text = getString(R.string.mypage_not_yet_set)
@@ -276,6 +277,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             amplitudeUtils.logEvent("click_goalsetting")
 
             // 목표를 설정한 적 없거나, 기간이 종료되었거나, 기간 내 목표를 달성한 경우
+            // 바텀 시트 활성화
             if (user.isOver || user.isAttained) {
                 val bottomSheet = TargetAmountBottomSheetFragment()
                 bottomSheet.show(parentFragmentManager, bottomSheet.tag)
@@ -306,7 +308,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val EXTRA_VALUE = "MyPageFragment"
         private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
         private const val TAGE_WITHDRAW_DIALOG = "WITHDRAW_DIALOG"
-
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_TO_MYFEED = "toMyFeed"
     }
