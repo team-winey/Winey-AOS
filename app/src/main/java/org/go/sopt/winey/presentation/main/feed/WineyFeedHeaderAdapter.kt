@@ -8,6 +8,7 @@ import org.go.sopt.winey.databinding.LayoutWineyfeedBanner1Binding
 import org.go.sopt.winey.databinding.LayoutWineyfeedBanner2Binding
 import org.go.sopt.winey.databinding.LayoutWineyfeedBanner3Binding
 import org.go.sopt.winey.databinding.LayoutWineyfeedBanner4Binding
+import org.go.sopt.winey.databinding.LayoutWineyfeedBannerInstagramBinding
 import java.util.Random
 
 class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
@@ -22,7 +23,7 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
                 changeBannerLayout(0)
                 isInitialState = false
             } else {
-                val randomIndex = Random().nextInt(4)
+                val randomIndex = Random().nextInt(5)
                 changeBannerLayout(randomIndex)
             }
         }
@@ -33,6 +34,16 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
 
             when (index) {
                 0 -> {
+                    val layoutWineyfeedBannerInstagramBinding =
+                        LayoutWineyfeedBannerInstagramBinding.inflate(inflater, null, false)
+                    layoutWineyfeedBannerInstagramBinding.apply {
+                        tvWineyfeedBannerTitle.bringToFront()
+                        tvWineyfeedBannerDesc.bringToFront()
+                    }
+                    binding.flWineyfeedBannerContainer.addView(layoutWineyfeedBannerInstagramBinding.root)
+                }
+
+                1 -> {
                     val layoutBanner1Binding =
                         LayoutWineyfeedBanner1Binding.inflate(inflater, null, false)
                     layoutBanner1Binding.apply {
@@ -42,7 +53,7 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
                     binding.flWineyfeedBannerContainer.addView(layoutBanner1Binding.root)
                 }
 
-                1 -> {
+                2 -> {
                     val layoutBanner2Binding =
                         LayoutWineyfeedBanner2Binding.inflate(inflater, null, false)
                     layoutBanner2Binding.apply {
@@ -52,7 +63,7 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
                     binding.flWineyfeedBannerContainer.addView(layoutBanner2Binding.root)
                 }
 
-                2 -> {
+                3 -> {
                     val layoutBanner3Binding =
                         LayoutWineyfeedBanner3Binding.inflate(inflater, null, false)
                     layoutBanner3Binding.apply {
@@ -62,7 +73,7 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
                     binding.flWineyfeedBannerContainer.addView(layoutBanner3Binding.root)
                 }
 
-                3 -> {
+                4 -> {
                     val layoutBanner4Binding =
                         LayoutWineyfeedBanner4Binding.inflate(inflater, null, false)
                     layoutBanner4Binding.apply {
