@@ -16,6 +16,8 @@
     <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
     <string name="wineyfeed_goal_dialog_negative_button">취소</string>
     <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
+    <string name="wineyfeed_banner_insta_title">무슨 앱인지 궁금하다면?</string>
+    <string name="wineyfeed_banner_insta_subtitle">위니 공식 인스타에서\n더 재밌게 사용하는 법 알아보기!</string>
     <string name="wineyfeed_banner1_title">위니와 절약을 더 쉽고 재밌게!</string>
     <string name="wineyfeed_banner1_subtitle">절약한 소비를 피드에 올리고\n사람들과 소통해요</string>
     <string name="wineyfeed_banner2_subtitle">하단 버튼을 통해</string>
@@ -233,6 +235,5 @@
 
     <!-- error -->
     <string name="error_winey_feed_loading">Can\'t loading winey feed list</string>
-    <string name="wineyfeed_banner_insta_title">무슨 앱인지 궁금하다면?</string>
-    <string name="wineyfeed_banner_insta_subtitle">위니 공식 인스타에서\n더 재밌게 사용하는 법 알아보기!</string>
+
 </resources>
