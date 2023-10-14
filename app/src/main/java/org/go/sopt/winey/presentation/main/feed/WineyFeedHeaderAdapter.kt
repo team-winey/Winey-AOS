@@ -29,7 +29,7 @@ class WineyFeedHeaderAdapter(
                 changeBannerLayout(0)
                 isInitialState = false
             } else {
-                val randomIndex = Random().nextInt(5)
+                val randomIndex = Random().nextInt(BANNER_COUNT)
                 changeBannerLayout(randomIndex)
             }
         }
@@ -108,6 +108,7 @@ class WineyFeedHeaderAdapter(
 
     companion object {
         private const val HEADER_COUNT = 1
+        private const val BANNER_COUNT = 5
         private const val MSG_INVALID_RANDOM_NUMBER = "Invalid random number"
     }
 }
