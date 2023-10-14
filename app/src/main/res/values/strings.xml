@@ -233,6 +233,6 @@
 
     <!-- error -->
     <string name="error_winey_feed_loading">Can\'t loading winey feed list</string>
-    <string name="wineyfeed_banner_insta_title">위니와 절약을 더 쉽고 재밌게!</string>
-    <string name="wineyfeed_banner_insta_subtitle">절약한 소비를 피드에 올리고 \n사람들과 소통해요</string>
+    <string name="wineyfeed_banner_insta_title">무슨 앱인지 궁금하다면?</string>
+    <string name="wineyfeed_banner_insta_subtitle">위니 공식 인스타에서\n더 재밌게 사용하는 법 알아보기!</string>
 </resources>
