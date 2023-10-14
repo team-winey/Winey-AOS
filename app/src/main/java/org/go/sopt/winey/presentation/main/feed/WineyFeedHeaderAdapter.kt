@@ -9,9 +9,12 @@ import org.go.sopt.winey.databinding.LayoutWineyfeedBanner2Binding
 import org.go.sopt.winey.databinding.LayoutWineyfeedBanner3Binding
 import org.go.sopt.winey.databinding.LayoutWineyfeedBanner4Binding
 import org.go.sopt.winey.databinding.LayoutWineyfeedBannerInstagramBinding
+import org.go.sopt.winey.util.view.setOnSingleClickListener
 import java.util.Random
 
-class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
+class WineyFeedHeaderAdapter(
+    private val onBannerClicked: () -> Unit
+) : RecyclerView.Adapter<WineyFeedHeaderAdapter.HeaderViewHolder>() {
     private var isInitialState = true
 
     inner class HeaderViewHolder(
@@ -19,6 +22,9 @@ class WineyFeedHeaderAdapter : RecyclerView.Adapter<WineyFeedHeaderAdapter.Heade
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind() {
+            binding.flWineyfeedBannerContainer.setOnSingleClickListener {
+                onBannerClicked()
+            }
             if (isInitialState) {
                 changeBannerLayout(0)
                 isInitialState = false
