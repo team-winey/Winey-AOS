@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -327,8 +325,8 @@ class WineyFeedFragment :
             mainViewModel.getUserState.collect { state ->
                 when (state) {
                     is UiState.Success -> {
-                        val data = dataStoreRepository.getUserInfo().firstOrNull()
-                        isGoalValid(data)
+                        val data = dataStoreRepository.getUserInfo().firstOrNull() ?: return@collect
+                        checkGoalSetting(data)
                     }
 
                     is UiState.Failure -> {
@@ -349,15 +347,40 @@ class WineyFeedFragment :
         }
     }
 
-    private fun isGoalValid(data: User?) {
-        if (data?.isOver == true) {
-            showGoalSettingDialog()
-        } else {
+    private fun checkGoalSetting(data: User) {
+        // 목표를 설정한 적 없거나, 기간 내 목표 달성에 실패한 경우
+        if (data.isOver) {
+            showDefaultGoalSettingDialog()
+        }
+        // 기간 내 목표 달성에 성공한 경우
+        else if (data.isAttained) {
+            showCongratulationDialog()
+        } else { // 새 목표를 설정한 경우
             navigateToUpload()
         }
     }
 
-    private fun showGoalSettingDialog() {
+    private fun showCongratulationDialog() {
+        amplitudeUtils.logEvent("view_goalsetting_popup")
+
+        val dialog = WineyDialogFragment(
+            stringOf(R.string.wineyfeed_congratulation_dialog_title),
+            stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
+            stringOf(R.string.wineyfeed_goal_dialog_negative_button),
+            stringOf(R.string.wineyfeed_goal_dialog_positive_button),
+            handleNegativeButton = {
+                sendDialogClickEvent(false)
+            },
+            handlePositiveButton = {
+                sendDialogClickEvent(true)
+                navigateToMyPageWithBundle()
+            }
+        )
+
+        dialog.show(parentFragmentManager, TAG_CONGRATULATION_DIALOG)
+    }
+
+    private fun showDefaultGoalSettingDialog() {
         amplitudeUtils.logEvent("view_goalsetting_popup")
 
         val dialog = WineyDialogFragment(
@@ -370,18 +393,27 @@ class WineyFeedFragment :
             },
             handlePositiveButton = {
                 sendDialogClickEvent(true)
-                navigateTo<MyPageFragment>()
+                navigateToMyPageWithBundle()
             }
         )
-        dialog.show(parentFragmentManager, TAG_GOAL_DIALOG)
+
+        dialog.show(parentFragmentManager, TAG_DEFAULT_GOAL_SETTING_DIALOG)
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
-        parentFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
+    private fun navigateToMyPageWithBundle() {
+        val myPageFragment = MyPageFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(KEY_FROM_WINEY_FEED, true)
+            }
         }
-        val bottomNav: BottomNavigationView =
-            requireActivity().findViewById(R.id.bnv_main)
+        parentFragmentManager.commit {
+            replace(R.id.fcv_main, myPageFragment)
+        }
+        syncBnvSelectedItem()
+    }
+
+    private fun syncBnvSelectedItem() {
+        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
         bottomNav.selectedItemId = R.id.menu_mypage
     }
 
@@ -465,15 +497,17 @@ class WineyFeedFragment :
 
     companion object {
         private const val MSG_WINEYFEED_ERROR = "ERROR"
-        private const val TAG_GOAL_DIALOG = "NO_GOAL_DIALOG"
+        private const val TAG_DEFAULT_GOAL_SETTING_DIALOG = "DEFAULT_GOAL_SETTING_DIALOG"
+        private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
         private const val POPUP_MENU_POS_OFFSET = 65
+
+        private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
         private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
         private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
-
         private const val INSTAGRAM_URL =
             "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
     }
