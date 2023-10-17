@@ -12,10 +12,6 @@
     <string name="wineyfeed_money">원 절약</string>
     <string name="wineyfeed_menu_report">신고하기</string>
     <string name="wineyfeed_menu_delete">삭제하기</string>
-    <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
-    <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
-    <string name="wineyfeed_goal_dialog_negative_button">취소</string>
-    <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
     <string name="wineyfeed_banner_insta_title">무슨 앱인지 궁금하다면?</string>
     <string name="wineyfeed_banner_insta_subtitle">위니 공식 인스타에서\n더 재밌게 사용하는 법 알아보기!</string>
     <string name="wineyfeed_banner1_title">위니와 절약을 더 쉽고 재밌게!</string>
@@ -26,6 +22,13 @@
     <string name="wineyfeed_banner3_title">좋아요를 눌러 서로의 절약을\n응원해주세요!</string>
     <string name="wineyfeed_banner4_subtitle">찾기 힘든 국가기관 금융혜택도</string>
     <string name="wineyfeed_banner4_title">위니 추천피드에서\n한번에 볼 수 있어요!</string>
+
+    <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
+    <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
+    <string name="wineyfeed_congratulation_dialog_title">🎉목표 달성을 축하드려요!🎉</string>
+    <string name="wineyfeed_congratulation_dialog_subtitle">마이페이지에서 새 목표를\n설정해 볼까요?</string>
+    <string name="wineyfeed_goal_dialog_negative_button">취소</string>
+    <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
 
     <!-- comment delete dialog -->
     <string name="comment_delete_dialog_title">삭제하시겠습니까?</string>

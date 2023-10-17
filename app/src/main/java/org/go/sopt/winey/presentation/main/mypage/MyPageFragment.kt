@@ -54,6 +54,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         initUserData()
         initNavigation()
+
         init1On1ButtonClickListener()
         initTermsButtonClickListener()
         initLevelHelpButtonClickListener()
@@ -61,30 +62,44 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initLogoutButtonClickListener()
         initWithdrawButtonClickListener()
         initNicknameButtonClickListener()
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+        registerBackPressedCallback()
         setupGetUserState()
         setupDeleteUserState()
-    }
-
-    private val callback = object : OnBackPressedCallback(true) {
-        override fun handleOnBackPressed() {
-            val receivedBundle = arguments
-            if (receivedBundle != null) {
-                val value = receivedBundle.getBoolean(KEY_FROM_NOTI)
-                if (value) {
-                    val intent = Intent(requireContext(), NotificationActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
-                }
-            }
-            requireActivity().finish()
-        }
+        checkFromWineyFeed()
     }
 
     // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
     override fun onStart() {
         super.onStart()
         mainViewModel.getUser()
+    }
+
+    // 위니피드 프래그먼트에서 마이페이지로 전환 시, 바텀시트 바로 띄우도록
+    private fun checkFromWineyFeed() {
+        val isFromWineyFeed = arguments?.getBoolean(KEY_FROM_WINEY_FEED)
+        if (isFromWineyFeed == true) {
+            showTargetSettingBottomSheet()
+        }
+    }
+
+    // 마이페이지 왔다가 다시 알림 화면으로 돌아가도록
+    private fun registerBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val receivedBundle = arguments
+                if (receivedBundle != null) {
+                    val isFromNotification = receivedBundle.getBoolean(KEY_FROM_NOTI)
+                    if (isFromNotification) {
+                        val intent = Intent(requireContext(), NotificationActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                }
+                requireActivity().finish()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun initUserData() {
@@ -203,7 +218,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
-            putExtra(EXTRA_KEY, EXTRA_VALUE)
+            putExtra(KEY_PREV_SCREEN, VALUE_MY_PAGE_SCREEN)
             startActivity(this)
         }
     }
@@ -279,14 +294,22 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             // 목표를 설정한 적 없거나, 기간이 종료되었거나, 기간 내 목표를 달성한 경우
             // 바텀 시트 활성화
             if (user.isOver || user.isAttained) {
-                val bottomSheet = TargetAmountBottomSheetFragment()
-                bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-                amplitudeUtils.logEvent("view_goalsetting")
+                showTargetSettingBottomSheet()
             } else {
-                val dialog = MyPageNotOverDialogFragment()
-                dialog.show(parentFragmentManager, dialog.tag)
+                showTargetNotOverDialog()
             }
         }
+    }
+
+    private fun showTargetSettingBottomSheet() {
+        val bottomSheet = TargetAmountBottomSheetFragment()
+        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+        amplitudeUtils.logEvent("view_goalsetting")
+    }
+
+    private fun showTargetNotOverDialog() {
+        val dialog = MyPageNotOverDialogFragment()
+        dialog.show(parentFragmentManager, dialog.tag)
     }
 
     private inline fun <reified T : Fragment> navigateAndBackStack() {
@@ -304,11 +327,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
         private const val TERMS_URL =
             "https://empty-weaver-a9f.notion.site/iney-9dbfe130c7df4fb9a0903481c3e377e6?pvs=4"
-        private const val EXTRA_KEY = "PREV_SCREEN_NAME"
-        private const val EXTRA_VALUE = "MyPageFragment"
         private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
         private const val TAGE_WITHDRAW_DIALOG = "WITHDRAW_DIALOG"
+
+        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val VALUE_MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
+        private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_TO_MYFEED = "toMyFeed"
     }
 }

@@ -274,7 +274,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     initDetailFeedAdapter(detailFeed)
 
                     val commentList = detailFeed.commentList
-                    switchCommentContainer(commentList)
+                    initRecyclerViewAdapter(commentList)
 
                     sendEventToAmplitude(EventType.TYPE_VIEW_SCREEN, detailFeed)
                 }
@@ -289,13 +289,28 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }.launchIn(lifecycleScope)
     }
 
-    private fun switchCommentContainer(commentList: List<Comment>) {
+    private fun initRecyclerViewAdapter(commentList: List<Comment>) {
         if (commentList.isEmpty()) {
-            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
+            setupEmptyCommentConcatAdapter()
         } else {
-            binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
+            setupCommentListConcatAdapter()
             commentAdapter.submitList(commentList)
         }
+    }
+
+    private fun switchRecyclerViewAdapter(action: String) {
+        when (action) {
+            ACTION_COMMENT_POST -> setupCommentListConcatAdapter()
+            ACTION_COMMENT_DELETE -> setupEmptyCommentConcatAdapter()
+        }
+    }
+
+    private fun setupCommentListConcatAdapter() {
+        binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentAdapter)
+    }
+
+    private fun setupEmptyCommentConcatAdapter() {
+        binding.rvDetail.adapter = ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
     }
 
     private fun initPostLikeStateObserver() {
@@ -341,7 +356,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         val comment = state.data ?: return@onEach
 
                         if (isCommentListEmpty()) {
-                            updateRecyclerViewAdapter(ACTION_COMMENT_POST)
+                            switchRecyclerViewAdapter(ACTION_COMMENT_POST)
                         }
 
                         val commentNumber = commentAdapter.addItem(comment)
@@ -362,19 +377,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun isCommentListEmpty() = commentAdapter.currentList.isEmpty()
 
-    private fun updateRecyclerViewAdapter(action: String) {
-        when (action) {
-            ACTION_COMMENT_POST ->
-                binding.rvDetail.adapter =
-                    ConcatAdapter(detailFeedAdapter, commentAdapter)
-
-            ACTION_COMMENT_DELETE -> {
-                binding.rvDetail.adapter =
-                    ConcatAdapter(detailFeedAdapter, commentEmptyAdapter)
-            }
-        }
-    }
-
     private fun initDeleteCommentStateObserver() {
         viewModel.deleteCommentState.flowWithLifecycle(lifecycle)
             .onEach { state ->
@@ -387,7 +389,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         detailFeedAdapter.updateCommentNumber(commentNumber.toLong())
 
                         if (isCommentNumberZero(commentNumber)) {
-                            updateRecyclerViewAdapter(ACTION_COMMENT_DELETE)
+                            switchRecyclerViewAdapter(ACTION_COMMENT_DELETE)
                         }
 
                         wineySnackbar(
