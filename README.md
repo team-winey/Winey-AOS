@@ -1,8 +1,8 @@
 # 👑 Winey - AOS 💸
 
-GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
+[GO SOPT](https://www.sopt.org/) 32기 앱잼 Winey Android 팀 레포입니다.
 
-<img width="250" src="https://github.com/team-winey/Winey-AOS/assets/68090939/d9f94086-84f5-4ef2-80b4-acf27b59c21b"/>
+<img width="780" src="https://github.com/team-winey/Winey-AOS/assets/68090939/a44c2b4e-68e2-40c1-b687-535f323cead8"/> 
 
 ## 💁 Introduction
 
@@ -15,9 +15,7 @@ GO SOPT 32기 앱잼 Winey Android 팀 레포입니다.
 
 한마디로 위니는 '좌충우돌 나만의 절약 방법을 공유하는 게임형 절약 SNS' 서비스입니다.
 
-## 🎉 Play Store Download (v1.0.0)
-
-[구글 플레이 스토어에서 바로 만나보세요 ✔](https://play.google.com/store/apps/details?id=org.go.sopt.winey)
+[🎉 구글 플레이 스토어에서 바로 만나보세요! 🎉](https://play.google.com/store/apps/details?id=org.go.sopt.winey)
 
 ## 🌱 Contributors
 
@@ -113,13 +111,4 @@ https://github.com/team-winey/Winey-AOS/assets/68090939/d190e491-efe5-4a02-89d1-
 ┃ ┃ ┣ 📂 story
 ┃ ┣ 📂 splash
 ┣ 📂 util
-┃ ┣ 📂 activity
-┃ ┣ 📂 amplitude
-┃ ┣ 📂 binding
-┃ ┣ 📂 code
-┃ ┣ 📂 context
-┃ ┣ 📂 fragment
-┃ ┣ 📂 intent
-┃ ┣ 📂 multipart
-┃ ┣ 📂 view
 ```
