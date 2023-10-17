@@ -2,7 +2,7 @@
 
 [GO SOPT](https://www.sopt.org/) 32기 앱잼 Winey Android 팀 레포입니다.
 
-<img width="780" src="https://github.com/team-winey/Winey-AOS/assets/68090939/a44c2b4e-68e2-40c1-b687-535f323cead8"/> 
+<img src="https://github.com/team-winey/Winey-AOS/assets/68090939/a44c2b4e-68e2-40c1-b687-535f323cead8"/> 
 
 ## 💁 Introduction
 
