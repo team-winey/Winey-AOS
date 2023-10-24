@@ -8,6 +8,7 @@
 ##---------------Begin: Kakao SDK  ----------
 -keep class com.kakao.sdk.**.model.* { <fields>; }
 -keep class * extends com.google.gson.TypeAdapter
+-keep interface com.kakao.sdk.**.*Api
 ##---------------END: Kakao SDK  ----------
 
 
