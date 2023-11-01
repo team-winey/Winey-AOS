@@ -26,7 +26,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginActivity :
     BindingActivity<ActivityLoginBinding>(R.layout.activity_login) {
-    val viewModel: LoginViewModel by viewModels()
+    private val viewModel: LoginViewModel by viewModels()
 
     @Inject
     lateinit var amplitudeUtils: AmplitudeUtils
