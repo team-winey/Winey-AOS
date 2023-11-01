@@ -14,9 +14,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {
-    private const val KAKAO_TALK_LOGIN = 0
-    private const val KAKAO_ACCOUNT_LOGIN = 1
-
     @Provides
     @Singleton
     fun provideAuthService(retrofit: Retrofit): AuthService =
