@@ -8,8 +8,8 @@
 ##---------------Begin: Kakao SDK  ----------
 -keep class com.kakao.sdk.**.model.* { <fields>; }
 -keep class * extends com.google.gson.TypeAdapter
+-keep interface com.kakao.sdk.**.*Api
 ##---------------END: Kakao SDK  ----------
-
 
 ##---------------Begin: Retrofit  ----------
 # Retrofit does reflection on generic parameters. InnerClasses is required to use Signature and
@@ -76,8 +76,6 @@
 
 ##---------------End : OkHttp --------------
 
-
-
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
 # class:
@@ -92,5 +90,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-
