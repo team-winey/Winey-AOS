@@ -1,10 +1,12 @@
 package org.go.sopt.winey.presentation.main.feed.detail
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -89,9 +91,23 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
-        hideKeyboard()
-        binding.etComment.clearFocus()
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        if (event.action == MotionEvent.ACTION_DOWN) {
+            currentFocus?.let { view ->
+                if (view is EditText) {
+                    val focusView = Rect()
+                    view.getGlobalVisibleRect(focusView)
+
+                    val touchedX = event.x.toInt()
+                    val touchedY = event.y.toInt()
+
+                    if (!focusView.contains(touchedX, touchedY)) {
+                        hideKeyboard()
+                        binding.etComment.clearFocus()
+                    }
+                }
+            }
+        }
         return super.dispatchTouchEvent(event)
     }
 
