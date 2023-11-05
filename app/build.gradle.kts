@@ -42,9 +42,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = gradleLocalProperties(rootDir).getProperty("keyAlias")
+            keyPassword = gradleLocalProperties(rootDir).getProperty("keyPassword")
+            storeFile = file("winey.jks")
+            storePassword = gradleLocalProperties(rootDir).getProperty("storePassword")
+        }
+    }
+
     buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
+        release {
+            signingConfig = signingConfigs.getByName("release")
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -62,9 +73,9 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         viewBinding = true
         dataBinding = true
-        buildConfig = true
     }
 }
 
