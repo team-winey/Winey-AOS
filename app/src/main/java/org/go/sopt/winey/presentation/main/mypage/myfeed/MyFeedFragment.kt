@@ -132,7 +132,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun showFeedDeleteDialog(feed: WineyFeed) {
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.feed_delete_dialog_title),
             stringOf(R.string.feed_delete_dialog_subtitle),
             stringOf(R.string.comment_delete_dialog_negative_button),

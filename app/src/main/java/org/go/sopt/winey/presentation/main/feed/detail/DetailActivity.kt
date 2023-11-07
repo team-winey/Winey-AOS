@@ -216,7 +216,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     }
 
     private fun showFeedDeleteDialog() {
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.feed_delete_dialog_title),
             stringOf(R.string.feed_delete_dialog_subtitle),
             stringOf(R.string.comment_delete_dialog_negative_button),
@@ -228,7 +228,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     }
 
     private fun showCommentDeleteDialog(commentId: Long) {
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.comment_delete_dialog_title),
             stringOf(R.string.comment_delete_dialog_subtitle),
             stringOf(R.string.comment_delete_dialog_negative_button),
@@ -250,7 +250,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     // 신고의 대상이 무엇인지에 따라 스낵바가 뜨는 위치가 달라지도록
     private fun showReportDialog(target: String) {
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.report_dialog_title),
             stringOf(R.string.report_dialog_subtitle),
             stringOf(R.string.report_dialog_negative_button),

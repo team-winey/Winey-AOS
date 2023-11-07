@@ -54,7 +54,7 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
     }
 
     private fun showAlertDialog() {
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.upload_dialog_title),
             stringOf(R.string.upload_dialog_subtitle),
             stringOf(R.string.upload_dialog_negative_button),

@@ -186,7 +186,7 @@ class WineyFeedFragment :
     }
 
     private fun showFeedDeleteDialog(feed: WineyFeed) {
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.feed_delete_dialog_title),
             stringOf(R.string.feed_delete_dialog_subtitle),
             stringOf(R.string.comment_delete_dialog_negative_button),
@@ -200,7 +200,7 @@ class WineyFeedFragment :
     }
 
     private fun showFeedReportDialog() {
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.report_dialog_title),
             stringOf(R.string.report_dialog_subtitle),
             stringOf(R.string.report_dialog_negative_button),
@@ -363,7 +363,7 @@ class WineyFeedFragment :
     private fun showCongratulationDialog() {
         amplitudeUtils.logEvent("view_goalsetting_popup")
 
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.wineyfeed_congratulation_dialog_title),
             stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
             stringOf(R.string.wineyfeed_goal_dialog_negative_button),
@@ -383,7 +383,7 @@ class WineyFeedFragment :
     private fun showDefaultGoalSettingDialog() {
         amplitudeUtils.logEvent("view_goalsetting_popup")
 
-        val dialog = WineyDialogFragment(
+        val dialog = WineyDialogFragment.newInstance(
             stringOf(R.string.wineyfeed_goal_dialog_title),
             stringOf(R.string.wineyfeed_goal_dialog_subtitle),
             stringOf(R.string.wineyfeed_goal_dialog_negative_button),

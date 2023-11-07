@@ -164,7 +164,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initLogoutButtonClickListener() {
         binding.clMypageLogout.setOnClickListener {
             amplitudeUtils.logEvent("click_logout")
-            val dialog = WineyDialogFragment(
+            val dialog = WineyDialogFragment.newInstance(
                 stringOf(R.string.mypage_logout_dialog_title),
                 stringOf(R.string.mypage_logout_dialog_subtitle),
                 stringOf(R.string.mypage_logout_dialog_negative_button),
@@ -178,7 +178,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initWithdrawButtonClickListener() {
         binding.tvMypageWithdraw.setOnClickListener {
-            val dialog = WineyDialogFragment(
+            val dialog = WineyDialogFragment.newInstance(
                 stringOf(R.string.mypage_withdraw_dialog_title),
                 stringOf(R.string.mypage_withdraw_dialog_subtitle),
                 stringOf(R.string.mypage_withdraw_dialog_negative_button),
