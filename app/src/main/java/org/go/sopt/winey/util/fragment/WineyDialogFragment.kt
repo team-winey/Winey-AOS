@@ -68,11 +68,12 @@ class WineyDialogFragment :
             handleNegativeButton: () -> Unit,
             handlePositiveButton: () -> Unit
         ): WineyDialogFragment {
-            val args = Bundle()
-            args.putString(ARG_TITLE, title)
-            args.putString(ARG_SUB_TITLE, subTitle)
-            args.putString(ARG_NEGATIVE_BUTTON_LABEL, negativeButtonLabel)
-            args.putString(ARG_POSITIVE_BUTTON_LABEL, positiveButtonLabel)
+            val args = Bundle().apply {
+                putString(ARG_TITLE, title)
+                putString(ARG_SUB_TITLE, subTitle)
+                putString(ARG_NEGATIVE_BUTTON_LABEL, negativeButtonLabel)
+                putString(ARG_POSITIVE_BUTTON_LABEL, positiveButtonLabel)
+            }
 
             val fragment = WineyDialogFragment()
             fragment.arguments = args
