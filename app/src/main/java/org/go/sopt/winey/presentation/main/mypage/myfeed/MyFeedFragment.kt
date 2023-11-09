@@ -24,6 +24,7 @@ import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.presentation.main.feed.WineyFeedLoadAdapter
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.fragment.snackBar
@@ -133,10 +134,12 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     private fun showFeedDeleteDialog(feed: WineyFeed) {
         val dialog = WineyDialogFragment.newInstance(
-            stringOf(R.string.feed_delete_dialog_title),
-            stringOf(R.string.feed_delete_dialog_subtitle),
-            stringOf(R.string.comment_delete_dialog_negative_button),
-            stringOf(R.string.comment_delete_dialog_positive_button),
+            WineyDialogLabel(
+                stringOf(R.string.feed_delete_dialog_title),
+                stringOf(R.string.feed_delete_dialog_subtitle),
+                stringOf(R.string.comment_delete_dialog_negative_button),
+                stringOf(R.string.comment_delete_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = {
                 viewModel.deleteFeed(feed.feedId)

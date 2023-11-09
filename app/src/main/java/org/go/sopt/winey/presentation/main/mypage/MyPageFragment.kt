@@ -24,6 +24,7 @@ import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
+import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
@@ -165,10 +166,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.clMypageLogout.setOnClickListener {
             amplitudeUtils.logEvent("click_logout")
             val dialog = WineyDialogFragment.newInstance(
-                stringOf(R.string.mypage_logout_dialog_title),
-                stringOf(R.string.mypage_logout_dialog_subtitle),
-                stringOf(R.string.mypage_logout_dialog_negative_button),
-                stringOf(R.string.mypage_logout_dialog_positive_button),
+                WineyDialogLabel(
+                    stringOf(R.string.mypage_logout_dialog_title),
+                    stringOf(R.string.mypage_logout_dialog_subtitle),
+                    stringOf(R.string.mypage_logout_dialog_negative_button),
+                    stringOf(R.string.mypage_logout_dialog_positive_button)
+                ),
                 handleNegativeButton = {},
                 handlePositiveButton = { mainViewModel.postLogout() }
             )
@@ -179,10 +182,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initWithdrawButtonClickListener() {
         binding.tvMypageWithdraw.setOnClickListener {
             val dialog = WineyDialogFragment.newInstance(
-                stringOf(R.string.mypage_withdraw_dialog_title),
-                stringOf(R.string.mypage_withdraw_dialog_subtitle),
-                stringOf(R.string.mypage_withdraw_dialog_negative_button),
-                stringOf(R.string.mypage_withdraw_dialog_positive_button),
+                WineyDialogLabel(
+                    stringOf(R.string.mypage_withdraw_dialog_title),
+                    stringOf(R.string.mypage_withdraw_dialog_subtitle),
+                    stringOf(R.string.mypage_withdraw_dialog_negative_button),
+                    stringOf(R.string.mypage_withdraw_dialog_positive_button)
+                ),
                 handleNegativeButton = { myPageViewModel.deleteUser() },
                 handlePositiveButton = {}
             )

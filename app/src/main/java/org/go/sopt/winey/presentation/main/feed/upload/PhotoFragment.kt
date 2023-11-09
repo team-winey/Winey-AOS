@@ -9,6 +9,7 @@ import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentPhotoBinding
+import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
@@ -55,10 +56,12 @@ class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_ph
 
     private fun showAlertDialog() {
         val dialog = WineyDialogFragment.newInstance(
-            stringOf(R.string.upload_dialog_title),
-            stringOf(R.string.upload_dialog_subtitle),
-            stringOf(R.string.upload_dialog_negative_button),
-            stringOf(R.string.upload_dialog_positive_button),
+            WineyDialogLabel(
+                stringOf(R.string.upload_dialog_title),
+                stringOf(R.string.upload_dialog_subtitle),
+                stringOf(R.string.upload_dialog_negative_button),
+                stringOf(R.string.upload_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = { requireActivity().finish() }
         )
