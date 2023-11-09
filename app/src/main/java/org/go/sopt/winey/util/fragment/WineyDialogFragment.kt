@@ -24,14 +24,14 @@ class WineyDialogFragment :
         initPositiveButtonClickListener(handlePositive)
     }
 
-    private fun initNegativeButtonClickListener(handleNegativeButton: (() -> Unit)) {
+    private fun initNegativeButtonClickListener(handleNegativeButton: () -> Unit) {
         binding.btnDialogNegative.setOnClickListener {
             handleNegativeButton.invoke()
             dismiss()
         }
     }
 
-    private fun initPositiveButtonClickListener(handlePositiveButton: (() -> Unit)) {
+    private fun initPositiveButtonClickListener(handlePositiveButton: () -> Unit) {
         binding.btnDialogPositive.setOnClickListener {
             handlePositiveButton.invoke()
             dismiss()
