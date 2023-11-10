@@ -23,6 +23,7 @@ import org.go.sopt.winey.domain.entity.Comment
 import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
+import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.activity.hideKeyboard
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.amplitude.type.EventType
@@ -216,11 +217,13 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     }
 
     private fun showFeedDeleteDialog() {
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.feed_delete_dialog_title),
-            stringOf(R.string.feed_delete_dialog_subtitle),
-            stringOf(R.string.comment_delete_dialog_negative_button),
-            stringOf(R.string.comment_delete_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.feed_delete_dialog_title),
+                stringOf(R.string.feed_delete_dialog_subtitle),
+                stringOf(R.string.comment_delete_dialog_negative_button),
+                stringOf(R.string.comment_delete_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = { viewModel.deleteFeed(feedId) }
         )
@@ -228,11 +231,13 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     }
 
     private fun showCommentDeleteDialog(commentId: Long) {
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.comment_delete_dialog_title),
-            stringOf(R.string.comment_delete_dialog_subtitle),
-            stringOf(R.string.comment_delete_dialog_negative_button),
-            stringOf(R.string.comment_delete_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.comment_delete_dialog_title),
+                stringOf(R.string.comment_delete_dialog_subtitle),
+                stringOf(R.string.comment_delete_dialog_negative_button),
+                stringOf(R.string.comment_delete_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = { viewModel.deleteComment(commentId) }
         )
@@ -250,11 +255,13 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     // 신고의 대상이 무엇인지에 따라 스낵바가 뜨는 위치가 달라지도록
     private fun showReportDialog(target: String) {
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.report_dialog_title),
-            stringOf(R.string.report_dialog_subtitle),
-            stringOf(R.string.report_dialog_negative_button),
-            stringOf(R.string.report_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.report_dialog_title),
+                stringOf(R.string.report_dialog_subtitle),
+                stringOf(R.string.report_dialog_negative_button),
+                stringOf(R.string.report_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = {
                 when (target) {

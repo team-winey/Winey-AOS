@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="data"
+            type="org.go.sopt.winey.presentation.model.WineyDialogLabel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +26,7 @@
             android:layout_marginTop="24dp"
             android:textAppearance="@style/TextAppearance.WINEY.body_b_18"
             android:textColor="@color/gray_900"
+            android:text="@{data.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,6 +40,7 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
             android:textColor="@color/gray_500"
+            android:text="@{data.subTitle}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_title"
@@ -51,6 +55,7 @@
             android:stateListAnimator="@null"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
             android:textColor="@color/gray_500"
+            android:text="@{data.negativeButtonLabel}"
             app:layout_constraintEnd_toStartOf="@id/btn_dialog_positive"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub"
@@ -66,6 +71,7 @@
             android:stateListAnimator="@null"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
             android:textColor="@color/gray_900"
+            android:text="@{data.positiveButtonLabel}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_dialog_negative"
             app:layout_constraintTop_toBottomOf="@id/tv_dialog_sub"

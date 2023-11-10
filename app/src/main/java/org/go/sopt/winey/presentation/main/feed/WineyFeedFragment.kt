@@ -32,6 +32,7 @@ import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
+import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.amplitude.type.EventType
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
@@ -186,11 +187,13 @@ class WineyFeedFragment :
     }
 
     private fun showFeedDeleteDialog(feed: WineyFeed) {
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.feed_delete_dialog_title),
-            stringOf(R.string.feed_delete_dialog_subtitle),
-            stringOf(R.string.comment_delete_dialog_negative_button),
-            stringOf(R.string.comment_delete_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.feed_delete_dialog_title),
+                stringOf(R.string.feed_delete_dialog_subtitle),
+                stringOf(R.string.comment_delete_dialog_negative_button),
+                stringOf(R.string.comment_delete_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = {
                 viewModel.deleteFeed(feed.feedId)
@@ -200,11 +203,13 @@ class WineyFeedFragment :
     }
 
     private fun showFeedReportDialog() {
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.report_dialog_title),
-            stringOf(R.string.report_dialog_subtitle),
-            stringOf(R.string.report_dialog_negative_button),
-            stringOf(R.string.report_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.report_dialog_title),
+                stringOf(R.string.report_dialog_subtitle),
+                stringOf(R.string.report_dialog_negative_button),
+                stringOf(R.string.report_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = {
                 wineySnackbar(
@@ -363,11 +368,13 @@ class WineyFeedFragment :
     private fun showCongratulationDialog() {
         amplitudeUtils.logEvent("view_goalsetting_popup")
 
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.wineyfeed_congratulation_dialog_title),
-            stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
-            stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-            stringOf(R.string.wineyfeed_goal_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.wineyfeed_congratulation_dialog_title),
+                stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
+                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
+                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
+            ),
             handleNegativeButton = {
                 sendDialogClickEvent(false)
             },
@@ -383,11 +390,13 @@ class WineyFeedFragment :
     private fun showDefaultGoalSettingDialog() {
         amplitudeUtils.logEvent("view_goalsetting_popup")
 
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.wineyfeed_goal_dialog_title),
-            stringOf(R.string.wineyfeed_goal_dialog_subtitle),
-            stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-            stringOf(R.string.wineyfeed_goal_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.wineyfeed_goal_dialog_title),
+                stringOf(R.string.wineyfeed_goal_dialog_subtitle),
+                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
+                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
+            ),
             handleNegativeButton = {
                 sendDialogClickEvent(false)
             },
