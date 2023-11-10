@@ -10,8 +10,8 @@ import org.go.sopt.winey.util.intent.getCompatibleParcelableExtra
 
 class WineyDialogFragment :
     BindingDialogFragment<FragmentAlertDialogBinding>(R.layout.fragment_alert_dialog) {
-    private var handleNegative: (() -> Unit) = {}
-    private var handlePositive: (() -> Unit) = {}
+    private var handleNegative: () -> Unit = {}
+    private var handlePositive: () -> Unit = {}
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
