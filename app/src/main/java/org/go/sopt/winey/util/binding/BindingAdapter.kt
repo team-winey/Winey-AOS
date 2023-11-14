@@ -11,8 +11,8 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import de.hdodenhof.circleimageview.CircleImageView
 import org.go.sopt.winey.R
-import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.MY_PAGE_SCREEN
-import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.STORY_SCREEN
+import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.VAL_MY_PAGE_SCREEN
+import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.VAL_STORY_SCREEN
 import org.go.sopt.winey.util.code.ErrorCode.*
 import org.go.sopt.winey.util.context.colorOf
 import org.go.sopt.winey.util.context.drawableOf
@@ -144,11 +144,11 @@ fun TextView.setNicknameCounter(
     originalNicknameLength: Int
 ) {
     when (prevScreenName) {
-        STORY_SCREEN -> {
+        VAL_STORY_SCREEN -> {
             text = context.getString(R.string.nickname_counter, inputNicknameLength)
         }
 
-        MY_PAGE_SCREEN -> {
+        VAL_MY_PAGE_SCREEN -> {
             text = if (inputNicknameLength == 0) {
                 // 입력 값이 비어있을 때는 원래 닉네임의 글자 수 표시
                 context.getString(R.string.nickname_counter, originalNicknameLength)
@@ -162,19 +162,19 @@ fun TextView.setNicknameCounter(
 @BindingAdapter("switchCloseButtonVisibility")
 fun ImageView.switchCloseButtonVisibility(prevScreenName: String) {
     when (prevScreenName) {
-        STORY_SCREEN -> visibility = View.GONE
-        MY_PAGE_SCREEN -> visibility = View.VISIBLE
+        VAL_STORY_SCREEN -> visibility = View.GONE
+        VAL_MY_PAGE_SCREEN -> visibility = View.VISIBLE
     }
 }
 
 @BindingAdapter("switchTitleText")
 fun TextView.switchTitleText(prevScreenName: String) {
     when (prevScreenName) {
-        STORY_SCREEN ->
+        VAL_STORY_SCREEN ->
             text =
                 context.stringOf(R.string.nickname_default_title)
 
-        MY_PAGE_SCREEN ->
+        VAL_MY_PAGE_SCREEN ->
             text =
                 context.stringOf(R.string.nickname_mypage_title)
     }
@@ -183,11 +183,11 @@ fun TextView.switchTitleText(prevScreenName: String) {
 @BindingAdapter("switchCompleteButtonText")
 fun TextView.switchCompleteButtonText(prevScreenName: String) {
     when (prevScreenName) {
-        STORY_SCREEN ->
+        VAL_STORY_SCREEN ->
             text =
                 context.stringOf(R.string.nickname_start_btn_text)
 
-        MY_PAGE_SCREEN ->
+        VAL_MY_PAGE_SCREEN ->
             text =
                 context.stringOf(R.string.nickname_update_complete_btn_text)
     }

@@ -33,7 +33,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activity_nickname) {
     private val viewModel by viewModels<NicknameViewModel>()
-    private val prevScreenName by lazy { intent.extras?.getString(EXTRA_KEY, "") }
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN_NAME, "") }
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -112,8 +112,8 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
                     is UiState.Loading -> preventContinuousButtonClick()
                     is UiState.Success -> {
                         when (prevScreenName) {
-                            STORY_SCREEN -> navigateTo<MainActivity>()
-                            MY_PAGE_SCREEN -> finish() // 마이페이지 onStart에서 유저 데이터 갱신
+                            VAL_STORY_SCREEN -> navigateTo<MainActivity>()
+                            VAL_MY_PAGE_SCREEN -> finish() // 마이페이지 onStart에서 유저 데이터 갱신
                         }
                     }
 
@@ -129,11 +129,11 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     private fun switchEditTextHint() {
         when (prevScreenName) {
-            STORY_SCREEN -> {
+            VAL_STORY_SCREEN -> {
                 binding.etNickname.hint = stringOf(R.string.nickname_default_hint)
             }
 
-            MY_PAGE_SCREEN -> {
+            VAL_MY_PAGE_SCREEN -> {
                 lifecycleScope.launch {
                     val user = dataStoreRepository.getUserInfo().first() ?: return@launch
                     binding.etNickname.hint = user.nickname
@@ -176,8 +176,8 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     }
 
     companion object {
-        private const val EXTRA_KEY = "PREV_SCREEN_NAME"
-        const val MY_PAGE_SCREEN = "MyPageFragment"
-        const val STORY_SCREEN = "StoryActivity"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
+        const val VAL_STORY_SCREEN = "StoryActivity"
     }
 }

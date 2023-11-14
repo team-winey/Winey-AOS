@@ -84,7 +84,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
 
     private fun navigateLoadingScreen() {
         Intent(requireContext(), LoadingActivity::class.java).apply {
-            putExtra(EXTRA_AMOUNT_KEY, uploadViewModel.amount.removeComma())
+            putExtra(KEY_SAVE_AMOUNT, uploadViewModel.amount.removeComma())
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
@@ -135,6 +135,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val EXTRA_AMOUNT_KEY = "amount"
+        private const val KEY_SAVE_AMOUNT = "amount"
     }
 }

@@ -26,10 +26,9 @@ import org.go.sopt.winey.util.view.UiState
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val mainViewModel by viewModels<MainViewModel>()
-    private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
-    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
-    private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
-    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
+    private val isUploadSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_UPLOAD, false) }
+    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_DELETE, false) }
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN_NAME, "") }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +48,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
             navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
         } else {
-            if (prevScreenName == MY_FEED_SCREEN) {
+            if (prevScreenName == VAL_MY_FEED_SCREEN) {
                 navigateToMyPageWithBundle(KEY_TO_MYFEED, true)
             } else {
                 navigateTo<WineyFeedFragment>()
@@ -58,14 +57,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun showSuccessSnackBar() {
-        if (isUploadSuccess != null && isUploadSuccess == true) {
+        if (isUploadSuccess == true) {
             wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
         }
-        if (isDeleteSuccess != null && isDeleteSuccess == true) {
+
+        if (isDeleteSuccess == true) {
             wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
-        }
-        if (isReportSuccess != null && isReportSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_report_success))
         }
     }
 
@@ -141,15 +138,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     companion object {
-        private const val EXTRA_UPLOAD_KEY = "upload"
-        private const val EXTRA_DELETE_KEY = "delete"
-        private const val EXTRA_REPORT_KEY = "report"
-
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val KEY_FEED_UPLOAD = "upload"
+        private const val KEY_FEED_DELETE = "delete"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_TO_MYFEED = "toMyFeed"
         private const val KEY_TO_MYPAGE = "navigateMypage"
-
-        private const val MY_FEED_SCREEN = "MyFeedFragment"
+        private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
     }
 }

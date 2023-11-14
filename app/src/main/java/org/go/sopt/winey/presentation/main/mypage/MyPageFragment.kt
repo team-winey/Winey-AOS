@@ -191,7 +191,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 handleNegativeButton = { myPageViewModel.deleteUser() },
                 handlePositiveButton = {}
             )
-            dialog.show(parentFragmentManager, TAGE_WITHDRAW_DIALOG)
+            dialog.show(parentFragmentManager, TAG_WITHDRAW_DIALOG)
         }
     }
 
@@ -223,7 +223,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
-            putExtra(KEY_PREV_SCREEN, VALUE_MY_PAGE_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
             startActivity(this)
         }
     }
@@ -329,14 +329,16 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val LEVEL_KNIGHT = "기사"
         private const val LEVEL_NOBLESS = "귀족"
         private const val LEVEL_KING = "황제"
+
         private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
         private const val TERMS_URL =
             "https://empty-weaver-a9f.notion.site/iney-9dbfe130c7df4fb9a0903481c3e377e6?pvs=4"
-        private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
-        private const val TAGE_WITHDRAW_DIALOG = "WITHDRAW_DIALOG"
 
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
-        private const val VALUE_MY_PAGE_SCREEN = "MyPageFragment"
+        private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
+        private const val TAG_WITHDRAW_DIALOG = "WITHDRAW_DIALOG"
+
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_TO_MYFEED = "toMyFeed"
