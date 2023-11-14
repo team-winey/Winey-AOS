@@ -2,6 +2,7 @@ package org.go.sopt.winey.presentation.main.feed.detail
 
 import android.content.Intent
 import android.graphics.Rect
+import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
@@ -263,24 +264,16 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
             ),
             handleNegativeButton = {},
             handlePositiveButton = {
-                // TODO: 신고하기 구글폼 연결
-                /*
-                val url = TERMS_URL
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                startActivity(intent)
-                 */
-
-//                when (target) {
-//                    TARGET_DETAIL_FEED -> navigateToMainWithBundle(EXTRA_REPORT_KEY)
-//                    TARGET_COMMENT -> showCommentReportSnackbar()
-//                }
+                showReportGoogleForm()
             }
         )
         dialog.show(supportFragmentManager, TAG_REPORT_DIALOG)
     }
 
-    private fun showCommentReportSnackbar() {
-        wineySnackbar(binding.root, true, stringOf(R.string.snackbar_report_success))
+    private fun showReportGoogleForm() {
+        Intent(Intent.ACTION_VIEW, Uri.parse(REPORT_URL)).apply {
+            startActivity(this)
+        }
     }
 
     private fun isMyFeed(currentUserId: Int?) = currentUserId == feedWriterId
