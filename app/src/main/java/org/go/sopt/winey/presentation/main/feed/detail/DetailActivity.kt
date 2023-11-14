@@ -2,7 +2,6 @@ package org.go.sopt.winey.presentation.main.feed.detail
 
 import android.content.Intent
 import android.graphics.Rect
-import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.MotionEvent
@@ -26,6 +25,7 @@ import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.activity.hideKeyboard
+import org.go.sopt.winey.util.activity.showReportGoogleForm
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.amplitude.type.EventType
 import org.go.sopt.winey.util.binding.BindingActivity
@@ -270,12 +270,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         dialog.show(supportFragmentManager, TAG_REPORT_DIALOG)
     }
 
-    private fun showReportGoogleForm() {
-        Intent(Intent.ACTION_VIEW, Uri.parse(REPORT_URL)).apply {
-            startActivity(this)
-        }
-    }
-
     private fun isMyFeed(currentUserId: Int?) = currentUserId == feedWriterId
 
     private fun isMyComment(currentUserId: Int?, commentAuthorId: Int) =
@@ -488,7 +482,5 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
         private const val ACTION_COMMENT_POST = "POST"
         private const val ACTION_COMMENT_DELETE = "DELETE"
-
-        private const val REPORT_URL = "https://docs.google.com/forms/d/1fymNx8ALanWWzwR4O2s8hpt76mnRClOmfDx4Vbdk2kk"
     }
 }

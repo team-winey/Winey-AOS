@@ -33,6 +33,7 @@ import org.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
+import org.go.sopt.winey.util.activity.showReportGoogleForm
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.amplitude.type.EventType
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
@@ -212,11 +213,7 @@ class WineyFeedFragment :
             ),
             handleNegativeButton = {},
             handlePositiveButton = {
-                wineySnackbar(
-                    binding.root,
-                    true,
-                    stringOf(R.string.snackbar_report_success)
-                )
+                requireActivity().showReportGoogleForm()
             }
         )
         dialog.show(parentFragmentManager, TAG_FEED_REPORT_DIALOG)
