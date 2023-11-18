@@ -263,7 +263,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         Intent(requireContext(), DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-            putExtra(KEY_PREV_SCREEN, MY_FEED_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_FEED_SCREEN)
             startActivity(this)
         }
     }
@@ -277,10 +277,12 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+
         private const val POPUP_MENU_OFFSET = 65
         private const val MSG_MYFEED_ERROR = "ERROR"
+
         private const val TAG_FEED_DELETE_DIALOG = "DELETE_DIALOG"
-        private const val MY_FEED_SCREEN = "MyFeedFragment"
+        private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
     }
 }

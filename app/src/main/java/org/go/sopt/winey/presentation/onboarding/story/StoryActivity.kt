@@ -110,14 +110,14 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
     private fun navigateToNicknameScreen() {
         Intent(this, NicknameActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra(EXTRA_KEY, EXTRA_VALUE)
+            putExtra(KEY_PREV_SCREEN_NAME, VAL_STORY_SCREEN)
             startActivity(this)
         }
     }
 
     companion object {
         private const val FIRST_PAGE_NUM = 1
-        private const val EXTRA_KEY = "PREV_SCREEN_NAME"
-        private const val EXTRA_VALUE = "StoryActivity"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val VAL_STORY_SCREEN = "StoryActivity"
     }
 }
