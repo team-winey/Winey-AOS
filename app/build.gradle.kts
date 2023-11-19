@@ -105,6 +105,7 @@ dependencies {
         implementation(lifecycleLiveDataKtx)
         implementation(lifecycleViewModelKtx)
         implementation(lifecycleJava8)
+        implementation(lifecycleService)
         implementation(splashScreen)
         implementation(pagingRuntime)
         implementation(workManager)
