@@ -250,6 +250,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.data = data
         updateTargetInfo(data)
         updateUserLevel(data)
+        updateSwitchState(data)
     }
 
     private fun updateTargetInfo(data: User) {
@@ -288,6 +289,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             LEVEL_KING -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
                 binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv4_profile)
+            }
+        }
+    }
+
+    private fun updateSwitchState(data: User) {
+        when(data.fcmIsAllowed) {
+            true -> {
+                binding.ivMypageAgree.transitionToEnd()
+            }
+            false -> {
+                binding.ivMypageAgree.transitionToStart()
             }
         }
     }
