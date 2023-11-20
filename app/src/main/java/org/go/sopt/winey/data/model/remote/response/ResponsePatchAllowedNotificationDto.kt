@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResponsePatchAllowedNotificationDto(
-    @SerialName("fcmIsAllowed")
-    val fcmIsAllowed: Boolean
+    @SerialName("isAllowed")
+    val isAllowed: Boolean
 )
