@@ -12,7 +12,8 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
@@ -29,28 +30,33 @@ class WineyMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
 
-        Log.i("토큰: ", token)
-        runBlocking { dataStoreRepository.saveDeviceToken(token) }
+        Log.i(TAG, token)
+        GlobalScope.launch { dataStoreRepository.saveDeviceToken(token) }
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         Log.d(TAG, "From: " + remoteMessage!!.from)
+        Log.d(TAG,"${remoteMessage.from}")
 
+
+        Log.d(TAG, "Notification Message Body: ${remoteMessage.notification?.body}")
         if (remoteMessage.data.isNotEmpty()) {
-            Log.i("바디: ", remoteMessage.data["body"].toString())
-            Log.i("타이틀: ", remoteMessage.data["title"].toString())
+            Log.i(TAG, remoteMessage.data["body"].toString())
+            Log.i(TAG, remoteMessage.data["title"].toString())
+            Log.d(TAG, "Data Payload: " + remoteMessage.data)
             sendNotification(remoteMessage)
+            Log.d(TAG,remoteMessage.data["feedId"]!!)
         } else {
-            Log.i("수신에러: ", "data가 비어있습니다. 메시지를 수신하지 못했습니다.")
-            Log.i("data값: ", remoteMessage.data.toString())
+            Log.i(TAG, "data가 비어있습니다. 메시지를 수신하지 못했습니다.")
+            Log.i(TAG, remoteMessage.data.toString())
         }
     }
 
     private fun sendNotification(remoteMessage: RemoteMessage) {
         // RequestCode, Id를 고유값으로 지정하여 알림이 개별 표시되도록 함
         val uniId: Int = (System.currentTimeMillis() / 7).toInt()
-
+        Log.d(TAG,remoteMessage.toString())
         // 일회용 PendingIntent
         // PendingIntent : Intent 의 실행 권한을 외부의 어플리케이션에게 위임한다.
         val intent = Intent(this, MainActivity::class.java)
