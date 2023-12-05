@@ -50,7 +50,7 @@ class WineyMessagingService : FirebaseMessagingService() {
             this,
             uniId,
             intent,
-            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE,
+            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val channelId = CHANNEL_ID

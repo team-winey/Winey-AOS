@@ -52,7 +52,7 @@ class MyPageViewModel @Inject constructor(
                     Timber.d("SUCCESS PATCH ALLOWED NOTI")
                     _patchAllowedNotificationState.value = UiState.Success(response)
                 }
-                .onFailure {t ->
+                .onFailure { t ->
                     _patchAllowedNotificationState.value = UiState.Failure(t.message.toString())
 
                     if (t is HttpException) {

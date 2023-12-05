@@ -19,7 +19,7 @@ interface DataStoreRepository {
 
     suspend fun getRefreshToken(): Flow<String?>
 
-    suspend fun getDeviceToken():Flow<String?>
+    suspend fun getDeviceToken(): Flow<String?>
 
     suspend fun getStringValue(key: Preferences.Key<String>): Flow<String?>
 

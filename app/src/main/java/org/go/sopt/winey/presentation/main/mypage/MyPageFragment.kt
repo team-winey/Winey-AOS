@@ -37,7 +37,6 @@ import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
-import retrofit2.HttpException
 import javax.inject.Inject
 
 @AndroidEntryPoint

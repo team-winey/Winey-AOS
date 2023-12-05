@@ -71,9 +71,9 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
     private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
-            if(intent.extras != null){
-                putExtra(KEY_NOTI_TYPE,intent.getStringExtra(KEY_NOTI_TYPE))
-                putExtra(KEY_FEED_ID,intent.getStringExtra(KEY_FEED_ID))
+            if (intent.extras != null) {
+                putExtra(KEY_NOTI_TYPE, intent.getStringExtra(KEY_NOTI_TYPE))
+                putExtra(KEY_FEED_ID, intent.getStringExtra(KEY_FEED_ID))
             }
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
