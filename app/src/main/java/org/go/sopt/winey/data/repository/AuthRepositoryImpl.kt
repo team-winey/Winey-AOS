@@ -3,6 +3,7 @@ package org.go.sopt.winey.data.repository
 import org.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import org.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import org.go.sopt.winey.data.model.remote.request.RequestPatchAllowedNotificationDto
+import org.go.sopt.winey.data.model.remote.request.RequestPatchFcmTokenDto
 import org.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import org.go.sopt.winey.data.model.remote.response.ResponseLoginDto
@@ -65,5 +66,10 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun patchAllowedNotification(request: Boolean): Result<Boolean?> =
         runCatching {
             authDataSource.patchAllowedNotification(RequestPatchAllowedNotificationDto(allowedPush = request)).data?.isAllowed
+        }
+
+    override suspend fun patchFcmToken(token: String): Result<Unit> =
+        runCatching {
+            authDataSource.patchFcmToken(RequestPatchFcmTokenDto(fcmToken = token))
         }
 }
