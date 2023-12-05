@@ -57,6 +57,11 @@ jobs:
           echo keyPassword=$KEY_PASSWORD >> ./local.properties
           echo storePassword=$STORE_PASSWORD >> ./local.properties
 
+      - name: Create Google Services JSON File
+        env:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICE_JSON }}
+        run: echo $GOOGLE_SERVICE_JSON | base64 -di > ./app/google-services.json
+
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace
 
