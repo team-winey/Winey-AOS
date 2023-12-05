@@ -117,7 +117,7 @@ class MainViewModel @Inject constructor(
     fun patchFcmToken() {
         viewModelScope.launch {
             val token = dataStoreRepository.getDeviceToken().first()
-            if(token.isNullOrBlank()){
+            if (token.isNullOrBlank()) {
                 return@launch
             }
             authRepository.patchFcmToken(token)
