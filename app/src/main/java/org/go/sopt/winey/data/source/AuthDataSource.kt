@@ -3,6 +3,7 @@ package org.go.sopt.winey.data.source
 import org.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import org.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import org.go.sopt.winey.data.model.remote.request.RequestPatchAllowedNotificationDto
+import org.go.sopt.winey.data.model.remote.request.RequestPatchFcmTokenDto
 import org.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import org.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
@@ -50,4 +51,9 @@ class AuthDataSource @Inject constructor(
         requestPatchAllowedNotificationDto: RequestPatchAllowedNotificationDto
     ): BaseResponse<ResponsePatchAllowedNotificationDto> =
         authService.patchAllowedNotification(requestPatchAllowedNotificationDto)
+
+    suspend fun patchFcmToken(
+        requestPatchFcmTokenDto: RequestPatchFcmTokenDto
+    ): BaseResponse<Unit> =
+        authService.patchFcmToken(requestPatchFcmTokenDto)
 }
