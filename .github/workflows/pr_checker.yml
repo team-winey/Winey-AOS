@@ -60,7 +60,7 @@ jobs:
       - name: Create Google Services JSON File
         env:
           GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICE_JSON }}
-        run: echo $GOOGLE_SERVICE_JSON | base64 -di > ./app/google-services.json
+        run: echo $GOOGLE_SERVICE_JSON | base64 --decode > ./app/google-services.json
 
       - name: Build debug APK
         run: ./gradlew assembleDebug --stacktrace
