@@ -15,6 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
+import org.go.sopt.winey.WineyApplication
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.splash.SplashActivity
 import javax.inject.Inject
@@ -33,8 +34,7 @@ class WineyMessagingService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-
-        if (remoteMessage.data.isNotEmpty()) {
+        if (remoteMessage.data.isNotEmpty() && !WineyApplication.isAppInForeground) {
             sendNotification(remoteMessage)
         }
     }
