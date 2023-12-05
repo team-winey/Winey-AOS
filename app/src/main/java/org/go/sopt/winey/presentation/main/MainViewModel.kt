@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import org.go.sopt.winey.domain.entity.User
@@ -103,6 +104,25 @@ class MainViewModel @Inject constructor(
             notificationRepository.patchCheckAllNotification()
                 .onSuccess {
                     getHasNewNoti()
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP 실패")
+                    }
+                    Timber.e("${t.message}")
+                }
+        }
+    }
+
+    fun patchFcmToken() {
+        viewModelScope.launch {
+            val token = dataStoreRepository.getDeviceToken().first()
+            if(token.isNullOrBlank()){
+                return@launch
+            }
+            authRepository.patchFcmToken(token)
+                .onSuccess {
+                    Timber.e("디바이스 토큰 보내기 성공")
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
