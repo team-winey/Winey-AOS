@@ -3,6 +3,7 @@ package org.go.sopt.winey.data.service
 import org.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import org.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import org.go.sopt.winey.data.model.remote.request.RequestPatchAllowedNotificationDto
+import org.go.sopt.winey.data.model.remote.request.RequestPatchFcmTokenDto
 import org.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import org.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
@@ -60,4 +61,9 @@ interface AuthService {
     suspend fun patchAllowedNotification(
         @Body requestPatchAllowedNotificationDto: RequestPatchAllowedNotificationDto
     ): BaseResponse<ResponsePatchAllowedNotificationDto>
+
+    @PATCH("user/fcmtoken")
+    suspend fun patchFcmToken(
+        @Body requestPatchFcmTokenDto: RequestPatchFcmTokenDto
+    ): BaseResponse<Unit>
 }
