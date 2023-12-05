@@ -34,6 +34,7 @@ import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
+import org.go.sopt.winey.util.activity.showReportGoogleForm
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.amplitude.type.EventType
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
@@ -213,11 +214,7 @@ class WineyFeedFragment :
             ),
             handleNegativeButton = {},
             handlePositiveButton = {
-                wineySnackbar(
-                    binding.root,
-                    true,
-                    stringOf(R.string.snackbar_report_success)
-                )
+                requireActivity().showReportGoogleForm()
             }
         )
         dialog.show(parentFragmentManager, TAG_FEED_REPORT_DIALOG)
@@ -451,7 +448,7 @@ class WineyFeedFragment :
         Intent(requireContext(), DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-            putExtra(KEY_PREV_SCREEN, WINEY_FEED_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, VAL_WINEY_FEED_SCREEN)
             startActivity(this)
         }
     }
@@ -519,8 +516,8 @@ class WineyFeedFragment :
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
-        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val VAL_WINEY_FEED_SCREEN = "WineyFeedFragment"
         private const val INSTAGRAM_URL =
             "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
     }

@@ -15,9 +15,7 @@ class WineyDialogFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         dialog?.setCanceledOnTouchOutside(false)
-
         binding.data = arguments?.getCompatibleParcelableExtra(ARG)
 
         initNegativeButtonClickListener(handleNegative)
@@ -40,6 +38,7 @@ class WineyDialogFragment :
 
     companion object {
         private const val ARG = "arguments"
+
         fun newInstance(
             wineyDialogLabel: WineyDialogLabel,
             handleNegativeButton: () -> Unit,

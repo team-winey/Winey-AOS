@@ -12,7 +12,7 @@ import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
-    private val amountString by lazy { intent.extras?.getString(EXTRA_AMOUNT_KEY, "") }
+    private val amountString by lazy { intent.extras?.getString(KEY_SAVE_AMOUNT, "") }
     private val amountRange by lazy { resources.getIntArray(R.array.save_amount_range) }
     private val itemCategories by lazy { resources.getStringArray(R.array.save_item_categories) }
 
@@ -76,14 +76,14 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra(EXTRA_UPLOAD_KEY, true)
+            putExtra(KEY_FEED_UPLOAD, true)
             startActivity(this)
         }
     }
 
     companion object {
         private const val DELAY_TIME = 3000L
-        private const val EXTRA_AMOUNT_KEY = "amount"
-        private const val EXTRA_UPLOAD_KEY = "upload"
+        private const val KEY_SAVE_AMOUNT = "amount"
+        private const val KEY_FEED_UPLOAD = "upload"
     }
 }

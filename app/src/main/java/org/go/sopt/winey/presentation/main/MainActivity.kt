@@ -34,6 +34,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
     private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,7 +70,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
             navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
         } else {
-            if (prevScreenName == MY_FEED_SCREEN) {
+            if (prevScreenName == VAL_MY_FEED_SCREEN) {
                 navigateToMyPageWithBundle(KEY_TO_MYFEED, true)
             } else {
                 navigateTo<WineyFeedFragment>()
@@ -78,14 +79,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun showSuccessSnackBar() {
-        if (isUploadSuccess != null && isUploadSuccess == true) {
+        if (isUploadSuccess == true) {
             wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
         }
-        if (isDeleteSuccess != null && isDeleteSuccess == true) {
+
+        if (isDeleteSuccess == true) {
             wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
-        }
-        if (isReportSuccess != null && isReportSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_report_success))
         }
     }
 
@@ -197,5 +196,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val KEY_HOW_TO_LEVELUP = "HOWTOLEVELUP"
 
         private const val MY_FEED_SCREEN = "MyFeedFragment"
+        private const val KEY_FEED_UPLOAD = "upload"
+        private const val KEY_FEED_DELETE = "delete"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
     }
 }
