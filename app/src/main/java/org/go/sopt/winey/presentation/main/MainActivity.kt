@@ -1,8 +1,13 @@
 package org.go.sopt.winey.presentation.main
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -38,6 +43,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        requestNotificationPermission()
+
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
         mainViewModel.getUser()
         mainViewModel.patchFcmToken()
@@ -48,6 +55,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         setupLogoutState()
         showSuccessSnackBar()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                CODE_NOTIFICATION_PERMISSION
+            )
+        }
     }
 
     private fun initNotiTypeHandler() {
@@ -200,5 +221,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val KEY_FEED_DELETE = "delete"
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
+
+        private const val CODE_NOTIFICATION_PERMISSION = 1020
     }
 }
