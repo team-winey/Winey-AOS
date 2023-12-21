@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -29,6 +30,7 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
+import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.view.UiState
 
 @AndroidEntryPoint
@@ -40,7 +42,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
     private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
-
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()){}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,16 +62,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.POST_NOTIFICATIONS
-            )
+            ) == PackageManager.PERMISSION_DENIED
         ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                CODE_NOTIFICATION_PERMISSION
-            )
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
 
@@ -88,7 +87,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.GOAL_FAILED -> navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
             NotificationType.LIKE_NOTIFICATION -> navigateToDetail(feedId?.toInt())
             NotificationType.COMMENT_NOTIFICATION -> navigateToDetail(feedId?.toInt())
-            else -> navigateToLevelupHelp()
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
+            else -> {}
         }
     }
 
