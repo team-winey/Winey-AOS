@@ -27,7 +27,6 @@ import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
-import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
@@ -110,23 +109,23 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             when (isAllowed) {
                 true -> {
                     binding.ivMypageAgree.transitionToStart()
-                    lifecycleScope.launch {
-                        val data = dataStoreRepository.getUserInfo().first()
-                        val newData = data?.copy(fcmIsAllowed = false)
-                        dataStoreRepository.saveUserInfo(newData)
-                    }
+                    patchUserInfo()
                 }
 
                 false -> {
                     binding.ivMypageAgree.transitionToEnd()
-                    lifecycleScope.launch {
-                        val data = dataStoreRepository.getUserInfo().first()
-                        val newData = data?.copy(fcmIsAllowed = true)
-                        dataStoreRepository.saveUserInfo(newData)
-                    }
+                    patchUserInfo()
                 }
             }
             myPageViewModel.patchAllowedNotification(isAllowed)
+        }
+    }
+
+    private fun patchUserInfo() {
+        lifecycleScope.launch {
+            val data = dataStoreRepository.getUserInfo().first()
+            val newData = data?.copy(fcmIsAllowed = false)
+            dataStoreRepository.saveUserInfo(newData)
         }
     }
 
@@ -298,9 +297,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 }
 
                 is UiState.Failure -> {
-                    val intent = Intent(requireActivity(), LoginActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
                     snackBar(binding.root) { state.msg }
                 }
 
@@ -313,7 +309,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.data = data
         updateTargetInfo(data)
         updateUserLevel(data)
-        updateSwitchState(data)
+        updateNotificationAllowSwitchState(data)
     }
 
     private fun updateTargetInfo(data: User) {
@@ -356,7 +352,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun updateSwitchState(data: User) {
+    private fun updateNotificationAllowSwitchState(data: User) {
         when (data.fcmIsAllowed) {
             true -> {
                 binding.ivMypageAgree.transitionToEnd()

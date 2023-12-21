@@ -33,7 +33,6 @@ import org.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
-import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import org.go.sopt.winey.util.activity.showReportGoogleForm
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.amplitude.type.EventType
@@ -333,9 +332,6 @@ class WineyFeedFragment :
                     }
 
                     is UiState.Failure -> {
-                        val intent = Intent(requireActivity(), LoginActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
                         snackBar(binding.root) { state.msg }
                     }
 

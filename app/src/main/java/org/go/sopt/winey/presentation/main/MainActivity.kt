@@ -23,6 +23,7 @@ import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import org.go.sopt.winey.presentation.main.mypage.MypageHelpActivity
 import org.go.sopt.winey.presentation.main.recommend.RecommendFragment
+import org.go.sopt.winey.presentation.model.NotificationType
 import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
@@ -72,18 +73,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initNotiTypeHandler() {
-        when (notiType) {
-            KEY_RANKUP_TO_2, KEY_RANKUP_TO_3, KEY_RANKUP_TO_4 -> navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
-            KEY_RANKDOWN_TO_1, KEY_RANKDOWN_TO_2, KEY_RANKDOWN_TO_3 -> navigateToMyPageWithBundle(
+        val notificationType = NotificationType.values().find { it.key == notiType }
+        when (notificationType) {
+            NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3, NotificationType.RANK_UP_TO_4 -> navigateToMyPageWithBundle(
                 KEY_FROM_NOTI,
                 true
             )
 
-            KEY_GOAL_FAILED -> navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
-            KEY_LIKE_NOTI -> navigateToDetail(feedId?.toInt())
-            KEY_COMMENT_NOTI -> navigateToDetail(feedId?.toInt())
-            KEY_HOW_TO_LEVELUP -> navigateToLevelupHelp()
-            else -> null
+            NotificationType.RANK_DOWN_TO_1, NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3 -> navigateToMyPageWithBundle(
+                KEY_FROM_NOTI,
+                true
+            )
+
+            NotificationType.GOAL_FAILED -> navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
+            NotificationType.LIKE_NOTIFICATION -> navigateToDetail(feedId?.toInt())
+            NotificationType.COMMENT_NOTIFICATION -> navigateToDetail(feedId?.toInt())
+            else -> navigateToLevelupHelp()
         }
     }
 
@@ -203,23 +208,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val KEY_TO_MYFEED = "toMyFeed"
         private const val KEY_TO_MYPAGE = "navigateMypage"
 
-        private const val KEY_RANKUP_TO_2 = "RANKUPTO2"
-        private const val KEY_RANKUP_TO_3 = "RANKUPTO3"
-        private const val KEY_RANKUP_TO_4 = "RANKUPTO4"
-
-        private const val KEY_RANKDOWN_TO_1 = "DELETERANKDOWNTO1"
-        private const val KEY_RANKDOWN_TO_2 = "DELETERANKDOWNTO2"
-        private const val KEY_RANKDOWN_TO_3 = "DELETERANKDOWNTO3"
-
-        private const val KEY_GOAL_FAILED = "GOALFAILED"
-        private const val KEY_LIKE_NOTI = "LIKENOTI"
-        private const val KEY_COMMENT_NOTI = "COMMENTNOTI"
-        private const val KEY_HOW_TO_LEVELUP = "HOWTOLEVELUP"
-
-        private const val MY_FEED_SCREEN = "MyFeedFragment"
-        private const val KEY_FEED_UPLOAD = "upload"
-        private const val KEY_FEED_DELETE = "delete"
-        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
 
         private const val CODE_NOTIFICATION_PERMISSION = 1020

@@ -48,7 +48,7 @@ class MainViewModel @Inject constructor(
                 .onFailure { t ->
                     if (t is HttpException) {
                         Timber.e("HTTP 실패 ${t.code()}")
-                        if (t.code() == CODE_TOKEN_EXPIRED) {
+                        if (t.code() == CODE_TOKEN_EXPIRED || t.code() == CODE_INVALID_USER) {
                             postLogout()
                         }
                     }
@@ -117,9 +117,7 @@ class MainViewModel @Inject constructor(
     fun patchFcmToken() {
         viewModelScope.launch {
             val token = dataStoreRepository.getDeviceToken().first()
-            if (token.isNullOrBlank()) {
-                return@launch
-            }
+            if (token.isNullOrBlank()) return@launch
             authRepository.patchFcmToken(token)
                 .onSuccess {
                     Timber.e("디바이스 토큰 보내기 성공")
@@ -135,5 +133,6 @@ class MainViewModel @Inject constructor(
 
     companion object {
         private const val CODE_TOKEN_EXPIRED = 401
+        private const val CODE_INVALID_USER = 404
     }
 }
