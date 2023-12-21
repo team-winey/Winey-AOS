@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -30,7 +29,6 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
-import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.view.UiState
 
 @AndroidEntryPoint
@@ -43,7 +41,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
     private val notificationPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()){}
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
