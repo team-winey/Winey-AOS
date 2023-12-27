@@ -65,17 +65,19 @@ class WineyMessagingService : FirebaseMessagingService() {
         return (System.currentTimeMillis() / 7).toInt()
     }
 
-    private fun createAndShowNotification(remoteMessage: RemoteMessage, uniqueIdentifier: Int, pendingIntent: PendingIntent) {
+    private fun createNotificationBuilder(remoteMessage: RemoteMessage, pendingIntent: PendingIntent): NotificationCompat.Builder {
         val soundUri = getSoundUri()
 
-        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+        return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(remoteMessage.data[KEY_TITLE])
             .setContentText(remoteMessage.data[KEY_MESSAGE])
             .setAutoCancel(true)
             .setSound(soundUri)
             .setContentIntent(pendingIntent)
+    }
 
+    private fun showNotification(notificationBuilder: NotificationCompat.Builder, uniqueIdentifier: Int) {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -85,12 +87,14 @@ class WineyMessagingService : FirebaseMessagingService() {
 
         notificationManager.notify(uniqueIdentifier, notificationBuilder.build())
     }
+
     private fun sendNotification(remoteMessage: RemoteMessage) {
         val uniqueIdentifier = generateUniqueIdentifier()
         val intent = createNotificationIntent(remoteMessage)
         val pendingIntent = createPendingIntent(intent, uniqueIdentifier)
+        val notification = createNotificationBuilder(remoteMessage, pendingIntent)
 
-        createAndShowNotification(remoteMessage, uniqueIdentifier, pendingIntent)
+        showNotification(notification, uniqueIdentifier)
     }
 
     companion object {

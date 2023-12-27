@@ -72,21 +72,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun initNotiTypeHandler() {
         val notificationType = NotificationType.values().find { it.key == notiType }
         when (notificationType) {
-            NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3, NotificationType.RANK_UP_TO_4 -> navigateToMyPageWithBundle(
+            NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3,
+            NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
+            NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
+            NotificationType.GOAL_FAILED-> navigateToMyPageWithBundle(
                 KEY_FROM_NOTI,
                 true
             )
-
-            NotificationType.RANK_DOWN_TO_1, NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3 -> navigateToMyPageWithBundle(
-                KEY_FROM_NOTI,
-                true
-            )
-
-            NotificationType.GOAL_FAILED -> navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
-            NotificationType.LIKE_NOTIFICATION -> navigateToDetail(feedId?.toInt())
-            NotificationType.COMMENT_NOTIFICATION -> navigateToDetail(feedId?.toInt())
-            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
-            else -> {}
+            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
+            -> navigateToDetail(feedId?.toInt())
+            else -> navigateToLevelupHelp()
         }
     }
 
