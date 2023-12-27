@@ -14,8 +14,11 @@ import kotlinx.coroutines.flow.onEach
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityMainBinding
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
+import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import org.go.sopt.winey.presentation.main.mypage.MypageHelpActivity
 import org.go.sopt.winey.presentation.main.recommend.RecommendFragment
+import org.go.sopt.winey.presentation.model.NotificationType
 import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
@@ -26,22 +29,42 @@ import org.go.sopt.winey.util.view.UiState
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val mainViewModel by viewModels<MainViewModel>()
-    private val isUploadSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_UPLOAD, false) }
-    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_DELETE, false) }
-    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN_NAME, "") }
+    private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
+    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
+    private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
+    private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
+    private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
         mainViewModel.getUser()
-
+        mainViewModel.patchFcmToken()
+        initNotiTypeHandler()
         initFragment()
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
 
         setupLogoutState()
         showSuccessSnackBar()
+    }
+
+    private fun initNotiTypeHandler() {
+        val notificationType = NotificationType.values().find { it.key == notiType }
+        when (notificationType) {
+            NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3,
+            NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
+            NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
+            NotificationType.GOAL_FAILED -> navigateToMyPageWithBundle(
+                KEY_FROM_NOTI,
+                true
+            )
+            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
+            -> navigateToDetail(feedId?.toInt())
+            else -> navigateToLevelupHelp()
+        }
     }
 
     private fun initFragment() {
@@ -137,13 +160,29 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
+    private fun navigateToDetail(feedId: Int?) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(KEY_FEED_ID, feedId)
+        startActivity(intent)
+    }
+
+    private fun navigateToLevelupHelp() {
+        val intent = Intent(this, MypageHelpActivity::class.java)
+        startActivity(intent)
+    }
+
     companion object {
-        private const val KEY_FEED_UPLOAD = "upload"
-        private const val KEY_FEED_DELETE = "delete"
-        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val EXTRA_UPLOAD_KEY = "upload"
+        private const val EXTRA_DELETE_KEY = "delete"
+        private const val EXTRA_REPORT_KEY = "report"
+
+        private const val KEY_FEED_ID = "feedId"
+        private const val KEY_NOTI_TYPE = "notiType"
+        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_TO_MYFEED = "toMyFeed"
         private const val KEY_TO_MYPAGE = "navigateMypage"
+
         private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
     }
 }

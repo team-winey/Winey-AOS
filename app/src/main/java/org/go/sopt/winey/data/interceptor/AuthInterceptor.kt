@@ -66,7 +66,11 @@ class AuthInterceptor @Inject constructor(
             dataStoreRepository.saveAccessToken(accessToken, refreshToken)
         }
 
-    private fun handleTokenExpired(chain: Interceptor.Chain, originalRequest: Request, headerRequest: Request): Response {
+    private fun handleTokenExpired(
+        chain: Interceptor.Chain,
+        originalRequest: Request,
+        headerRequest: Request
+    ): Response {
         val refreshTokenRequest = originalRequest.newBuilder().post("".toRequestBody())
             .url("$AUTH_BASE_URL/auth/token")
             .addHeader(REFRESH_TOKEN, runBlocking(Dispatchers.IO) { getRefreshToken() })

@@ -36,7 +36,9 @@ data class ResponseGetUserDto(
         @SerialName("userId")
         val userId: Int,
         @SerialName("userLevel")
-        val userLevel: String
+        val userLevel: String,
+        @SerialName("fcmIsAllowed")
+        val fcmIsAllowed: Boolean
     )
 
     fun toUser(): User {
@@ -46,6 +48,7 @@ data class ResponseGetUserDto(
         return User(
             nickname = userResponseUserDto?.nickname.orEmpty(),
             userLevel = userResponseUserDto?.userLevel.orEmpty(),
+            fcmIsAllowed = userResponseUserDto?.fcmIsAllowed ?: false,
             duringGoalAmount = data.userResponseGoalDto?.duringGoalAmount ?: 0,
             duringGoalCount = data.userResponseGoalDto?.duringGoalCount ?: 0,
             targetMoney = data.userResponseGoalDto?.targetMoney ?: 0,

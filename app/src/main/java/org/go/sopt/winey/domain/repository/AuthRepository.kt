@@ -29,4 +29,8 @@ interface AuthRepository {
     suspend fun getNicknameDuplicateCheck(nickname: String): Result<ResponseGetNicknameDuplicateCheckDto?>
 
     suspend fun patchNickname(requestPatchNicknameDto: RequestPatchNicknameDto): Result<Unit>
+
+    suspend fun patchAllowedNotification(request: Boolean): Result<Boolean?>
+
+    suspend fun patchFcmToken(token: String): Result<Unit>
 }
