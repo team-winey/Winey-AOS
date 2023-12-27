@@ -41,7 +41,22 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
     private val notificationPermissionLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {}
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                wineySnackbar(
+                    binding.root,
+                    true,
+                    stringOf(R.string.snackbar_notification_permission_success)
+                )
+            } else {
+                wineySnackbar(
+                    binding.root,
+                    true,
+                    stringOf(R.string.snackbar_notification_permission_fail)
+                )
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -75,12 +90,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3,
             NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
             NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
-            NotificationType.GOAL_FAILED-> navigateToMyPageWithBundle(
+            NotificationType.GOAL_FAILED -> navigateToMyPageWithBundle(
                 KEY_FROM_NOTI,
                 true
             )
+
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
             -> navigateToDetail(feedId?.toInt())
+
             else -> navigateToLevelupHelp()
         }
     }
