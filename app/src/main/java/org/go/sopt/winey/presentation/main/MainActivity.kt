@@ -57,7 +57,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3,
             NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
             NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
-            NotificationType.GOAL_FAILED-> navigateToMyPageWithBundle(
+            NotificationType.GOAL_FAILED -> navigateToMyPageWithBundle(
                 KEY_FROM_NOTI,
                 true
             )
