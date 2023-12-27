@@ -109,14 +109,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             when (isAllowed) {
                 true -> {
                     binding.ivMypageAgree.transitionToStart()
-                    patchUserInfo()
                 }
 
                 false -> {
                     binding.ivMypageAgree.transitionToEnd()
-                    patchUserInfo()
                 }
             }
+            patchUserInfo()
             myPageViewModel.patchAllowedNotification(isAllowed)
         }
     }
