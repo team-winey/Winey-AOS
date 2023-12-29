@@ -97,8 +97,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
             -> navigateToDetail(feedId?.toInt())
-
-            else -> navigateToLevelupHelp()
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
+            else -> {}
         }
     }
 
