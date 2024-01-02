@@ -79,15 +79,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 is UiState.Success -> {
                     when (state.data) {
                         true -> {
-                            binding.ivMypageAgree.transitionToEnd()
+                            binding.ivMypageAgree.transitionToState(R.id.end, -1)
                         }
 
                         false -> {
-                            binding.ivMypageAgree.transitionToStart()
+                            binding.ivMypageAgree.transitionToState(R.id.start, -1)
                         }
 
                         null -> {
-                            binding.ivMypageAgree.transitionToStart()
+                            binding.ivMypageAgree.transitionToState(R.id.start, -1)
                         }
                     }
                 }
@@ -108,11 +108,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
             when (isAllowed) {
                 true -> {
-                    binding.ivMypageAgree.transitionToStart()
+                    binding.ivMypageAgree.transitionToState(R.id.start, -1)
                 }
 
                 false -> {
-                    binding.ivMypageAgree.transitionToEnd()
+                    binding.ivMypageAgree.transitionToState(R.id.end, -1)
                 }
             }
             patchUserInfo()
@@ -354,11 +354,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun updateNotificationAllowSwitchState(data: User) {
         when (data.fcmIsAllowed) {
             true -> {
-                binding.ivMypageAgree.transitionToEnd()
+                binding.ivMypageAgree.transitionToState(R.id.end, 1)
             }
 
             false -> {
-                binding.ivMypageAgree.transitionToStart()
+                binding.ivMypageAgree.transitionToState(R.id.start, 1)
             }
         }
     }
