@@ -1,10 +1,14 @@
 package org.go.sopt.winey.presentation.main.mypage
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -29,11 +33,13 @@ import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
+import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
+import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
@@ -48,10 +54,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     @Inject
     lateinit var amplitudeUtils: AmplitudeUtils
+    private var isNotificationAllowed = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
+        initCheckNotificationPermission()
 
         initUserData()
         initNavigation()
@@ -73,6 +81,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         checkFromWineyFeed()
     }
 
+    private fun initCheckNotificationPermission() {
+        isNotificationAllowed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            true
+        }
+    }
+
     private fun setupPatchAllowedNotificationState() {
         myPageViewModel.patchAllowedNotificationState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
@@ -92,8 +111,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     }
                 }
 
-                is UiState.Failure -> {}
-                is UiState.Empty -> {}
                 else -> {}
             }
         }
@@ -101,22 +118,51 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initAllowedNotificationButtonClickListener() {
         binding.ivMypageSwitch.setOnClickListener {
-            val isAllowed = when (binding.ivMypageAgree.currentState) {
-                R.id.start -> false
-                R.id.end -> true
-                else -> false
-            }
-            when (isAllowed) {
+            when (isNotificationAllowed) {
                 true -> {
-                    binding.ivMypageAgree.transitionToState(R.id.start, -1)
+                    val isAllowed = when (binding.ivMypageAgree.currentState) {
+                        R.id.start -> false
+                        R.id.end -> true
+                        else -> false
+                    }
+                    when (isAllowed) {
+                        true -> {
+                            val dialog = WineyDialogFragment.newInstance(
+                                WineyDialogLabel(
+                                    stringOf(R.string.notification_off_dialog_title),
+                                    stringOf(R.string.notification_off_dialog_subtitle),
+                                    stringOf(R.string.notification_off_dialog_negative_button),
+                                    stringOf(R.string.notification_off_dialog_positive_button)
+                                ),
+                                handleNegativeButton = {},
+                                handlePositiveButton = {
+                                    binding.ivMypageAgree.transitionToState(R.id.start, -1)
+                                    patchUserInfo()
+                                    myPageViewModel.patchAllowedNotification(isAllowed)
+                                }
+                            )
+                            dialog.show(
+                                parentFragmentManager,
+                                TAG_NOTIFICATION_OFF_DIALOG
+                            )
+                        }
+
+                        false -> {
+                            binding.ivMypageAgree.transitionToState(R.id.end, -1)
+                            patchUserInfo()
+                            myPageViewModel.patchAllowedNotification(isAllowed)
+                        }
+                    }
                 }
 
                 false -> {
-                    binding.ivMypageAgree.transitionToState(R.id.end, -1)
+                    wineySnackbar(
+                        binding.root,
+                        true,
+                        stringOf(R.string.snackbar_mypage_permission_fail)
+                    )
                 }
             }
-            patchUserInfo()
-            myPageViewModel.patchAllowedNotification(isAllowed)
         }
     }
 
@@ -352,7 +398,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun updateNotificationAllowSwitchState(data: User) {
-        when (data.fcmIsAllowed) {
+        when (data.fcmIsAllowed && isNotificationAllowed) {
             true -> {
                 binding.ivMypageAgree.transitionToState(R.id.end, 1)
             }
@@ -412,6 +458,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
+
         private const val KEY_TO_MYFEED = "toMyFeed"
+        private const val TAG_NOTIFICATION_OFF_DIALOG = "offNotification"
     }
 }
