@@ -49,7 +49,7 @@
     <string name="feed_delete_dialog_positive_button">삭제하기</string>
 
     <!-- notification off dialog -->
-    <string name="notification_off_dialog_title">정말 알림을 끄시겠어요?</string>
+    <string name="notification_off_dialog_title">알림을 끄시겠어요?</string>
     <string name="notification_off_dialog_subtitle">앞으로 위니 제국에서 오는 편지를 받으실 수 없어요.</string>
     <string name="notification_off_dialog_negative_button">취소</string>
     <string name="notification_off_dialog_positive_button">확인</string>
