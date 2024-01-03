@@ -8,6 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import org.go.sopt.winey.domain.entity.User
@@ -47,7 +48,7 @@ class MainViewModel @Inject constructor(
                 .onFailure { t ->
                     if (t is HttpException) {
                         Timber.e("HTTP 실패 ${t.code()}")
-                        if (t.code() == CODE_TOKEN_EXPIRED) {
+                        if (t.code() == CODE_TOKEN_EXPIRED || t.code() == CODE_INVALID_USER) {
                             postLogout()
                         }
                     }
@@ -113,7 +114,25 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun patchFcmToken() {
+        viewModelScope.launch {
+            val token = dataStoreRepository.getDeviceToken().first()
+            if (token.isNullOrBlank()) return@launch
+            authRepository.patchFcmToken(token)
+                .onSuccess {
+                    Timber.e("디바이스 토큰 보내기 성공")
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP 실패")
+                    }
+                    Timber.e("${t.message}")
+                }
+        }
+    }
+
     companion object {
         private const val CODE_TOKEN_EXPIRED = 401
+        private const val CODE_INVALID_USER = 404
     }
 }

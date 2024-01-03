@@ -37,6 +37,12 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveDeviceToken(deviceToken: String) {
+        dataStore.edit {
+            it[DEVICE_TOKEN] = deviceToken
+        }
+    }
+
     override suspend fun saveUserId(userId: Int) {
         dataStore.edit {
             it[USER_ID] = userId
@@ -49,6 +55,10 @@ class DataStoreRepositoryImpl @Inject constructor(
 
     override suspend fun getRefreshToken(): Flow<String?> {
         return getStringValue(REFRESH_TOKEN)
+    }
+
+    override suspend fun getDeviceToken(): Flow<String?> {
+        return getStringValue(DEVICE_TOKEN)
     }
 
     override suspend fun getStringValue(key: Preferences.Key<String>): Flow<String?> {
@@ -119,6 +129,7 @@ class DataStoreRepositoryImpl @Inject constructor(
             stringPreferencesKey("social_refresh_token")
         private val ACCESS_TOKEN: Preferences.Key<String> = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN: Preferences.Key<String> = stringPreferencesKey("refresh_token")
+        private val DEVICE_TOKEN: Preferences.Key<String> = stringPreferencesKey("device_token")
         private val USER_ID: Preferences.Key<Int> = intPreferencesKey("user_id")
         private val USER_INFO: Preferences.Key<String> = stringPreferencesKey("user_info")
     }

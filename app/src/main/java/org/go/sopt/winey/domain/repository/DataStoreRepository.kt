@@ -11,11 +11,15 @@ interface DataStoreRepository {
 
     suspend fun saveAccessToken(accessToken: String = "", refreshToken: String = "")
 
+    suspend fun saveDeviceToken(deviceToken: String = "")
+
     suspend fun saveUserId(userId: Int = 0)
 
     suspend fun getAccessToken(): Flow<String?>
 
     suspend fun getRefreshToken(): Flow<String?>
+
+    suspend fun getDeviceToken(): Flow<String?>
 
     suspend fun getStringValue(key: Preferences.Key<String>): Flow<String?>
 
