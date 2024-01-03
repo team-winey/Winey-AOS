@@ -42,13 +42,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                wineySnackbar(
-                    binding.root,
-                    true,
-                    stringOf(R.string.snackbar_notification_permission_success)
-                )
-            } else {
+            if (!isGranted) {
                 wineySnackbar(
                     binding.root,
                     true,
