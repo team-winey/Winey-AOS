@@ -95,72 +95,74 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_wineyfeed_fab">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/iv_wineyfeed_fab_save"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_wineyfeed_fab_save"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    android:layout_marginVertical="14dp"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/img_wineyfeed_fab_save"
-                    app:layout_constraintBottom_toTopOf="@id/v_popup_seperator"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_wineyfeed_fab_save"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginEnd="17dp"
-                    android:text="@string/wineyfeed_fab_save"
-                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-                    android:textColor="@color/gray_800"
-                    app:layout_constraintBottom_toTopOf="@id/v_popup_seperator"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:id="@+id/iv_wineyfeed_fab_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="14dp"
+                        android:layout_marginStart="15dp"
+                        android:src="@drawable/img_wineyfeed_fab_save" />
+
+                    <TextView
+                        android:id="@+id/tv_wineyfeed_fab_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/wineyfeed_fab_save"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                        android:textColor="@color/gray_800" />
+                </LinearLayout>
 
                 <View
                     android:id="@+id/v_popup_seperator"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginHorizontal="14dp"
-                    android:background="@color/gray_200"
-                    app:layout_constraintBottom_toTopOf="@id/iv_wineyfeed_fab_consume"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_fab_save" />
+                    android:background="@color/gray_200" />
 
-                <ImageView
-                    android:id="@+id/iv_wineyfeed_fab_consume"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/ll_wineyfeed_fab_consume"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="14dp"
-                    android:layout_marginStart="15dp"
-                    android:src="@drawable/img_wineyfeed_fab_consume"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/v_popup_seperator" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_wineyfeed_fab_consume"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="16dp"
-                    android:layout_marginEnd="17dp"
-                    android:text="@string/wineyfeed_fab_consume"
-                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-                    android:textColor="@color/gray_800"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/v_popup_seperator" />
+                    <ImageView
+                        android:id="@+id/iv_wineyfeed_fab_consume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="14dp"
+                        android:layout_marginStart="15dp"
+                        android:src="@drawable/img_wineyfeed_fab_consume" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/tv_wineyfeed_fab_consume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/wineyfeed_fab_consume"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                        android:textColor="@color/gray_800" />
+                </LinearLayout>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_wineyfeed_main"
@@ -174,7 +176,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/black" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
