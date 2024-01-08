@@ -11,7 +11,6 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.tasks.Task
 import com.google.android.play.core.appupdate.AppUpdateInfo
-import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
@@ -36,7 +35,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     lateinit var dataStoreRepository: DataStoreRepository
 
     private val appUpdateManager by lazy { AppUpdateManagerFactory.create(this) }
-    private val resultLauncher =
+    private val appUpdateResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 checkAutoLogin()
@@ -65,8 +64,8 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
             if (appUpdateInfo.updateAvailability()
                 == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
             ) {
-                // 즉시 업데이트 다시 요청 보내기
-                requestImmediateUpdate(appUpdateInfo)
+                // 즉시 업데이트 다시 요청하기
+                requestImmediateAppUpdate(appUpdateInfo)
             }
         }
     }
@@ -95,16 +94,16 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
-                // todo: 업데이트 요청 다이얼로그 띄우기
-
+                // 즉시 업데이트 요청하기
+                requestImmediateAppUpdate(appUpdateInfo)
             }
         }
     }
 
-    private fun requestImmediateUpdate(appUpdateInfo: AppUpdateInfo) {
+    private fun requestImmediateAppUpdate(appUpdateInfo: AppUpdateInfo) {
         appUpdateManager.startUpdateFlowForResult(
             appUpdateInfo,
-            resultLauncher,
+            appUpdateResultLauncher,
             AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
         )
     }
