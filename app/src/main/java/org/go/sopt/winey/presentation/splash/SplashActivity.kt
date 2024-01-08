@@ -5,9 +5,17 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsetsController
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
+import com.google.android.gms.tasks.Task
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
@@ -19,12 +27,24 @@ import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.colorOf
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_splash) {
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
+
+    private val appUpdateManager by lazy { AppUpdateManagerFactory.create(this) }
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                checkAutoLogin()
+            } else {
+                Timber.e("Update flow failed! Result code: " + result.resultCode)
+                checkAppUpdateInfo()
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
@@ -33,7 +53,21 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         setUpStatusBar()
         lifecycleScope.launch {
             delay(DELAY_TIME)
-            checkAutoLogin()
+            checkAppUpdateInfo()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // 백그라운드에서 포그라운드로 돌아왔는데 아직 설치하고 있는 경우
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability()
+                == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+            ) {
+                // 즉시 업데이트 다시 요청 보내기
+                requestImmediateUpdate(appUpdateInfo)
+            }
         }
     }
 
@@ -53,12 +87,36 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         }
     }
 
-    private suspend fun checkAutoLogin() {
-        val accessToken = dataStoreRepository.getAccessToken().firstOrNull()
-        if (accessToken.isNullOrBlank()) {
-            navigateTo<GuideActivity>()
-        } else {
-            navigateTo<MainActivity>()
+    private fun checkAppUpdateInfo() {
+        val appUpdateInfoTask: Task<AppUpdateInfo> = appUpdateManager.appUpdateInfo
+
+        // 설치 가능한 업데이트 버전이 있고, 즉시 업데이트가 허용된 경우
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                // todo: 업데이트 요청 다이얼로그 띄우기
+
+            }
+        }
+    }
+
+    private fun requestImmediateUpdate(appUpdateInfo: AppUpdateInfo) {
+        appUpdateManager.startUpdateFlowForResult(
+            appUpdateInfo,
+            resultLauncher,
+            AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build()
+        )
+    }
+
+    private fun checkAutoLogin() {
+        lifecycleScope.launch {
+            val accessToken = dataStoreRepository.getAccessToken().firstOrNull()
+            if (accessToken.isNullOrBlank()) {
+                navigateTo<GuideActivity>()
+            } else {
+                navigateTo<MainActivity>()
+            }
         }
     }
 
