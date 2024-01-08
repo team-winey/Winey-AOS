@@ -9,7 +9,6 @@ object Versions {
 
     const val coreKtxVersion = "1.10.1"
     const val appCompatVersion = "1.6.1"
-    const val materialDesignVersion = "1.6.1"
     const val constraintLayoutVersion = "2.1.4"
     const val swipeRefreshLayoutVersion = "1.1.0"
     const val appStartUpVersion = "1.1.1"
@@ -21,12 +20,15 @@ object Versions {
     const val pagingVersion = "3.1.1"
     const val securityVersion = "1.0.0"
     const val lifecycleVersion = "2.6.1"
-    const val ossPluginVersion = "0.10.4"
-    const val ossVersion = "17.0.0"
     const val splashVersion = "1.0.1"
     const val workManagerVersion = "2.8.1"
     const val exifVersion = "1.3.2"
     const val dataStoreVersion = "1.0.0"
+
+    const val materialDesignVersion = "1.6.1"
+    const val ossPluginVersion = "0.10.4"
+    const val ossVersion = "17.0.0"
+    const val inAppUpdateVersion = "2.1.0"
 
     const val coilVersion = "2.4.0"
     const val retrofitVersion = "2.9.0"

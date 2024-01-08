@@ -41,14 +41,18 @@ object TestDependencies {
     const val espresso = "androidx.test.espresso:espresso-core:${Testing.espressoVersion}"
 }
 
-object MaterialDesignDependencies {
-    const val materialDesign =
-        "com.google.android.material:material:${Versions.materialDesignVersion}"
-}
-
 object KaptDependencies {
     const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hiltVersion}"
     const val hiltWorkManagerCompiler = "androidx.hilt:hilt-compiler:1.0.0"
+}
+
+object GoogleDependencies {
+    const val materialDesign =
+        "com.google.android.material:material:${Versions.materialDesignVersion}"
+    const val ossLicense =
+        "com.google.android.gms:play-services-oss-licenses:${Versions.ossVersion}"
+    const val inAppUpdate = "com.google.android.play:app-update:${Versions.inAppUpdateVersion}"
+    const val inAppUpdateKtx = "com.google.android.play:app-update-ktx:${Versions.inAppUpdateVersion}"
 }
 
 object ThirdPartyDependencies {
@@ -60,8 +64,6 @@ object ThirdPartyDependencies {
     const val retrofitJsonConverter =
         "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:${Versions.kotlinSerializationConverterVersion}"
     const val timber = "com.jakewharton.timber:timber:${Versions.timberVersion}"
-    const val ossLicense =
-        "com.google.android.gms:play-services-oss-licenses:${Versions.ossVersion}"
     const val progressView = "com.github.skydoves:progressview:${Versions.progressViewVersion}"
     const val balloon = "com.github.skydoves:balloon:${Versions.balloonVersion}"
     const val lottie = "com.airbnb.android:lottie:${Versions.lottieVersion}"
