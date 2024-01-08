@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="vm"
             type="org.go.sopt.winey.presentation.main.MainViewModel" />
@@ -14,17 +15,17 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/iv_wineyfeed_appbar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
                 android:layout_marginVertical="5dp"
+                android:layout_marginStart="12dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_recommend_logo"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,27 +53,117 @@
                 android:id="@+id/layout_wineyfeed_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_wineyfeed_line">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_wineyfeed_post"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:nestedScrollingEnabled="false"
-                android:orientation="vertical"
-                android:paddingBottom="50dp"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_wineyfeed_post" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_wineyfeed_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    android:paddingBottom="50dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_wineyfeed_post" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/tv_wineyfeed_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="어떤 소비를 기록할까요?"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+            android:textColor="@color/gray_0"
+            app:layout_constraintBottom_toTopOf="@id/cv_wineyfeed_fab_save"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_wineyfeed_fab_save"
+            android:layout_width="131dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="17dp"
+            app:cardCornerRadius="14dp"
+            app:layout_constraintBottom_toTopOf="@id/fab_wineyfeed_main"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/tv_wineyfeed_fab">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_wineyfeed_fab_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/img_wineyfeed_fab_save"
+                    app:layout_constraintBottom_toTopOf="@id/v_popup_seperator"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_wineyfeed_fab_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginEnd="17dp"
+                    android:text="@string/wineyfeed_fab_save"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                    android:textColor="@color/gray_800"
+                    app:layout_constraintBottom_toTopOf="@id/v_popup_seperator"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/v_popup_seperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@color/gray_200"
+                    app:layout_constraintBottom_toTopOf="@id/iv_wineyfeed_fab_consume"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_fab_save" />
+
+                <ImageView
+                    android:id="@+id/iv_wineyfeed_fab_consume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="14dp"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/img_wineyfeed_fab_consume"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_popup_seperator" />
+
+                <TextView
+                    android:id="@+id/tv_wineyfeed_fab_consume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="16dp"
+                    android:layout_marginEnd="17dp"
+                    android:text="@string/wineyfeed_fab_consume"
+                    android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                    android:textColor="@color/gray_800"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/v_popup_seperator" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_wineyfeed_floating"
+            android:id="@+id/fab_wineyfeed_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
@@ -83,6 +174,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:tint="@color/black" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
