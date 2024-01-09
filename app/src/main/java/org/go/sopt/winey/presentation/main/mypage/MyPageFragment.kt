@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -187,7 +186,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
         try {
             context.startActivity(intent)
-        }catch (e: ActivityNotFoundException) {
+        } catch (e: ActivityNotFoundException) {
             e.printStackTrace()
         }
     }
@@ -455,7 +454,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun updateNotificationAllowSwitchState(data: User) {
-        if (isNotificationAllowed){
+        if (isNotificationAllowed) {
             binding.ivMypageAgree.isVisible = true
             binding.llMypageAgreePermissionChange.isGone = true
             binding.tvMypageAgreePermission.isGone = true
