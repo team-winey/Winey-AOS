@@ -95,6 +95,7 @@
     <string name="mypage_1on1"><u>1:1 문의</u></string>
     <string name="mypage_terms"><u>이용약관</u></string>
     <string name="mypage_noti_agree">알림설정</string>
+    <string name="mypage_noti_agree_permission">기기 설정을 변경해야 알림을 받을 수 있어요</string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
 
