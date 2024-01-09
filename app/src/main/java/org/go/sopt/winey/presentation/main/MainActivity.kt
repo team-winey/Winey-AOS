@@ -44,9 +44,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
                 wineySnackbar(
-                    binding.root,
-                    true,
-                    stringOf(R.string.snackbar_notification_permission_fail)
+                    anchorView = binding.root,
+                    isSuccess = false,
+                    message = stringOf(R.string.snackbar_notification_permission_fail)
                 )
             }
         }
@@ -213,7 +213,5 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val KEY_TO_MYPAGE = "navigateMypage"
 
         private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
-
-        private const val CODE_NOTIFICATION_PERMISSION = 1020
     }
 }

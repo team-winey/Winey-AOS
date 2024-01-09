@@ -38,7 +38,6 @@ import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
-import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.stringOf
@@ -59,7 +58,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     @Inject
     lateinit var amplitudeUtils: AmplitudeUtils
-    private var isNotificationAllowed = true
+    private var isNotificationPermissionAllowed = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,7 +87,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun initCheckNotificationPermission() {
-        isNotificationAllowed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        isNotificationPermissionAllowed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.POST_NOTIFICATIONS
@@ -124,7 +123,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun initAllowedNotificationButtonClickListener() {
         binding.ivMypageSwitch.setOnClickListener {
-            when (isNotificationAllowed) {
+            when (isNotificationPermissionAllowed) {
                 true -> {
                     val isAllowed = when (binding.ivMypageAgree.currentState) {
                         R.id.start -> false
@@ -133,24 +132,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     }
                     when (isAllowed) {
                         true -> {
-                            val dialog = WineyDialogFragment.newInstance(
-                                WineyDialogLabel(
-                                    stringOf(R.string.notification_off_dialog_title),
-                                    stringOf(R.string.notification_off_dialog_subtitle),
-                                    stringOf(R.string.notification_off_dialog_negative_button),
-                                    stringOf(R.string.notification_off_dialog_positive_button)
-                                ),
-                                handleNegativeButton = {},
-                                handlePositiveButton = {
-                                    binding.ivMypageAgree.transitionToState(R.id.start, -1)
-                                    patchUserInfo()
-                                    myPageViewModel.patchAllowedNotification(isAllowed)
-                                }
-                            )
-                            dialog.show(
-                                parentFragmentManager,
-                                TAG_NOTIFICATION_OFF_DIALOG
-                            )
+                            showNotificationOffDialog(isAllowed)
                         }
 
                         false -> {
@@ -165,24 +147,45 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     wineySnackbar(
                         binding.root,
                         true,
-                        stringOf(R.string.snackbar_mypage_permission_fail)
+                        stringOf(R.string.snackbar_notification_permission_fail)
                     )
                 }
             }
         }
     }
 
+    private fun showNotificationOffDialog(isAllowed: Boolean) {
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.notification_off_dialog_title),
+                stringOf(R.string.notification_off_dialog_subtitle),
+                stringOf(R.string.notification_off_dialog_negative_button),
+                stringOf(R.string.notification_off_dialog_positive_button)
+            ),
+            handleNegativeButton = {},
+            handlePositiveButton = {
+                binding.ivMypageAgree.transitionToState(R.id.start, -1)
+                patchUserInfo()
+                myPageViewModel.patchAllowedNotification(isAllowed)
+            }
+        )
+        dialog.show(
+            parentFragmentManager,
+            TAG_NOTIFICATION_OFF_DIALOG
+        )
+    }
+
     private fun initNotificationPermissionChangeButtonClickListener() {
         binding.llMypageAgreePermissionChange.setOnClickListener {
-            presentNotificationSetting(requireContext())
+            navigateToNotificationSetting(requireContext())
         }
     }
 
-    fun presentNotificationSetting(context: Context) {
+    private fun navigateToNotificationSetting(context: Context) {
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationSettingOreo(context)
+            setNotificationIntentActionOreo(context)
         } else {
-            notificationSettingOreoLess(context)
+            setNorificationIntentActionOreoLess(context)
         }
         try {
             context.startActivity(intent)
@@ -191,7 +194,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    fun notificationSettingOreo(context: Context): Intent {
+    private fun setNotificationIntentActionOreo(context: Context): Intent {
         return Intent().also { intent ->
             intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
@@ -199,7 +202,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    fun notificationSettingOreoLess(context: Context): Intent {
+    private fun setNorificationIntentActionOreoLess(context: Context): Intent {
         return Intent().also { intent ->
             intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
             intent.putExtra("app_package", context.packageName)
@@ -221,11 +224,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         super.onStart()
         mainViewModel.getUser()
         initCheckNotificationPermission()
-        checkIsNotificationAllowed()
+        changeNotiButtonByPermission()
     }
 
-    private fun checkIsNotificationAllowed() {
-        if (isNotificationAllowed) {
+    private fun changeNotiButtonByPermission() {
+        if (isNotificationPermissionAllowed) {
             binding.ivMypageAgree.isVisible = true
             binding.llMypageAgreePermissionChange.isGone = true
             binding.tvMypageAgreePermission.isGone = true
@@ -454,7 +457,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun updateNotificationAllowSwitchState(data: User) {
-        if (isNotificationAllowed) {
+        if (isNotificationPermissionAllowed) {
             binding.ivMypageAgree.isVisible = true
             binding.llMypageAgreePermissionChange.isGone = true
             binding.tvMypageAgreePermission.isGone = true
