@@ -1,10 +1,14 @@
 package org.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
+import android.view.View.VISIBLE
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -316,9 +320,47 @@ class WineyFeedFragment :
     }
 
     private fun initFabClickListener() {
-        binding.btnWineyfeedFloating.setOnSingleClickListener {
+        val overlay = createOverlay()
+        binding.fabWineyfeedMain.setOnSingleClickListener {
             amplitudeUtils.logEvent("click_write_contents")
-            initGetUserStateObserver()
+            if (!binding.clWineyfeedFabSub.isVisible) {
+                setFabToCloseState(overlay)
+            } else {
+                setFabToUploadState(overlay)
+            }
+        }
+    }
+
+    private fun createOverlay(): View {
+        // 업로드 FAB 클릭했을때 어두워져야 해서
+        return View(context).apply {
+            setBackgroundColor(Color.BLACK)
+            alpha = 0.8f
+            visibility = VISIBLE
+        }
+    }
+
+    private fun setFabToCloseState(overlay: View) {
+        binding.apply {
+            fabWineyfeedMain.setImageResource(R.drawable.ic_wineyfeed_close)
+            fabWineyfeedMain.backgroundTintList =
+                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray_200))
+            clWineyfeedFabSub.isVisible = true
+            clWineyfeedAppbar.addView(overlay)
+        }
+    }
+
+    private fun setFabToUploadState(overlay: View) {
+        binding.apply {
+            fabWineyfeedMain.setImageResource(R.drawable.ic_wineyfeed_upload)
+            fabWineyfeedMain.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.winey_yellow
+                )
+            )
+            clWineyfeedFabSub.isVisible = false
+            clWineyfeedAppbar.removeView(overlay)
         }
     }
 
