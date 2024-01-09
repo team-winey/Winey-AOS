@@ -1,14 +1,20 @@
 package org.go.sopt.winey.presentation.main.mypage
 
 import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -72,6 +78,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initWithdrawButtonClickListener()
         initNicknameButtonClickListener()
         initAllowedNotificationButtonClickListener()
+        initNotificationPermissionChangeButtonClickListener()
 
         registerBackPressedCallback()
         setupGetUserState()
@@ -166,6 +173,42 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun initNotificationPermissionChangeButtonClickListener() {
+        binding.llMypageAgreePermissionChange.setOnClickListener {
+            presentNotificationSetting(requireContext())
+        }
+    }
+
+    fun presentNotificationSetting(context: Context) {
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notificationSettingOreo(context)
+        } else {
+            notificationSettingOreoLess(context)
+        }
+        try {
+            context.startActivity(intent)
+        }catch (e: ActivityNotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun notificationSettingOreo(context: Context): Intent {
+        return Intent().also { intent ->
+            intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    }
+
+    fun notificationSettingOreoLess(context: Context): Intent {
+        return Intent().also { intent ->
+            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
+            intent.putExtra("app_package", context.packageName)
+            intent.putExtra("app_uid", context.applicationInfo?.uid)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+    }
+
     private fun patchUserInfo() {
         lifecycleScope.launch {
             val data = dataStoreRepository.getUserInfo().first()
@@ -178,6 +221,20 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onStart() {
         super.onStart()
         mainViewModel.getUser()
+        initCheckNotificationPermission()
+        checkIsNotificationAllowed()
+    }
+
+    private fun checkIsNotificationAllowed() {
+        if (isNotificationAllowed) {
+            binding.ivMypageAgree.isVisible = true
+            binding.llMypageAgreePermissionChange.isGone = true
+            binding.tvMypageAgreePermission.isGone = true
+        } else {
+            binding.ivMypageAgree.isGone = true
+            binding.llMypageAgreePermissionChange.isVisible = true
+            binding.tvMypageAgreePermission.isVisible = true
+        }
     }
 
     // 위니피드 프래그먼트에서 마이페이지로 전환 시, 바텀시트 바로 띄우도록
@@ -398,14 +455,23 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun updateNotificationAllowSwitchState(data: User) {
-        when (data.fcmIsAllowed && isNotificationAllowed) {
-            true -> {
-                binding.ivMypageAgree.transitionToState(R.id.end, 1)
-            }
+        if (isNotificationAllowed){
+            binding.ivMypageAgree.isVisible = true
+            binding.llMypageAgreePermissionChange.isGone = true
+            binding.tvMypageAgreePermission.isGone = true
+            when (data.fcmIsAllowed) {
+                true -> {
+                    binding.ivMypageAgree.transitionToState(R.id.end, 1)
+                }
 
-            false -> {
-                binding.ivMypageAgree.transitionToState(R.id.start, 1)
+                false -> {
+                    binding.ivMypageAgree.transitionToState(R.id.start, 1)
+                }
             }
+        } else {
+            binding.ivMypageAgree.isGone = true
+            binding.llMypageAgreePermissionChange.isVisible = true
+            binding.tvMypageAgreePermission.isVisible = true
         }
     }
 
