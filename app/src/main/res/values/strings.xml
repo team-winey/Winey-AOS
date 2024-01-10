@@ -32,6 +32,7 @@
     <string name="wineyfeed_congratulation_dialog_subtitle">마이페이지에서 새 목표를\n설정해 볼까요?</string>
     <string name="wineyfeed_goal_dialog_negative_button">취소</string>
     <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
+    <string name="wineyfeed_upload_dialog_title">어떤 소비를 기록할까요?</string>
 
     <!-- comment delete dialog -->
     <string name="comment_delete_dialog_title">삭제하시겠습니까?</string>
