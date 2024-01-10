@@ -6,7 +6,7 @@
 
     <!-- winey feed -->
     <string name="wineyfeed_head">위니와 절약을 더 쉽고 재밌게!</string>
-    <string name="wineyfeed_sub">절약한 소비를 피드에 올리고\n사람들과 소통해요</string>
+    <string name="wineyfeed_sub">절약한 소비를 피드에 올리고 사람들과 소통해요</string>
     <string name="wineyfeed_nickname">부자가 되고싶어</string>
     <string name="wineyfeed_title">교통비를 아끼기 위해 대중교통 대신</string>
     <string name="wineyfeed_money">원 절약</string>
@@ -15,13 +15,13 @@
     <string name="wineyfeed_banner_insta_title">무슨 앱인지 궁금하다면?</string>
     <string name="wineyfeed_banner_insta_subtitle">위니 공식 인스타에서\n더 재밌게 사용하는 법 알아보기!</string>
     <string name="wineyfeed_banner1_title">위니와 절약을 더 쉽고 재밌게!</string>
-    <string name="wineyfeed_banner1_subtitle">절약한 소비를 피드에 올리고\n사람들과 소통해요</string>
+    <string name="wineyfeed_banner1_subtitle">절약한 소비를 피드에 올리고 사람들과 소통해요</string>
     <string name="wineyfeed_banner2_subtitle">하단 버튼을 통해</string>
-    <string name="wineyfeed_banner2_title">나만의 절약방법을 사람들과\n공유할 수 있어요</string>
+    <string name="wineyfeed_banner2_title">나만의 절약방법을 사람들과 공유할 수 있어요</string>
     <string name="wineyfeed_banner3_subtitle">서로의 절약방법을 피드백해요</string>
-    <string name="wineyfeed_banner3_title">좋아요를 눌러 서로의 절약을\n응원해주세요!</string>
+    <string name="wineyfeed_banner3_title">좋아요를 눌러 서로의 절약을 응원해주세요!</string>
     <string name="wineyfeed_banner4_subtitle">찾기 힘든 국가기관 금융혜택도</string>
-    <string name="wineyfeed_banner4_title">위니 추천피드에서\n한번에 볼 수 있어요!</string>
+    <string name="wineyfeed_banner4_title">위니 추천피드에서 한번에 볼 수 있어요!</string>
 
     <string name="wineyfeed_fab_save">절약했어요</string>
     <string name="wineyfeed_fab_consume">낭비했어요</string>
