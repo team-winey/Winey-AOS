@@ -1,24 +1,23 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="20dp"
-    android:height="20dp"
-    android:viewportWidth="20"
-    android:viewportHeight="20">
-
-    <!-- 첫 번째 path (X의 왼쪽 위에서 오른쪽 아래) -->
-    <path
-        android:pathData="M5,5L15,15"
-        android:strokeLineJoin="round"
-        android:strokeWidth="2"
-        android:fillColor="#00000000"
-        android:strokeColor="#0B0B0B"
-        android:strokeLineCap="round"/>
-
-    <!-- 두 번째 path (X의 오른쪽 위에서 왼쪽 아래) -->
-    <path
-        android:pathData="M15,5L5,15"
-        android:strokeLineJoin="round"
-        android:strokeWidth="2"
-        android:fillColor="#00000000"
-        android:strokeColor="#0B0B0B"
-        android:strokeLineCap="round"/>
+    android:width="56dp"
+    android:height="57dp"
+    android:viewportWidth="56"
+    android:viewportHeight="57">
+  <path
+      android:pathData="M28,0L28,0A28,28 0,0 1,56 28L56,28.074A28,28 0,0 1,28 56.074L28,56.074A28,28 0,0 1,0 28.074L0,28A28,28 0,0 1,28 0z"
+      android:fillColor="#E0E5EB"/>
+  <path
+      android:pathData="M22,22.037L28,28.037L34,34.037"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#0B0B0B"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M33.991,22.037L27.995,28.032L22,34.028"
+      android:strokeLineJoin="round"
+      android:strokeWidth="2"
+      android:fillColor="#00000000"
+      android:strokeColor="#0B0B0B"
+      android:strokeLineCap="round"/>
 </vector>
