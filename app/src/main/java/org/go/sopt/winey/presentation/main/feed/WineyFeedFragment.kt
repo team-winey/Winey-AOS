@@ -75,19 +75,10 @@ class WineyFeedFragment :
         amplitudeUtils.logEvent("view_homefeed")
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
-
         initAdapter()
-        initFabClickListener()
-        initNotificationButtonClickListener()
+        addListener()
+        addObserver()
         removeRecyclerviewItemChangeAnimation()
-
-        initGetWineyFeedListStateObserver()
-        initGetDetailFeedStateObserver()
-        initPostLikeStateObserver()
-        initDeleteFeedStateObserver()
-
-        initSwipeRefreshListener()
-        initPagingLoadStateListener()
     }
 
     override fun onStart() {
@@ -96,6 +87,20 @@ class WineyFeedFragment :
             Timber.d("onStart getDetailFeed")
             viewModel.getDetailFeed(clickedFeedId)
         }
+    }
+
+    private fun addListener() {
+        initFabClickListener()
+        initNotificationButtonClickListener()
+        initSwipeRefreshListener()
+        initPagingLoadStateListener()
+    }
+
+    private fun addObserver() {
+        initGetWineyFeedListStateObserver()
+        initGetDetailFeedStateObserver()
+        initPostLikeStateObserver()
+        initDeleteFeedStateObserver()
     }
 
     private fun initGetDetailFeedStateObserver() {
