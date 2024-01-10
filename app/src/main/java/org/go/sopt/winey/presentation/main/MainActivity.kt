@@ -1,8 +1,13 @@
 package org.go.sopt.winey.presentation.main
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -35,9 +40,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
     private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                wineySnackbar(
+                    anchorView = binding.root,
+                    isSuccess = false,
+                    message = stringOf(R.string.snackbar_notification_permission_fail)
+                )
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requestNotificationPermission()
 
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
         mainViewModel.getUser()
@@ -51,6 +68,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         showSuccessSnackBar()
     }
 
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
     private fun initNotiTypeHandler() {
         val notificationType = NotificationType.values().find { it.key == notiType }
         when (notificationType) {
@@ -61,9 +88,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 KEY_FROM_NOTI,
                 true
             )
+
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
             -> navigateToDetail(feedId?.toInt())
-            else -> navigateToLevelupHelp()
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
+            else -> {}
         }
     }
 

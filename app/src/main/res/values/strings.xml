@@ -48,6 +48,12 @@
     <string name="feed_delete_dialog_negative_button">취소</string>
     <string name="feed_delete_dialog_positive_button">삭제하기</string>
 
+    <!-- notification off dialog -->
+    <string name="notification_off_dialog_title">알림을 끄시겠어요?</string>
+    <string name="notification_off_dialog_subtitle">앞으로 위니 제국에서 오는 편지를 받으실 수 없어요.</string>
+    <string name="notification_off_dialog_negative_button">취소</string>
+    <string name="notification_off_dialog_positive_button">확인</string>
+
     <!-- upload -->
     <string name="upload_plus_text">절약을 인증할 수 있는\n사진을 업로드 해 주세요.</string>
     <string name="upload_photo_title">절약을 실천한\n모습을 보여주세요!</string>
@@ -89,6 +95,7 @@
     <string name="mypage_1on1"><u>1:1 문의</u></string>
     <string name="mypage_terms"><u>이용약관</u></string>
     <string name="mypage_noti_agree">알림설정</string>
+    <string name="mypage_noti_agree_permission">기기 설정을 변경해야 알림을 받을 수 있어요</string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
 
@@ -216,6 +223,7 @@
     <string name="snackbar_delete_fail">죄송합니다. 다시 시도해주세요.</string>
     <string name="snackbar_report_success">정상적으로 신고되었습니다 :)</string>
     <string name="snackbar_report_fail">죄송합니다. 신고접수에 실패하였습니다.</string>
+    <string name="snackbar_notification_permission_fail">기기 설정을 변경해야 알림을 받을 수 있어요</string>
 
     <!-- comment -->
     <string name="comment_level_1">LV. 평민 ㆍ </string>

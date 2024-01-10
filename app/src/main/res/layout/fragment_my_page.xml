@@ -363,18 +363,57 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/v_mypage_line6">
 
-                    <TextView
-                        android:id="@+id/tv_mypage_agree"
+                    <LinearLayout
+                        android:id="@+id/ll_mypage_agree"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="23dp"
-                        android:layout_marginTop="17dp"
-                        android:text="@string/mypage_noti_agree"
-                        android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
-                        android:textColor="@color/gray_700"
+                        android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+                        <TextView
+                            android:id="@+id/tv_mypage_agree"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mypage_noti_agree"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+                            android:textColor="@color/gray_700"/>
 
+                        <TextView
+                            android:id="@+id/tv_mypage_agree_permission"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mypage_noti_agree_permission"
+                            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                            android:textColor="@color/gray_500"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_mypage_agree_permission_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="18dp"
+                        android:paddingEnd="23dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="변경하기"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                            android:textColor="@color/purple_300" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_mypage_change"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="6dp" />
+                    </LinearLayout>
                     <androidx.constraintlayout.motion.widget.MotionLayout
                         android:id="@+id/iv_mypage_agree"
                         android:layout_width="wrap_content"
