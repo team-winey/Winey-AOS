@@ -16,6 +16,14 @@
         android:theme="@style/Theme.Winey"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".configuration.WineyMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".presentation.splash.SplashActivity"

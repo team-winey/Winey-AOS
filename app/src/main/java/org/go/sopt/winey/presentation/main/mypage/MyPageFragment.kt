@@ -63,11 +63,69 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initLogoutButtonClickListener()
         initWithdrawButtonClickListener()
         initNicknameButtonClickListener()
+        initAllowedNotificationButtonClickListener()
 
         registerBackPressedCallback()
         setupGetUserState()
         setupDeleteUserState()
+        setupPatchAllowedNotificationState()
+
         checkFromWineyFeed()
+    }
+
+    private fun setupPatchAllowedNotificationState() {
+        myPageViewModel.patchAllowedNotificationState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    when (state.data) {
+                        true -> {
+                            binding.ivMypageAgree.transitionToEnd()
+                        }
+
+                        false -> {
+                            binding.ivMypageAgree.transitionToStart()
+                        }
+
+                        null -> {
+                            binding.ivMypageAgree.transitionToStart()
+                        }
+                    }
+                }
+
+                is UiState.Failure -> {}
+                is UiState.Empty -> {}
+                else -> {}
+            }
+        }
+    }
+
+    private fun initAllowedNotificationButtonClickListener() {
+        binding.ivMypageSwitch.setOnClickListener {
+            val isAllowed = when (binding.ivMypageAgree.currentState) {
+                R.id.start -> false
+                R.id.end -> true
+                else -> false
+            }
+            when (isAllowed) {
+                true -> {
+                    binding.ivMypageAgree.transitionToStart()
+                }
+
+                false -> {
+                    binding.ivMypageAgree.transitionToEnd()
+                }
+            }
+            patchUserInfo()
+            myPageViewModel.patchAllowedNotification(isAllowed)
+        }
+    }
+
+    private fun patchUserInfo() {
+        lifecycleScope.launch {
+            val data = dataStoreRepository.getUserInfo().first()
+            val newData = data?.copy(fcmIsAllowed = false)
+            dataStoreRepository.saveUserInfo(newData)
+        }
     }
 
     // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
@@ -250,6 +308,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.data = data
         updateTargetInfo(data)
         updateUserLevel(data)
+        updateNotificationAllowSwitchState(data)
     }
 
     private fun updateTargetInfo(data: User) {
@@ -288,6 +347,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             LEVEL_KING -> {
                 binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
                 binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv4_profile)
+            }
+        }
+    }
+
+    private fun updateNotificationAllowSwitchState(data: User) {
+        when (data.fcmIsAllowed) {
+            true -> {
+                binding.ivMypageAgree.transitionToEnd()
+            }
+
+            false -> {
+                binding.ivMypageAgree.transitionToStart()
             }
         }
     }

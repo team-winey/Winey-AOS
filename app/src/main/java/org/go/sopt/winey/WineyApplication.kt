@@ -14,6 +14,7 @@ class WineyApplication : Application() {
         setupTimber()
         setupKakaoSdk()
         preventDarkMode()
+        registerActivityLifecycleCallbacks(ActivityLifecycleHandler(this))
     }
 
     private fun setupTimber() {
