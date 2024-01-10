@@ -33,7 +33,6 @@ class WineyUploadDialogFragment :
         dialog?.setCanceledOnTouchOutside(true)
     }
 
-
     private fun initSaveButtonClickListener(handleSaveButton: () -> Unit) {
         binding.llWineyfeedFabSave.setOnClickListener {
             handleSaveButton.invoke()

@@ -333,9 +333,7 @@ class WineyFeedFragment :
             handleSaveButton = {
                 initGetUserStateObserver()
             },
-            handleConsumeButton = {
-
-            }
+            handleConsumeButton = {}
         )
         dialog.show(parentFragmentManager, TAG_CONGRATULATION_DIALOG)
     }
