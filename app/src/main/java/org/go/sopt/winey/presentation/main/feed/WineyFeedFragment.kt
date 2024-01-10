@@ -1,14 +1,10 @@
 package org.go.sopt.winey.presentation.main.feed
 
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
-import android.view.View.VISIBLE
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -44,6 +40,7 @@ import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_LIKE
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
+import org.go.sopt.winey.util.fragment.WineyUploadDialogFragment
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
@@ -320,48 +317,22 @@ class WineyFeedFragment :
     }
 
     private fun initFabClickListener() {
-        val overlay = createOverlay()
-        binding.fabWineyfeedMain.setOnSingleClickListener {
+        binding.fabWineyfeedUpload.setOnSingleClickListener {
             amplitudeUtils.logEvent("click_write_contents")
-            if (!binding.clWineyfeedFabSub.isVisible) {
-                setFabToCloseState(overlay)
-            } else {
-                setFabToUploadState(overlay)
+            showUploadDialog()
+        }
+    }
+
+    private fun showUploadDialog() {
+        val dialog = WineyUploadDialogFragment.newInstance(
+            handleSaveButton = {
+                initGetUserStateObserver()
+            },
+            handleConsumeButton = {
+
             }
-        }
-    }
-
-    private fun createOverlay(): View {
-        // 업로드 FAB 클릭했을때 어두워져야 해서
-        return View(context).apply {
-            setBackgroundColor(Color.BLACK)
-            alpha = 0.8f
-            visibility = VISIBLE
-        }
-    }
-
-    private fun setFabToCloseState(overlay: View) {
-        binding.apply {
-            fabWineyfeedMain.setImageResource(R.drawable.ic_wineyfeed_close)
-            fabWineyfeedMain.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.gray_200))
-            clWineyfeedFabSub.isVisible = true
-            clWineyfeedAppbar.addView(overlay)
-        }
-    }
-
-    private fun setFabToUploadState(overlay: View) {
-        binding.apply {
-            fabWineyfeedMain.setImageResource(R.drawable.ic_wineyfeed_upload)
-            fabWineyfeedMain.backgroundTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.winey_yellow
-                )
-            )
-            clWineyfeedFabSub.isVisible = false
-            clWineyfeedAppbar.removeView(overlay)
-        }
+        )
+        dialog.show(parentFragmentManager, TAG_CONGRATULATION_DIALOG)
     }
 
     private fun initGetUserStateObserver() {
@@ -549,6 +520,7 @@ class WineyFeedFragment :
         private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
+        private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
         private const val POPUP_MENU_POS_OFFSET = 65
 
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
