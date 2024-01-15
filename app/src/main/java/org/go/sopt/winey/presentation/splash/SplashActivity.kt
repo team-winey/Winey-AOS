@@ -92,8 +92,9 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
-                // 즉시 업데이트 요청하기
                 requestImmediateUpdate(appUpdateInfo)
+            } else {
+                checkAutoLogin()
             }
         }
     }
