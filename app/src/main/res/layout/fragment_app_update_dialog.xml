@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="업데이트가 필요해요."
+            android:text="@string/update_dialog_title"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
             app:layout_constraintEnd_toEndOf="@id/iv_update_saver"
             app:layout_constraintStart_toStartOf="@id/iv_update_saver"
@@ -46,7 +46,7 @@
                 android:id="@+id/tv_update_guide_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="업데이트가 잘 되지 않으시나요?"
+                android:text="@string/update_dialog_guide_title"
                 android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
                 android:textColor="@color/purple_400"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -67,21 +67,21 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="- 위니를 삭제 후 재설치 해보세요."
+                    android:text="@string/update_dialog_guide_content_1"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
                     android:textColor="@color/gray_500" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="- 위니 삭제 후 Google play 스토어를 강제 종료한 뒤, 재설치해 보세요."
+                    android:text="@string/update_dialog_guide_content_2"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
                     android:textColor="@color/gray_500" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="- 설정 → 어플리케이션 → Google play 스토어 → 저장공간 → 데이터 삭제 및 캐시 삭제, 강제 종료 후 재시작하여 위니를 재설치해 보세요."
+                    android:text="@string/update_dialog_guide_content_3"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
                     android:textColor="@color/gray_500" />
             </LinearLayout>
@@ -89,12 +89,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_update"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:background="@drawable/shape_yellow_fill_5_rect"
             android:stateListAnimator="@null"
-            android:text="업데이트하러 가기"
+            android:text="@string/update_dialog_btn_text"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
             android:textColor="@color/gray_900"
             app:layout_constraintEnd_toEndOf="parent"

@@ -248,4 +248,11 @@
     <!-- error -->
     <string name="error_winey_feed_loading">Can\'t loading winey feed list</string>
 
+    <!-- app update fail dialog -->
+    <string name="update_dialog_title">업데이트가 필요해요.</string>
+    <string name="update_dialog_guide_title">업데이트가 잘 되지 않으시나요?</string>
+    <string name="update_dialog_guide_content_1">• 위니를 삭제 후 재설치 해보세요.</string>
+    <string name="update_dialog_guide_content_2">• 위니 삭제 후 Google play 스토어를 강제 종료한 뒤, 재설치해 보세요.</string>
+    <string name="update_dialog_guide_content_3">• 설정 → 어플리케이션 → Google play 스토어 → 저장공간 → 데이터 삭제 및 캐시 삭제, 강제 종료 후 재시작하여 위니를 재설치해 보세요.</string>
+    <string name="update_dialog_btn_text">업데이트하러 가기</string>
 </resources>
