@@ -206,7 +206,7 @@ class WineyFeedFragment :
                 viewModel.deleteFeed(feed.feedId)
             }
         )
-        dialog.show(    parentFragment?.parentFragmentManager ?: return, TAG_FEED_DELETE_DIALOG)
+        dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
     }
 
     private fun showFeedReportDialog() {
@@ -222,7 +222,7 @@ class WineyFeedFragment :
                 requireActivity().showReportGoogleForm()
             }
         )
-        dialog.show(    parentFragment?.parentFragmentManager ?: return, TAG_FEED_REPORT_DIALOG)
+        dialog.show(parentFragmentManager, TAG_FEED_REPORT_DIALOG)
     }
 
     private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
@@ -328,7 +328,6 @@ class WineyFeedFragment :
         }
     }
 
-
     private fun showUploadDialog() {
         val dialog = WineyUploadDialogFragment.newInstance(
             handleSaveButton = {
@@ -336,9 +335,8 @@ class WineyFeedFragment :
             },
             handleConsumeButton = {}
         )
-        dialog.show(parentFragment?.parentFragmentManager ?: return, TAG_UPLOAD_DIALOG)
+        dialog.show(parentFragmentManager, TAG_CONGRATULATION_DIALOG)
     }
-
 
     private fun initGetUserStateObserver() {
         viewLifeCycleScope.launch {
@@ -399,7 +397,7 @@ class WineyFeedFragment :
             }
         )
 
-        dialog.show(parentFragment?.parentFragmentManager ?: return, TAG_CONGRATULATION_DIALOG)
+        dialog.show(parentFragmentManager, TAG_CONGRATULATION_DIALOG)
     }
 
     private fun showDefaultGoalSettingDialog() {
@@ -421,7 +419,7 @@ class WineyFeedFragment :
             }
         )
 
-        dialog.show(parentFragment?.parentFragmentManager ?: return, TAG_DEFAULT_GOAL_SETTING_DIALOG)
+        dialog.show(parentFragmentManager, TAG_DEFAULT_GOAL_SETTING_DIALOG)
     }
 
     private fun navigateToMyPageWithBundle() {
@@ -430,9 +428,9 @@ class WineyFeedFragment :
                 putBoolean(KEY_FROM_WINEY_FEED, true)
             }
         }
-        parentFragment?.parentFragmentManager?.commit {
+        parentFragmentManager.commit {
             replace(R.id.fcv_main, myPageFragment)
-        } ?: return
+        }
         syncBnvSelectedItem()
     }
 
