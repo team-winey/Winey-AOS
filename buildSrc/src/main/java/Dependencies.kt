@@ -26,6 +26,10 @@ object AndroidXDependencies {
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycleVersion}"
     const val lifecycleJava8 =
         "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycleVersion}"
+    const val lifecycleService =
+        "androidx.lifecycle:lifecycle-service:${Versions.lifecycleVersion}"
+    const val ossLicense =
+        "com.google.android.gms:play-services-oss-licenses:${Versions.ossVersion}"
     const val splashScreen = "androidx.core:core-splashscreen:${Versions.splashVersion}"
     const val pagingRuntime = "androidx.paging:paging-runtime:${Versions.pagingVersion}"
     const val workManager = "androidx.work:work-runtime-ktx:${Versions.workManagerVersion}"
@@ -81,7 +85,7 @@ object ThirdPartyDependencies {
 }
 
 object FirebaseDependencies {
-    const val bom = "com.google.firebase:firebase-bom:30.1.0"
+    const val bom = "com.google.firebase:firebase-bom:32.2.0"
     const val messaging = "com.google.firebase:firebase-messaging-ktx"
     const val crashlytics = "com.google.firebase:firebase-crashlytics-ktx"
     const val analytics = "com.google.firebase:firebase-analytics-ktx"

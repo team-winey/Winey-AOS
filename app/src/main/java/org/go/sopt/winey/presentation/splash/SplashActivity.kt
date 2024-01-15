@@ -108,14 +108,12 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         )
     }
 
-    private fun checkAutoLogin() {
-        lifecycleScope.launch {
-            val accessToken = dataStoreRepository.getAccessToken().firstOrNull()
-            if (accessToken.isNullOrBlank()) {
-                navigateTo<GuideActivity>()
-            } else {
-                navigateTo<MainActivity>()
-            }
+    private suspend fun checkAutoLogin() {
+        val accessToken = dataStoreRepository.getAccessToken().firstOrNull()
+        if (accessToken.isNullOrBlank()) {
+            navigateTo<GuideActivity>()
+        } else {
+            navigateToMainScreen()
         }
     }
 
@@ -126,7 +124,20 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         }
     }
 
+    private fun navigateToMainScreen() {
+        Intent(this, MainActivity::class.java).apply {
+            if (intent.extras != null) {
+                putExtra(KEY_NOTI_TYPE, intent.getStringExtra(KEY_NOTI_TYPE))
+                putExtra(KEY_FEED_ID, intent.getStringExtra(KEY_FEED_ID))
+            }
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
+        }
+    }
+
     companion object {
+        private const val KEY_FEED_ID = "feedId"
+        private const val KEY_NOTI_TYPE = "notiType"
         private const val DELAY_TIME = 1500L
     }
 }

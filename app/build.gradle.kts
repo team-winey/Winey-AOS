@@ -8,6 +8,9 @@ plugins {
     id(ModulePlugins.kotlinSerialization)
     id(ModulePlugins.hilt)
     id(ModulePlugins.oss)
+    id(ModulePlugins.googleService)
+    id(ModulePlugins.firebaseAppdistribution)
+    id(ModulePlugins.firebaseCrashlytics)
 }
 
 android {
@@ -102,6 +105,7 @@ dependencies {
         implementation(lifecycleLiveDataKtx)
         implementation(lifecycleViewModelKtx)
         implementation(lifecycleJava8)
+        implementation(lifecycleService)
         implementation(splashScreen)
         implementation(pagingRuntime)
         implementation(workManager)
@@ -148,5 +152,13 @@ dependencies {
         debugImplementation(flipperNetwork)
         debugImplementation(flipperLeakCanary)
         debugImplementation(soloader)
+    }
+
+    FirebaseDependencies.run {
+        implementation(platform(bom))
+        implementation(messaging)
+        implementation(analytics)
+        implementation(crashlytics)
+        implementation(remoteConfig)
     }
 }

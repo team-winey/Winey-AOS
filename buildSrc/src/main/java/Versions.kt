@@ -45,6 +45,11 @@ object Versions {
     const val kakaoLoginVersion = "2.10.0"
     const val amplitudeVersion = "2.34.0"
 
+    const val firabaseVersion = "30.4.0"
+    const val googleServiceVersion = "4.3.15"
+    const val firebaseAppdistributionVersion = "4.0.0"
+    const val firebaseCrashlyticsVersion = "2.9.7"
+
     val javaVersion = JavaVersion.VERSION_17
     const val jvmVersion = "17"
 }

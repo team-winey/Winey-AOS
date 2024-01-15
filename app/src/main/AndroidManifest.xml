@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS"
+        android:minSdkVersion="33" />
 
     <application
         android:name=".WineyApplication"
@@ -16,6 +19,14 @@
         android:theme="@style/Theme.Winey"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <service
+            android:name=".configuration.WineyMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".presentation.splash.SplashActivity"
