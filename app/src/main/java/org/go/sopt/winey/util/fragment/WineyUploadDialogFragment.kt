@@ -16,6 +16,9 @@ class WineyUploadDialogFragment :
         super.onViewCreated(view, savedInstanceState)
         setupDialogPosition()
         setupDialogBehavior()
+    }
+
+    private fun addListener() {
         initConsumeButtonClickListener(handleConsume)
         initSaveButtonClickListener(handleSave)
         initCloseButtonClickListener()
