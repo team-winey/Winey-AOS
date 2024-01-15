@@ -65,7 +65,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
                 == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
             ) {
                 // 즉시 업데이트 다시 요청하기
-                requestImmediateAppUpdate(appUpdateInfo)
+                requestImmediateUpdate(appUpdateInfo)
             }
         }
     }
@@ -95,12 +95,12 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
                 // 즉시 업데이트 요청하기
-                requestImmediateAppUpdate(appUpdateInfo)
+                requestImmediateUpdate(appUpdateInfo)
             }
         }
     }
 
-    private fun requestImmediateAppUpdate(appUpdateInfo: AppUpdateInfo) {
+    private fun requestImmediateUpdate(appUpdateInfo: AppUpdateInfo) {
         appUpdateManager.startUpdateFlowForResult(
             appUpdateInfo,
             appUpdateResultLauncher,
@@ -108,17 +108,19 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         )
     }
 
-    private suspend fun checkAutoLogin() {
-        val accessToken = dataStoreRepository.getAccessToken().firstOrNull()
-        if (accessToken.isNullOrBlank()) {
-            navigateTo<GuideActivity>()
-        } else {
-            navigateToMainScreen()
+    private fun checkAutoLogin() {
+        lifecycleScope.launch {
+            val accessToken = dataStoreRepository.getAccessToken().firstOrNull()
+            if (accessToken.isNullOrBlank()) {
+                navigateToGuideScreen()
+            } else {
+                navigateToMainScreen()
+            }
         }
     }
 
-    private inline fun <reified T : Activity> navigateTo() {
-        Intent(this, T::class.java).apply {
+    private fun navigateToGuideScreen() {
+        Intent(this, GuideActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
         }
@@ -136,8 +138,8 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     }
 
     companion object {
-        private const val KEY_FEED_ID = "feedId"
         private const val KEY_NOTI_TYPE = "notiType"
+        private const val KEY_FEED_ID = "feedId"
         private const val DELAY_TIME = 1500L
     }
 }
