@@ -39,7 +39,9 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
                 checkAutoLogin()
             } else {
                 Timber.e("Update flow failed! Result code: " + result.resultCode)
-                checkAppUpdateInfo()
+                AppUpdateDialogFragment.newInstance {
+                    checkAppUpdateInfo()
+                }
             }
         }
 
