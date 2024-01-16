@@ -88,11 +88,11 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     }
 
     private fun checkAppUpdateInfo() {
-        // 설치 가능한 업데이트 버전이 있고, 즉시 업데이트가 허용된 경우
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
+                // 설치 가능한 업데이트 버전이 있고, 즉시 업데이트가 허용된 경우
                 requestImmediateUpdate(appUpdateInfo)
             } else {
                 checkAutoLogin()
