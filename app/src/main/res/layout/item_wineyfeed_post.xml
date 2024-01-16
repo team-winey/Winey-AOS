@@ -57,7 +57,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_wineyfeed_image"
+            android:id="@+id/l_wineyfeed_image"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
@@ -79,21 +79,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/img_wineyfeed_default" />
 
-            <TextView
-                android:id="@+id/tv_wineyfeed_money"
-                setAmount="@{data.feedMoney}"
-                setSuffix="@{@string/wineyfeed_money}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/shape_yellow_fill_99_rect"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="10dp"
-                android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
-                android:textColor="@color/gray_900"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_wineyfeed_image"
-                app:layout_constraintStart_toStartOf="@+id/iv_wineyfeed_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -105,7 +90,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_wineyfeed_image"
+            app:layout_constraintTop_toBottomOf="@id/l_wineyfeed_image"
             tools:src="@drawable/ic_wineyfeed_liked" />
 
         <TextView
@@ -122,6 +107,25 @@
             tools:text="5,319" />
 
         <TextView
+            android:id="@+id/tv_wineyfeed_money"
+            setAmount="@{data.feedMoney}"
+            setSuffix="@{@string/wineyfeed_money}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="4000"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="9dp"
+            android:textColor="@color/sub_green_500"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:background="@drawable/shape_green500_line_6_rect"
+            app:layout_constraintTop_toBottomOf="@id/l_wineyfeed_image"
+            app:layout_constraintStart_toStartOf="@id/l_wineyfeed_image"
+            app:layout_constraintBottom_toTopOf="@id/tv_wineyfeed_title"/>
+
+
+        <TextView
             android:id="@+id/tv_wineyfeed_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -132,8 +136,8 @@
             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
             android:textColor="@color/gray_900"
             app:layout_constraintEnd_toStartOf="@id/iv_wineyfeed_like"
-            app:layout_constraintStart_toStartOf="@id/layout_wineyfeed_image"
-            app:layout_constraintTop_toBottomOf="@id/layout_wineyfeed_image"
+            app:layout_constraintStart_toStartOf="@id/l_wineyfeed_image"
+            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_money"
             tools:text="@string/wineyfeed_title" />
 
         <ImageView
@@ -143,7 +147,7 @@
             android:layout_marginTop="9dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_wineyfeed_comment"
-            app:layout_constraintStart_toStartOf="@id/layout_wineyfeed_image"
+            app:layout_constraintStart_toStartOf="@id/l_wineyfeed_image"
             app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title"
             tools:src="@drawable/ic_wineyfeed_comment" />
 

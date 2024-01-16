@@ -40,6 +40,7 @@ import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_LIKE
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
+import org.go.sopt.winey.util.fragment.WineyUploadDialogFragment
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
@@ -74,19 +75,10 @@ class WineyFeedFragment :
         amplitudeUtils.logEvent("view_homefeed")
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
-
         initAdapter()
-        initFabClickListener()
-        initNotificationButtonClickListener()
+        addListener()
+        addObserver()
         removeRecyclerviewItemChangeAnimation()
-
-        initGetWineyFeedListStateObserver()
-        initGetDetailFeedStateObserver()
-        initPostLikeStateObserver()
-        initDeleteFeedStateObserver()
-
-        initSwipeRefreshListener()
-        initPagingLoadStateListener()
     }
 
     override fun onStart() {
@@ -95,6 +87,20 @@ class WineyFeedFragment :
             Timber.d("onStart getDetailFeed")
             viewModel.getDetailFeed(clickedFeedId)
         }
+    }
+
+    private fun addListener() {
+        initFabClickListener()
+        initNotificationButtonClickListener()
+        initSwipeRefreshListener()
+        initPagingLoadStateListener()
+    }
+
+    private fun addObserver() {
+        initGetWineyFeedListStateObserver()
+        initGetDetailFeedStateObserver()
+        initPostLikeStateObserver()
+        initDeleteFeedStateObserver()
     }
 
     private fun initGetDetailFeedStateObserver() {
@@ -200,7 +206,7 @@ class WineyFeedFragment :
                 viewModel.deleteFeed(feed.feedId)
             }
         )
-        dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_FEED_DELETE_DIALOG) }
     }
 
     private fun showFeedReportDialog() {
@@ -216,7 +222,7 @@ class WineyFeedFragment :
                 requireActivity().showReportGoogleForm()
             }
         )
-        dialog.show(parentFragmentManager, TAG_FEED_REPORT_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_FEED_REPORT_DIALOG) }
     }
 
     private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
@@ -316,10 +322,20 @@ class WineyFeedFragment :
     }
 
     private fun initFabClickListener() {
-        binding.btnWineyfeedFloating.setOnSingleClickListener {
+        binding.fabWineyfeedUpload.setOnSingleClickListener {
             amplitudeUtils.logEvent("click_write_contents")
-            initGetUserStateObserver()
+            showUploadDialog()
         }
+    }
+
+    private fun showUploadDialog() {
+        val dialog = WineyUploadDialogFragment.newInstance(
+            handleSaveButton = {
+                initGetUserStateObserver()
+            },
+            handleConsumeButton = {}
+        )
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_UPLOAD_DIALOG) }
     }
 
     private fun initGetUserStateObserver() {
@@ -381,7 +397,7 @@ class WineyFeedFragment :
             }
         )
 
-        dialog.show(parentFragmentManager, TAG_CONGRATULATION_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
     }
 
     private fun showDefaultGoalSettingDialog() {
@@ -403,7 +419,7 @@ class WineyFeedFragment :
             }
         )
 
-        dialog.show(parentFragmentManager, TAG_DEFAULT_GOAL_SETTING_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_DEFAULT_GOAL_SETTING_DIALOG) }
     }
 
     private fun navigateToMyPageWithBundle() {
@@ -412,7 +428,7 @@ class WineyFeedFragment :
                 putBoolean(KEY_FROM_WINEY_FEED, true)
             }
         }
-        parentFragmentManager.commit {
+        activity?.supportFragmentManager?.commit {
             replace(R.id.fcv_main, myPageFragment)
         }
         syncBnvSelectedItem()
@@ -507,6 +523,7 @@ class WineyFeedFragment :
         private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
+        private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
         private const val POPUP_MENU_POS_OFFSET = 65
 
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
