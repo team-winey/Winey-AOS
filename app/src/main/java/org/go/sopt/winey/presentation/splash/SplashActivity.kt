@@ -24,7 +24,6 @@ import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.colorOf
-import org.go.sopt.winey.util.context.toast
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -89,8 +88,8 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
     private fun checkAppUpdateInfo() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
                 // 설치 가능한 업데이트 버전이 있고, 즉시 업데이트가 허용된 경우
                 requestImmediateUpdate(appUpdateInfo)
