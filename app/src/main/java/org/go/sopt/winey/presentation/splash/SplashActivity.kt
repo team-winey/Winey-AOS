@@ -24,6 +24,7 @@ import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.colorOf
+import org.go.sopt.winey.util.context.toast
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -41,7 +42,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
                 Timber.e("Update flow failed! Result code: " + result.resultCode)
                 AppUpdateDialogFragment.newInstance {
                     checkAppUpdateInfo()
-                }
+                }.show(supportFragmentManager, TAG_APP_UPDATE_DIALOG)
             }
         }
 
@@ -140,5 +141,6 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         private const val KEY_NOTI_TYPE = "notiType"
         private const val KEY_FEED_ID = "feedId"
         private const val DELAY_TIME = 1500L
+        private const val TAG_APP_UPDATE_DIALOG = "APP_UPDATE_DIALOG"
     }
 }
