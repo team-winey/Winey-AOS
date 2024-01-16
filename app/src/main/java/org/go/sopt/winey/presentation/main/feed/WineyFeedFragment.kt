@@ -206,7 +206,7 @@ class WineyFeedFragment :
                 viewModel.deleteFeed(feed.feedId)
             }
         )
-        dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_FEED_DELETE_DIALOG) }
     }
 
     private fun showFeedReportDialog() {
@@ -222,7 +222,7 @@ class WineyFeedFragment :
                 requireActivity().showReportGoogleForm()
             }
         )
-        dialog.show(parentFragmentManager, TAG_FEED_REPORT_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_FEED_REPORT_DIALOG) }
     }
 
     private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
@@ -335,7 +335,7 @@ class WineyFeedFragment :
             },
             handleConsumeButton = {}
         )
-        dialog.show(parentFragmentManager, TAG_CONGRATULATION_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_UPLOAD_DIALOG) }
     }
 
     private fun initGetUserStateObserver() {
@@ -397,7 +397,7 @@ class WineyFeedFragment :
             }
         )
 
-        dialog.show(parentFragmentManager, TAG_CONGRATULATION_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
     }
 
     private fun showDefaultGoalSettingDialog() {
@@ -419,7 +419,7 @@ class WineyFeedFragment :
             }
         )
 
-        dialog.show(parentFragmentManager, TAG_DEFAULT_GOAL_SETTING_DIALOG)
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_DEFAULT_GOAL_SETTING_DIALOG) }
     }
 
     private fun navigateToMyPageWithBundle() {
@@ -428,7 +428,7 @@ class WineyFeedFragment :
                 putBoolean(KEY_FROM_WINEY_FEED, true)
             }
         }
-        parentFragmentManager.commit {
+        activity?.supportFragmentManager?.commit {
             replace(R.id.fcv_main, myPageFragment)
         }
         syncBnvSelectedItem()
