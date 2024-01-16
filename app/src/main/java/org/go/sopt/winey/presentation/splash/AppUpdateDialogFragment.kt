@@ -8,6 +8,8 @@ import org.go.sopt.winey.util.binding.BindingDialogFragment
 
 class AppUpdateDialogFragment :
     BindingDialogFragment<FragmentAppUpdateDialogBinding>(R.layout.fragment_app_update_dialog) {
+    private var onUpdateButtonClicked: () -> Unit = {}
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
@@ -15,7 +17,20 @@ class AppUpdateDialogFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initAppUpdateButtonClickListener()
+    }
 
-        // todo: 업데이트 버튼 클릭 리스너 정의
+    private fun initAppUpdateButtonClickListener() {
+        binding.btnUpdate.setOnClickListener {
+            onUpdateButtonClicked.invoke()
+            dismiss()
+        }
+    }
+
+    companion object {
+        fun newInstance(onUpdateButtonClicked: () -> Unit) =
+            AppUpdateDialogFragment().apply {
+                this.onUpdateButtonClicked = onUpdateButtonClicked
+            }
     }
 }
