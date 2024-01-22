@@ -30,8 +30,13 @@ fun Context.snackBar(anchorView: View, message: () -> String) {
     Snackbar.make(anchorView, message(), Snackbar.LENGTH_SHORT).show()
 }
 
-fun Context.wineySnackbar(anchorView: View, isSuccess: Boolean, message: String) {
-    WineySnackbar.make(anchorView, isSuccess, message).show()
+fun Context.wineySnackbar(
+    anchorView: View,
+    message: String,
+    isSuccess: Boolean,
+    isNotiType: Boolean = false
+) {
+    WineySnackbar.make(anchorView, message, isSuccess, isNotiType).show()
 }
 
 fun Context.stringOf(@StringRes resId: Int) = getString(resId)

@@ -68,7 +68,12 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     }
 
                     is UiState.Failure -> {
-                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_upload_fail))
+                        wineySnackbar(
+                            anchorView = binding.root,
+                            message = stringOf(R.string.snackbar_upload_fail),
+                            isSuccess = false
+                        )
+
                         uploadViewModel.initPostWineyFeedState()
                     }
 

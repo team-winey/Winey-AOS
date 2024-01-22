@@ -23,8 +23,13 @@ fun Fragment.snackBar(anchorView: View, message: () -> String) {
     Snackbar.make(anchorView, message(), Snackbar.LENGTH_SHORT).show()
 }
 
-fun Fragment.wineySnackbar(anchorView: View, isSuccess: Boolean, message: String) {
-    WineySnackbar.make(anchorView, isSuccess, message).show()
+fun Fragment.wineySnackbar(
+    anchorView: View,
+    message: String,
+    isSuccess: Boolean,
+    isNotiType: Boolean = false
+) {
+    WineySnackbar.make(anchorView, message, isSuccess, isNotiType).show()
 }
 
 fun Fragment.stringOf(@StringRes resId: Int) = getString(resId)

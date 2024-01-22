@@ -47,8 +47,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             if (!isGranted) {
                 wineySnackbar(
                     anchorView = binding.root,
-                    isSuccess = false,
-                    message = stringOf(R.string.snackbar_notification_permission_fail)
+                    message = stringOf(R.string.snackbar_noti_permission_denied),
+                    isSuccess = false
                 )
             }
         }
@@ -93,6 +93,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
             -> navigateToDetail(feedId?.toInt())
+
             NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
             else -> {}
         }
@@ -112,11 +113,19 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun showWineyFeedResultSnackBar() {
         if (isUploadSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_upload_success),
+                isSuccess = true
+            )
         }
 
         if (isDeleteSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_feed_delete_success),
+                isSuccess = true
+            )
         }
     }
 

@@ -356,7 +356,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 }
 
                 is UiState.Failure -> {
-                    wineySnackbar(binding.root, false, stringOf(R.string.snackbar_delete_fail))
+                    wineySnackbar(
+                        anchorView = binding.root,
+                        message = stringOf(R.string.snackbar_delete_fail),
+                        isSuccess = false
+                    )
                 }
 
                 else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
@@ -409,18 +413,21 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         }
 
                         wineySnackbar(
-                            binding.root,
-                            true,
-                            stringOf(R.string.snackbar_comment_delete_success)
+                            anchorView = binding.root,
+                            message = stringOf(R.string.snackbar_comment_delete_success),
+                            isSuccess = true
                         )
                     }
 
                     is UiState.Failure -> {
-                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_delete_fail))
+                        wineySnackbar(
+                            anchorView = binding.root,
+                            message = stringOf(R.string.snackbar_delete_fail),
+                            isSuccess = true
+                        )
                     }
 
-                    else -> {
-                    }
+                    else -> {}
                 }
             }.launchIn(lifecycleScope)
     }

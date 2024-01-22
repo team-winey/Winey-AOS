@@ -163,10 +163,11 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                     deletePagingDataItem(response.feedId.toInt())
 
                     wineySnackbar(
-                        binding.root,
-                        true,
-                        stringOf(R.string.snackbar_feed_delete_success)
+                        anchorView = binding.root,
+                        message = stringOf(R.string.snackbar_feed_delete_success),
+                        isSuccess = true
                     )
+
                     viewModel.initDeleteFeedState()
                 }
 

@@ -130,6 +130,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         R.id.end -> true
                         else -> false
                     }
+
                     when (isAllowed) {
                         true -> {
                             showNotificationOffDialog(isAllowed)
@@ -145,9 +146,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
                 false -> {
                     wineySnackbar(
-                        binding.root,
-                        true,
-                        stringOf(R.string.snackbar_notification_permission_fail)
+                        anchorView = binding.root,
+                        message = stringOf(R.string.snackbar_noti_permission_denied),
+                        isSuccess = false
                     )
                 }
             }
