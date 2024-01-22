@@ -1,7 +1,6 @@
 package org.go.sopt.winey.presentation.main
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -52,7 +51,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     message = stringOf(R.string.snackbar_noti_permission_denied),
                     isNotiType = true,
                     onActionClicked = {
-                        navigateToNotificationSetting(this)
+                        showSystemNotificationSetting()
                     }
                 )
             }
@@ -66,6 +65,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
         mainViewModel.getUser()
         mainViewModel.patchFcmToken()
+
         initNotiTypeHandler()
         initFragment()
         initBnvItemSelectedListener()
@@ -75,30 +75,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         showWineyFeedResultSnackBar()
     }
 
-    private fun navigateToNotificationSetting(context: Context) {
-        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setNotificationIntentForOreo(context)
-        } else {
-            setNotificationIntentForOreoLess(context)
-        }
-
-        context.startActivity(intent)
-    }
-
-    private fun setNotificationIntentForOreo(context: Context): Intent {
-        return Intent().also { intent ->
-            intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-    }
-
-    private fun setNotificationIntentForOreoLess(context: Context): Intent {
-        return Intent().also { intent ->
-            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
-            intent.putExtra("app_package", context.packageName)
-            intent.putExtra("app_uid", context.applicationInfo?.uid)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    private fun showSystemNotificationSetting() {
+        Intent().apply {
+            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(this)
         }
     }
 
