@@ -1,5 +1,6 @@
 package org.go.sopt.winey.util.view
 
+import android.graphics.Paint
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +14,9 @@ import org.go.sopt.winey.util.context.drawableOf
 
 class WineySnackbar(
     anchorView: View,
+    private val message: String,
     private val isSuccess: Boolean,
-    private val message: String
+    private val isNotiType: Boolean = false
 ) {
     private val context = anchorView.context
     private val snackbar = Snackbar.make(anchorView, "", DURATION_WINEY_SNACKBAR)
@@ -26,12 +28,28 @@ class WineySnackbar(
 
     init {
         initView()
-        initData()
+        initMessage()
+        initAction()
     }
 
     private fun initView() {
         setPosition()
+        initLayout()
+        initSuccessIcon()
+        initActionTextStyle()
+    }
 
+    private fun initActionTextStyle() {
+        binding.tvSnackbarAction.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+    }
+
+    private fun setPosition() {
+        val layoutParams = snackbar.view.layoutParams as FrameLayout.LayoutParams
+        layoutParams.gravity = Gravity.TOP
+        snackbar.view.layoutParams = layoutParams
+    }
+
+    private fun initLayout() {
         with(snackbarLayout) {
             removeAllViews()
             setPadding(0, 0, 0, 0)
@@ -40,19 +58,23 @@ class WineySnackbar(
         }
     }
 
-    private fun setPosition() {
-        val snackbarLayoutParams = snackbar.view.layoutParams as FrameLayout.LayoutParams
-        snackbarLayoutParams.gravity = Gravity.TOP
-        snackbar.view.layoutParams = snackbarLayoutParams
+    private fun initSuccessIcon() {
+        if (isSuccess) {
+            binding.ivSnackbarResult.setImageDrawable(context.drawableOf(R.drawable.ic_snackbar_success))
+        } else {
+            binding.ivSnackbarResult.setImageDrawable(context.drawableOf(R.drawable.ic_snackbar_fail))
+        }
     }
 
-    private fun initData() {
-        if (isSuccess) {
-            binding.ivSnackbar.setImageDrawable(context.drawableOf(R.drawable.ic_snackbar_success))
-        } else {
-            binding.ivSnackbar.setImageDrawable(context.drawableOf(R.drawable.ic_snackbar_fail))
+    private fun initMessage() {
+        binding.tvSnackbarMsg.text = message
+    }
+
+    private fun initAction() {
+        if (isNotiType) {
+            binding.tvSnackbarAction.visibility = View.VISIBLE
+
         }
-        binding.tvSnackbar.text = message
     }
 
     fun show() {
@@ -63,7 +85,7 @@ class WineySnackbar(
         private const val DURATION_WINEY_SNACKBAR = 1500
 
         @JvmStatic
-        fun make(view: View, isSuccess: Boolean, message: String) =
-            WineySnackbar(view, isSuccess, message)
+        fun make(view: View, message: String, isSuccess: Boolean, isNotiType: Boolean, ) =
+            WineySnackbar(view, message, isSuccess, isNotiType)
     }
 }
