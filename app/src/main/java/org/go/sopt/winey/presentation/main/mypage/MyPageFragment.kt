@@ -148,7 +148,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     wineySnackbar(
                         anchorView = binding.root,
                         message = stringOf(R.string.snackbar_noti_permission_denied),
-                        isSuccess = false
+                        isNotiType = true
                     )
                 }
             }

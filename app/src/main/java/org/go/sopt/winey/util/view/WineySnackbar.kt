@@ -16,7 +16,7 @@ class WineySnackbar(
     anchorView: View,
     private val message: String,
     private val isSuccess: Boolean,
-    private val isNotiType: Boolean = false
+    private val isNotiType: Boolean
 ) {
     private val context = anchorView.context
     private val snackbar = Snackbar.make(anchorView, "", DURATION_WINEY_SNACKBAR)
@@ -55,6 +55,11 @@ class WineySnackbar(
     }
 
     private fun initSuccessIcon() {
+        if (isNotiType) {
+            binding.ivSnackbarResult.visibility = View.GONE
+            return
+        }
+
         if (isSuccess) {
             binding.ivSnackbarResult.setImageDrawable(context.drawableOf(R.drawable.ic_snackbar_success))
         } else {

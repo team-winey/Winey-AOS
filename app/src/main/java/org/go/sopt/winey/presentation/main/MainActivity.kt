@@ -48,7 +48,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 wineySnackbar(
                     anchorView = binding.root,
                     message = stringOf(R.string.snackbar_noti_permission_denied),
-                    isSuccess = false
+                    isNotiType = true
                 )
             }
         }

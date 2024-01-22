@@ -26,7 +26,7 @@ fun Fragment.snackBar(anchorView: View, message: () -> String) {
 fun Fragment.wineySnackbar(
     anchorView: View,
     message: String,
-    isSuccess: Boolean,
+    isSuccess: Boolean = false,
     isNotiType: Boolean = false
 ) {
     WineySnackbar.make(anchorView, message, isSuccess, isNotiType).show()
