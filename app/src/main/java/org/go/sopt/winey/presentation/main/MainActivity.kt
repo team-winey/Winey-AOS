@@ -34,12 +34,14 @@ import org.go.sopt.winey.util.view.UiState
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val mainViewModel by viewModels<MainViewModel>()
+
     private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
     private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
-    private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
     private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
+
     private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
+
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
@@ -65,7 +67,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         syncBottomNavigationSelection()
 
         setupLogoutState()
-        showSuccessSnackBar()
+        showWineyFeedResultSnackBar()
     }
 
     private fun requestNotificationPermission() {
@@ -108,7 +110,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun showSuccessSnackBar() {
+    private fun showWineyFeedResultSnackBar() {
         if (isUploadSuccess == true) {
             wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
         }
