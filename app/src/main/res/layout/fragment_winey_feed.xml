@@ -57,22 +57,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_wineyfeed_line">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_wineyfeed_post"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:nestedScrollingEnabled="false"
-                android:orientation="vertical"
-                android:paddingBottom="50dp"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_wineyfeed_post" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_wineyfeed_post"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
+                    android:paddingBottom="50dp"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_wineyfeed_post" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_wineyfeed_floating"
+            android:id="@+id/fab_wineyfeed_upload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
