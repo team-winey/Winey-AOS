@@ -186,13 +186,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setNotificationIntentActionOreo(context)
         } else {
-            setNorificationIntentActionOreoLess(context)
+            setNotificationIntentActionOreoLess(context)
         }
-        try {
-            context.startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
-        }
+
+        context.startActivity(intent)
     }
 
     private fun setNotificationIntentActionOreo(context: Context): Intent {
@@ -203,7 +200,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun setNorificationIntentActionOreoLess(context: Context): Intent {
+    private fun setNotificationIntentActionOreoLess(context: Context): Intent {
         return Intent().also { intent ->
             intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
             intent.putExtra("app_package", context.packageName)

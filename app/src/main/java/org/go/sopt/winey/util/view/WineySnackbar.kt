@@ -5,12 +5,14 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.LayoutWineySnackbarBinding
 import org.go.sopt.winey.util.context.colorOf
 import org.go.sopt.winey.util.context.drawableOf
+import org.go.sopt.winey.util.context.stringOf
 
 class WineySnackbar(
     anchorView: View,
@@ -82,12 +84,21 @@ class WineySnackbar(
         }
     }
 
+    fun setAction(@StringRes resId: Int, onClicked: () -> Unit) {
+        binding.tvSnackbarAction.apply {
+            text = context.stringOf(resId)
+            setOnClickListener {
+                onClicked.invoke()
+            }
+        }
+    }
+
     fun show() {
         snackbar.show()
     }
 
     companion object {
-        private const val DURATION_WINEY_SNACKBAR = 1500
+        private const val DURATION_WINEY_SNACKBAR = 2000
 
         @JvmStatic
         fun make(view: View, message: String, isSuccess: Boolean, isNotiType: Boolean) =
