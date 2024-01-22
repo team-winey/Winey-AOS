@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsetsController
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
@@ -38,7 +39,10 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
             if (result.resultCode == RESULT_OK) {
                 checkAutoLogin()
             } else {
+                // 뒤로가기 또는 X 버튼을 눌러 업데이트가 취소된 경우
                 Timber.e("Update flow failed! Result code: " + result.resultCode)
+
+                // 다시 한번 요청 다이얼로그 띄우기
                 AppUpdateDialogFragment.newInstance {
                     checkAppUpdateInfo()
                 }.show(supportFragmentManager, TAG_APP_UPDATE_DIALOG)
@@ -49,11 +53,9 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
+        registerBackPressedCallback()
         setUpStatusBar()
-        lifecycleScope.launch {
-            delay(DELAY_TIME)
-            checkAppUpdateInfo()
-        }
+        showLottieAnimation()
     }
 
     override fun onResume() {
@@ -70,6 +72,15 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         }
     }
 
+    private fun registerBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     private fun setUpStatusBar() {
         // 상태바 색상 변경
         window.statusBarColor = colorOf(R.color.black)
@@ -83,6 +94,13 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         } else {
             val windowInsetController = ViewCompat.getWindowInsetsController(window.decorView)
             windowInsetController?.isAppearanceLightStatusBars = false
+        }
+    }
+
+    private fun showLottieAnimation() {
+        lifecycleScope.launch {
+            delay(DELAY_TIME)
+            checkAppUpdateInfo()
         }
     }
 
