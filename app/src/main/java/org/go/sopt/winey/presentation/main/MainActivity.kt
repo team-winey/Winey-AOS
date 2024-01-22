@@ -246,7 +246,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     companion object {
         private const val EXTRA_UPLOAD_KEY = "upload"
         private const val EXTRA_DELETE_KEY = "delete"
-        private const val EXTRA_REPORT_KEY = "report"
 
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_NOTI_TYPE = "notiType"
