@@ -28,19 +28,15 @@ class WineySnackbar(
 
     init {
         initView()
-        initMessage()
-        initAction()
     }
 
     private fun initView() {
         setPosition()
         initLayout()
-        initSuccessIcon()
-        initActionTextStyle()
-    }
 
-    private fun initActionTextStyle() {
-        binding.tvSnackbarAction.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        initSuccessIcon()
+        initMessage()
+        initActionText()
     }
 
     private fun setPosition() {
@@ -70,10 +66,12 @@ class WineySnackbar(
         binding.tvSnackbarMsg.text = message
     }
 
-    private fun initAction() {
+    private fun initActionText() {
         if (isNotiType) {
             binding.tvSnackbarAction.visibility = View.VISIBLE
-
+            binding.tvSnackbarAction.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        } else {
+            binding.tvSnackbarAction.visibility = View.INVISIBLE
         }
     }
 
@@ -85,7 +83,7 @@ class WineySnackbar(
         private const val DURATION_WINEY_SNACKBAR = 1500
 
         @JvmStatic
-        fun make(view: View, message: String, isSuccess: Boolean, isNotiType: Boolean, ) =
+        fun make(view: View, message: String, isSuccess: Boolean, isNotiType: Boolean) =
             WineySnackbar(view, message, isSuccess, isNotiType)
     }
 }
