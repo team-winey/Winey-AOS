@@ -73,8 +73,10 @@ class WineySnackbar(
 
     private fun initActionText() {
         if (isNotiType) {
-            binding.tvSnackbarAction.visibility = View.VISIBLE
-            binding.tvSnackbarAction.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            binding.tvSnackbarAction.apply {
+                visibility = View.VISIBLE
+                paintFlags = Paint.UNDERLINE_TEXT_FLAG
+            }
         } else {
             binding.tvSnackbarAction.visibility = View.INVISIBLE
         }
