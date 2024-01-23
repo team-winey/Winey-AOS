@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
+import org.go.sopt.winey.R
+import org.go.sopt.winey.util.view.SnackbarType
 import org.go.sopt.winey.util.view.WineySnackbar
 
 fun Fragment.toast(message: String) {
@@ -26,10 +28,16 @@ fun Fragment.snackBar(anchorView: View, message: () -> String) {
 fun Fragment.wineySnackbar(
     anchorView: View,
     message: String,
-    isSuccess: Boolean = false,
-    isNotiType: Boolean = false
+    type: SnackbarType
 ) {
-    WineySnackbar.make(anchorView, message, isSuccess, isNotiType).show()
+    val snackbar = WineySnackbar.make(anchorView, message, type)
+    if (type is SnackbarType.NotiPermission) {
+        snackbar.setAction(
+            resId = R.string.snackbar_noti_permission_setting_text,
+            onClicked = type.onActionClicked
+        )
+    }
+    snackbar.show()
 }
 
 fun Fragment.stringOf(@StringRes resId: Int) = getString(resId)

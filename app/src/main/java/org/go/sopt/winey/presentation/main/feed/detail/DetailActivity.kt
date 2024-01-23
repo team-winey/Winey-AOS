@@ -34,6 +34,7 @@ import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
+import org.go.sopt.winey.util.view.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.WineyPopupMenu
 import org.json.JSONException
@@ -359,7 +360,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     wineySnackbar(
                         anchorView = binding.root,
                         message = stringOf(R.string.snackbar_delete_fail),
-                        isSuccess = false
+                        type = SnackbarType.WineyFeedResult(isSuccess = false)
                     )
                 }
 
@@ -415,7 +416,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         wineySnackbar(
                             anchorView = binding.root,
                             message = stringOf(R.string.snackbar_comment_delete_success),
-                            isSuccess = true
+                            type = SnackbarType.WineyFeedResult(isSuccess = true)
                         )
                     }
 
@@ -423,7 +424,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         wineySnackbar(
                             anchorView = binding.root,
                             message = stringOf(R.string.snackbar_delete_fail),
-                            isSuccess = true
+                            type = SnackbarType.WineyFeedResult(isSuccess = false)
                         )
                     }
 

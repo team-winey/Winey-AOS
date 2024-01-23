@@ -46,6 +46,7 @@ import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
+import org.go.sopt.winey.util.view.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.WineyPopupMenu
 import org.go.sopt.winey.util.view.setOnSingleClickListener
@@ -238,7 +239,7 @@ class WineyFeedFragment :
                         wineySnackbar(
                             anchorView = binding.root,
                             message = stringOf(R.string.snackbar_feed_delete_success),
-                            isSuccess = true
+                            type = SnackbarType.WineyFeedResult(isSuccess = true)
                         )
 
                         viewModel.initDeleteFeedState()

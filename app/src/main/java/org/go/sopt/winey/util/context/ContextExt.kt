@@ -11,6 +11,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import org.go.sopt.winey.R
+import org.go.sopt.winey.util.view.SnackbarType
 import org.go.sopt.winey.util.view.WineySnackbar
 
 /** Hide keyboard from window */
@@ -34,15 +35,13 @@ fun Context.snackBar(anchorView: View, message: () -> String) {
 fun Context.wineySnackbar(
     anchorView: View,
     message: String,
-    isSuccess: Boolean = false,
-    isNotiType: Boolean = false,
-    onActionClicked: () -> Unit = {}
+    type: SnackbarType
 ) {
-    val snackbar = WineySnackbar.make(anchorView, message, isSuccess, isNotiType)
-    if (isNotiType) {
+    val snackbar = WineySnackbar.make(anchorView, message, type)
+    if (type is SnackbarType.NotiPermission) {
         snackbar.setAction(
             resId = R.string.snackbar_noti_permission_setting_text,
-            onClicked = onActionClicked
+            onClicked = type.onActionClicked
         )
     }
     snackbar.show()

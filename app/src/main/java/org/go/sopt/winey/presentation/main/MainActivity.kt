@@ -30,6 +30,7 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
+import org.go.sopt.winey.util.view.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 
 @AndroidEntryPoint
@@ -49,10 +50,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 wineySnackbar(
                     anchorView = binding.root,
                     message = stringOf(R.string.snackbar_noti_permission_denied),
-                    isNotiType = true,
-                    onActionClicked = {
-                        showSystemNotificationSetting()
-                    }
+                    type = SnackbarType.NotiPermission(
+                        onActionClicked = { showSystemNotificationSetting() }
+                    )
                 )
             }
         }
@@ -130,7 +130,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             wineySnackbar(
                 anchorView = binding.root,
                 message = stringOf(R.string.snackbar_upload_success),
-                isSuccess = true
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
             )
         }
 
@@ -138,7 +138,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             wineySnackbar(
                 anchorView = binding.root,
                 message = stringOf(R.string.snackbar_feed_delete_success),
-                isSuccess = true
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
             )
         }
     }
