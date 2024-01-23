@@ -180,21 +180,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
      * Listener 정의
      * */
 
-    private fun initNotiPermissionButtonClickListener() {
-        binding.llMypageAgreePermissionChange.setOnClickListener {
-            showSystemNotificationSetting()
-        }
-    }
-
-    private fun showSystemNotificationSetting() {
-        Intent().apply {
-            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
-            putExtra(Settings.EXTRA_APP_PACKAGE, context?.packageName)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(this)
-        }
-    }
-
     private fun initToMyFeedButtonClickListener() {
         binding.clMypageToMyfeed.setOnSingleClickListener {
             amplitudeUtils.logEvent("click_myfeed")
@@ -341,6 +326,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             parentFragmentManager,
             TAG_NOTIFICATION_OFF_DIALOG
         )
+    }
+
+    private fun initNotiPermissionButtonClickListener() {
+        binding.llMypageAgreePermissionChange.setOnClickListener {
+            showSystemNotificationSetting()
+        }
+    }
+
+    private fun showSystemNotificationSetting() {
+        Intent().apply {
+            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            putExtra(Settings.EXTRA_APP_PACKAGE, context?.packageName)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(this)
+        }
     }
 
     private fun patchUserInfo() {
