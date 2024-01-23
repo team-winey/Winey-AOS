@@ -78,7 +78,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
         mainViewModel.getUser()
 
-        // todo: 왜 onStart 시점에 호출해야 하는지 물어보기
+        // 시스템 설정창에서 유저가 설정한 권한에 따라 바로 뷰가 갱신되도록
         initNotiPermissionState()
         updateNotiButtonByPermission()
     }
