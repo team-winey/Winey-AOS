@@ -55,13 +55,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     @Inject
     lateinit var amplitudeUtils: AmplitudeUtils
-    private var isNotificationPermissionAllowed = true
+    private var isNotiPermissionAllowed = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
 
-        initCheckNotificationPermission()
+        initNotiPermissionState()
 
         initUserData()
         initClickListener()
@@ -79,12 +79,24 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         mainViewModel.getUser()
 
         // todo: 왜 onStart 시점에 호출해야 하는지 물어보기
-        initCheckNotificationPermission()
-        changeNotiButtonByPermission()
+        initNotiPermissionState()
+        updateNotiButtonByPermission()
     }
 
-    private fun changeNotiButtonByPermission() {
-        if (isNotificationPermissionAllowed) {
+    private fun initNotiPermissionState() {
+        isNotiPermissionAllowed =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            } else {
+                true
+            }
+    }
+
+    private fun updateNotiButtonByPermission() {
+        if (isNotiPermissionAllowed) {
             binding.ivMypageAgree.isVisible = true
 
             binding.llMypageAgreePermissionChange.isGone = true
@@ -95,18 +107,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             binding.llMypageAgreePermissionChange.isVisible = true
             binding.tvMypageAgreePermission.isVisible = true
         }
-    }
-
-    private fun initCheckNotificationPermission() {
-        isNotificationPermissionAllowed =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            } else {
-                true
-            }
     }
 
     private fun initClickListener() {
@@ -421,7 +421,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun updateNotificationAllowSwitchState(data: User) {
-        if (isNotificationPermissionAllowed) {
+        if (isNotiPermissionAllowed) {
             binding.ivMypageAgree.isVisible = true
             binding.llMypageAgreePermissionChange.isGone = true
             binding.tvMypageAgreePermission.isGone = true
