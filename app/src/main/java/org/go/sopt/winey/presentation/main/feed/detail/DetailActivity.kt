@@ -436,10 +436,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
-        showAsDropDown(anchorView, -POPUP_MENU_POS_OFFSET, -POPUP_MENU_POS_OFFSET, Gravity.END)
-    }
-
     private fun sendEventToAmplitude(type: EventType, feed: DetailFeed) {
         val eventProperties = JSONObject()
 
@@ -477,9 +473,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_REPORT_DIALOG = "REPORT_DIALOG"
 
-        private const val POPUP_MENU_POS_OFFSET = 65
         private const val MSG_DETAIL_ERROR = "ERROR"
-
         private const val ACTION_COMMENT_POST = "POST"
         private const val ACTION_COMMENT_DELETE = "DELETE"
     }

@@ -121,15 +121,14 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
     private fun showFeedDeletePopupMenu(anchorView: View, wineyFeed: WineyFeed) {
         val deleteTitle = listOf(stringOf(R.string.popup_delete_title))
-        WineyPopupMenu(context = anchorView.context, titles = deleteTitle) { _, _, _ ->
+        WineyPopupMenu(
+            context = anchorView.context,
+            titles = deleteTitle
+        ) { _, _, _ ->
             showFeedDeleteDialog(wineyFeed)
         }.apply {
             showCustomPosition(anchorView)
         }
-    }
-
-    private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
-        showAsDropDown(anchorView, -POPUP_MENU_OFFSET, -POPUP_MENU_OFFSET, Gravity.END)
     }
 
     private fun showFeedDeleteDialog(feed: WineyFeed) {
@@ -279,9 +278,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
 
-        private const val POPUP_MENU_OFFSET = 65
         private const val MSG_MYFEED_ERROR = "ERROR"
-
         private const val TAG_FEED_DELETE_DIALOG = "DELETE_DIALOG"
         private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
     }

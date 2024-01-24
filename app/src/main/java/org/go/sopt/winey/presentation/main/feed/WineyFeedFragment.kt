@@ -174,10 +174,6 @@ class WineyFeedFragment :
         }
     }
 
-    private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
-        showAsDropDown(anchorView, -POPUP_MENU_POS_OFFSET, -POPUP_MENU_POS_OFFSET, Gravity.END)
-    }
-
     private fun showFeedDeleteDialog(feed: WineyFeed) {
         val dialog = WineyDialogFragment.newInstance(
             WineyDialogLabel(
@@ -553,7 +549,6 @@ class WineyFeedFragment :
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
-        private const val POPUP_MENU_POS_OFFSET = 65
 
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
