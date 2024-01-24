@@ -73,8 +73,10 @@ class WineyFeedFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_homefeed")
+
         binding.vm = mainViewModel
         mainViewModel.getHasNewNoti()
+
         initAdapter()
         addListener()
         addObserver()
@@ -103,36 +105,13 @@ class WineyFeedFragment :
         initDeleteFeedStateObserver()
     }
 
-    private fun initGetDetailFeedStateObserver() {
-        viewModel.getDetailFeedState.flowWithLifecycle(viewLifeCycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        val detailFeed = state.data ?: return@onEach
-                        wineyFeedAdapter.updateItem(clickedFeedId, detailFeed)
-                        clickedFeedId = -1
-                    }
-
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> {}
-                }
-            }.launchIn(viewLifeCycleScope)
-    }
-
-    private fun removeRecyclerviewItemChangeAnimation() {
-        val animator = binding.rvWineyfeedPost.itemAnimator
-        if (animator is SimpleItemAnimator) {
-            animator.supportsChangeAnimations = false
-        }
-    }
-
+    /**
+     * Adapter
+     * */
     private fun initAdapter() {
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter(
-            onBannerClicked = { ->
-                initHeaderClickListener()
+            onBannerClicked = {
+                navigateToWineyInstagram()
             }
         )
         wineyFeedLoadAdapter = WineyFeedLoadAdapter()
@@ -153,6 +132,12 @@ class WineyFeedFragment :
             wineyFeedHeaderAdapter,
             wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
         )
+    }
+
+    private fun navigateToWineyInstagram() {
+        val url = INSTAGRAM_URL
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(intent)
     }
 
     private fun saveClickedFeedId(feedId: Int) {
@@ -227,6 +212,134 @@ class WineyFeedFragment :
 
     private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
 
+    /**
+     * Listener
+     * */
+    private fun initFabClickListener() {
+        binding.fabWineyfeedUpload.setOnSingleClickListener {
+            amplitudeUtils.logEvent("click_write_contents")
+            showUploadDialog()
+        }
+    }
+
+    // todo: 절약, 과소비 피드 업로드
+    private fun showUploadDialog() {
+        val dialog = WineyUploadDialogFragment.newInstance(
+            handleSaveButton = {
+
+            },
+            handleConsumeButton = {
+
+            }
+        )
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_UPLOAD_DIALOG) }
+    }
+
+    private fun initNotificationButtonClickListener() {
+        binding.ivWineyfeedNotification.setOnClickListener {
+            mainViewModel.patchCheckAllNoti()
+            val intent = Intent(context, NotificationActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun initSwipeRefreshListener() {
+        binding.layoutWineyfeedRefresh.setOnRefreshListener {
+            refreshWineyFeed()
+            binding.layoutWineyfeedRefresh.isRefreshing = false
+        }
+    }
+
+    private fun refreshWineyFeed() {
+        wineyFeedHeaderAdapter.notifyItemChanged(0)
+        wineyFeedAdapter.refresh()
+    }
+
+    private fun initPagingLoadStateListener() {
+        wineyFeedAdapter.addLoadStateListener { loadStates ->
+            when (loadStates.refresh) {
+                is LoadState.Loading -> {
+                    Timber.d("LOADING")
+                    binding.rvWineyfeedPost.isVisible = false
+                }
+
+                is LoadState.NotLoading -> {
+                    Timber.d("NOT LOADING")
+                    binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
+                }
+
+                is LoadState.Error -> {
+                    snackBar(binding.root) { stringOf(R.string.error_winey_feed_loading) }
+                }
+            }
+        }
+    }
+
+    /**
+     * Observer
+     * */
+
+    private fun initGetWineyFeedListStateObserver() {
+        viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        Timber.e("PAGING DATA SUBMIT in Fragment")
+                        val pagingData = state.data
+                        wineyFeedAdapter.submitData(pagingData)
+                        viewModel.initGetWineyFeedListState()
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun initGetDetailFeedStateObserver() {
+        viewModel.getDetailFeedState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val detailFeed = state.data ?: return@onEach
+                        wineyFeedAdapter.updateItem(clickedFeedId, detailFeed)
+                        clickedFeedId = -1
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun initPostLikeStateObserver() {
+        viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    val item = wineyFeedAdapter.updateLikeNumber(
+                        state.data.data.feedId,
+                        state.data.data.isLiked,
+                        state.data.data.likes
+                    ) ?: return@onEach
+
+                    sendWineyFeedEvent(TYPE_CLICK_LIKE, item)
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+            }
+        }.launchIn(viewLifeCycleScope)
+    }
+
     private fun initDeleteFeedStateObserver() {
         viewModel.deleteWineyFeedState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
@@ -259,197 +372,9 @@ class WineyFeedFragment :
         }
     }
 
-    private fun initGetWineyFeedListStateObserver() {
-        viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        Timber.e("PAGING DATA SUBMIT in Fragment")
-                        val pagingData = state.data
-                        wineyFeedAdapter.submitData(pagingData)
-                        viewModel.initGetWineyFeedListState()
-                    }
-
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> {}
-                }
-            }.launchIn(viewLifeCycleScope)
-    }
-
-    private fun initPagingLoadStateListener() {
-        wineyFeedAdapter.addLoadStateListener { loadStates ->
-            when (loadStates.refresh) {
-                is LoadState.Loading -> {
-                    Timber.d("LOADING")
-                    binding.rvWineyfeedPost.isVisible = false
-                }
-
-                is LoadState.NotLoading -> {
-                    Timber.d("NOT LOADING")
-                    binding.rvWineyfeedPost.isVisible = wineyFeedAdapter.itemCount > 0
-                }
-
-                is LoadState.Error -> {
-                    snackBar(binding.root) { stringOf(R.string.error_winey_feed_loading) }
-                }
-            }
-        }
-    }
-
-    private fun initPostLikeStateObserver() {
-        viewModel.postWineyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    val item = wineyFeedAdapter.updateLikeNumber(
-                        state.data.data.feedId,
-                        state.data.data.isLiked,
-                        state.data.data.likes
-                    ) ?: return@onEach
-
-                    sendWineyFeedEvent(TYPE_CLICK_LIKE, item)
-                }
-
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
-                }
-
-                else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
-            }
-        }.launchIn(viewLifeCycleScope)
-    }
-
-    private fun initFabClickListener() {
-        binding.fabWineyfeedUpload.setOnSingleClickListener {
-            amplitudeUtils.logEvent("click_write_contents")
-            showUploadDialog()
-        }
-    }
-
-    private fun showUploadDialog() {
-        val dialog = WineyUploadDialogFragment.newInstance(
-            handleSaveButton = {
-                initGetUserStateObserver()
-            },
-            handleConsumeButton = {}
-        )
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_UPLOAD_DIALOG) }
-    }
-
-    private fun initGetUserStateObserver() {
-        viewLifeCycleScope.launch {
-            mainViewModel.getUserState.collect { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        val data = dataStoreRepository.getUserInfo().firstOrNull() ?: return@collect
-                        checkGoalSetting(data)
-                    }
-
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
-                }
-            }
-        }
-    }
-
-    private fun initNotificationButtonClickListener() {
-        binding.ivWineyfeedNotification.setOnClickListener {
-            mainViewModel.patchCheckAllNoti()
-            val intent = Intent(context, NotificationActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun checkGoalSetting(data: User) {
-        // 목표를 설정한 적 없거나, 기간 내 목표 달성에 실패한 경우
-        if (data.isOver) {
-            showDefaultGoalSettingDialog()
-        }
-        // 기간 내 목표 달성에 성공한 경우
-        else if (data.isAttained) {
-            showCongratulationDialog()
-        } else { // 새 목표를 설정한 경우
-            navigateToUpload()
-        }
-    }
-
-    private fun showCongratulationDialog() {
-        amplitudeUtils.logEvent("view_goalsetting_popup")
-
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.wineyfeed_congratulation_dialog_title),
-                stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
-                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
-            ),
-            handleNegativeButton = {
-                sendDialogClickEvent(false)
-            },
-            handlePositiveButton = {
-                sendDialogClickEvent(true)
-                navigateToMyPageWithBundle()
-            }
-        )
-
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
-    }
-
-    private fun showDefaultGoalSettingDialog() {
-        amplitudeUtils.logEvent("view_goalsetting_popup")
-
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.wineyfeed_goal_dialog_title),
-                stringOf(R.string.wineyfeed_goal_dialog_subtitle),
-                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
-            ),
-            handleNegativeButton = {
-                sendDialogClickEvent(false)
-            },
-            handlePositiveButton = {
-                sendDialogClickEvent(true)
-                navigateToMyPageWithBundle()
-            }
-        )
-
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_DEFAULT_GOAL_SETTING_DIALOG) }
-    }
-
-    private fun navigateToMyPageWithBundle() {
-        val myPageFragment = MyPageFragment().apply {
-            arguments = Bundle().apply {
-                putBoolean(KEY_FROM_WINEY_FEED, true)
-            }
-        }
-        activity?.supportFragmentManager?.commit {
-            replace(R.id.fcv_main, myPageFragment)
-        }
-        syncBnvSelectedItem()
-    }
-
-    private fun syncBnvSelectedItem() {
-        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
-        bottomNav.selectedItemId = R.id.menu_mypage
-    }
-
-    private fun initSwipeRefreshListener() {
-        binding.layoutWineyfeedRefresh.setOnRefreshListener {
-            refreshWineyFeed()
-            binding.layoutWineyfeedRefresh.isRefreshing = false
-        }
-    }
-
-    private fun refreshWineyFeed() {
-        wineyFeedHeaderAdapter.notifyItemChanged(0)
-        wineyFeedAdapter.refresh()
-    }
+    /**
+     * Navigation
+     * */
 
     private fun navigateToUpload() {
         val intent = Intent(requireContext(), UploadActivity::class.java)
@@ -465,12 +390,19 @@ class WineyFeedFragment :
         }
     }
 
-    private fun initHeaderClickListener() {
-        val url = INSTAGRAM_URL
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(intent)
+    /**
+     * Other
+     * */
+    private fun removeRecyclerviewItemChangeAnimation() {
+        val animator = binding.rvWineyfeedPost.itemAnimator
+        if (animator is SimpleItemAnimator) {
+            animator.supportsChangeAnimations = false
+        }
     }
 
+    /**
+     * Amplitude Event Tagging
+     * */
     private fun sendDialogClickEvent(isNavigate: Boolean) {
         val eventProperties = JSONObject()
 
@@ -515,6 +447,103 @@ class WineyFeedFragment :
 
             else -> {}
         }
+    }
+
+    /**
+     * 1차 릴리즈 당시, 절약 피드 업로드 기능 (더 이상 사용 X)
+     * */
+    private fun initGetUserStateObserver() {
+        viewLifeCycleScope.launch {
+            mainViewModel.getUserState.collect { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val data = dataStoreRepository.getUserInfo().firstOrNull() ?: return@collect
+                        checkGoalSetting(data)
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
+                }
+            }
+        }
+    }
+
+    private fun checkGoalSetting(data: User) {
+        // 목표를 설정한 적 없거나, 기간 내 목표 달성에 실패한 경우
+        if (data.isOver) {
+            showDefaultGoalSettingDialog()
+        }
+        // 기간 내 목표 달성에 성공한 경우
+        else if (data.isAttained) {
+            showCongratulationDialog()
+        } else {
+            // 새 목표를 설정한 경우
+            navigateToUpload()
+        }
+    }
+
+    private fun showDefaultGoalSettingDialog() {
+        amplitudeUtils.logEvent("view_goalsetting_popup")
+
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.wineyfeed_goal_dialog_title),
+                stringOf(R.string.wineyfeed_goal_dialog_subtitle),
+                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
+                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
+            ),
+            handleNegativeButton = {
+                sendDialogClickEvent(false)
+            },
+            handlePositiveButton = {
+                sendDialogClickEvent(true)
+                navigateToMyPageWithBundle()
+            }
+        )
+
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_DEFAULT_GOAL_SETTING_DIALOG) }
+    }
+
+    private fun showCongratulationDialog() {
+        amplitudeUtils.logEvent("view_goalsetting_popup")
+
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.wineyfeed_congratulation_dialog_title),
+                stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
+                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
+                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
+            ),
+            handleNegativeButton = {
+                sendDialogClickEvent(false)
+            },
+            handlePositiveButton = {
+                sendDialogClickEvent(true)
+                navigateToMyPageWithBundle()
+            }
+        )
+
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
+    }
+
+    private fun navigateToMyPageWithBundle() {
+        val myPageFragment = MyPageFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(KEY_FROM_WINEY_FEED, true)
+            }
+        }
+        activity?.supportFragmentManager?.commit {
+            replace(R.id.fcv_main, myPageFragment)
+        }
+        syncBnvSelectedItem()
+    }
+
+    private fun syncBnvSelectedItem() {
+        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
+        bottomNav.selectedItemId = R.id.menu_mypage
     }
 
     companion object {
