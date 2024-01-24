@@ -165,7 +165,7 @@ class UploadViewModel @Inject constructor(
     companion object {
         /** Content */
         private const val MIN_CONTENT_LENGTH = 6
-        const val MAX_CONTENT_LENGTH = 36
+        const val MAX_CONTENT_LENGTH = 100
 
         /** Amount */
         private const val MIN_AMOUNT = 1L

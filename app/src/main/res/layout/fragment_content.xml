@@ -87,7 +87,7 @@
             style="?editTextStyle"
             setUploadContentBackground="@{vm.inputUiState}"
             android:layout_width="0dp"
-            android:layout_height="90dp"
+            android:layout_height="128dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="24dp"
             android:gravity="top"
@@ -95,7 +95,7 @@
             android:importantForAutofill="no"
             android:inputType="text|textMultiLine"
             android:maxLength="@{vm.MAX_CONTENT_LENGTH}"
-            android:padding="18dp"
+            android:padding="14dp"
             android:scrollbars="vertical"
             android:text="@={vm._content}"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
@@ -104,11 +104,11 @@
             app:layout_constraintTop_toBottomOf="@id/tv_content_detail" />
 
         <TextView
+            android:id="@+id/tv_content_helper_text"
             setUploadContentHelperText="@{vm.inputUiState}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:text="@string/upload_content_error_text"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
             android:textColor="?colorError"
@@ -119,13 +119,12 @@
             android:id="@+id/tv_content_counter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="28dp"
             android:text="@{@string/upload_content_counter(vm._content.length)}"
-            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_400"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_upload_content"
+            app:layout_constraintBottom_toBottomOf="@id/tv_content_helper_text"
+            app:layout_constraintEnd_toEndOf="@id/et_upload_content"
+            app:layout_constraintTop_toTopOf="@id/tv_content_helper_text"
             tools:text="@string/upload_content_counter_preview" />
 
         <androidx.appcompat.widget.AppCompatButton
