@@ -122,6 +122,22 @@ fun TextView.setUploadContentHelperText(inputUiState: InputUiState) {
     }
 }
 
+@BindingAdapter("switchUploadAmountTitle")
+fun TextView.switchUploadAmountTitle(feedType: WineyFeedType) {
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_amount_title, "절약")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_amount_title, "과소비")
+    }
+}
+
+@BindingAdapter("switchUploadAmountDetailText")
+fun TextView.switchUploadAmountDetailText(feedType: WineyFeedType) {
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_amount_detail, "절약하신")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_amount_detail, "과소비한")
+    }
+}
+
 @BindingAdapter("setNicknameBackground")
 fun EditText.setNicknameBackground(inputUiState: InputUiState) {
     background = when (inputUiState) {

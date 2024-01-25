@@ -72,8 +72,8 @@
     <string name="upload_content_error_text">6자 이상 작성해주세요</string>
     <string name="upload_content_counter_preview">(0/100)</string>
 
-    <string name="upload_amount_title">얼마나\n절약했나요?</string>
-    <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
+    <string name="upload_amount_title">얼마나\n%s했나요?</string>
+    <string name="upload_amount_detail">%s 금액을 작성해주세요!</string>
     <string name="upload_amount_unit_text">원</string>
     <string name="upload_amount_hint_text">0</string>
     <string name="upload_last_btn_text">업로드</string>
