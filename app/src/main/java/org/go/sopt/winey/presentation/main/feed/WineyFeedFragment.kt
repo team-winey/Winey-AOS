@@ -105,9 +105,7 @@ class WineyFeedFragment :
         initDeleteFeedStateObserver()
     }
 
-    /**
-     * Adapter
-     * */
+    /** Adapter */
     private fun initAdapter() {
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter(
             onBannerClicked = {
@@ -208,9 +206,7 @@ class WineyFeedFragment :
 
     private fun isMyFeed(currentUserId: Int?, writerId: Int) = currentUserId == writerId
 
-    /**
-     * Listener
-     * */
+    /** Listener */
     private fun initFabClickListener() {
         binding.fabWineyfeedUpload.setOnSingleClickListener {
             amplitudeUtils.logEvent("click_write_contents")
@@ -271,10 +267,7 @@ class WineyFeedFragment :
         }
     }
 
-    /**
-     * Observer
-     * */
-
+    /** Observer */
     private fun initGetWineyFeedListStateObserver() {
         viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
@@ -368,10 +361,7 @@ class WineyFeedFragment :
         }
     }
 
-    /**
-     * Navigation
-     * */
-
+    /** Navigation */
     private fun navigateToUpload() {
         val intent = Intent(requireContext(), UploadActivity::class.java)
         startActivity(intent)
@@ -386,9 +376,7 @@ class WineyFeedFragment :
         }
     }
 
-    /**
-     * Other
-     * */
+    /** Other */
     private fun removeRecyclerviewItemChangeAnimation() {
         val animator = binding.rvWineyfeedPost.itemAnimator
         if (animator is SimpleItemAnimator) {
@@ -396,9 +384,7 @@ class WineyFeedFragment :
         }
     }
 
-    /**
-     * Amplitude Event Tagging
-     * */
+    /** Amplitude Event Tagging */
     private fun sendDialogClickEvent(isNavigate: Boolean) {
         val eventProperties = JSONObject()
 
@@ -445,9 +431,7 @@ class WineyFeedFragment :
         }
     }
 
-    /**
-     * 1차 릴리즈 당시, 절약 피드 업로드 기능 (더 이상 사용 X)
-     * */
+    /** 1차 릴리즈 당시, 절약 피드 업로드 (더 이상 사용 X) */
     private fun initGetUserStateObserver() {
         viewLifeCycleScope.launch {
             mainViewModel.getUserState.collect { state ->
