@@ -217,12 +217,8 @@ class WineyFeedFragment :
     // todo: 절약, 과소비 피드 업로드
     private fun showUploadDialog() {
         val dialog = WineyUploadDialogFragment.newInstance(
-            handleSaveButton = {
-
-            },
-            handleConsumeButton = {
-
-            }
+            handleSaveButton = { navigateToUpload(WineyFeedType.SAVE) },
+            handleConsumeButton = { navigateToUpload(WineyFeedType.CONSUME) }
         )
         activity?.supportFragmentManager?.let { dialog.show(it, TAG_UPLOAD_DIALOG) }
     }
@@ -362,9 +358,11 @@ class WineyFeedFragment :
     }
 
     /** Navigation */
-    private fun navigateToUpload() {
-        val intent = Intent(requireContext(), UploadActivity::class.java)
-        startActivity(intent)
+    private fun navigateToUpload(feedType: WineyFeedType) {
+        Intent(requireContext(), UploadActivity::class.java).apply {
+            putExtra(KEY_FEED_TYPE, feedType)
+            startActivity(this)
+        }
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
@@ -461,7 +459,7 @@ class WineyFeedFragment :
             showCongratulationDialog()
         } else {
             // 새 목표를 설정한 경우
-            navigateToUpload()
+            //navigateToUpload()
         }
     }
 
@@ -537,8 +535,11 @@ class WineyFeedFragment :
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+        const val KEY_FEED_TYPE = "feedType"
+
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val VAL_WINEY_FEED_SCREEN = "WineyFeedFragment"
+
         private const val INSTAGRAM_URL =
             "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
     }
