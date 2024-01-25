@@ -25,10 +25,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class PhotoFragment : BindingFragment<FragmentPhotoBinding>(R.layout.fragment_photo) {
     private val uploadViewModel by activityViewModels<UploadViewModel>()
-    private val feedType by lazy {
-        arguments?.getCompatibleSerializable(WineyFeedFragment.KEY_FEED_TYPE)
-            ?: WineyFeedType.SAVE
-    }
 
     @Inject
     lateinit var amplitudeUtils: AmplitudeUtils

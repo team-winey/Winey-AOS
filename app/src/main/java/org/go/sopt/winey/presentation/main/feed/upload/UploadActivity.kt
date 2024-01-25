@@ -1,6 +1,7 @@
 package org.go.sopt.winey.presentation.main.feed.upload
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
 import org.go.sopt.winey.R
@@ -16,9 +17,12 @@ class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_
         intent.extras?.getCompatibleSerializable(WineyFeedFragment.KEY_FEED_TYPE)
             ?: WineyFeedType.SAVE
     }
+    private val viewModel by viewModels<UploadViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel.saveCurrentFeedType(feedType)
         setUpDefaultFragment(savedInstanceState)
     }
 
