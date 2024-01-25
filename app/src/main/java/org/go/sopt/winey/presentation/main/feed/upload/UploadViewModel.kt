@@ -80,7 +80,7 @@ class UploadViewModel @Inject constructor(
         this.feedType = feedType
     }
 
-    /** Functions associated with Photo Fragment */
+    /** Functions associated with PhotoFragment */
     fun activateNextButton() {
         _isImageSelected.value = true
     }
@@ -89,7 +89,7 @@ class UploadViewModel @Inject constructor(
         _imageUri.value = imageUri
     }
 
-    /** Functions associated with Content Fragment */
+    /** Functions associated with ContentFragment */
     private fun validateContent(state: InputUiState) = state == InputUiState.Success
 
     private fun checkInputUiState(content: String): InputUiState {

@@ -11,6 +11,7 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import de.hdodenhof.circleimageview.CircleImageView
 import org.go.sopt.winey.R
+import org.go.sopt.winey.presentation.main.feed.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.VAL_MY_PAGE_SCREEN
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.VAL_STORY_SCREEN
 import org.go.sopt.winey.util.code.ErrorCode.*
@@ -48,6 +49,32 @@ fun ImageView.setImageUrl(imageUrl: String?) {
     load(imageUrl) {
         placeholder(R.drawable.img_wineyfeed_default)
         transformations(RoundedCornersTransformation(10F))
+    }
+}
+
+@BindingAdapter("switchUploadImageTitle")
+fun TextView.switchUploadImageTitle(feedType: WineyFeedType) {
+    when (feedType) {
+        WineyFeedType.SAVE -> {
+            this.text = context.getString(R.string.upload_photo_title, "절약을 실천한")
+        }
+
+        WineyFeedType.CONSUME -> {
+            this.text = context.getString(R.string.upload_photo_title, "과소비한")
+        }
+    }
+}
+
+@BindingAdapter("switchUploadImageButtonText")
+fun TextView.switchUploadImageButtonText(feedType: WineyFeedType) {
+    when (feedType) {
+        WineyFeedType.SAVE -> {
+            this.text = context.getString(R.string.upload_plus_text, "절약을")
+        }
+
+        WineyFeedType.CONSUME -> {
+            this.text = context.getString(R.string.upload_plus_text, "과소비를")
+        }
     }
 }
 
@@ -248,7 +275,6 @@ fun ImageView.setNotiType(notiType: String) {
 
     if (drawableResourceId != 0) {
         setImageResource(drawableResourceId)
-    } else {
     }
 }
 
