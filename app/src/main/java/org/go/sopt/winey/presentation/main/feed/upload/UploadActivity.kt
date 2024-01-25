@@ -25,7 +25,14 @@ class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_
     private fun setUpDefaultFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
-                replace(R.id.fcv_upload, PhotoFragment())
+                replace(
+                    R.id.fcv_upload,
+                    PhotoFragment().apply {
+                        arguments = Bundle().apply {
+                            putSerializable(WineyFeedFragment.KEY_FEED_TYPE, feedType)
+                        }
+                    }
+                )
             }
         }
     }
