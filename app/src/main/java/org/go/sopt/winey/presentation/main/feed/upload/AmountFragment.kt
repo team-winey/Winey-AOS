@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentAmountBinding
+import org.go.sopt.winey.presentation.main.feed.WineyFeedType
 import org.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.context.hideKeyboard
@@ -50,7 +51,11 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
             uploadViewModel.apply {
-                postWineyFeed(content, amount.removeComma())
+                postWineyFeed(
+                    content = content,
+                    amount = amount.removeComma(),
+                    feedType = feedType.name
+                )
             }
         }
     }

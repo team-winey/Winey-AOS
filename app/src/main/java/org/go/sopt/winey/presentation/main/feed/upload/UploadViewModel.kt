@@ -121,12 +121,17 @@ class UploadViewModel @Inject constructor(
         this.imageRequestBody = requestBody
     }
 
-    fun postWineyFeed(content: String, amount: String) {
+    fun postWineyFeed(content: String, amount: String, feedType: String) {
         if (!validateRequestBody()) return
 
         viewModelScope.launch {
             _postWineyFeedState.value = UiState.Loading
-            val (file, requestMap) = createRequestBody(content, amount)
+
+            val (file, requestMap) = createRequestBody(
+                content = content,
+                amount = amount,
+                feedType = feedType
+            )
 
             feedRepository.postWineyFeed(file, requestMap)
                 .onSuccess { response ->
@@ -145,22 +150,27 @@ class UploadViewModel @Inject constructor(
         }
     }
 
-    fun initPostWineyFeedState() {
-        _postWineyFeedState.value = UiState.Empty
-    }
-
     private fun createRequestBody(
         content: String,
-        amount: String
+        amount: String,
+        feedType: String
     ): Pair<MultipartBody.Part?, HashMap<String, RequestBody>> {
         val imageFormData = imageRequestBody?.toFormData()
         val contentBody = content.toPlainTextRequestBody()
         val amountBody = amount.toPlainTextRequestBody()
+        val feedTypeBody = feedType.toPlainTextRequestBody()
+
         val plainTextRequestBodyMap = hashMapOf(
-            FEED_TITLE_KEY to contentBody,
-            FEED_MONEY_KEY to amountBody
+            KEY_FEED_TITLE to contentBody,
+            KEY_FEED_MONEY to amountBody,
+            KEY_FEED_TYPE to feedTypeBody
         )
+
         return Pair(imageFormData, plainTextRequestBodyMap)
+    }
+
+    fun initPostWineyFeedState() {
+        _postWineyFeedState.value = UiState.Empty
     }
 
     private fun validateRequestBody(): Boolean {
@@ -187,8 +197,10 @@ class UploadViewModel @Inject constructor(
         const val MAX_AMOUNT_LENGTH = 9
 
         /** Multipart */
-        private const val FEED_TITLE_KEY = "feedTitle"
-        private const val FEED_MONEY_KEY = "feedMoney"
+        private const val KEY_FEED_TITLE = "feedTitle"
+        private const val KEY_FEED_MONEY = "feedMoney"
+        private const val KEY_FEED_TYPE = "feedType"
+
         private const val REQUEST_BODY_ERR_MSG = "Image RequestBody is null"
         private const val COMMA = ","
         private const val CONTENT_TYPE = "text/plain"
