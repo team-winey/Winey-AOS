@@ -30,7 +30,7 @@ import javax.inject.Inject
 class UploadViewModel @Inject constructor(
     private val feedRepository: FeedRepository
 ) : ViewModel() {
-    /** todo: Common properties */
+    /** Common properties */
     lateinit var feedType: WineyFeedType
 
     /** Properties associated with PhotoFragment */
@@ -75,7 +75,7 @@ class UploadViewModel @Inject constructor(
     val postWineyFeedState: StateFlow<UiState<ResponsePostWineyFeedDto?>> =
         _postWineyFeedState.asStateFlow()
 
-    /** todo: Common functions */
+    /** Common functions */
     fun saveCurrentFeedType(feedType: WineyFeedType) {
         this.feedType = feedType
     }
