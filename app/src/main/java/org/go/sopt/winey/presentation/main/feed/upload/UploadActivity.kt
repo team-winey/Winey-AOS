@@ -13,11 +13,12 @@ import org.go.sopt.winey.util.intent.getCompatibleSerializable
 
 @AndroidEntryPoint
 class UploadActivity : BindingActivity<ActivityUploadBinding>(R.layout.activity_upload) {
+    private val viewModel by viewModels<UploadViewModel>()
+
     private val feedType by lazy {
         intent.extras?.getCompatibleSerializable(WineyFeedFragment.KEY_FEED_TYPE)
             ?: WineyFeedType.SAVE
     }
-    private val viewModel by viewModels<UploadViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
