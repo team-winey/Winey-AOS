@@ -54,27 +54,17 @@ fun ImageView.setImageUrl(imageUrl: String?) {
 
 @BindingAdapter("switchUploadImageTitle")
 fun TextView.switchUploadImageTitle(feedType: WineyFeedType) {
-    when (feedType) {
-        WineyFeedType.SAVE -> {
-            this.text = context.getString(R.string.upload_photo_title, "절약을 실천한")
-        }
-
-        WineyFeedType.CONSUME -> {
-            this.text = context.getString(R.string.upload_photo_title, "과소비한")
-        }
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_photo_title, "절약을 실천한")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_photo_title, "과소비한")
     }
 }
 
 @BindingAdapter("switchUploadImageButtonText")
 fun TextView.switchUploadImageButtonText(feedType: WineyFeedType) {
-    when (feedType) {
-        WineyFeedType.SAVE -> {
-            this.text = context.getString(R.string.upload_plus_text, "절약을")
-        }
-
-        WineyFeedType.CONSUME -> {
-            this.text = context.getString(R.string.upload_plus_text, "과소비를")
-        }
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_plus_text, "절약을")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_plus_text, "과소비를")
     }
 }
 
@@ -89,6 +79,22 @@ fun ImageView.setUploadImageUri(imageUri: Uri?) {
     load(imageUri) {
         placeholder(R.drawable.img_wineyfeed_default)
         transformations(RoundedCornersTransformation(10F))
+    }
+}
+
+@BindingAdapter("switchUploadContentTitle")
+fun TextView.switchUploadContentTitle(feedType: WineyFeedType) {
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_plus_text, "절약을")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_plus_text, "과소비를")
+    }
+}
+
+@BindingAdapter("switchUploadContentHint")
+fun EditText.switchUploadContentHint(feedType: WineyFeedType) {
+    hint = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_save_content_edittext_hint)
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_consume_content_edittext_hint)
     }
 }
 
