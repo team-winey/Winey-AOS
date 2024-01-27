@@ -214,7 +214,6 @@ class WineyFeedFragment :
         }
     }
 
-    // todo: 절약, 과소비 피드 업로드
     private fun showUploadDialog() {
         val dialog = WineyUploadDialogFragment.newInstance(
             handleSaveButton = { navigateToUpload(WineyFeedType.SAVE) },
