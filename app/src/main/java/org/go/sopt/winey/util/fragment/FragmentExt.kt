@@ -14,7 +14,6 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.util.view.snackbar.NotiPermissionSnackbar
 import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.snackbar.WineyFeedResultSnackbar
-import org.go.sopt.winey.util.view.snackbar.WineySnackbar
 
 fun Fragment.toast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()

@@ -15,7 +15,6 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.util.view.snackbar.NotiPermissionSnackbar
 import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.snackbar.WineyFeedResultSnackbar
-import org.go.sopt.winey.util.view.snackbar.WineySnackbar
 
 /** Hide keyboard from window */
 fun Context.hideKeyboard(view: View) {
