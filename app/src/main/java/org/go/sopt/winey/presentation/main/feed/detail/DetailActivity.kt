@@ -3,7 +3,6 @@ package org.go.sopt.winey.presentation.main.feed.detail
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText

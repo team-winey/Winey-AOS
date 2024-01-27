@@ -7,7 +7,6 @@ import org.go.sopt.winey.databinding.FragmentAlertDialogBinding
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.binding.BindingDialogFragment
 import org.go.sopt.winey.util.intent.getCompatibleParcelable
-import org.go.sopt.winey.util.intent.getCompatibleParcelableExtra
 
 class WineyDialogFragment :
     BindingDialogFragment<FragmentAlertDialogBinding>(R.layout.fragment_alert_dialog) {

@@ -10,7 +10,6 @@ import android.widget.PopupWindow
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ItemWineyPopupBinding
 import org.go.sopt.winey.databinding.LayoutWineyPopupBinding
-import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import org.go.sopt.winey.util.context.drawableOf
 
 class WineyPopupMenu(

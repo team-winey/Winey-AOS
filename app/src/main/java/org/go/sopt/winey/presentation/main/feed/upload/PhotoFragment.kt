@@ -9,17 +9,13 @@ import androidx.fragment.app.commit
 import dagger.hilt.android.AndroidEntryPoint
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentPhotoBinding
-import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
-import org.go.sopt.winey.presentation.main.feed.WineyFeedType
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.fragment.stringOf
-import org.go.sopt.winey.util.intent.getCompatibleSerializable
 import org.json.JSONException
 import org.json.JSONObject
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
