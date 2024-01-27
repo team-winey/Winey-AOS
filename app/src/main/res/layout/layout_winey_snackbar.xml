@@ -52,7 +52,7 @@
                 android:text="@string/snackbar_noti_permission_setting_text"
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                 android:textColor="@color/winey_yellow"
-                android:visibility="visible"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

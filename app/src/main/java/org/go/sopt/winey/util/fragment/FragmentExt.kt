@@ -1,5 +1,6 @@
 package org.go.sopt.winey.util.fragment
 
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.ColorRes
@@ -10,8 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import org.go.sopt.winey.R
-import org.go.sopt.winey.util.view.SnackbarType
-import org.go.sopt.winey.util.view.WineySnackbar
+import org.go.sopt.winey.util.view.snackbar.NotiPermissionSnackbar
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
+import org.go.sopt.winey.util.view.snackbar.WineyFeedResultSnackbar
+import org.go.sopt.winey.util.view.snackbar.WineySnackbar
 
 fun Fragment.toast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
@@ -30,14 +33,32 @@ fun Fragment.wineySnackbar(
     message: String,
     type: SnackbarType
 ) {
-    val snackbar = WineySnackbar.make(anchorView, message, type)
-    if (type is SnackbarType.NotiPermission) {
-        snackbar.setAction(
-            resId = R.string.snackbar_noti_permission_setting_text,
-            onClicked = type.onActionClicked
-        )
+    when (type) {
+        is SnackbarType.WineyFeedResult -> {
+            WineyFeedResultSnackbar(
+                anchorView = anchorView,
+                gravity = Gravity.TOP,
+                message = message
+            ).apply {
+                initResultIcon(isSuccess = type.isSuccess)
+                show()
+            }
+        }
+
+        is SnackbarType.NotiPermission -> {
+            NotiPermissionSnackbar(
+                anchorView = anchorView,
+                gravity = Gravity.TOP,
+                message = message
+            ).apply {
+                setAction(
+                    resId = R.string.snackbar_noti_permission_setting_text,
+                    onClicked = type.onActionClicked
+                )
+                show()
+            }
+        }
     }
-    snackbar.show()
 }
 
 fun Fragment.stringOf(@StringRes resId: Int) = getString(resId)

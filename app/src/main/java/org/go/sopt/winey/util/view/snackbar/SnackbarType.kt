@@ -1,4 +1,4 @@
-package org.go.sopt.winey.util.view
+package org.go.sopt.winey.util.view.snackbar
 
 sealed class SnackbarType {
     data class WineyFeedResult(
