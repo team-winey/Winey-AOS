@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentAmountBinding
-import org.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
+import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.fragment.stringOf
@@ -60,6 +60,8 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         }
     }
 
+    private fun String.removeComma() = replace(",", "")
+
     private fun initPostImageStateObserver() {
         uploadViewModel.postWineyFeedState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
@@ -69,16 +71,20 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     }
 
                     is UiState.Success -> {
-                        navigateLoadingScreen()
+                        navigateToMainScreen()
                     }
 
                     is UiState.Failure -> {
-                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_upload_fail))
+                        wineySnackbar(
+                            anchorView = binding.root,
+                            isSuccess = false,
+                            message = stringOf(R.string.snackbar_upload_fail)
+                        )
+
                         uploadViewModel.initPostWineyFeedState()
                     }
 
-                    is UiState.Empty -> {
-                    }
+                    else -> {}
                 }
             }.launchIn(viewLifeCycleScope)
     }
@@ -87,16 +93,14 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         binding.btnAmountNext.isClickable = false
     }
 
-    // todo: 로딩 화면 없이 메인 액티비티로 넘어가도록 변경
-    private fun navigateLoadingScreen() {
-        Intent(requireContext(), LoadingActivity::class.java).apply {
-            putExtra(KEY_SAVE_AMOUNT, uploadViewModel.amount.removeComma())
+    private fun navigateToMainScreen() {
+        val context = context ?: return
+        Intent(context, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(KEY_FEED_UPLOAD, true)
             startActivity(this)
         }
     }
-
-    private fun String.removeComma() = replace(",", "")
 
     private fun initBackButtonClickListener() {
         binding.ivAmountBack.setOnClickListener {
@@ -141,6 +145,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val KEY_SAVE_AMOUNT = "amount"
+        private const val KEY_FEED_UPLOAD = "upload"
     }
 }
