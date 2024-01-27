@@ -30,7 +30,7 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
-import org.go.sopt.winey.util.view.SnackbarType
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 
 @AndroidEntryPoint

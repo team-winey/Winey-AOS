@@ -20,7 +20,7 @@ import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.multipart.UriToRequestBody
-import org.go.sopt.winey.util.view.SnackbarType
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
 import java.text.DecimalFormat
