@@ -121,11 +121,16 @@ dependencies {
         androidTestImplementation(espresso)
     }
 
-    implementation(MaterialDesignDependencies.materialDesign)
-
     KaptDependencies.run {
         kapt(hiltAndroidCompiler)
         kapt(hiltWorkManagerCompiler)
+    }
+
+    GoogleDependencies.run {
+        implementation(materialDesign)
+        implementation(ossLicense)
+        implementation(inAppUpdate)
+        implementation(inAppUpdateKtx)
     }
 
     ThirdPartyDependencies.run {
@@ -136,7 +141,6 @@ dependencies {
         implementation(retrofit)
         implementation(retrofitJsonConverter)
         implementation(timber)
-        implementation(ossLicense)
         implementation(progressView)
         implementation(balloon)
         implementation(lottie)
