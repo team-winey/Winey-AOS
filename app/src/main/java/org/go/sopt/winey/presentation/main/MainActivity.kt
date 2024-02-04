@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
@@ -29,24 +30,29 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val mainViewModel by viewModels<MainViewModel>()
+
     private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
     private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
-    private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
     private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
+
     private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
+
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (!isGranted) {
                 wineySnackbar(
                     anchorView = binding.root,
-                    isSuccess = false,
-                    message = stringOf(R.string.snackbar_notification_permission_fail)
+                    message = stringOf(R.string.snackbar_noti_permission_denied),
+                    type = SnackbarType.NotiPermission(
+                        onActionClicked = { showSystemNotificationSetting() }
+                    )
                 )
             }
         }
@@ -59,13 +65,23 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
         mainViewModel.getUser()
         mainViewModel.patchFcmToken()
+
         initNotiTypeHandler()
         initFragment()
         initBnvItemSelectedListener()
         syncBottomNavigationSelection()
 
         setupLogoutState()
-        showSuccessSnackBar()
+        showWineyFeedResultSnackBar()
+    }
+
+    private fun showSystemNotificationSetting() {
+        Intent().apply {
+            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(this)
+        }
     }
 
     private fun requestNotificationPermission() {
@@ -91,6 +107,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
             -> navigateToDetail(feedId?.toInt())
+
             NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
             else -> {}
         }
@@ -108,13 +125,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun showSuccessSnackBar() {
+    private fun showWineyFeedResultSnackBar() {
         if (isUploadSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_upload_success),
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
+            )
         }
 
         if (isDeleteSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_feed_delete_success),
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
+            )
         }
     }
 
@@ -203,7 +228,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     companion object {
         private const val EXTRA_UPLOAD_KEY = "upload"
         private const val EXTRA_DELETE_KEY = "delete"
-        private const val EXTRA_REPORT_KEY = "report"
 
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_NOTI_TYPE = "notiType"

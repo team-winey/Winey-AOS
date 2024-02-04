@@ -1,8 +1,6 @@
 package org.go.sopt.winey.presentation.main.mypage
 
 import android.Manifest
-import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -43,7 +41,6 @@ import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
-import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
@@ -58,16 +55,61 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     @Inject
     lateinit var amplitudeUtils: AmplitudeUtils
-    private var isNotificationPermissionAllowed = true
+    private var isNotiPermissionAllowed = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
-        initCheckNotificationPermission()
+
+        initNotiPermissionState()
 
         initUserData()
-        initNavigation()
+        initClickListener()
+        setupObserver()
 
+        initNavigation()
+        registerBackPressedCallback()
+        checkFromWineyFeed()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
+        mainViewModel.getUser()
+
+        // 시스템 설정창에서 유저가 설정한 권한에 따라 바로 뷰가 갱신되도록
+        initNotiPermissionState()
+        updateNotiButtonByPermission()
+    }
+
+    private fun initNotiPermissionState() {
+        isNotiPermissionAllowed =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            } else {
+                true
+            }
+    }
+
+    private fun updateNotiButtonByPermission() {
+        if (isNotiPermissionAllowed) {
+            binding.ivMypageAgree.isVisible = true
+
+            binding.llMypageAgreePermissionChange.isGone = true
+            binding.tvMypageAgreePermission.isGone = true
+        } else {
+            binding.ivMypageAgree.isGone = true
+
+            binding.llMypageAgreePermissionChange.isVisible = true
+            binding.tvMypageAgreePermission.isVisible = true
+        }
+    }
+
+    private fun initClickListener() {
         init1On1ButtonClickListener()
         initTermsButtonClickListener()
         initLevelHelpButtonClickListener()
@@ -75,167 +117,35 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initLogoutButtonClickListener()
         initWithdrawButtonClickListener()
         initNicknameButtonClickListener()
-        initAllowedNotificationButtonClickListener()
-        initNotificationPermissionChangeButtonClickListener()
 
-        registerBackPressedCallback()
+        initNotiToggleButtonClickListener()
+        initNotiPermissionButtonClickListener()
+    }
+
+    private fun setupObserver() {
         setupGetUserState()
         setupDeleteUserState()
         setupPatchAllowedNotificationState()
-
-        checkFromWineyFeed()
     }
 
-    private fun initCheckNotificationPermission() {
-        isNotificationPermissionAllowed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            true
-        }
-    }
-
-    private fun setupPatchAllowedNotificationState() {
-        myPageViewModel.patchAllowedNotificationState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    when (state.data) {
-                        true -> {
-                            binding.ivMypageAgree.transitionToState(R.id.end, -1)
-                        }
-
-                        false -> {
-                            binding.ivMypageAgree.transitionToState(R.id.start, -1)
-                        }
-
-                        null -> {
-                            binding.ivMypageAgree.transitionToState(R.id.start, -1)
-                        }
-                    }
-                }
-
-                else -> {}
-            }
-        }
-    }
-
-    private fun initAllowedNotificationButtonClickListener() {
-        binding.ivMypageSwitch.setOnClickListener {
-            when (isNotificationPermissionAllowed) {
-                true -> {
-                    val isAllowed = when (binding.ivMypageAgree.currentState) {
-                        R.id.start -> false
-                        R.id.end -> true
-                        else -> false
-                    }
-                    when (isAllowed) {
-                        true -> {
-                            showNotificationOffDialog(isAllowed)
-                        }
-
-                        false -> {
-                            binding.ivMypageAgree.transitionToState(R.id.end, -1)
-                            patchUserInfo()
-                            myPageViewModel.patchAllowedNotification(isAllowed)
-                        }
-                    }
-                }
-
-                false -> {
-                    wineySnackbar(
-                        binding.root,
-                        true,
-                        stringOf(R.string.snackbar_notification_permission_fail)
-                    )
-                }
-            }
-        }
-    }
-
-    private fun showNotificationOffDialog(isAllowed: Boolean) {
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.notification_off_dialog_title),
-                stringOf(R.string.notification_off_dialog_subtitle),
-                stringOf(R.string.notification_off_dialog_negative_button),
-                stringOf(R.string.notification_off_dialog_positive_button)
-            ),
-            handleNegativeButton = {},
-            handlePositiveButton = {
-                binding.ivMypageAgree.transitionToState(R.id.start, -1)
-                patchUserInfo()
-                myPageViewModel.patchAllowedNotification(isAllowed)
-            }
-        )
-        dialog.show(
-            parentFragmentManager,
-            TAG_NOTIFICATION_OFF_DIALOG
-        )
-    }
-
-    private fun initNotificationPermissionChangeButtonClickListener() {
-        binding.llMypageAgreePermissionChange.setOnClickListener {
-            navigateToNotificationSetting(requireContext())
-        }
-    }
-
-    private fun navigateToNotificationSetting(context: Context) {
-        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setNotificationIntentActionOreo(context)
-        } else {
-            setNorificationIntentActionOreoLess(context)
-        }
-        try {
-            context.startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun setNotificationIntentActionOreo(context: Context): Intent {
-        return Intent().also { intent ->
-            intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-    }
-
-    private fun setNorificationIntentActionOreoLess(context: Context): Intent {
-        return Intent().also { intent ->
-            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
-            intent.putExtra("app_package", context.packageName)
-            intent.putExtra("app_uid", context.applicationInfo?.uid)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-    }
-
-    private fun patchUserInfo() {
-        lifecycleScope.launch {
+    private fun initUserData() {
+        viewLifeCycleScope.launch {
             val data = dataStoreRepository.getUserInfo().first()
-            val newData = data?.copy(fcmIsAllowed = false)
-            dataStoreRepository.saveUserInfo(newData)
+            if (data != null) {
+                updateUserInfo(data)
+                initTargetModifyButtonClickListener(data)
+            }
         }
     }
 
-    // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
-    override fun onStart() {
-        super.onStart()
-        mainViewModel.getUser()
-        initCheckNotificationPermission()
-        changeNotiButtonByPermission()
-    }
-
-    private fun changeNotiButtonByPermission() {
-        if (isNotificationPermissionAllowed) {
-            binding.ivMypageAgree.isVisible = true
-            binding.llMypageAgreePermissionChange.isGone = true
-            binding.tvMypageAgreePermission.isGone = true
-        } else {
-            binding.ivMypageAgree.isGone = true
-            binding.llMypageAgreePermissionChange.isVisible = true
-            binding.tvMypageAgreePermission.isVisible = true
+    private fun initNavigation() {
+        val receivedBundle = arguments
+        if (receivedBundle != null) {
+            val value = receivedBundle.getBoolean(KEY_TO_MYFEED)
+            if (value) {
+                navigateAndBackStack<MyFeedFragment>()
+                arguments?.clear()
+            }
         }
     }
 
@@ -266,13 +176,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
-    private fun initUserData() {
-        viewLifeCycleScope.launch {
-            val data = dataStoreRepository.getUserInfo().first()
-            if (data != null) {
-                updateUserInfo(data)
-                initTargetModifyButtonClickListener(data)
-            }
+    /**
+     * Listener 정의
+     * */
+
+    private fun initToMyFeedButtonClickListener() {
+        binding.clMypageToMyfeed.setOnSingleClickListener {
+            amplitudeUtils.logEvent("click_myfeed")
+            navigateAndBackStack<MyFeedFragment>()
         }
     }
 
@@ -283,21 +194,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initToMyFeedButtonClickListener() {
-        binding.clMypageToMyfeed.setOnSingleClickListener {
-            amplitudeUtils.logEvent("click_myfeed")
-            navigateAndBackStack<MyFeedFragment>()
-        }
-    }
-
-    private fun initNavigation() {
-        val receivedBundle = arguments
-        if (receivedBundle != null) {
-            val value = receivedBundle.getBoolean(KEY_TO_MYFEED)
-            if (value) {
-                navigateAndBackStack<MyFeedFragment>()
-                arguments?.clear()
-            }
+    private fun navigateToNicknameScreen() {
+        Intent(requireContext(), NicknameActivity::class.java).apply {
+            putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
+            startActivity(this)
         }
     }
 
@@ -358,38 +258,102 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun setupDeleteUserState() {
-        myPageViewModel.deleteUserState.flowWithLifecycle(viewLifeCycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        myPageViewModel.clearDataStore()
-                        navigateToGuideScreen()
-                    }
+    private fun initTargetModifyButtonClickListener(user: User) {
+        binding.clMypageTargetmoney.setOnSingleClickListener {
+            amplitudeUtils.logEvent("click_goalsetting")
 
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> {
-                    }
-                }
-            }.launchIn(viewLifeCycleScope)
+            // 목표를 설정한 적 없거나, 기간이 종료되었거나, 기간 내 목표를 달성한 경우
+            // 바텀 시트 활성화
+            if (user.isOver || user.isAttained) {
+                showTargetSettingBottomSheet()
+            } else {
+                showTargetNotOverDialog()
+            }
+        }
     }
 
-    private fun navigateToGuideScreen() {
-        Intent(requireContext(), GuideActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+    private fun showTargetSettingBottomSheet() {
+        val bottomSheet = TargetAmountBottomSheetFragment()
+        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+        amplitudeUtils.logEvent("view_goalsetting")
+    }
+
+    private fun showTargetNotOverDialog() {
+        val dialog = MyPageNotOverDialogFragment()
+        dialog.show(parentFragmentManager, dialog.tag)
+    }
+
+    private fun initNotiToggleButtonClickListener() {
+        binding.ivMypageSwitch.setOnClickListener {
+            val isAllowed = when (binding.ivMypageAgree.currentState) {
+                R.id.start -> false
+                R.id.end -> true
+                else -> false
+            }
+
+            if (!isAllowed) {
+                switchOnNotification()
+            } else {
+                showNotificationOffConfirmDialog()
+            }
+        }
+    }
+
+    private fun switchOnNotification() {
+        binding.ivMypageAgree.transitionToState(R.id.end, -1)
+        patchUserInfo()
+        myPageViewModel.patchAllowedNotification(isAllowed = false)
+    }
+
+    private fun switchOffNotification() {
+        binding.ivMypageAgree.transitionToState(R.id.start, -1)
+        patchUserInfo()
+        myPageViewModel.patchAllowedNotification(isAllowed = true)
+    }
+
+    private fun showNotificationOffConfirmDialog() {
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.notification_off_dialog_title),
+                stringOf(R.string.notification_off_dialog_subtitle),
+                stringOf(R.string.notification_off_dialog_negative_button),
+                stringOf(R.string.notification_off_dialog_positive_button)
+            ),
+            handleNegativeButton = {},
+            handlePositiveButton = { switchOffNotification() }
+        )
+        dialog.show(
+            parentFragmentManager,
+            TAG_NOTIFICATION_OFF_DIALOG
+        )
+    }
+
+    private fun initNotiPermissionButtonClickListener() {
+        binding.llMypageAgreePermissionChange.setOnClickListener {
+            showSystemNotificationSetting()
+        }
+    }
+
+    private fun showSystemNotificationSetting() {
+        Intent().apply {
+            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            putExtra(Settings.EXTRA_APP_PACKAGE, context?.packageName)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
     }
 
-    private fun navigateToNicknameScreen() {
-        Intent(requireContext(), NicknameActivity::class.java).apply {
-            putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
-            startActivity(this)
+    private fun patchUserInfo() {
+        lifecycleScope.launch {
+            val data = dataStoreRepository.getUserInfo().first()
+            val newData = data?.copy(fcmIsAllowed = false)
+            dataStoreRepository.saveUserInfo(newData)
         }
     }
+
+    /**
+     * Observer 등록
+     * */
 
     private fun setupGetUserState() {
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
@@ -457,7 +421,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun updateNotificationAllowSwitchState(data: User) {
-        if (isNotificationPermissionAllowed) {
+        if (isNotiPermissionAllowed) {
             binding.ivMypageAgree.isVisible = true
             binding.llMypageAgreePermissionChange.isGone = true
             binding.tvMypageAgreePermission.isGone = true
@@ -477,29 +441,54 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initTargetModifyButtonClickListener(user: User) {
-        binding.clMypageTargetmoney.setOnSingleClickListener {
-            amplitudeUtils.logEvent("click_goalsetting")
+    private fun setupDeleteUserState() {
+        myPageViewModel.deleteUserState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        myPageViewModel.clearDataStore()
+                        navigateToGuideScreen()
+                    }
 
-            // 목표를 설정한 적 없거나, 기간이 종료되었거나, 기간 내 목표를 달성한 경우
-            // 바텀 시트 활성화
-            if (user.isOver || user.isAttained) {
-                showTargetSettingBottomSheet()
-            } else {
-                showTargetNotOverDialog()
-            }
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {
+                    }
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun navigateToGuideScreen() {
+        Intent(requireContext(), GuideActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
         }
     }
 
-    private fun showTargetSettingBottomSheet() {
-        val bottomSheet = TargetAmountBottomSheetFragment()
-        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-        amplitudeUtils.logEvent("view_goalsetting")
-    }
+    private fun setupPatchAllowedNotificationState() {
+        myPageViewModel.patchAllowedNotificationState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    when (state.data) {
+                        true -> {
+                            binding.ivMypageAgree.transitionToState(R.id.end, -1)
+                        }
 
-    private fun showTargetNotOverDialog() {
-        val dialog = MyPageNotOverDialogFragment()
-        dialog.show(parentFragmentManager, dialog.tag)
+                        false -> {
+                            binding.ivMypageAgree.transitionToState(R.id.start, -1)
+                        }
+
+                        null -> {
+                            binding.ivMypageAgree.transitionToState(R.id.start, -1)
+                        }
+                    }
+                }
+
+                else -> {}
+            }
+        }
     }
 
     private inline fun <reified T : Fragment> navigateAndBackStack() {

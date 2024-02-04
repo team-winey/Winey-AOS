@@ -34,6 +34,7 @@ import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.WineyPopupMenu
 import org.json.JSONException
@@ -356,7 +357,11 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 }
 
                 is UiState.Failure -> {
-                    wineySnackbar(binding.root, false, stringOf(R.string.snackbar_delete_fail))
+                    wineySnackbar(
+                        anchorView = binding.root,
+                        message = stringOf(R.string.snackbar_delete_fail),
+                        type = SnackbarType.WineyFeedResult(isSuccess = false)
+                    )
                 }
 
                 else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
@@ -409,18 +414,21 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         }
 
                         wineySnackbar(
-                            binding.root,
-                            true,
-                            stringOf(R.string.snackbar_comment_delete_success)
+                            anchorView = binding.root,
+                            message = stringOf(R.string.snackbar_comment_delete_success),
+                            type = SnackbarType.WineyFeedResult(isSuccess = true)
                         )
                     }
 
                     is UiState.Failure -> {
-                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_delete_fail))
+                        wineySnackbar(
+                            anchorView = binding.root,
+                            message = stringOf(R.string.snackbar_delete_fail),
+                            type = SnackbarType.WineyFeedResult(isSuccess = false)
+                        )
                     }
 
-                    else -> {
-                    }
+                    else -> {}
                 }
             }.launchIn(lifecycleScope)
     }
