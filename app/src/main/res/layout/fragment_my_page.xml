@@ -283,7 +283,7 @@
                             layout="@layout/item_mypage"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="4dp"
+                            android:layout_marginEnd="4dp"
                             app:layout_constraintEnd_toStartOf="@+id/l_mypage_item_chicken"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -293,7 +293,7 @@
                             layout="@layout/item_mypage"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="4dp"
+                            android:layout_marginStart="4dp"
                             android:src="@drawable/ic_mypage_chicken"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/l_mypage_item_coffee"
@@ -316,7 +316,7 @@
                             layout="@layout/item_mypage"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="4dp"
+                            android:layout_marginEnd="4dp"
                             app:layout_constraintEnd_toStartOf="@+id/l_mypage_item_airpod"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -326,7 +326,7 @@
                             layout="@layout/item_mypage"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="4dp"
+                            android:layout_marginStart="4dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/l_mypage_item_sneakers"
                             app:layout_constraintTop_toTopOf="parent" />
