@@ -334,6 +334,158 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+                    <View
+                        android:id="@+id/v_mypage_line3"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@color/gray_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cl_mypage_item_bottom" />
+
+                    <TextView
+                        android:id="@+id/tv_mypage_saved_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="최근 2주간"
+                        android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
+                        android:textColor="@color/gray_600"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/v_mypage_line3" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/shape_green100_rect"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_mypage_saved_description"
+                        app:layout_constraintEnd_toEndOf="@id/tv_mypage_saved_description"
+                        app:layout_constraintStart_toStartOf="@id/tv_mypage_saved_description" />
+
+                    <TextView
+                        android:id="@+id/tv_mypage_saved_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="190,000원을 절약했어요"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+                        android:textColor="@color/gray_900"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_mypage_saved_title" />
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_mypage_save_work"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/shape_gray0_fill_12_rect"
+                        app:layout_constraintTop_toBottomOf="@id/tv_mypage_saved_description">
+
+                        <ImageView
+                            android:id="@+id/iv_mypage_save_work"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="11dp"
+                            android:layout_marginStart="16dp"
+                            android:src="@drawable/ic_mypage_work"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_mypage_save_work"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="18dp"
+                            android:layout_marginStart="15dp"
+                            android:text="알바를 7시간 뛴 금액과 같아요"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_mypage_save_work"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <View
+                        android:id="@+id/v_mypage_line4"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="32dp"
+                        android:background="@color/gray_200"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/cl_mypage_save_work" />
+
+                    <TextView
+                        android:id="@+id/tv_mypage_spend_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:paddingHorizontal="16dp"
+                        android:text="최근 2주간"
+                        android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
+                        android:textColor="@color/gray_600"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/v_mypage_line4" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="8dp"
+                        android:background="@drawable/shape_red100_rect"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_mypage_spend_description"
+                        app:layout_constraintEnd_toEndOf="@id/tv_mypage_spend_description"
+                        app:layout_constraintStart_toStartOf="@id/tv_mypage_spend_description" />
+
+                    <TextView
+                        android:id="@+id/tv_mypage_spend_description"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="190,000원을 낭비했어요"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+                        android:textColor="@color/gray_900"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_mypage_spend_title" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="12dp"
+                        android:background="@drawable/shape_gray0_fill_12_rect"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_mypage_spend_description">
+
+                        <ImageView
+                            android:id="@+id/iv_mypage_spend_work"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="11dp"
+                            android:layout_marginStart="16dp"
+                            android:src="@drawable/ic_mypage_work"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_mypage_spend_work"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginVertical="18dp"
+                            android:layout_marginStart="15dp"
+                            android:text="알바를 7시간 뛴 금액과 같아요"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/iv_mypage_spend_work"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
