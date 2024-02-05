@@ -1,37 +1,39 @@
-package org.go.sopt.winey.util.view
+package org.go.sopt.winey.util.view.snackbar
 
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.StringRes
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.SlideDistanceProvider.GravityFlag
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.LayoutWineySnackbarBinding
 import org.go.sopt.winey.util.context.colorOf
-import org.go.sopt.winey.util.context.drawableOf
 
-class WineySnackbar(
+abstract class WineySnackbar(
     anchorView: View,
-    private val isSuccess: Boolean,
+    @GravityFlag
+    private val gravity: Int,
     private val message: String
 ) {
-    private val context = anchorView.context
     private val snackbar = Snackbar.make(anchorView, "", DURATION_WINEY_SNACKBAR)
     private val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
-
-    private val inflater = LayoutInflater.from(context)
-    private val binding: LayoutWineySnackbarBinding =
+    private val inflater = LayoutInflater.from(anchorView.context)
+    protected val binding: LayoutWineySnackbarBinding =
         DataBindingUtil.inflate(inflater, R.layout.layout_winey_snackbar, null, false)
 
     init {
         initView()
-        initData()
     }
 
     private fun initView() {
+        initLayout()
         setPosition()
+        initMessage()
+    }
 
+    private fun initLayout() {
         with(snackbarLayout) {
             removeAllViews()
             setPadding(0, 0, 0, 0)
@@ -41,29 +43,24 @@ class WineySnackbar(
     }
 
     private fun setPosition() {
-        val snackbarLayoutParams = snackbar.view.layoutParams as FrameLayout.LayoutParams
-        snackbarLayoutParams.gravity = Gravity.TOP
-        snackbar.view.layoutParams = snackbarLayoutParams
+        val layoutParams = snackbar.view.layoutParams as FrameLayout.LayoutParams
+        layoutParams.gravity = gravity
+        snackbar.view.layoutParams = layoutParams
     }
 
-    private fun initData() {
-        if (isSuccess) {
-            binding.ivSnackbar.setImageDrawable(context.drawableOf(R.drawable.ic_snackbar_success))
-        } else {
-            binding.ivSnackbar.setImageDrawable(context.drawableOf(R.drawable.ic_snackbar_fail))
-        }
-        binding.tvSnackbar.text = message
+    private fun initMessage() {
+        binding.tvSnackbarMsg.text = message
     }
 
     fun show() {
         snackbar.show()
     }
 
-    companion object {
-        private const val DURATION_WINEY_SNACKBAR = 1500
+    abstract fun initResultIcon(isSuccess: Boolean)
 
-        @JvmStatic
-        fun make(view: View, isSuccess: Boolean, message: String) =
-            WineySnackbar(view, isSuccess, message)
+    abstract fun setAction(@StringRes resId: Int, onClicked: () -> Unit)
+
+    companion object {
+        private const val DURATION_WINEY_SNACKBAR = 2000
     }
 }

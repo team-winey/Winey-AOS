@@ -227,7 +227,8 @@
     <string name="snackbar_delete_fail">죄송합니다. 다시 시도해주세요.</string>
     <string name="snackbar_report_success">정상적으로 신고되었습니다 :)</string>
     <string name="snackbar_report_fail">죄송합니다. 신고접수에 실패하였습니다.</string>
-    <string name="snackbar_notification_permission_fail">기기 설정을 변경해야 알림을 받을 수 있어요</string>
+    <string name="snackbar_noti_permission_denied">기기 설정을 변경해야 알림을 받을 수 있어요</string>
+    <string name="snackbar_noti_permission_setting_text">설정하기</string>
 
     <!-- comment -->
     <string name="comment_level_1">LV. 평민 ㆍ </string>
@@ -252,4 +253,11 @@
     <!-- error -->
     <string name="error_winey_feed_loading">Can\'t loading winey feed list</string>
 
+    <!-- app update fail dialog -->
+    <string name="update_dialog_title">업데이트가 필요해요.</string>
+    <string name="update_dialog_guide_title">업데이트가 잘 되지 않으시나요?</string>
+    <string name="update_dialog_guide_content_1">• 위니를 삭제 후 재설치 해보세요.</string>
+    <string name="update_dialog_guide_content_2">• 위니 삭제 후 Google play 스토어를 강제 종료한 뒤, 재설치해 보세요.</string>
+    <string name="update_dialog_guide_content_3">• 설정 → 어플리케이션 → Google play 스토어 → 저장공간 → 데이터 삭제 및 캐시 삭제, 강제 종료 후 재시작하여 위니를 재설치해 보세요.</string>
+    <string name="update_dialog_btn_text">업데이트하러 가기</string>
 </resources>
