@@ -79,7 +79,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
     }
 
-
     private fun navigateToNotificationSetting(context: Context) {
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             setNotificationIntentActionOreo(context)
@@ -125,7 +124,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initCheckNotificationPermission()
     }
 
-
     private fun checkFromWineyFeed() {
         val isFromWineyFeed = arguments?.getBoolean(KEY_FROM_WINEY_FEED)
         if (isFromWineyFeed == true) {
@@ -161,7 +159,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-
     private fun initNavigation() {
         val receivedBundle = arguments
         if (receivedBundle != null) {
@@ -172,7 +169,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
         }
     }
-
 
     private fun setupDeleteUserState() {
         myPageViewModel.deleteUserState.flowWithLifecycle(viewLifeCycle)
@@ -227,7 +223,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun updateUserInfo(data: User) {
         binding.data = data
     }
-
 
     private fun showTargetSettingBottomSheet() {
         val bottomSheet = TargetAmountBottomSheetFragment()
