@@ -5,15 +5,12 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -33,19 +30,14 @@ import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
-import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
-import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.fragment.snackBar
-import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
-import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.view.UiState
-import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -68,118 +60,25 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initUserData()
         initNavigation()
 
-        init1On1ButtonClickListener()
-        initTermsButtonClickListener()
-        initLevelHelpButtonClickListener()
-        initToMyFeedButtonClickListener()
-        initLogoutButtonClickListener()
-        initWithdrawButtonClickListener()
-        initNicknameButtonClickListener()
-        initAllowedNotificationButtonClickListener()
-        initNotificationPermissionChangeButtonClickListener()
-
         registerBackPressedCallback()
         setupGetUserState()
         setupDeleteUserState()
-        setupPatchAllowedNotificationState()
 
         checkFromWineyFeed()
     }
 
     private fun initCheckNotificationPermission() {
-        isNotificationPermissionAllowed = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            true
-        }
-    }
-
-    private fun setupPatchAllowedNotificationState() {
-        myPageViewModel.patchAllowedNotificationState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    when (state.data) {
-                        true -> {
-                            binding.ivMypageAgree.transitionToState(R.id.end, -1)
-                        }
-
-                        false -> {
-                            binding.ivMypageAgree.transitionToState(R.id.start, -1)
-                        }
-
-                        null -> {
-                            binding.ivMypageAgree.transitionToState(R.id.start, -1)
-                        }
-                    }
-                }
-
-                else -> {}
+        isNotificationPermissionAllowed =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
+            } else {
+                true
             }
-        }
     }
 
-    private fun initAllowedNotificationButtonClickListener() {
-        binding.ivMypageSwitch.setOnClickListener {
-            when (isNotificationPermissionAllowed) {
-                true -> {
-                    val isAllowed = when (binding.ivMypageAgree.currentState) {
-                        R.id.start -> false
-                        R.id.end -> true
-                        else -> false
-                    }
-                    when (isAllowed) {
-                        true -> {
-                            showNotificationOffDialog(isAllowed)
-                        }
-
-                        false -> {
-                            binding.ivMypageAgree.transitionToState(R.id.end, -1)
-                            patchUserInfo()
-                            myPageViewModel.patchAllowedNotification(isAllowed)
-                        }
-                    }
-                }
-
-                false -> {
-                    wineySnackbar(
-                        binding.root,
-                        true,
-                        stringOf(R.string.snackbar_notification_permission_fail)
-                    )
-                }
-            }
-        }
-    }
-
-    private fun showNotificationOffDialog(isAllowed: Boolean) {
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.notification_off_dialog_title),
-                stringOf(R.string.notification_off_dialog_subtitle),
-                stringOf(R.string.notification_off_dialog_negative_button),
-                stringOf(R.string.notification_off_dialog_positive_button)
-            ),
-            handleNegativeButton = {},
-            handlePositiveButton = {
-                binding.ivMypageAgree.transitionToState(R.id.start, -1)
-                patchUserInfo()
-                myPageViewModel.patchAllowedNotification(isAllowed)
-            }
-        )
-        dialog.show(
-            parentFragmentManager,
-            TAG_NOTIFICATION_OFF_DIALOG
-        )
-    }
-
-    private fun initNotificationPermissionChangeButtonClickListener() {
-        binding.llMypageAgreePermissionChange.setOnClickListener {
-            navigateToNotificationSetting(requireContext())
-        }
-    }
 
     private fun navigateToNotificationSetting(context: Context) {
         val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -224,22 +123,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         super.onStart()
         mainViewModel.getUser()
         initCheckNotificationPermission()
-        changeNotiButtonByPermission()
     }
 
-    private fun changeNotiButtonByPermission() {
-        if (isNotificationPermissionAllowed) {
-            binding.ivMypageAgree.isVisible = true
-            binding.llMypageAgreePermissionChange.isGone = true
-            binding.tvMypageAgreePermission.isGone = true
-        } else {
-            binding.ivMypageAgree.isGone = true
-            binding.llMypageAgreePermissionChange.isVisible = true
-            binding.tvMypageAgreePermission.isVisible = true
-        }
-    }
 
-    // 위니피드 프래그먼트에서 마이페이지로 전환 시, 바텀시트 바로 띄우도록
     private fun checkFromWineyFeed() {
         val isFromWineyFeed = arguments?.getBoolean(KEY_FROM_WINEY_FEED)
         if (isFromWineyFeed == true) {
@@ -271,24 +157,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             val data = dataStoreRepository.getUserInfo().first()
             if (data != null) {
                 updateUserInfo(data)
-                initTargetModifyButtonClickListener(data)
             }
         }
     }
 
-    private fun initNicknameButtonClickListener() {
-        binding.ivMypageNickname.setOnClickListener {
-            amplitudeUtils.logEvent("click_edit_nickname")
-            navigateToNicknameScreen()
-        }
-    }
-
-    private fun initToMyFeedButtonClickListener() {
-        binding.clMypageToMyfeed.setOnSingleClickListener {
-            amplitudeUtils.logEvent("click_myfeed")
-            navigateAndBackStack<MyFeedFragment>()
-        }
-    }
 
     private fun initNavigation() {
         val receivedBundle = arguments
@@ -301,62 +173,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun init1On1ButtonClickListener() {
-        binding.clMypageTo1on1.setOnClickListener {
-            val url = ONE_ON_ONE_URL
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent)
-        }
-    }
-
-    private fun initTermsButtonClickListener() {
-        binding.clMypageToTerms.setOnClickListener {
-            val url = TERMS_URL
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            startActivity(intent)
-        }
-    }
-
-    private fun initLevelHelpButtonClickListener() {
-        binding.btnMypageLevelHelp.setOnClickListener {
-            amplitudeUtils.logEvent("click_info")
-            val intent = Intent(context, MypageHelpActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
-    private fun initLogoutButtonClickListener() {
-        binding.clMypageLogout.setOnClickListener {
-            amplitudeUtils.logEvent("click_logout")
-            val dialog = WineyDialogFragment.newInstance(
-                WineyDialogLabel(
-                    stringOf(R.string.mypage_logout_dialog_title),
-                    stringOf(R.string.mypage_logout_dialog_subtitle),
-                    stringOf(R.string.mypage_logout_dialog_negative_button),
-                    stringOf(R.string.mypage_logout_dialog_positive_button)
-                ),
-                handleNegativeButton = {},
-                handlePositiveButton = { mainViewModel.postLogout() }
-            )
-            dialog.show(parentFragmentManager, TAG_LOGOUT_DIALOG)
-        }
-    }
-
-    private fun initWithdrawButtonClickListener() {
-        binding.tvMypageWithdraw.setOnClickListener {
-            val dialog = WineyDialogFragment.newInstance(
-                WineyDialogLabel(
-                    stringOf(R.string.mypage_withdraw_dialog_title),
-                    stringOf(R.string.mypage_withdraw_dialog_subtitle),
-                    stringOf(R.string.mypage_withdraw_dialog_negative_button),
-                    stringOf(R.string.mypage_withdraw_dialog_positive_button)
-                ),
-                handleNegativeButton = { myPageViewModel.deleteUser() },
-                handlePositiveButton = {}
-            )
-            dialog.show(parentFragmentManager, TAG_WITHDRAW_DIALOG)
-        }
-    }
 
     private fun setupDeleteUserState() {
         myPageViewModel.deleteUserState.flowWithLifecycle(viewLifeCycle)
@@ -397,7 +213,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 is UiState.Success -> {
                     val data = dataStoreRepository.getUserInfo().first() ?: return@onEach
                     updateUserInfo(data)
-                    initTargetModifyButtonClickListener(data)
                 }
 
                 is UiState.Failure -> {
@@ -411,85 +226,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun updateUserInfo(data: User) {
         binding.data = data
-        updateTargetInfo(data)
-        updateUserLevel(data)
-        updateNotificationAllowSwitchState(data)
     }
 
-    private fun updateTargetInfo(data: User) {
-        // 목표를 설정한 적이 없거나, 기간이 종료된 경우
-        // 아직 없어요 뷰 띄우기
-        if (data.isOver) {
-            binding.tvMypageTargetAmount.text = getString(R.string.mypage_not_yet_set)
-            binding.tvMypagePeriodValue.text = getString(R.string.mypage_not_yet_set)
-        } else {
-            binding.targetMoney = data
-            if (data.dday == 0) {
-                binding.tvMypagePeriodValue.text = getString(R.string.mypage_d_day)
-            } else {
-                binding.dday = data
-            }
-        }
-    }
-
-    private fun updateUserLevel(data: User) {
-        when (data.userLevel) {
-            LEVEL_COMMON -> {
-                binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv1_progressbar)
-                binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv1_profile)
-            }
-
-            LEVEL_KNIGHT -> {
-                binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv2_progressbar)
-                binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv2_profile)
-            }
-
-            LEVEL_NOBLESS -> {
-                binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv3_progressbar)
-                binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv3_profile)
-            }
-
-            LEVEL_KING -> {
-                binding.ivMypageProgressbar.setImageResource(R.drawable.ic_mypage_lv4_progressbar)
-                binding.ivMypageProfile.setImageResource(R.drawable.ic_mypage_lv4_profile)
-            }
-        }
-    }
-
-    private fun updateNotificationAllowSwitchState(data: User) {
-        if (isNotificationPermissionAllowed) {
-            binding.ivMypageAgree.isVisible = true
-            binding.llMypageAgreePermissionChange.isGone = true
-            binding.tvMypageAgreePermission.isGone = true
-            when (data.fcmIsAllowed) {
-                true -> {
-                    binding.ivMypageAgree.transitionToState(R.id.end, 1)
-                }
-
-                false -> {
-                    binding.ivMypageAgree.transitionToState(R.id.start, 1)
-                }
-            }
-        } else {
-            binding.ivMypageAgree.isGone = true
-            binding.llMypageAgreePermissionChange.isVisible = true
-            binding.tvMypageAgreePermission.isVisible = true
-        }
-    }
-
-    private fun initTargetModifyButtonClickListener(user: User) {
-        binding.clMypageTargetmoney.setOnSingleClickListener {
-            amplitudeUtils.logEvent("click_goalsetting")
-
-            // 목표를 설정한 적 없거나, 기간이 종료되었거나, 기간 내 목표를 달성한 경우
-            // 바텀 시트 활성화
-            if (user.isOver || user.isAttained) {
-                showTargetSettingBottomSheet()
-            } else {
-                showTargetNotOverDialog()
-            }
-        }
-    }
 
     private fun showTargetSettingBottomSheet() {
         val bottomSheet = TargetAmountBottomSheetFragment()
@@ -510,24 +248,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val LEVEL_COMMON = "평민"
-        private const val LEVEL_KNIGHT = "기사"
-        private const val LEVEL_NOBLESS = "귀족"
-        private const val LEVEL_KING = "황제"
-
-        private const val ONE_ON_ONE_URL = "https://open.kakao.com/o/s751Susf"
-        private const val TERMS_URL =
-            "https://empty-weaver-a9f.notion.site/iney-9dbfe130c7df4fb9a0903481c3e377e6?pvs=4"
-
-        private const val TAG_LOGOUT_DIALOG = "LOGOUT_DIALOG"
-        private const val TAG_WITHDRAW_DIALOG = "WITHDRAW_DIALOG"
-
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
-
         private const val KEY_TO_MYFEED = "toMyFeed"
-        private const val TAG_NOTIFICATION_OFF_DIALOG = "offNotification"
     }
 }
