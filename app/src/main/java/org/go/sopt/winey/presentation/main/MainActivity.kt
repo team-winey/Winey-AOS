@@ -47,8 +47,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             if (!isGranted) {
                 wineySnackbar(
                     anchorView = binding.root,
-                    isSuccess = false,
-                    message = stringOf(R.string.snackbar_notification_permission_fail)
+                    message = stringOf(R.string.snackbar_noti_permission_denied),
+                    type = SnackbarType.NotiPermission(
+                        onActionClicked = { showSystemNotificationSetting() }
+                    )
                 )
             }
         }
@@ -61,6 +63,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
         mainViewModel.getUser()
         mainViewModel.patchFcmToken()
+
         initNotiTypeHandler()
         initFragment()
         initBnvItemSelectedListener()
@@ -68,6 +71,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         setupLogoutState()
         showWineyFeedResultSnackBar()
+    }
+
+    private fun showSystemNotificationSetting() {
+        Intent().apply {
+            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(this)
+        }
     }
 
     private fun requestNotificationPermission() {
@@ -93,6 +105,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
             -> navigateToDetail(feedId?.toInt())
+
             NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
             else -> {}
         }
@@ -112,11 +125,19 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun showWineyFeedResultSnackBar() {
         if (isUploadSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_upload_success),
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
+            )
         }
 
         if (isDeleteSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_feed_delete_success),
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
+            )
         }
     }
 
