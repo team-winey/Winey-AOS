@@ -22,6 +22,7 @@ import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.multipart.UriToRequestBody
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import java.text.DecimalFormat
 
 @AndroidEntryPoint
@@ -77,10 +78,9 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     is UiState.Failure -> {
                         wineySnackbar(
                             anchorView = binding.root,
-                            isSuccess = false,
-                            message = stringOf(R.string.snackbar_upload_fail)
+                            message = stringOf(R.string.snackbar_upload_fail),
+                            type = SnackbarType.WineyFeedResult(isSuccess = false)
                         )
-
                         uploadViewModel.initPostWineyFeedState()
                     }
 
