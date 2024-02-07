@@ -86,7 +86,7 @@
     <string name="mypage_period">절약 기간</string>
     <string name="mypage_accumulated_winey">누적 위니</string>
     <string name="mypage_winey_count">위니 횟수</string>
-    <string name="mypage_myfeed">마이피드</string>
+    <string name="mypage_myfeed">내가 올린 피드</string>
     <string name="mypage_not_yet_set">아직 없어요</string>
     <string name="mypage_d_day">D-DAY</string>
     <string name="mypage_amount">원</string>
@@ -102,6 +102,9 @@
     <string name="mypage_noti_agree_permission">기기 설정을 변경해야 알림을 받을 수 있어요</string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
+    <string name="mypage_trip">목표까지 남은 여정</string>
+    <string name="mypage_item_title">위니를 만나고</string>
+    <string name="mypage_2weeks_title">최근 2주간</string>
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
