@@ -12,7 +12,7 @@ import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
-    private val amountString by lazy { intent.extras?.getString(KEY_SAVE_AMOUNT, "") }
+    private val amount by lazy { intent.extras?.getString(KEY_SAVE_AMOUNT, "") }
     private val amountRange by lazy { resources.getIntArray(R.array.save_amount_range) }
     private val itemCategories by lazy { resources.getStringArray(R.array.save_item_categories) }
 
@@ -24,7 +24,7 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
 
     private fun classifySaveItemCategory() {
         for (index in amountRange.indices) {
-            val amount = amountString?.toLong() ?: return
+            val amount = amount?.toLong() ?: return
             if (isLastAmountRange(index)) return
 
             if (amount >= amountRange[index] && amount < amountRange[index + 1]) {

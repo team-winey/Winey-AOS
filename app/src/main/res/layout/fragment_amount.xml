@@ -61,10 +61,10 @@
 
         <TextView
             android:id="@+id/tv_amount_title"
+            switchUploadAmountTitle="@{vm.feedType}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@string/upload_amount_title"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="@id/ll_upload_indicators"
@@ -72,10 +72,10 @@
 
         <TextView
             android:id="@+id/tv_amount_detail"
+            switchUploadAmountDetailText="@{vm.feedType}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="@string/upload_amount_detail"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
             android:textColor="@color/gray_400"
             app:layout_constraintStart_toStartOf="@id/tv_amount_title"
@@ -90,11 +90,11 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/sel_upload_edittext_focus_color"
             android:gravity="center_vertical|end"
+            android:hint="@string/upload_amount_hint_text"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"
-            android:hint="@string/upload_amount_hint_text"
-            android:maxLines="1"
             android:maxLength="@{vm.MAX_AMOUNT_LENGTH}"
+            android:maxLines="1"
             android:paddingEnd="38dp"
             android:text="@={vm._amount}"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"

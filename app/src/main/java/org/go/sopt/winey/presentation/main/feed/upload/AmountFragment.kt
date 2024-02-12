@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentAmountBinding
-import org.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
+import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.fragment.stringOf
@@ -20,9 +20,9 @@ import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.multipart.UriToRequestBody
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import java.text.DecimalFormat
 
 @AndroidEntryPoint
@@ -34,12 +34,13 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         binding.vm = uploadViewModel
 
         updateRequestBody()
-        initPostImageStateObserver()
-        initUploadButtonClickListener()
 
+        initUploadButtonClickListener()
         initRootLayoutClickListener()
         initBackButtonClickListener()
-        initEditTextWatcher()
+        initAmountTextChangedListener()
+
+        initPostImageStateObserver()
     }
 
     private fun updateRequestBody() {
@@ -51,10 +52,16 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
             uploadViewModel.apply {
-                postWineyFeed(content, amount.removeComma())
+                postWineyFeed(
+                    content = content,
+                    amount = amount.removeComma(),
+                    feedType = feedType.name
+                )
             }
         }
     }
+
+    private fun String.removeComma() = replace(",", "")
 
     private fun initPostImageStateObserver() {
         uploadViewModel.postWineyFeedState.flowWithLifecycle(viewLifeCycle)
@@ -65,7 +72,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     }
 
                     is UiState.Success -> {
-                        navigateLoadingScreen()
+                        navigateToMainScreen()
                     }
 
                     is UiState.Failure -> {
@@ -74,12 +81,10 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                             message = stringOf(R.string.snackbar_upload_fail),
                             type = SnackbarType.WineyFeedResult(isSuccess = false)
                         )
-
                         uploadViewModel.initPostWineyFeedState()
                     }
 
-                    is UiState.Empty -> {
-                    }
+                    else -> {}
                 }
             }.launchIn(viewLifeCycleScope)
     }
@@ -88,15 +93,14 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         binding.btnAmountNext.isClickable = false
     }
 
-    private fun navigateLoadingScreen() {
-        Intent(requireContext(), LoadingActivity::class.java).apply {
-            putExtra(KEY_SAVE_AMOUNT, uploadViewModel.amount.removeComma())
+    private fun navigateToMainScreen() {
+        val context = context ?: return
+        Intent(context, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(KEY_FEED_UPLOAD, true)
             startActivity(this)
         }
     }
-
-    private fun String.removeComma() = replace(",", "")
 
     private fun initBackButtonClickListener() {
         binding.ivAmountBack.setOnClickListener {
@@ -104,7 +108,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         }
     }
 
-    private fun initEditTextWatcher() {
+    private fun initAmountTextChangedListener() {
         var temp = ""
         binding.etUploadAmount.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -141,6 +145,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     }
 
     companion object {
-        private const val KEY_SAVE_AMOUNT = "amount"
+        private const val KEY_FEED_UPLOAD = "upload"
     }
 }

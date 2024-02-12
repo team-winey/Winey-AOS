@@ -61,10 +61,10 @@
 
         <TextView
             android:id="@+id/tv_photo_title"
+            switchUploadImageTitle="@{vm.feedType}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="@string/upload_photo_title"
             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
             android:textColor="@color/gray_900"
             app:layout_constraintStart_toStartOf="@id/ll_upload_indicators"
@@ -123,11 +123,11 @@
 
                 <TextView
                     android:id="@+id/tv_upload_plus"
+                    switchUploadImageButtonText="@{vm.feedType}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:gravity="center"
-                    android:text="@string/upload_plus_text"
                     android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                     android:textColor="@color/purple_400" />
 

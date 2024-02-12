@@ -30,17 +30,17 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val mainViewModel by viewModels<MainViewModel>()
 
-    private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
-    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
-    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
+    private val isUploadSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_UPLOAD, false) }
+    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_DELETE, false) }
 
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
     private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
     private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
 
@@ -226,8 +226,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     companion object {
-        private const val EXTRA_UPLOAD_KEY = "upload"
-        private const val EXTRA_DELETE_KEY = "delete"
+        private const val KEY_FEED_UPLOAD = "upload"
+        private const val KEY_FEED_DELETE = "delete"
 
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_NOTI_TYPE = "notiType"

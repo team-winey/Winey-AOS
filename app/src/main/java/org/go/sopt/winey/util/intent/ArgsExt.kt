@@ -1,7 +1,5 @@
 package org.go.sopt.winey.util.intent
 
-import android.os.Build
-import android.os.Bundle
 import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import kotlin.properties.ReadOnlyProperty
@@ -24,9 +22,4 @@ fun stringArgs() = ReadOnlyProperty<Fragment, String> { thisRef, property ->
 
 fun <P : Parcelable> parcelableArgs() = ReadOnlyProperty<Fragment, P?> { thisRef, property ->
     thisRef.requireArguments().getParcelable(property.name)
-}
-
-inline fun <reified T : Parcelable> Bundle.getCompatibleParcelableExtra(key: String): T? = when {
-    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU -> getParcelable(key, T::class.java)
-    else -> getParcelable(key) as? T
 }

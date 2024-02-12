@@ -3,7 +3,6 @@ package org.go.sopt.winey.presentation.main.feed.detail
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
@@ -444,10 +443,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
-        showAsDropDown(anchorView, -POPUP_MENU_POS_OFFSET, -POPUP_MENU_POS_OFFSET, Gravity.END)
-    }
-
     private fun sendEventToAmplitude(type: EventType, feed: DetailFeed) {
         val eventProperties = JSONObject()
 
@@ -485,9 +480,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_REPORT_DIALOG = "REPORT_DIALOG"
 
-        private const val POPUP_MENU_POS_OFFSET = 65
         private const val MSG_DETAIL_ERROR = "ERROR"
-
         private const val ACTION_COMMENT_POST = "POST"
         private const val ACTION_COMMENT_DELETE = "DELETE"
     }

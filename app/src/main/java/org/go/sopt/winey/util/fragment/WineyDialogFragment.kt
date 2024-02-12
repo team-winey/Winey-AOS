@@ -6,7 +6,7 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentAlertDialogBinding
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.binding.BindingDialogFragment
-import org.go.sopt.winey.util.intent.getCompatibleParcelableExtra
+import org.go.sopt.winey.util.intent.getCompatibleParcelable
 
 class WineyDialogFragment :
     BindingDialogFragment<FragmentAlertDialogBinding>(R.layout.fragment_alert_dialog) {
@@ -16,7 +16,7 @@ class WineyDialogFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dialog?.setCanceledOnTouchOutside(false)
-        binding.data = arguments?.getCompatibleParcelableExtra(ARG)
+        binding.data = arguments?.getCompatibleParcelable(ARG)
 
         initNegativeButtonClickListener(handleNegative)
         initPositiveButtonClickListener(handlePositive)

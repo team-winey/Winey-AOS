@@ -11,6 +11,7 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import de.hdodenhof.circleimageview.CircleImageView
 import org.go.sopt.winey.R
+import org.go.sopt.winey.presentation.main.feed.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.VAL_MY_PAGE_SCREEN
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.VAL_STORY_SCREEN
 import org.go.sopt.winey.util.code.ErrorCode.*
@@ -51,6 +52,22 @@ fun ImageView.setImageUrl(imageUrl: String?) {
     }
 }
 
+@BindingAdapter("switchUploadImageTitle")
+fun TextView.switchUploadImageTitle(feedType: WineyFeedType) {
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_photo_title, "절약을 실천한")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_photo_title, "과소비한")
+    }
+}
+
+@BindingAdapter("switchUploadImageButtonText")
+fun TextView.switchUploadImageButtonText(feedType: WineyFeedType) {
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_plus_text, "절약을")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_plus_text, "과소비를")
+    }
+}
+
 @BindingAdapter("setUploadImageUri")
 fun ImageView.setUploadImageUri(imageUri: Uri?) {
     if (imageUri == null) {
@@ -62,6 +79,22 @@ fun ImageView.setUploadImageUri(imageUri: Uri?) {
     load(imageUri) {
         placeholder(R.drawable.img_wineyfeed_default)
         transformations(RoundedCornersTransformation(10F))
+    }
+}
+
+@BindingAdapter("switchUploadContentTitle")
+fun TextView.switchUploadContentTitle(feedType: WineyFeedType) {
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_plus_text, "절약을")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_plus_text, "과소비를")
+    }
+}
+
+@BindingAdapter("switchUploadContentHint")
+fun EditText.switchUploadContentHint(feedType: WineyFeedType) {
+    hint = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_save_content_edittext_hint)
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_consume_content_edittext_hint)
     }
 }
 
@@ -86,6 +119,22 @@ fun TextView.setUploadContentHelperText(inputUiState: InputUiState) {
         if (inputUiState.code == CODE_INVALID_LENGTH) {
             text = context.stringOf(R.string.upload_content_error_text)
         }
+    }
+}
+
+@BindingAdapter("switchUploadAmountTitle")
+fun TextView.switchUploadAmountTitle(feedType: WineyFeedType) {
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_amount_title, "절약")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_amount_title, "과소비")
+    }
+}
+
+@BindingAdapter("switchUploadAmountDetailText")
+fun TextView.switchUploadAmountDetailText(feedType: WineyFeedType) {
+    text = when (feedType) {
+        WineyFeedType.SAVE -> context.getString(R.string.upload_amount_detail, "절약하신")
+        WineyFeedType.CONSUME -> context.getString(R.string.upload_amount_detail, "과소비한")
     }
 }
 
@@ -248,7 +297,6 @@ fun ImageView.setNotiType(notiType: String) {
 
     if (drawableResourceId != 0) {
         setImageResource(drawableResourceId)
-    } else {
     }
 }
 
