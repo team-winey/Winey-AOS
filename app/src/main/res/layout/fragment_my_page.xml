@@ -284,6 +284,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
+                            app:item="@{`AMERICANO`}"
                             app:layout_constraintEnd_toStartOf="@+id/l_mypage_item_chicken"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -295,6 +296,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:src="@drawable/ic_mypage_chicken"
+                            app:item="@{`CHICKEN`}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/l_mypage_item_coffee"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -317,6 +319,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
+                            app:item="@{`SNEAKERS`}"
                             app:layout_constraintEnd_toStartOf="@+id/l_mypage_item_airpod"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -327,6 +330,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
+                            app:item="@{`AIRPODS`}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/l_mypage_item_sneakers"
                             app:layout_constraintTop_toTopOf="parent" />
