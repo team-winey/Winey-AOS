@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentMyPageBinding
-import org.go.sopt.winey.domain.entity.User
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
@@ -220,7 +220,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.launchIn(lifecycleScope)
     }
 
-    private fun updateUserInfo(data: User) {
+    private fun updateUserInfo(data: UserV2) {
         binding.data = data
     }
 
