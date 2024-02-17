@@ -38,6 +38,7 @@ import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,11 +61,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initUserData()
         initNavigation()
 
-        registerBackPressedCallback()
-        setupGetUserState()
-        setupDeleteUserState()
+        addListener()
+        addObserver()
 
         checkFromWineyFeed()
+    }
+
+    private fun addListener() {
+        initEditNicknameButtonClickListener()
+        initMyFeedButtonClickListener()
+        registerBackPressedCallback()
+    }
+
+    private fun addObserver() {
+        setupGetUserState()
+        setupDeleteUserState()
     }
 
     private fun initCheckNotificationPermission() {
@@ -128,6 +139,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val isFromWineyFeed = arguments?.getBoolean(KEY_FROM_WINEY_FEED)
         if (isFromWineyFeed == true) {
             showTargetSettingBottomSheet()
+        }
+    }
+
+    private fun initEditNicknameButtonClickListener() {
+        binding.ivMypageEditNickname.setOnSingleClickListener {
+            navigateToNicknameScreen()
+        }
+    }
+
+    private fun initMyFeedButtonClickListener() {
+        binding.btnMypageMyfeed.setOnSingleClickListener {
+            navigateToMyFeedScreen()
         }
     }
 
@@ -201,6 +224,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
             startActivity(this)
         }
+    }
+
+    private fun navigateToMyFeedScreen() {
+        navigateAndBackStack<MyFeedFragment>()
     }
 
     private fun setupGetUserState() {
