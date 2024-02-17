@@ -3,11 +3,8 @@ package org.go.sopt.winey.presentation.main.mypage.myfeed
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -22,29 +19,26 @@ import org.go.sopt.winey.databinding.FragmentMyfeedBinding
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.presentation.main.feed.WineyFeedLoadAdapter
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
-import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
-import org.go.sopt.winey.util.binding.BindingFragment
+import org.go.sopt.winey.util.binding.BindingActivity
+import org.go.sopt.winey.util.context.snackBar
+import org.go.sopt.winey.util.context.stringOf
+import org.go.sopt.winey.util.context.wineySnackbar
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
-import org.go.sopt.winey.util.fragment.snackBar
-import org.go.sopt.winey.util.fragment.stringOf
-import org.go.sopt.winey.util.fragment.viewLifeCycle
-import org.go.sopt.winey.util.fragment.viewLifeCycleScope
-import org.go.sopt.winey.util.fragment.wineySnackbar
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.WineyPopupMenu
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import timber.log.Timber
 
 @AndroidEntryPoint
-class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
+class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_myfeed) {
     private val viewModel by viewModels<MyFeedViewModel>()
     private lateinit var myFeedAdapter: MyFeedAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
     private var clickedFeedId = -1
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         removeRecyclerviewItemChangeAnimation()
         initAdapter()
         initBackButtonClickListener()
@@ -66,7 +60,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initGetDetailFeedStateObserver() {
-        viewModel.getDetailFeedState.flowWithLifecycle(viewLifeCycle)
+        viewModel.getDetailFeedState.flowWithLifecycle(lifecycle)
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
@@ -81,7 +75,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
                     else -> {}
                 }
-            }.launchIn(viewLifeCycleScope)
+            }.launchIn(lifecycleScope)
     }
 
     private fun initAdapter() {
@@ -144,18 +138,17 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
                 viewModel.deleteFeed(feed.feedId)
             }
         )
-        dialog.show(parentFragmentManager, TAG_FEED_DELETE_DIALOG)
+        dialog.show(supportFragmentManager, TAG_FEED_DELETE_DIALOG)
     }
 
     private fun initBackButtonClickListener() {
         binding.imgMyfeedBack.setOnClickListener {
-            navigateTo<MyPageFragment>()
-            parentFragmentManager.popBackStack()
+            finish()
         }
     }
 
     private fun initDeleteFeedStateObserver() {
-        viewModel.deleteMyFeedState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+        viewModel.deleteMyFeedState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     val response = state.data ?: return@onEach
@@ -176,11 +169,11 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
-        }.launchIn(viewLifeCycleScope)
+        }.launchIn(lifecycleScope)
     }
 
     private fun deletePagingDataItem(feedId: Int) {
-        viewLifeCycleScope.launch {
+        lifecycleScope.launch {
             val newList = myFeedAdapter.deleteItem(feedId)
             checkEmptyList(newList)
             myFeedAdapter.submitData(PagingData.from(newList))
@@ -195,7 +188,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initGetMyFeedListStateObserver() {
-        viewModel.getMyFeedListState.flowWithLifecycle(viewLifeCycle)
+        viewModel.getMyFeedListState.flowWithLifecycle(lifecycle)
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
@@ -211,7 +204,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
                     else -> {}
                 }
-            }.launchIn(viewLifeCycleScope)
+            }.launchIn(lifecycleScope)
     }
 
     private fun initPagingLoadStateListener() {
@@ -240,7 +233,7 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun initPostLikeStateObserver() {
-        viewModel.postMyFeedLikeState.flowWithLifecycle(viewLifeCycle).onEach { state ->
+        viewModel.postMyFeedLikeState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     myFeedAdapter.updateLikeNumber(
@@ -256,21 +249,15 @@ class MyFeedFragment : BindingFragment<FragmentMyfeedBinding>(R.layout.fragment_
 
                 else -> Timber.tag("failure").e(MSG_MYFEED_ERROR)
             }
-        }.launchIn(viewLifeCycleScope)
+        }.launchIn(lifecycleScope)
     }
 
     private fun navigateToDetail(wineyFeed: WineyFeed) {
-        Intent(requireContext(), DetailActivity::class.java).apply {
+        Intent(this, DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
             putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_FEED_SCREEN)
             startActivity(this)
-        }
-    }
-
-    private inline fun <reified T : Fragment> navigateTo() {
-        parentFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
         }
     }
 

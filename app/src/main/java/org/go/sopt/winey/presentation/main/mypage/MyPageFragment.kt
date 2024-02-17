@@ -28,7 +28,7 @@ import org.go.sopt.winey.databinding.FragmentMyPageBinding
 import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
-import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
+import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
@@ -187,7 +187,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         if (receivedBundle != null) {
             val value = receivedBundle.getBoolean(KEY_TO_MYFEED)
             if (value) {
-                navigateAndBackStack<MyFeedFragment>()
+                navigateToMyFeedScreen()
                 arguments?.clear()
             }
         }
@@ -227,7 +227,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun navigateToMyFeedScreen() {
-        navigateAndBackStack<MyFeedFragment>()
+        Intent(requireContext(), MyFeedActivity::class.java).apply {
+            startActivity(this)
+        }
     }
 
     private fun setupGetUserState() {
