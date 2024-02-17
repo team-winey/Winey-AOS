@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import org.go.sopt.winey.domain.entity.User
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import java.io.IOException
 import javax.inject.Inject
@@ -91,14 +91,14 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun saveUserInfo(userInfo: User?) {
+    override suspend fun saveUserInfo(userInfo: UserV2?) {
         dataStore.edit {
             val json = Gson().toJson(userInfo)
             it[USER_INFO] = json
         }
     }
 
-    override suspend fun getUserInfo(): Flow<User> {
+    override suspend fun getUserInfo(): Flow<UserV2> {
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
@@ -111,9 +111,17 @@ class DataStoreRepositoryImpl @Inject constructor(
             .map {
                 val json = it[USER_INFO]
                 try {
-                    Gson().fromJson(json, User::class.java)
+                    Gson().fromJson(json, UserV2::class.java)
                 } catch (e: Exception) {
-                    User()
+                    UserV2(
+                        nickname = "",
+                        userLevel = "",
+                        accumulatedAmount = 0,
+                        amountSavedHundredDays = 0,
+                        amountSavedTwoWeeks = 0,
+                        amountSpentTwoWeeks = 0,
+                        fcmIsAllowed = true
+                    )
                 }
             }
     }

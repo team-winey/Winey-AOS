@@ -1,61 +1,43 @@
 package org.go.sopt.winey.data.model.remote.response
 
-import org.go.sopt.winey.domain.entity.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.go.sopt.winey.domain.entity.UserV2
 
 @Serializable
 data class ResponseGetUserDto(
-    @SerialName("userResponseGoalDto")
-    val userResponseGoalDto: UserResponseGoalDto?,
-    @SerialName("userResponseUserDto")
-    val userResponseUserDto: UserResponseUserDto?
+    @SerialName("userData")
+    val userData: UserData,
 ) {
     @Serializable
-    data class UserResponseGoalDto(
-        @SerialName("duringGoalAmount")
-        val duringGoalAmount: Long,
-        @SerialName("duringGoalCount")
-        val duringGoalCount: Long,
-        @SerialName("isAttained")
-        val isAttained: Boolean,
-        @SerialName("isOver")
-        val isOver: Boolean,
-        @SerialName("targetDay")
-        val targetDay: Int,
-        @SerialName("targetMoney")
-        val targetMoney: Int,
-        @SerialName("dday")
-        val dday: Int
-    )
-
-    @Serializable
-    data class UserResponseUserDto(
-        @SerialName("nickname")
-        val nickname: String,
+    data class UserData(
         @SerialName("userId")
         val userId: Int,
+        @SerialName("nickname")
+        val nickname: String,
         @SerialName("userLevel")
         val userLevel: String,
         @SerialName("fcmIsAllowed")
-        val fcmIsAllowed: Boolean
+        val fcmIsAllowed: Boolean,
+        @SerialName("accumulatedAmount")
+        val accumulatedAmount: Int,
+        @SerialName("amountSavedHundredDays")
+        val amountSavedHundredDays: Int,
+        @SerialName("amountSavedTwoWeeks")
+        val amountSavedTwoWeeks: Int,
+        @SerialName("amountSpentTwoWeeks")
+        val amountSpentTwoWeeks: Int
     )
 
-    fun toUser(): User {
-        val data = this
-        val userResponseUserDto = data.userResponseUserDto
-
-        return User(
-            nickname = userResponseUserDto?.nickname.orEmpty(),
-            userLevel = userResponseUserDto?.userLevel.orEmpty(),
-            fcmIsAllowed = userResponseUserDto?.fcmIsAllowed ?: false,
-            duringGoalAmount = data.userResponseGoalDto?.duringGoalAmount ?: 0,
-            duringGoalCount = data.userResponseGoalDto?.duringGoalCount ?: 0,
-            targetMoney = data.userResponseGoalDto?.targetMoney ?: 0,
-            targetDay = data.userResponseGoalDto?.targetDay ?: 0,
-            dday = data.userResponseGoalDto?.dday ?: 0,
-            isOver = data.userResponseGoalDto?.isOver ?: true,
-            isAttained = data.userResponseGoalDto?.isAttained ?: false
+    fun toUser(): UserV2 {
+        return UserV2(
+            nickname = userData.nickname,
+            userLevel = userData.userLevel,
+            fcmIsAllowed = userData.fcmIsAllowed,
+            accumulatedAmount = userData.accumulatedAmount,
+            amountSavedHundredDays = userData.amountSavedHundredDays,
+            amountSavedTwoWeeks = userData.amountSavedTwoWeeks,
+            amountSpentTwoWeeks = userData.amountSpentTwoWeeks
         )
     }
 }
