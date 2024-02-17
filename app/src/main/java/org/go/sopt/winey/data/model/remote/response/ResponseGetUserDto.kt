@@ -7,7 +7,7 @@ import org.go.sopt.winey.domain.entity.UserV2
 @Serializable
 data class ResponseGetUserDto(
     @SerialName("userData")
-    val userData: UserData,
+    val userData: UserData
 ) {
     @Serializable
     data class UserData(

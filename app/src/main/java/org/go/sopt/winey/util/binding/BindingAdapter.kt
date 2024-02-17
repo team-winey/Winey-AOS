@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import coil.load
@@ -329,6 +330,55 @@ fun CircleImageView.setWriterLevelImage(writerLevel: Int) {
     setImageResource(drawableResId)
 }
 
+@BindingAdapter("setMyPageLevelResource", "imageViewId")
+fun ImageView.setMyPageLevelResource(userLevel: String?, imageViewId: String) {
+    userLevel?.let { userLevel ->
+        imageViewId.let { imageViewId ->
+            val imageResource: Int = when (imageViewId) {
+                "SAVER" -> {
+                    when (userLevel) {
+                        "평민" -> R.drawable.img_mypage_saver_lv1
+                        "기사" -> R.drawable.img_mypage_saver_lv2
+                        "귀족" -> R.drawable.img_mypage_saver_lv3
+                        "황제" -> R.drawable.img_mypage_saver_lv4
+                        else -> {
+                            R.drawable.img_mypage_saver_lv1
+                        }
+                    }
+                }
+                "BUBBLE" -> {
+                    when (userLevel) {
+                        "평민" -> R.drawable.img_mypage_bubble_lv1
+                        "기사" -> R.drawable.img_mypage_bubble_lv2
+                        "귀족" -> R.drawable.img_mypage_bubble_lv3
+                        "황제" -> R.drawable.img_mypage_bubble_lv4
+                        else -> {
+                            R.drawable.img_mypage_bubble_lv1
+                        }
+                    }
+                }
+
+                else -> { R.drawable.img_mypage_saver_lv1 }
+            }
+            setImageResource(imageResource)
+        }
+    }
+}
+
+@BindingAdapter("setMyPageLevelBackground")
+fun ConstraintLayout.setMyPageLevelBackground(userLevel: String) {
+    val resourceId: Int = when (userLevel) {
+        "평민" -> R.drawable.img_mypage_background_lv1
+        "기사" -> R.drawable.img_mypage_background_lv2
+        "귀족" -> R.drawable.img_mypage_background_lv3
+        "황제" -> R.drawable.img_mypage_background_lv4
+        else -> {
+            R.drawable.img_mypage_background_lv1
+        }
+    }
+    this.setBackgroundResource(resourceId)
+}
+
 @BindingAdapter("setMyPageItemIcon")
 fun ImageView.setMyPageItemIcon(iconType: String?) {
     iconType?.let {
@@ -360,7 +410,6 @@ fun TextView.setMyPageItemDescription(iconType: String?) {
 
 @BindingAdapter("setMyPageItemSavedAmount", "iconType")
 fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
-
     val money: String = when (iconType) {
         "AMERICANO" -> "5천원  x  "
         "SNEAKERS" -> "3만원  x  "
@@ -392,19 +441,22 @@ fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
 
     spannableString.setSpan(
         TextAppearanceSpan(context, R.style.TextAppearance_WINEY_detail_m_12),
-        0, money.length,
+        0,
+        money.length,
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
     spannableString.setSpan(
         TextAppearanceSpan(context, R.style.TextAppearance_WINEY_Headline_b_24_xxl),
-        money.length, money.length + amount.length,
+        money.length,
+        money.length + amount.length,
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )
 
     spannableString.setSpan(
         ForegroundColorSpan(ContextCompat.getColor(context, R.color.gray_500)),
-        money.length + amount.length, money.length + amount.length + measurement.length,
+        money.length + amount.length,
+        money.length + amount.length + measurement.length,
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )
     text = spannableString
