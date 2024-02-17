@@ -7,6 +7,9 @@
         <variable
             name="item"
             type="String" />
+        <variable
+            name="savedAmount"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +55,7 @@
         <TextView
             android:id="@+id/tv_mypage_money"
             iconType="@{item}"
-            setMyPageItemSavedAmount="@{190000}"
+            setMyPageItemSavedAmount="@{savedAmount}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="13dp"
