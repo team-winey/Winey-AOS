@@ -29,6 +29,7 @@ import org.go.sopt.winey.domain.entity.User
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
+import org.go.sopt.winey.presentation.main.mypage.setting.SettingActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
@@ -38,6 +39,7 @@ import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -65,6 +67,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         setupDeleteUserState()
 
         checkFromWineyFeed()
+
+        binding.ivMypageSetting.setOnSingleClickListener {
+            navigateToSettingScreen()
+        }
     }
 
     private fun initCheckNotificationPermission() {
@@ -199,6 +205,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
             putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToSettingScreen() {
+        Intent(requireContext(), SettingActivity::class.java).apply {
             startActivity(this)
         }
     }
