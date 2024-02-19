@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="12dp"
             android:paddingVertical="16dp"
-            android:src="@drawable/ic_upload_back"
+            android:src="@drawable/ic_all_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
