@@ -53,9 +53,9 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_mypage_profile"
+                    setMyPageLevelBackground="@{data.userLevel}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    setMyPageLevelBackground="@{data.userLevel}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -66,24 +66,22 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="33dp"
                         android:layout_marginBottom="30dp"
-                        app:setMyPageLevelResource="@{data.userLevel}"
                         app:imageViewId='@{"BUBBLE"}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:setMyPageLevelResource="@{data.userLevel}" />
 
                     <ImageView
                         android:id="@+id/iv_mypage_saver"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        app:setMyPageLevelResource="@{data.userLevel}"
                         app:imageViewId='@{"SAVER"}'
                         app:layout_constraintBottom_toTopOf="@id/tv_mypage_edit_nickname"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_mypage_bubble" />
-
+                        app:layout_constraintTop_toBottomOf="@id/iv_mypage_bubble"
+                        app:setMyPageLevelResource="@{data.userLevel}" />
 
                     <TextView
                         android:id="@+id/tv_mypage_edit_nickname"
@@ -117,23 +115,148 @@
                         android:layout_marginTop="14dp"
                         android:layout_marginBottom="39dp"
                         android:background="@drawable/shape_gray0_fill_18_rect"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="18dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/iv_mypage_edit_nickname"
-                        app:layout_constraintVertical_bias="0.0">
+                        app:layout_constraintTop_toBottomOf="@id/iv_mypage_edit_nickname">
+
+                        <TextView
+                            android:id="@+id/tv_mypage_profile_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_gray50_fill_14_rect"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="4dp"
+                            android:text="@{@string/mypage_level_token(data.userLevel)}"
+                            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                            android:textColor="@color/gray_600"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_mypage_profile_goal_item"
+                            app:layout_constraintEnd_toStartOf="@id/tv_mypage_profile_goal_item"
+                            app:layout_constraintHorizontal_chainStyle="packed"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tv_mypage_profile_goal_item" />
 
                         <TextView
                             android:id="@+id/tv_mypage_profile_goal_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="13dp"
                             android:text="치킨값 절약하기"
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-                            android:textColor="@color/gray_600"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:textColor="@color/gray_900"
+                            app:layout_constraintBottom_toTopOf="@id/v_mypage_line"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/tv_mypage_profile_level"
                             app:layout_constraintTop_toTopOf="parent" />
+
+                        <View
+                            android:id="@+id/v_mypage_line"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="11dp"
+                            android:background="@color/gray_100"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_mypage_profile_goal_item" />
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_mypage_goal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_gray200_line_8_rect"
+                            android:padding="12dp"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="12dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_mypage_line">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/cl_mypage_goal_money"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:id="@+id/iv_mypage_goal_money"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_mypage_checked"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+
+                                <TextView
+                                    android:id="@+id/tv_mypage_goal_money"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="누적 3만원 이상 절약하기"
+                                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
+                                    android:textColor="@color/gray_900"
+                                    android:layout_marginStart="6dp"
+                                    app:layout_constraintStart_toEndOf="@id/iv_mypage_goal_money"
+                                    app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_money"
+                                    app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_money"/>
+
+                                <TextView
+                                    android:id="@+id/tv_mypage_goal_money_current"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="3만원 절약 완료"
+                                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
+                                    android:textColor="@color/gray_400"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_money"
+                                    app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_money"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/cl_mypage_goal_count"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/cl_mypage_goal_money">
+
+                                <ImageView
+                                    android:id="@+id/iv_mypage_goal_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_mypage_checked"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent" />
+
+
+                                <TextView
+                                    android:id="@+id/tv_mypage_goal_count"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="절약피드 2개 이상 올리기"
+                                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
+                                    android:textColor="@color/gray_900"
+                                    android:layout_marginStart="6dp"
+                                    app:layout_constraintStart_toEndOf="@id/iv_mypage_goal_count"
+                                    app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_count"
+                                    app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_count"/>
+
+                                <TextView
+                                    android:id="@+id/tv_mypage_goal_count_current"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="누적 절약 피드 1개"
+                                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
+                                    android:textColor="@color/gray_400"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_count"
+                                    app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_count"/>
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                         <TextView
                             android:id="@+id/tv_mypage_profile_money"
@@ -142,21 +265,11 @@
                             android:text="10,000원만 더 !"
                             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
                             android:textColor="@color/gray_900"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginHorizontal="16dp"
+                            app:layout_constraintBottom_toTopOf="@id/pb_mypage"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_mypage_profile_level" />
-
-                        <TextView
-                            android:id="@+id/tv_mypage_profile_level"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/shape_gray0_fill_16_rect"
-                            android:paddingHorizontal="10dp"
-                            android:paddingVertical="4dp"
-                            android:text="@{@string/mypage_level_token(data.userLevel)}"
-                            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
-                            android:textColor="@color/gray_600"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toBottomOf="@id/cl_mypage_goal" />
 
                         <ProgressBar
                             android:id="@+id/pb_mypage"
@@ -164,6 +277,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="16dp"
+                            android:layout_marginHorizontal="16dp"
                             android:indeterminate="false"
                             android:max="100"
                             android:progress="50"
@@ -177,6 +291,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
+                            android:layout_marginStart="16dp"
                             android:text="2만원 절약중"
                             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
                             android:textColor="@color/gray_900"
@@ -188,16 +303,19 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="3만원"
+                            android:layout_marginEnd="16dp"
                             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
                             android:textColor="@color/gray_900"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="@id/tv_mypage_profile_current" />
+
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_mypage_myfeed"
                             style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
                             android:layout_marginTop="16dp"
                             android:layout_marginEnd="4dp"
                             android:layout_marginBottom="18dp"
@@ -209,8 +327,8 @@
                             app:layout_constraintEnd_toStartOf="@id/btn_mypage_trip"
                             app:layout_constraintHorizontal_weight="1"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_mypage_profile_current" />
-
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_mypage_trip"
@@ -218,6 +336,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
+                            android:layout_marginEnd="16dp"
                             android:background="@drawable/shape_purple400_line_8_rect"
                             android:paddingVertical="12dp"
                             android:text="@string/mypage_trip"
@@ -260,12 +379,12 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_item_save"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="16dp"
                         setAmount="@{data.amountSavedHundredDays}"
                         setPrefix="@{@string/mypage_save_for_100days_prefix}"
                         setSuffix="@{@string/mypage_save_for_100days_suffix}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
                         app:layout_constraintStart_toStartOf="parent"
@@ -289,10 +408,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
                             app:item="@{`AMERICANO`}"
-                            app:savedAmount="@{data.amountSavedHundredDays}"
                             app:layout_constraintEnd_toStartOf="@+id/l_mypage_item_chicken"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:savedAmount="@{data.amountSavedHundredDays}" />
 
                         <include
                             android:id="@+id/l_mypage_item_chicken"
@@ -302,10 +421,10 @@
                             android:layout_marginStart="4dp"
                             android:src="@drawable/ic_mypage_chicken"
                             app:item="@{`CHICKEN`}"
-                            app:savedAmount="@{data.amountSavedHundredDays}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/l_mypage_item_coffee"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:savedAmount="@{data.amountSavedHundredDays}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -326,10 +445,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="4dp"
                             app:item="@{`SNEAKERS`}"
-                            app:savedAmount="@{data.amountSavedHundredDays}"
                             app:layout_constraintEnd_toStartOf="@+id/l_mypage_item_airpod"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:savedAmount="@{data.amountSavedHundredDays}" />
 
                         <include
                             android:id="@+id/l_mypage_item_airpod"
@@ -338,10 +457,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             app:item="@{`AIRPODS`}"
-                            app:savedAmount="@{data.amountSavedHundredDays}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/l_mypage_item_sneakers"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:savedAmount="@{data.amountSavedHundredDays}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -378,11 +497,11 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_saved_description"
+                        setAmount="@{data.amountSavedTwoWeeks}"
+                        setSuffix="@{@string/mypage_save_for_2weeks}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        setAmount="@{data.amountSavedTwoWeeks}"
-                        setSuffix="@{@string/mypage_save_for_2weeks}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
                         app:layout_constraintStart_toStartOf="parent"
@@ -456,11 +575,11 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_spend_description"
+                        setAmount="@{data.amountSpentTwoWeeks}"
+                        setSuffix="@{@string/mypage_waste_for_2weeks}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        setAmount="@{data.amountSpentTwoWeeks}"
-                        setSuffix="@{@string/mypage_waste_for_2weeks}"
                         android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                         android:textColor="@color/gray_900"
                         app:layout_constraintStart_toStartOf="parent"
