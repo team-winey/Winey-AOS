@@ -13,6 +13,9 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         super.onCreate(savedInstanceState)
 
         setupDefaultFragment(savedInstanceState)
+
+        // todo: 황제 레벨에서는 배경 이미지 변경
+        // todo: 목표 달성까지 남은 절약 금액, 피드 업로드 횟수 표시
     }
 
     private fun setupDefaultFragment(savedInstanceState: Bundle?) {

@@ -20,26 +20,14 @@ class GoalPathLevel2Fragment :
         binding.lottieGoalPathStep2.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 with(binding) {
-                    // 기사 레벨 이미지, 말풍선 제거
                     ivGoalPathLv2.isVisible = false
-                    llGoalPathLv3Lock.isVisible = false
-                    ivGoalPathLv3LockDashLine.isVisible = false
-
-                    // 로티 애니메이션 뷰 표시
                     lottieGoalPathStep2.isVisible = true
                 }
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 with(binding) {
-                    // 로티 애니메이션 뷰 제거
                     lottieGoalPathStep2.isVisible = false
-
-                    // 말풍선 제거
-                    llGoalPathLv3Lock.isVisible = false
-                    ivGoalPathLv3LockDashLine.isVisible = false
-
-                    // 귀족 레벨 이미지 표시
                     ivGoalPathLv3.isVisible = true
                 }
             }

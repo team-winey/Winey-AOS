@@ -14,32 +14,22 @@ class GoalPathLevel1Fragment :
         super.onViewCreated(view, savedInstanceState)
 
         initAnimatorListener()
+
+        // todo: 목표 달성 현황에 따라 체크박스 이미지 변경
     }
 
     private fun initAnimatorListener() {
         binding.lottieGoalPathStep1.addAnimatorListener(object : Animator.AnimatorListener {
             override fun onAnimationStart(animation: Animator) {
                 with(binding) {
-                    // 평민 레벨 이미지, 말풍선 제거
                     ivGoalPathLv1.isVisible = false
-                    llGoalPathLv2Lock.isVisible = false
-                    ivGoalPathLv2LockDashLine.isVisible = false
-
-                    // 로티 애니메이션 뷰 표시
                     lottieGoalPathStep1.isVisible = true
                 }
             }
 
             override fun onAnimationEnd(animation: Animator) {
                 with(binding) {
-                    // 로티 애니메이션 뷰 제거
                     lottieGoalPathStep1.isVisible = false
-
-                    // 말풍선 제거
-                    llGoalPathLv2Lock.isVisible = false
-                    ivGoalPathLv2LockDashLine.isVisible = false
-
-                    // 기사 레벨 이미지 표시
                     ivGoalPathLv2.isVisible = true
                 }
             }
