@@ -53,7 +53,7 @@
                     android:layout_marginStart="4dp"
                     android:text="@string/goal_path_lv3_lock_money"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
-                    app:textColor="@drawable/sel_all_checkbox_text_color" />
+                    android:textColor="@drawable/sel_all_checkbox_text_color" />
             </LinearLayout>
 
             <LinearLayout
@@ -76,7 +76,7 @@
                     android:layout_marginStart="4dp"
                     android:text="@string/goal_path_lv3_lock_feed"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
-                    app:textColor="@drawable/sel_all_checkbox_text_color" />
+                    android:textColor="@drawable/sel_all_checkbox_text_color" />
             </LinearLayout>
         </LinearLayout>
 
