@@ -272,4 +272,11 @@
     <string name="goal_path_guide_level">다음 레벨까지</string>
     <string name="goal_path_remaining_money">을 더 절약해보세요.</string>
     <string name="goal_path_remaining_feed">의 절약피드를 더 올려야 해요.</string>
+    <string name="goal_path_lock_guide_title">레벨업 방법</string>
+    <string name="goal_path_lv2_lock_money">누적 3만원 이상 절약하기</string>
+    <string name="goal_path_lv2_lock_feed">누적 절약 피드 2개 이상 올리기</string>
+    <string name="goal_path_lv3_lock_money">누적 15만원 이상 절약하기</string>
+    <string name="goal_path_lv3_lock_feed">누적 절약 피드 4개 이상 올리기</string>
+    <string name="goal_path_lv4_lock_money">누적 30만원 이상 절약하기</string>
+    <string name="goal_path_lv4_lock_feed">누적 절약 피드 10개 이상 올리기</string>
 </resources>
