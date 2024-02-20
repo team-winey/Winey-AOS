@@ -102,9 +102,9 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     private fun showLottieAnimation() {
         lifecycleScope.launch {
             delay(DELAY_TIME)
-            navigateTo<GoalPathActivity>()
+            checkAppUpdateInfo()
 
-            //checkAppUpdateInfo()
+            //navigateTo<GoalPathActivity>()
         }
     }
 
