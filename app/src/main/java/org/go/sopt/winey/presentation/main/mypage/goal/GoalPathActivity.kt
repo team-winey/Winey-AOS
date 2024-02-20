@@ -23,7 +23,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
 
     private inline fun <reified T : Fragment> navigateTo() {
         supportFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
+            replace<T>(R.id.fcv_goal_path, T::class.simpleName)
         }
     }
 }
