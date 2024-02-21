@@ -331,8 +331,8 @@ fun CircleImageView.setWriterLevelImage(writerLevel: Int) {
 }
 
 @BindingAdapter("setMyPageLevelResource", "imageViewId")
-fun ImageView.setMyPageLevelResource(userLevel: String?, imageViewId: String) {
-    userLevel?.let { userLevel ->
+fun ImageView.setMyPageLevelResource(userLevel: String, imageViewId: String) {
+    userLevel.let { userLevel ->
         imageViewId.let { imageViewId ->
             val imageResource: Int = when (imageViewId) {
                 "SAVER" -> {
@@ -346,6 +346,7 @@ fun ImageView.setMyPageLevelResource(userLevel: String?, imageViewId: String) {
                         }
                     }
                 }
+
                 "BUBBLE" -> {
                     when (userLevel) {
                         "평민" -> R.drawable.img_mypage_bubble_lv1
@@ -358,7 +359,9 @@ fun ImageView.setMyPageLevelResource(userLevel: String?, imageViewId: String) {
                     }
                 }
 
-                else -> { R.drawable.img_mypage_saver_lv1 }
+                else -> {
+                    R.drawable.img_mypage_saver_lv1
+                }
             }
             setImageResource(imageResource)
         }
