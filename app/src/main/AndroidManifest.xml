@@ -85,8 +85,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.main.mypage.goal.GoalPathActivity"
-            android:exported="false" />
-
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.main.mypage.myfeed.MyFeedActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">

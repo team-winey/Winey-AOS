@@ -11,14 +11,14 @@ import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import org.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import org.go.sopt.winey.data.source.AuthDataSource
 import org.go.sopt.winey.domain.entity.Goal
-import org.go.sopt.winey.domain.entity.User
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.AuthRepository
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource
 ) : AuthRepository {
-    override suspend fun getUser(): Result<User?> =
+    override suspend fun getUser(): Result<UserV2?> =
         runCatching {
             authDataSource.getUser().data?.toUser()
         }
