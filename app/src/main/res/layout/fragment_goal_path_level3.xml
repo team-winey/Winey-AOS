@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
+
+        <ImageView
+            android:id="@+id/iv_goal_path_lv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_goal_path_lv3_4" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_goal_path_step3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/lottie_goal_path_step3" />
+
+        <ImageView
+            android:id="@+id/iv_goal_path_lv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_goal_path_lv4"
+            android:visibility="invisible" />
+    </FrameLayout>
+</layout>

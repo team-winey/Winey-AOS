@@ -19,6 +19,7 @@
         android:theme="@style/Theme.Winey"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <service
             android:name=".configuration.WineyMessagingService"
             android:enabled="true"
@@ -80,6 +81,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.main.notification.NotificationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.main.mypage.goal.GoalPathActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
