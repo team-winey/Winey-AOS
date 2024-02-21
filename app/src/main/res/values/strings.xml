@@ -270,6 +270,8 @@
 
     <!-- goal path -->
     <string name="goal_path_guide_level">다음 레벨까지</string>
-    <string name="goal_path_remaining_money">을 더 절약해보세요.</string>
-    <string name="goal_path_remaining_feed">의 절약피드를 더 올려야 해요.</string>
+    <string name="goal_path_money_guide">을 더 절약해보세요.</string>
+    <string name="goal_path_feed_guide">의 절약피드를 더 올려야 해요.</string>
+    <string name="goal_path_remaining_money">%s원</string>
+    <string name="goal_path_remaining_feed">%d개</string>
 </resources>
