@@ -109,6 +109,12 @@
     <string name="mypage_trip">목표까지 남은 여정</string>
     <string name="mypage_item_title">위니를 만나고</string>
     <string name="mypage_2weeks_title">최근 2주간</string>
+    <string name="mypage_description_eat">%s 이만큼\n먹을 수 있어요</string>
+    <string name="mypage_description_buy">%s 이만큼\n살 수 있어요</string>
+    <string name="mypage_save_for_100days_prefix">100일간 총\t</string>
+    <string name="mypage_save_for_100days_suffix">원을 아꼈네요.</string>
+    <string name="mypage_save_for_2weeks">원을 절약했어요</string>
+    <string name="mypage_waste_for_2weeks">원을 낭비했어요</string>
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>

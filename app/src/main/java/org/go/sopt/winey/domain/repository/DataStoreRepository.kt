@@ -2,7 +2,7 @@ package org.go.sopt.winey.domain.repository
 
 import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.flow.Flow
-import org.go.sopt.winey.domain.entity.User
+import org.go.sopt.winey.domain.entity.UserV2
 
 interface DataStoreRepository {
     suspend fun saveSocialToken(socialAccessToken: String, socialRefreshToken: String)
@@ -25,9 +25,9 @@ interface DataStoreRepository {
 
     suspend fun getUserId(): Flow<Int?>
 
-    suspend fun saveUserInfo(userInfo: User?)
+    suspend fun saveUserInfo(userInfo: UserV2?)
 
-    suspend fun getUserInfo(): Flow<User?>
+    suspend fun getUserInfo(): Flow<UserV2?>
 
     suspend fun clearDataStore()
 }
