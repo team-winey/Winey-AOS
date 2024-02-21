@@ -7,6 +7,7 @@ import org.go.sopt.winey.data.model.remote.request.RequestPatchFcmTokenDto
 import org.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import org.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
+import org.go.sopt.winey.data.model.remote.response.ResponseGetRemainingGoalDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import org.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
@@ -56,4 +57,7 @@ class AuthDataSource @Inject constructor(
         requestPatchFcmTokenDto: RequestPatchFcmTokenDto
     ): BaseResponse<Unit> =
         authService.patchFcmToken(requestPatchFcmTokenDto)
+
+    suspend fun getRemainingGoal(): BaseResponse<ResponseGetRemainingGoalDto> =
+        authService.getRemainingGoal()
 }

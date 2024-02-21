@@ -11,6 +11,7 @@ import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import org.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import org.go.sopt.winey.data.source.AuthDataSource
 import org.go.sopt.winey.domain.entity.Goal
+import org.go.sopt.winey.domain.entity.RemainingGoal
 import org.go.sopt.winey.domain.entity.User
 import org.go.sopt.winey.domain.repository.AuthRepository
 import javax.inject.Inject
@@ -71,5 +72,10 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun patchFcmToken(token: String): Result<Unit> =
         runCatching {
             authDataSource.patchFcmToken(RequestPatchFcmTokenDto(fcmToken = token))
+        }
+
+    override suspend fun getRemainingGoal(): Result<RemainingGoal?> =
+        runCatching {
+            authDataSource.getRemainingGoal().data?.toRemainingGoal()
         }
 }
