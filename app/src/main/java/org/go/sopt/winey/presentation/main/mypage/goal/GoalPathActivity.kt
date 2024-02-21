@@ -26,6 +26,8 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         super.onCreate(savedInstanceState)
 
         setupDefaultFragment(savedInstanceState)
+
+        // todo: 데이터스토어에 저장된 유저 정보로 바인딩 하도록 변경 (굳이 별도의 api 필요 없음)
         initGetGoalStateObserver()
     }
 
