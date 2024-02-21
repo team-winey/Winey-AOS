@@ -36,7 +36,6 @@ import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.snackBar
-import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
@@ -64,7 +63,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         registerBackPressedCallback()
         setupGetUserState()
-        setupDeleteUserState()
 
         checkFromWineyFeed()
 
@@ -176,24 +174,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun setupDeleteUserState() {
-        myPageViewModel.deleteUserState.flowWithLifecycle(viewLifeCycle)
-            .onEach { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        myPageViewModel.clearDataStore()
-                        navigateToGuideScreen()
-                    }
-
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> {
-                    }
-                }
-            }.launchIn(viewLifeCycleScope)
-    }
 
     private fun navigateToGuideScreen() {
         Intent(requireContext(), GuideActivity::class.java).apply {

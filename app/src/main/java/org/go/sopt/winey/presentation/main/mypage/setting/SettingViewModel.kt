@@ -23,6 +23,11 @@ class SettingViewModel @Inject constructor(
     private val _deleteUserState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteUserState: StateFlow<UiState<Unit>> = _deleteUserState.asStateFlow()
 
+
+    private val _patchAllowedNotificationState = MutableStateFlow<UiState<Boolean?>>(UiState.Empty)
+    val patchAllowedNotificationState: StateFlow<UiState<Boolean?>> =
+        _patchAllowedNotificationState.asStateFlow()
+
     fun deleteUser() {
         viewModelScope.launch {
             authRepository.deleteUser()
@@ -40,6 +45,33 @@ class SettingViewModel @Inject constructor(
 
                     Timber.e("FAIL DELETE USER: ${t.message}")
                 }
+        }
+    }
+
+    fun patchAllowedNotification(isAllowed: Boolean) {
+        viewModelScope.launch {
+            authRepository.patchAllowedNotification(!isAllowed)
+                .onSuccess { response ->
+                    Timber.d("SUCCESS PATCH ALLOWED NOTI")
+                    _patchAllowedNotificationState.value = UiState.Success(response)
+                }
+                .onFailure { t ->
+                    _patchAllowedNotificationState.value = UiState.Failure(t.message.toString())
+
+                    if (t is HttpException) {
+                        Timber.e("HTTP FAIL ALLOWED NOTI : ${t.code()} ${t.message}")
+                        return@onFailure
+                    }
+
+                    Timber.e("FAIL ALLOWED NOTI : ${t.message}")
+                }
+        }
+    }
+
+
+    fun clearDataStore() {
+        viewModelScope.launch {
+            dataStoreRepository.clearDataStore()
         }
     }
 
