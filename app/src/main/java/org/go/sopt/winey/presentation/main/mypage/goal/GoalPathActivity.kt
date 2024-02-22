@@ -1,6 +1,7 @@
 package org.go.sopt.winey.presentation.main.mypage.goal
 
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
@@ -23,10 +24,10 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setupGoalPathByUserLevel()
+        setupFragmentByLevel()
     }
 
-    private fun setupGoalPathByUserLevel() {
+    private fun setupFragmentByLevel() {
         lifecycleScope.launch {
             val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
             when (userInfo.userLevel) {
@@ -43,6 +44,8 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 }
 
                 UserLevel.FORTH.rankName -> {
+                    binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
+                    binding.clGoalPathGuide.isVisible = false
                     navigateTo<GoalPathLevel4Fragment>()
                 }
             }
