@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="org.go.sopt.winey.domain.entity.UserV2" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_wineyfeed_goal_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="14dp"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_600"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/wineyfeed_goal_progressbar_title" />
+
+        <TextView
+            android:id="@+id/tv_wineyfeed_goal_current_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+            app:layout_constraintStart_toStartOf="@id/tv_wineyfeed_goal_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_goal_title"
+            tools:text="18,000원" />
+
+        <TextView
+            android:id="@+id/tv_wineyfeed_goal_target_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+            android:textColor="@color/gray_500"
+            app:layout_constraintBottom_toBottomOf="@id/tv_wineyfeed_goal_current_money"
+            app:layout_constraintStart_toEndOf="@id/tv_wineyfeed_goal_current_money"
+            app:layout_constraintTop_toTopOf="@id/tv_wineyfeed_goal_current_money"
+            tools:text=" / 3만원" />
+
+        <ProgressBar
+            android:id="@+id/pb_wineyfeed_goal"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="10dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:progress="70"
+            android:progressDrawable="@drawable/progressbar_wineyfeed_goal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_goal_current_money"
+            tools:progress="70" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_wineyfeed_goal"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="16dp"
+            app:dividerColor="@color/gray_100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pb_wineyfeed_goal" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
