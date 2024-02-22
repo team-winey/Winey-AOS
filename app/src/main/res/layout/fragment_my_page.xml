@@ -568,7 +568,7 @@
                     <View
                         android:layout_width="0dp"
                         android:layout_height="8dp"
-                        android:background="@drawable/shape_red100_rect"
+                        android:background="@drawable/shape_red100_fill_rect"
                         app:layout_constraintBottom_toBottomOf="@id/tv_mypage_spend_description"
                         app:layout_constraintEnd_toEndOf="@id/tv_mypage_spend_description"
                         app:layout_constraintStart_toStartOf="@id/tv_mypage_spend_description" />
