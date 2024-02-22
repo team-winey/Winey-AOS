@@ -32,6 +32,8 @@ data class ResponseGetWineyFeedListDto(
             val feedMoney: Long,
             @SerialName("feedTitle")
             val feedTitle: String,
+            @SerialName("feedType")
+            val feedType: String?,
             @SerialName("isLiked")
             val isLiked: Boolean,
             @SerialName("likes")
@@ -65,6 +67,7 @@ data class ResponseGetWineyFeedListDto(
             feedImage = feed.feedImage,
             feedMoney = feed.feedMoney,
             feedTitle = feed.feedTitle,
+            feedType = feed.feedType,
             isLiked = feed.isLiked,
             likes = feed.likes,
             nickName = feed.nickName,
