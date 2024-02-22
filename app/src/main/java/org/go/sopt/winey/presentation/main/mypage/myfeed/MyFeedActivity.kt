@@ -54,7 +54,6 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
         super.onStart()
 
         if (clickedFeedId != -1) {
-            Timber.d("onStart getDetailFeed")
             viewModel.getDetailFeed(clickedFeedId)
         }
     }
@@ -96,7 +95,6 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun saveClickedFeedId(feedId: Int) {
-        Timber.d("CLICKED FEED ID: $feedId")
         clickedFeedId = feedId
     }
 
@@ -192,10 +190,8 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        Timber.e("PAGING DATA SUBMIT in Fragment")
                         val pagingData = state.data
                         myFeedAdapter.submitData(pagingData)
-                        viewModel.initGetMyFeedListState()
                     }
 
                     is UiState.Failure -> {
