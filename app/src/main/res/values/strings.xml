@@ -25,8 +25,8 @@
 
     <string name="wineyfeed_feed_type_save">절약했어요</string>
     <string name="wineyfeed_feed_type_consume">낭비했어요</string>
-    <string name="wineyfeed_item_save_money"> + %s원</string>
-    <string name="wineyfeed_item_consume_money"> - %s원</string>
+    <string name="wineyfeed_item_save_money">&#160;+&#160;%s원</string>
+    <string name="wineyfeed_item_consume_money">&#160;-&#160;%s원</string>
 
     <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
     <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
