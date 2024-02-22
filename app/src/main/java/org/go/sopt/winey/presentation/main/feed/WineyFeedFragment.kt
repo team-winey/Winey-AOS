@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.activity.showReportGoogleForm
@@ -355,6 +357,41 @@ class WineyFeedFragment :
         }
     }
 
+    private fun setupGetUserState() {
+        mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Success -> {
+                    val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@onEach
+
+                    // todo: 남은 금액, 횟수가 모두 0이면 -> 레벨업 축하 다이얼로그 -> 목표여정 액티비티로 전환
+                    //showCongratulationDialog()
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                else -> {}
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun showCongratulationDialog() {
+        val dialog = WineyDialogFragment.newInstance(
+            wineyDialogLabel = WineyDialogLabel(
+                title = stringOf(R.string.wineyfeed_congratulation_dialog_title),
+                subTitle = stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
+                positiveButtonLabel = stringOf(R.string.wineyfeed_congratulation_dialog_positive_button)
+            ),
+            handleNegativeButton = {},
+            handlePositiveButton = {
+                navigateToGoalPath()
+            }
+        )
+
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
+    }
+
     /** Navigation */
     private fun navigateToUpload(feedType: WineyFeedType) {
         Intent(requireContext(), UploadActivity::class.java).apply {
@@ -368,6 +405,12 @@ class WineyFeedFragment :
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
             putExtra(KEY_PREV_SCREEN_NAME, VAL_WINEY_FEED_SCREEN)
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToGoalPath() {
+        Intent(requireContext(), GoalPathActivity::class.java).apply {
             startActivity(this)
         }
     }
@@ -447,28 +490,6 @@ class WineyFeedFragment :
         )
 
         activity?.supportFragmentManager?.let { dialog.show(it, TAG_DEFAULT_GOAL_SETTING_DIALOG) }
-    }
-
-    private fun showCongratulationDialog() {
-        amplitudeUtils.logEvent("view_goalsetting_popup")
-
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.wineyfeed_congratulation_dialog_title),
-                stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
-                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
-            ),
-            handleNegativeButton = {
-                sendDialogClickEvent(false)
-            },
-            handlePositiveButton = {
-                sendDialogClickEvent(true)
-                navigateToMyPageWithBundle()
-            }
-        )
-
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
     }
 
     private fun navigateToMyPageWithBundle() {
