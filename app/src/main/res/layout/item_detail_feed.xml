@@ -126,7 +126,7 @@
                 tools:background="@drawable/shape_green500_line_6_rect">
 
                 <TextView
-                    android:id="@+id/tv_wineyfeed_type"
+                    android:id="@+id/tv_detail_feed_type"
                     switchFeedTypeText="@{data.feedType}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -135,14 +135,13 @@
                     tools:textColor="@color/sub_green_500" />
 
                 <TextView
-                    android:id="@+id/tv_wineyfeed_money"
+                    android:id="@+id/tv_detail_feed_money"
                     feedMoney="@{data.feedMoney}"
                     feedType="@{data.feedType}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
                     tools:text=" + 4,500원" />
-
             </LinearLayout>
 
             <TextView
