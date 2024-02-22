@@ -67,7 +67,7 @@ data class ResponseGetWineyFeedListDto(
             feedImage = feed.feedImage,
             feedMoney = feed.feedMoney,
             feedTitle = feed.feedTitle,
-            feedType = feed.feedType,
+            feedType = feed.feedType ?: "",
             isLiked = feed.isLiked,
             likes = feed.likes,
             nickName = feed.nickName,

@@ -469,9 +469,9 @@ fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
 }
 
 @BindingAdapter("switchFeedTypeBackground")
-fun LinearLayout.switchFeedTypeBackground(feedType: String?) {
+fun LinearLayout.switchFeedTypeBackground(feedType: String) {
     val context = this.context ?: return
-    background = when (feedType ?: "") {
+    background = when (feedType) {
         WineyFeedType.CONSUME.name -> {
             context.drawableOf(R.drawable.shape_red500_line_6_rect)
         }
@@ -483,9 +483,9 @@ fun LinearLayout.switchFeedTypeBackground(feedType: String?) {
 }
 
 @BindingAdapter("switchFeedTypeText")
-fun TextView.switchFeedTypeText(feedType: String?) {
+fun TextView.switchFeedTypeText(feedType: String) {
     val context = this.context ?: return
-    when (feedType ?: "") {
+    when (feedType) {
         WineyFeedType.CONSUME.name -> {
             text = context.stringOf(R.string.wineyfeed_feed_type_consume)
             setTextColor(context.colorOf(R.color.sub_red_500))
@@ -499,10 +499,10 @@ fun TextView.switchFeedTypeText(feedType: String?) {
 }
 
 @BindingAdapter("feedType", "feedMoney")
-fun TextView.switchFeedMoney(feedType: String?, feedMoney: Long) {
+fun TextView.switchFeedMoney(feedType: String, feedMoney: Long) {
     val context = this.context ?: return
     val formattedMoney = feedMoney.toInt().formatAmountNumber()
-    text = when (feedType ?: "") {
+    text = when (feedType) {
         WineyFeedType.CONSUME.name -> {
             context.getString(R.string.wineyfeed_item_consume_money, formattedMoney)
         }

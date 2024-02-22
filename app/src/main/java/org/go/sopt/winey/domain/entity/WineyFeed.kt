@@ -5,7 +5,7 @@ data class WineyFeed(
     val feedImage: String,
     val feedMoney: Long,
     val feedTitle: String,
-    val feedType: String?,
+    val feedType: String,
     var isLiked: Boolean,
     var likes: Long,
     val nickName: String,

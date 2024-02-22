@@ -137,7 +137,6 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
                 tools:text=" + 4,500원" />
-
         </LinearLayout>
 
         <TextView
