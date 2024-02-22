@@ -16,7 +16,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
-import com.google.android.material.card.MaterialCardView
 import de.hdodenhof.circleimageview.CircleImageView
 import org.go.sopt.winey.R
 import org.go.sopt.winey.presentation.main.feed.WineyFeedType
