@@ -266,10 +266,8 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        Timber.e("PAGING DATA SUBMIT in Fragment")
                         val pagingData = state.data
                         wineyFeedAdapter.submitData(pagingData)
-                        viewModel.initGetWineyFeedListState()
                     }
 
                     is UiState.Failure -> {

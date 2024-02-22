@@ -48,7 +48,6 @@ class WineyFeedViewModel @Inject constructor(
         getWineyFeedList()
     }
 
-    // todo: 위니피드 조회 시, 절약 vs 과소비 타입에 따라 버튼 디자인 바뀌도록 변경
     private fun getWineyFeedList() {
         viewModelScope.launch {
             _getWineyFeedListState.emit(UiState.Loading)
@@ -58,14 +57,9 @@ class WineyFeedViewModel @Inject constructor(
                     handleFailureState(_getWineyFeedListState, t)
                 }
                 .collectLatest { pagingData ->
-                    Timber.e("PAGING DATA COLLECT in ViewModel")
                     _getWineyFeedListState.emit(UiState.Success(pagingData))
                 }
         }
-    }
-
-    fun initGetWineyFeedListState() {
-        _getWineyFeedListState.value = UiState.Empty
     }
 
     fun getDetailFeed(feedId: Int) {
