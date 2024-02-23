@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityGoalPathBinding
 import org.go.sopt.winey.domain.repository.DataStoreRepository
-import org.go.sopt.winey.presentation.main.mypage.goal.model.UserLevel
+import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.util.binding.BindingActivity
 import javax.inject.Inject
 

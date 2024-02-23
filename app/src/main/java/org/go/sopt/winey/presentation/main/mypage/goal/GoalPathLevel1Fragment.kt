@@ -4,18 +4,31 @@ import android.animation.Animator
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentGoalPathLevel1Binding
+import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.util.binding.BindingFragment
+import org.go.sopt.winey.util.fragment.viewLifeCycleScope
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class GoalPathLevel1Fragment :
     BindingFragment<FragmentGoalPathLevel1Binding>(R.layout.fragment_goal_path_level1) {
+    @Inject
+    lateinit var dataStoreRepository: DataStoreRepository
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initGoalPathUnlockGuide()
         initAnimatorListener()
+    }
 
-        // todo: 목표 달성 현황에 따라 체크박스 이미지 변경
+    private fun initGoalPathUnlockGuide() {
+
     }
 
     private fun initAnimatorListener() {
