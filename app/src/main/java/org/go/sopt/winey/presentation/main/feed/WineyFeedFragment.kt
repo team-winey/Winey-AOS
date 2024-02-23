@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -59,6 +60,7 @@ class WineyFeedFragment :
     private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
+    private lateinit var wineyFeedGoalAdapter: WineyFeedGoalAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
     private var clickedFeedId = -1
 
@@ -84,7 +86,6 @@ class WineyFeedFragment :
     override fun onStart() {
         super.onStart()
         if (clickedFeedId != -1) {
-            Timber.d("onStart getDetailFeed")
             viewModel.getDetailFeed(clickedFeedId)
         }
     }
@@ -105,6 +106,7 @@ class WineyFeedFragment :
 
     /** Adapter */
     private fun initAdapter() {
+        initGoalAdapter()
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter(
             onBannerClicked = {
                 navigateToWineyInstagram()
@@ -127,8 +129,16 @@ class WineyFeedFragment :
 
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
+            wineyFeedGoalAdapter,
             wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
         )
+    }
+
+    private fun initGoalAdapter() {
+        viewLifeCycleScope.launch {
+            val user = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
+            wineyFeedGoalAdapter = WineyFeedGoalAdapter(user)
+        }
     }
 
     private fun navigateToWineyInstagram() {
@@ -138,7 +148,6 @@ class WineyFeedFragment :
     }
 
     private fun saveClickedFeedId(feedId: Int) {
-        Timber.d("CLICKED FEED ID: $feedId")
         clickedFeedId = feedId
     }
 
