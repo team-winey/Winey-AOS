@@ -15,6 +15,7 @@ import org.go.sopt.winey.databinding.ActivityGoalPathBinding
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.util.binding.BindingActivity
+import org.go.sopt.winey.util.number.formatAmountNumber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,26 +29,43 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         super.onCreate(savedInstanceState)
 
         setupFragmentByLevel()
+        initRemainingGoal()
+    }
+
+    private fun initRemainingGoal() {
+        lifecycleScope.launch {
+            val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
+            binding.tvGoalPathRemainingMoney.text =
+                getString(
+                    R.string.goal_path_remaining_money,
+                    userInfo.remainingAmount.formatAmountNumber()
+                )
+            binding.tvGoalPathRemainingFeed.text =
+                getString(R.string.goal_path_remaining_feed, userInfo.remainingCount)
+        }
     }
 
     private fun setupFragmentByLevel() {
-        when (viewModel.userInfo.userLevel) {
-            UserLevel.FIRST.rankName -> {
-                navigateTo<GoalPathLevel1Fragment>()
-            }
+        lifecycleScope.launch {
+            val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
+            when (userInfo.userLevel) {
+                UserLevel.FIRST.rankName -> {
+                    navigateTo<GoalPathLevel1Fragment>()
+                }
 
-            UserLevel.SECOND.rankName -> {
-                navigateTo<GoalPathLevel2Fragment>()
-            }
+                UserLevel.SECOND.rankName -> {
+                    navigateTo<GoalPathLevel2Fragment>()
+                }
 
-            UserLevel.THIRD.rankName -> {
-                navigateTo<GoalPathLevel3Fragment>()
-            }
+                UserLevel.THIRD.rankName -> {
+                    navigateTo<GoalPathLevel3Fragment>()
+                }
 
-            UserLevel.FORTH.rankName -> {
-                binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
-                binding.clGoalPathGuide.isVisible = false
-                navigateTo<GoalPathLevel4Fragment>()
+                UserLevel.FORTH.rankName -> {
+                    binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
+                    binding.clGoalPathGuide.isVisible = false
+                    navigateTo<GoalPathLevel4Fragment>()
+                }
             }
         }
     }

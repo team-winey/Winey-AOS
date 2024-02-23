@@ -23,6 +23,7 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivitySplashBinding
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.colorOf
@@ -101,7 +102,8 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     private fun showLottieAnimation() {
         lifecycleScope.launch {
             delay(DELAY_TIME)
-            checkAppUpdateInfo()
+            //checkAppUpdateInfo()
+            navigateTo<GoalPathActivity>()
         }
     }
 
