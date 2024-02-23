@@ -123,7 +123,9 @@ class DataStoreRepositoryImpl @Inject constructor(
                         amountSpentTwoWeeks = 0,
                         fcmIsAllowed = true,
                         remainingCount = 0,
-                        remainingAmount = 0
+                        remainingAmount = 0,
+                        isLevelUpAmountConditionMet = false,
+                        isLevelUpCountConditionMet = false
                     )
                 }
             }

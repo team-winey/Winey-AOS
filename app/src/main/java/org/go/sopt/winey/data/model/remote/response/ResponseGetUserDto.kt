@@ -46,7 +46,51 @@ data class ResponseGetUserDto(
             amountSavedTwoWeeks = userData.amountSavedTwoWeeks,
             amountSpentTwoWeeks = userData.amountSpentTwoWeeks,
             remainingAmount = userData.remainingAmount,
-            remainingCount = userData.remainingCount
+            remainingCount = userData.remainingCount,
+            isLevelUpAmountConditionMet = checkIsLevelUpAmountConditionMet(userData),
+            isLevelUpCountConditionMet = checkIsLevelUpCountConditionMet(userData)
         )
+    }
+
+    private fun checkIsLevelUpAmountConditionMet(userData: UserData): Boolean {
+        val isLevelUpAmountConditionMet: Boolean = when (userData.userLevel) {
+            "평민" -> {
+                userData.accumulatedAmount >= 30000
+            }
+
+            "기사" -> {
+                userData.accumulatedAmount >= 150000
+            }
+
+            "귀족" -> {
+                userData.accumulatedAmount >= 300000
+            }
+
+            else -> {
+                false
+            }
+        }
+        return isLevelUpAmountConditionMet
+    }
+
+    private fun checkIsLevelUpCountConditionMet(userData: UserData): Boolean {
+        val isLevelUpCountConditionMet: Boolean = when (userData.userLevel) {
+            "평민" -> {
+                userData.accumulatedCount >= 2
+            }
+
+            "기사" -> {
+                userData.accumulatedAmount >= 4
+            }
+
+            "귀족" -> {
+                userData.accumulatedAmount >= 10
+            }
+
+            else -> {
+                false
+            }
+        }
+        return isLevelUpCountConditionMet
     }
 }
