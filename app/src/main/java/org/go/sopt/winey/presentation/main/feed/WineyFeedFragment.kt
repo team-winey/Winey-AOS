@@ -138,7 +138,7 @@ class WineyFeedFragment :
     private fun initGoalAdapter() {
         viewLifeCycleScope.launch {
             val user = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
-            wineyFeedGoalAdapter = WineyFeedGoalAdapter(user)
+            wineyFeedGoalAdapter = WineyFeedGoalAdapter(requireContext(), user)
         }
     }
 
@@ -273,7 +273,7 @@ class WineyFeedFragment :
 
     /** Observer */
     private fun initGetUserStateObserver() {
-        // todo: 피드 업로드 직후에 메인 액티비티에서 getUser 함수 호출
+        // 피드 생성에 따른 유저 데이터 변경 (프로그레스바에 반영)
         mainViewModel.getUserState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
                 when (state) {
