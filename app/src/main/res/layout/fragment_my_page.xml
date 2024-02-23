@@ -183,7 +183,6 @@
                                     android:id="@+id/iv_mypage_goal_money"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_mypage_checked"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -192,7 +191,6 @@
                                     android:id="@+id/tv_mypage_goal_money"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/mypage_goal_amount_lv1"
                                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
                                     android:textColor="@color/gray_900"
                                     android:layout_marginStart="6dp"
@@ -204,7 +202,6 @@
                                     android:id="@+id/tv_mypage_goal_money_current"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="3만원 절약 완료"
                                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
                                     android:textColor="@color/gray_400"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -224,7 +221,6 @@
                                     android:id="@+id/iv_mypage_goal_count"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_mypage_checked"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -244,7 +240,6 @@
                                     android:id="@+id/tv_mypage_goal_count_current"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="누적 절약 피드 1개"
                                     android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
                                     android:textColor="@color/gray_400"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -260,7 +255,6 @@
                             android:id="@+id/tv_mypage_profile_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="10,000원만 더 !"
                             android:textAppearance="@style/TextAppearance.WINEY.Headline_b_20_xl"
                             android:textColor="@color/gray_900"
                             android:layout_marginTop="8dp"
@@ -290,7 +284,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:layout_marginStart="16dp"
-                            android:text="2만원 절약중"
                             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
                             android:textColor="@color/gray_900"
                             app:layout_constraintStart_toStartOf="parent"

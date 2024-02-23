@@ -9,6 +9,8 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -35,6 +37,9 @@ import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
+import org.go.sopt.winey.util.currency.MoneyCurrency.convertToKoreanCurrencyFormat
+import org.go.sopt.winey.util.currency.MoneyCurrency.formatWithCommaForMoney
+import org.go.sopt.winey.util.fragment.drawableOf
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
@@ -234,40 +239,45 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun setUpUserGoalByLevel(data: UserV2) {
-        when (data.userLevel) {
-            "평민" -> {
-                binding.apply {
-                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv1)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv1)
-                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
-                }
-            }
+        val goalInfo = when (data.userLevel) {
+            "평민" -> Triple(R.string.mypage_goal_lv1, R.string.mypage_goal_amount_lv1, R.string.mypage_goal_count_lv1)
+            "기사" -> Triple(R.string.mypage_goal_lv2, R.string.mypage_goal_amount_lv2, R.string.mypage_goal_count_lv2)
+            "귀족" -> Triple(R.string.mypage_goal_lv3, R.string.mypage_goal_amount_lv3, R.string.mypage_goal_count_lv3)
+            "황제" -> null
+            else -> null
+        }
 
-            "기사" -> {
-                binding.apply {
-                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv2)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv2)
-                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
-
-                }
-            }
-
-            "귀족" -> {
-                binding.apply {
-                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv3)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
-                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
-                }
-            }
-
-            "황제" -> {
-                binding.apply {
-                    clMypageGoal.isVisible = false
-                    pbMypage.isVisible = false
-                }
+        binding.apply {
+            if (goalInfo == null) {
+                clMypageGoal.isVisible = false
+                pbMypage.isVisible = false
+            } else {
+                tvMypageProfileGoalItem.text = getString(goalInfo.first)
+                tvMypageGoalMoney.text = getString(goalInfo.second)
+                tvMypageGoalCount.text = getString(goalInfo.third)
             }
         }
     }
+
+    private fun setUpUserDataByGoal(data: UserV2) {
+        binding.apply {
+            tvMypageProfileMoney.text = getString(R.string.mypage_reamining_amount, formatWithCommaForMoney(data.remainingAmount))
+            tvMypageProfileCurrent.text = getString(R.string.mypage_current_amount, convertToKoreanCurrencyFormat(data.accumulatedAmount))
+            updateGoalStatus(data.isLevelUpAmountConditionMet, data.accumulatedAmount, tvMypageGoalMoneyCurrent, ivMypageGoalMoney)
+            updateGoalStatus(data.isLevelUpCountConditionMet, data.accumulatedCount, tvMypageGoalCountCurrent, ivMypageGoalCount)
+        }
+    }
+
+    private fun updateGoalStatus(isConditionMet: Boolean, amount: Int, textGoal: TextView, imageGoal: ImageView) {
+        if (isConditionMet) {
+            textGoal.text = getString(R.string.mypage_goal_amount_complete, convertToKoreanCurrencyFormat(amount))
+            imageGoal.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
+        } else {
+            textGoal.text = getString(R.string.mypage_goal_amount_incomplete, convertToKoreanCurrencyFormat(amount))
+            imageGoal.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
+        }
+    }
+
 
     private fun setupGetUserState() {
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
@@ -276,6 +286,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     val data = dataStoreRepository.getUserInfo().first() ?: return@onEach
                     updateUserInfo(data)
                     setUpUserGoalByLevel(data)
+                    setUpUserDataByGoal(data)
                 }
 
                 is UiState.Failure -> {

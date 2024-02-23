@@ -113,6 +113,12 @@
     <string name="mypage_description_buy">%s 이만큼\n살 수 있어요</string>
     <string name="mypage_save_for_100days_prefix">100일간 총\t</string>
     <string name="mypage_save_for_100days_suffix">원을 아꼈네요.</string>
+    <string name="mypage_reamining_amount">%s원만 더!</string>
+    <string name="mypage_current_amount">%s 절약중</string>
+    <string name="mypage_goal_amount_complete">%s 절약 완료</string>
+    <string name="mypage_goal_amount_incomplete">누적 절약 금액 %s</string>
+    <string name="mypage_goal_count_complete">절약 피드 %d개 업로드 완료</string>
+    <string name="mypage_goal_count_incomplete">누적 절약 피드 %d개</string>
     <string name="mypage_save_for_2weeks">원을 절약했어요</string>
     <string name="mypage_waste_for_2weeks">원을 낭비했어요</string>
 
@@ -126,6 +132,7 @@
     <string name="mypage_goal_count_lv1">절약 피드 2개 이상 올리기</string>
     <string name="mypage_goal_count_lv2">절약 피드 4개 이상 올리기</string>
     <string name="mypage_goal_count_lv3">절약 피드 10개 이상 올리기</string>
+
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
