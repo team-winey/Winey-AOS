@@ -1,13 +1,10 @@
 package org.go.sopt.winey.presentation.main.mypage
 
 import android.Manifest
-import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -29,7 +26,6 @@ import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
-import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import org.go.sopt.winey.presentation.main.mypage.setting.SettingActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
@@ -71,6 +67,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun addListener() {
         initEditNicknameButtonClickListener()
         initMyFeedButtonClickListener()
+        initSettingButtonClickListener()
         registerBackPressedCallback()
     }
 
@@ -90,44 +87,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             } else {
                 true
             }
-    }
-
-    private fun navigateToNotificationSetting(context: Context) {
-        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            setNotificationIntentActionOreo(context)
-        } else {
-            setNorificationIntentActionOreoLess(context)
-        }
-        try {
-            context.startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
-            e.printStackTrace()
-        }
-    }
-
-    private fun setNotificationIntentActionOreo(context: Context): Intent {
-        return Intent().also { intent ->
-            intent.action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
-            intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-    }
-
-    private fun setNorificationIntentActionOreoLess(context: Context): Intent {
-        return Intent().also { intent ->
-            intent.action = "android.settings.APP_NOTIFICATION_SETTINGS"
-            intent.putExtra("app_package", context.packageName)
-            intent.putExtra("app_uid", context.applicationInfo?.uid)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
-    }
-
-    private fun patchUserInfo() {
-        lifecycleScope.launch {
-            val data = dataStoreRepository.getUserInfo().first()
-            val newData = data?.copy(fcmIsAllowed = false)
-            dataStoreRepository.saveUserInfo(newData)
-        }
     }
 
     // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
@@ -153,6 +112,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun initMyFeedButtonClickListener() {
         binding.btnMypageMyfeed.setOnSingleClickListener {
             navigateToMyFeedScreen()
+        }
+    }
+
+    private fun initSettingButtonClickListener() {
+        binding.ivMypageSetting.setOnClickListener {
+            navigateToSettingScreen()
         }
     }
 
@@ -194,7 +159,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
         }
     }
-
 
     private fun navigateToGuideScreen() {
         Intent(requireContext(), GuideActivity::class.java).apply {
@@ -247,11 +211,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val bottomSheet = TargetAmountBottomSheetFragment()
         bottomSheet.show(parentFragmentManager, bottomSheet.tag)
         amplitudeUtils.logEvent("view_goalsetting")
-    }
-
-    private fun showTargetNotOverDialog() {
-        val dialog = MyPageNotOverDialogFragment()
-        dialog.show(parentFragmentManager, dialog.tag)
     }
 
     private inline fun <reified T : Fragment> navigateAndBackStack() {

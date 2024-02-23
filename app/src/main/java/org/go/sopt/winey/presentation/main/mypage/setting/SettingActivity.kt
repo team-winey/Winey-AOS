@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivitySettingBinding
-import org.go.sopt.winey.domain.entity.User
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
@@ -30,6 +30,7 @@ import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,11 +50,13 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
         addListener()
         addObserver()
         initNotificationPermissionState()
+        initUserData()
     }
 
     override fun onStart() {
         super.onStart()
         initNotificationPermissionState()
+        updateNotificationButtonByPermission()
     }
 
     private fun addListener() {
@@ -61,11 +64,14 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
         initLogoutButtonClickListener()
         initTermsButtonClickListener()
         initWithdrawButtonClickListener()
-        initNotiPermissionButtonClickListener()
+        initNotificationPermissionButtonClickListener()
+        initNotiToggleButtonClickListener()
+        initBackButtonClickListener()
     }
 
     private fun addObserver() {
-
+        setupDeleteUserState()
+        setupPatchAllowedNotificationState()
     }
 
     private fun switchOnNotification() {
@@ -80,7 +86,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
         settingViewModel.patchAllowedNotification(isAllowed = true)
     }
 
-    private fun initNotiPermissionButtonClickListener() {
+    private fun initNotificationPermissionButtonClickListener() {
         binding.llSettingAgreePermissionChange.setOnClickListener {
             showSystemNotificationSetting()
         }
@@ -112,7 +118,16 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
         )
     }
 
-    private fun updateNotificationAllowSwitchState(data: User) {
+    private fun initUserData() {
+        lifecycleScope.launch {
+            val data = dataStoreRepository.getUserInfo().first()
+            if (data != null) {
+                updateNotificationAllowSwitchState(data)
+            }
+        }
+    }
+
+    private fun updateNotificationAllowSwitchState(data: UserV2) {
         if (isNotificationPermissionAllowed) {
             binding.ivSettingAgree.isVisible = true
             binding.llSettingAgreePermissionChange.isGone = true
@@ -128,6 +143,20 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
             }
         } else {
             binding.ivSettingAgree.isGone = true
+            binding.llSettingAgreePermissionChange.isVisible = true
+            binding.tvSettingAgreePermission.isVisible = true
+        }
+    }
+
+    private fun updateNotificationButtonByPermission() {
+        if (isNotificationPermissionAllowed) {
+            binding.ivSettingAgree.isVisible = true
+
+            binding.llSettingAgreePermissionChange.isGone = true
+            binding.tvSettingAgreePermission.isGone = true
+        } else {
+            binding.ivSettingAgree.isGone = true
+
             binding.llSettingAgreePermissionChange.isVisible = true
             binding.tvSettingAgreePermission.isVisible = true
         }
@@ -182,6 +211,12 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
             val url = TERMS_URL
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
             startActivity(intent)
+        }
+    }
+
+    private fun initBackButtonClickListener() {
+        binding.ivSettingBack.setOnSingleClickListener {
+            finish()
         }
     }
 

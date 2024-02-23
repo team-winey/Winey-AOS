@@ -23,7 +23,6 @@ class SettingViewModel @Inject constructor(
     private val _deleteUserState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteUserState: StateFlow<UiState<Unit>> = _deleteUserState.asStateFlow()
 
-
     private val _patchAllowedNotificationState = MutableStateFlow<UiState<Boolean?>>(UiState.Empty)
     val patchAllowedNotificationState: StateFlow<UiState<Boolean?>> =
         _patchAllowedNotificationState.asStateFlow()
@@ -68,11 +67,9 @@ class SettingViewModel @Inject constructor(
         }
     }
 
-
     fun clearDataStore() {
         viewModelScope.launch {
             dataStoreRepository.clearDataStore()
         }
     }
-
 }

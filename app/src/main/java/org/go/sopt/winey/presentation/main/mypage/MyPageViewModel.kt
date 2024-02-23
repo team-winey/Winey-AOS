@@ -41,6 +41,4 @@ class MyPageViewModel @Inject constructor(
                 }
         }
     }
-
-
 }
