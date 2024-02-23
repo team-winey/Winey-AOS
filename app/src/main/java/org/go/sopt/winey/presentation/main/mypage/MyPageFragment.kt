@@ -11,6 +11,7 @@ import android.provider.Settings
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
@@ -232,12 +233,49 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun setUpUserGoalByLevel(data: UserV2) {
+        when (data.userLevel) {
+            "평민" -> {
+                binding.apply {
+                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv1)
+                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv1)
+                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
+                }
+            }
+
+            "기사" -> {
+                binding.apply {
+                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv2)
+                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv2)
+                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
+
+                }
+            }
+
+            "귀족" -> {
+                binding.apply {
+                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv3)
+                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
+                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
+                }
+            }
+
+            "황제" -> {
+                binding.apply {
+                    clMypageGoal.isVisible = false
+                    pbMypage.isVisible = false
+                }
+            }
+        }
+    }
+
     private fun setupGetUserState() {
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
                     val data = dataStoreRepository.getUserInfo().first() ?: return@onEach
                     updateUserInfo(data)
+                    setUpUserGoalByLevel(data)
                 }
 
                 is UiState.Failure -> {
