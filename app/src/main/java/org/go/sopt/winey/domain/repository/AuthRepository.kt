@@ -8,7 +8,6 @@ import org.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import org.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import org.go.sopt.winey.domain.entity.Goal
-import org.go.sopt.winey.domain.entity.RemainingGoal
 import org.go.sopt.winey.domain.entity.UserV2
 
 interface AuthRepository {
@@ -34,6 +33,4 @@ interface AuthRepository {
     suspend fun patchAllowedNotification(request: Boolean): Result<Boolean?>
 
     suspend fun patchFcmToken(token: String): Result<Unit>
-
-    suspend fun getRemainingGoal(): Result<RemainingGoal?>
 }
