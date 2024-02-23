@@ -111,23 +111,38 @@
                 app:layout_constraintTop_toBottomOf="@id/iv_detail_like"
                 tools:text="5,319" />
 
-            <TextView
-                android:id="@+id/tv_detail_money"
-                setAmount="@{data.feedMoney}"
-                setSuffix="@{@string/wineyfeed_money}"
+            <LinearLayout
+                android:id="@+id/ll_detail_money"
+                switchFeedTypeBackground="@{data.feedType}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="4000"
-                android:paddingHorizontal="10dp"
-                android:paddingVertical="6dp"
                 android:layout_marginTop="13dp"
                 android:layout_marginBottom="9dp"
-                android:textColor="@color/sub_green_500"
-                android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
-                android:background="@drawable/shape_green500_line_6_rect"
+                android:orientation="horizontal"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="6dp"
                 app:layout_constraintTop_toBottomOf="@id/cl_detail_image"
                 app:layout_constraintStart_toStartOf="@id/cl_detail_image"
-                app:layout_constraintBottom_toTopOf="@id/tv_detail_title"/>
+                tools:background="@drawable/shape_green500_line_6_rect">
+
+                <TextView
+                    android:id="@+id/tv_detail_feed_type"
+                    switchFeedTypeText="@{data.feedType}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                    tools:text="절약했어요"
+                    tools:textColor="@color/sub_green_500" />
+
+                <TextView
+                    android:id="@+id/tv_detail_feed_money"
+                    feedMoney="@{data.feedMoney}"
+                    feedType="@{data.feedType}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                    tools:text=" + 4,500원" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_detail_title"
@@ -141,7 +156,7 @@
                 android:textColor="@color/gray_900"
                 app:layout_constraintEnd_toStartOf="@id/iv_detail_like"
                 app:layout_constraintStart_toStartOf="@id/cl_detail_image"
-                app:layout_constraintTop_toBottomOf="@id/tv_detail_money"
+                app:layout_constraintTop_toBottomOf="@id/ll_detail_money"
                 tools:text="@string/wineyfeed_title" />
 
             <LinearLayout

@@ -23,14 +23,19 @@
     <string name="wineyfeed_banner4_subtitle">찾기 힘든 국가기관 금융혜택도</string>
     <string name="wineyfeed_banner4_title">위니 추천피드에서 한번에 볼 수 있어요!</string>
 
-    <string name="wineyfeed_fab_save">절약했어요</string>
-    <string name="wineyfeed_fab_consume">낭비했어요</string>
+    <string name="wineyfeed_upload_dialog_title">어떤 소비를 기록할까요?</string>
+    <string name="wineyfeed_feed_type_save">절약했어요</string>
+    <string name="wineyfeed_feed_type_consume">낭비했어요</string>
+    <string name="wineyfeed_item_save_money">&#160;+&#160;%s원</string>
+    <string name="wineyfeed_item_consume_money">&#160;-&#160;%s원</string>
+    <string name="wineyfeed_goal_progressbar_title">꾸준한 절약을 통해 %s가 되어보아요</string>
+    <string name="wineyfeed_goal_progressbar_current_money">%s원</string>
+    <string name="wineyfeed_goal_progressbar_target_money">&#160;/&#160;%d만원</string>
 
     <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
     <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
     <string name="wineyfeed_goal_dialog_negative_button">취소</string>
     <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
-    <string name="wineyfeed_upload_dialog_title">어떤 소비를 기록할까요?</string>
     <string name="wineyfeed_congratulation_dialog_title">🎉레벨업 축하드려요!🎉</string>
     <string name="wineyfeed_congratulation_dialog_subtitle">마이페이지에서\n목표 여정을 확인해보세요!</string>
     <string name="wineyfeed_congratulation_dialog_positive_button">확인하러 가기</string>

@@ -24,6 +24,8 @@ data class ResponseGetFeedDetailDto(
         val feedMoney: Long,
         @SerialName("feedTitle")
         val feedTitle: String,
+        @SerialName("feedType")
+        val feedType: String?,
         @SerialName("isLiked")
         val isLiked: Boolean,
         @SerialName("likes")
@@ -61,6 +63,7 @@ data class ResponseGetFeedDetailDto(
         feedImage = getFeedResponseDto.feedImage,
         feedMoney = getFeedResponseDto.feedMoney,
         feedTitle = getFeedResponseDto.feedTitle,
+        feedType = getFeedResponseDto.feedType ?: "",
         isLiked = getFeedResponseDto.isLiked,
         likes = getFeedResponseDto.likes,
         nickName = getFeedResponseDto.nickName,

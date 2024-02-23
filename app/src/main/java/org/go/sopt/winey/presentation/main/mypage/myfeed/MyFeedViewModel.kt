@@ -57,14 +57,9 @@ class MyFeedViewModel @Inject constructor(
                     handleFailureState(_getMyFeedListState, t)
                 }
                 .collectLatest { pagingData ->
-                    Timber.e("PAGING DATA COLLECT in ViewModel")
                     _getMyFeedListState.emit(UiState.Success(pagingData))
                 }
         }
-    }
-
-    fun initGetMyFeedListState() {
-        _getMyFeedListState.value = UiState.Empty
     }
 
     fun getDetailFeed(feedId: Int) {

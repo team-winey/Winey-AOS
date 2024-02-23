@@ -8,6 +8,7 @@ import android.text.style.TextAppearanceSpan
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -24,6 +25,7 @@ import org.go.sopt.winey.util.code.ErrorCode.*
 import org.go.sopt.winey.util.context.colorOf
 import org.go.sopt.winey.util.context.drawableOf
 import org.go.sopt.winey.util.context.stringOf
+import org.go.sopt.winey.util.number.formatAmountNumber
 import org.go.sopt.winey.util.view.InputUiState
 import org.go.sopt.winey.util.view.InputUiState.*
 import java.text.DecimalFormat
@@ -463,4 +465,93 @@ fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )
     text = spannableString
+}
+
+@BindingAdapter("switchFeedTypeBackground")
+fun LinearLayout.switchFeedTypeBackground(feedType: String) {
+    val context = this.context ?: return
+    background = when (feedType) {
+        WineyFeedType.CONSUME.name -> {
+            context.drawableOf(R.drawable.shape_red500_line_6_rect)
+        }
+
+        else -> {
+            context.drawableOf(R.drawable.shape_green500_line_6_rect)
+        }
+    }
+}
+
+@BindingAdapter("switchFeedTypeText")
+fun TextView.switchFeedTypeText(feedType: String) {
+    val context = this.context ?: return
+    when (feedType) {
+        WineyFeedType.CONSUME.name -> {
+            text = context.stringOf(R.string.wineyfeed_feed_type_consume)
+            setTextColor(context.colorOf(R.color.sub_red_500))
+        }
+
+        else -> {
+            text = context.stringOf(R.string.wineyfeed_feed_type_save)
+            setTextColor(context.colorOf(R.color.sub_green_500))
+        }
+    }
+}
+
+@BindingAdapter("feedType", "feedMoney")
+fun TextView.switchFeedMoney(feedType: String, feedMoney: Long) {
+    val context = this.context ?: return
+    val formattedMoney = feedMoney.toInt().formatAmountNumber()
+    text = when (feedType) {
+        WineyFeedType.CONSUME.name -> {
+            context.getString(R.string.wineyfeed_item_consume_money, formattedMoney)
+        }
+
+        else -> {
+            context.getString(R.string.wineyfeed_item_save_money, formattedMoney)
+        }
+    }
+}
+
+@BindingAdapter("updateUserNextLevel")
+fun TextView.updateUserNextLevel(currentLevel: String) {
+    val context = this.context ?: return
+
+    val userLevels = listOf("평민", "기사", "귀족", "황제")
+    userLevels.forEachIndexed { index, level ->
+        if (index == userLevels.size - 1) return // todo: 황제는 별도 처리 필요
+        if (level == currentLevel) {
+            text = context.getString(
+                R.string.wineyfeed_goal_progressbar_title,
+                userLevels[index + 1]
+            )
+        }
+        return
+    }
+}
+
+@BindingAdapter("updateCurrentMoney")
+fun TextView.updateCurrentMoney(accumulatedAmount: Int) {
+    val context = this.context ?: return
+    text = context.getString(
+        R.string.wineyfeed_goal_progressbar_current_money,
+        accumulatedAmount.formatAmountNumber()
+    )
+}
+
+@BindingAdapter("updateTargetMoney")
+fun TextView.updateTargetMoney(currentLevel: String) {
+    val context = this.context ?: return
+
+    val userLevels = listOf("평민", "기사", "귀족")
+    val targetMoneys = listOf(3, 10, 15)
+
+    userLevels.forEachIndexed { index, level ->
+        if (level == currentLevel) {
+            text = context.getString(
+                R.string.wineyfeed_goal_progressbar_target_money,
+                targetMoneys[index]
+            )
+            return
+        }
+    }
 }

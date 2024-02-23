@@ -111,7 +111,6 @@ class WineyFeedFragment :
                 navigateToWineyInstagram()
             }
         )
-        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         wineyFeedAdapter = WineyFeedAdapter(
             onlikeButtonClicked = { wineyFeed ->
                 viewModel.likeFeed(wineyFeed.feedId, !wineyFeed.isLiked)
@@ -125,6 +124,8 @@ class WineyFeedFragment :
                 saveClickedFeedId(wineyFeed.feedId)
             }
         )
+        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
+
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
             wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
@@ -267,10 +268,8 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        Timber.e("PAGING DATA SUBMIT in Fragment")
                         val pagingData = state.data
                         wineyFeedAdapter.submitData(pagingData)
-                        viewModel.initGetWineyFeedListState()
                     }
 
                     is UiState.Failure -> {

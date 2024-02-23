@@ -5,6 +5,7 @@ data class DetailFeed(
     val feedImage: String,
     val feedMoney: Long,
     val feedTitle: String,
+    val feedType: String,
     var isLiked: Boolean,
     var likes: Long,
     val nickName: String,

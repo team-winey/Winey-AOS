@@ -63,7 +63,7 @@
                         android:layout_marginVertical="16dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="17dp"
-                        android:text="@string/wineyfeed_fab_save"
+                        android:text="@string/wineyfeed_feed_type_save"
                         android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                         android:textColor="@color/gray_800" />
                 </LinearLayout>
@@ -97,7 +97,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginVertical="16dp"
                         android:layout_marginStart="10dp"
-                        android:text="@string/wineyfeed_fab_consume"
+                        android:text="@string/wineyfeed_feed_type_consume"
                         android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                         android:textColor="@color/gray_800" />
                 </LinearLayout>
