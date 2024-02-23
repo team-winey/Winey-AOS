@@ -62,6 +62,10 @@ class MyFeedViewModel @Inject constructor(
         }
     }
 
+    fun initGetMyFeedState() {
+        _getMyFeedListState.value = UiState.Empty
+    }
+
     fun getDetailFeed(feedId: Int) {
         viewModelScope.launch {
             _getDetailFeedState.emit(UiState.Loading)
