@@ -100,28 +100,34 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3,
             NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
             NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
-            NotificationType.GOAL_FAILED -> navigateToMyPageFragment(
-                KEY_FROM_NOTI,
-                true
-            )
+            NotificationType.GOAL_FAILED -> {
+                navigateToMyPageFragment(KEY_FROM_NOTI, true)
+            }
 
-            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
-            -> navigateToDetail(feedId?.toInt())
+            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION -> {
+                navigateToDetailScreen(feedId?.toInt())
+            }
 
-            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelUpGuideScreen()
             else -> {}
         }
     }
 
     private fun initFragment() {
+        if (intent.getBooleanExtra(KEY_FROM_GOAL_PATH, false)) {
+            navigateTo<MyPageFragment>()
+            return
+        }
+
         if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
             navigateToMyPageFragment(KEY_FROM_NOTI, true)
+            return
+        }
+
+        if (prevScreenName == MY_FEED_SCREEN) {
+            navigateToMyPageFragment(KEY_TO_MYFEED, true)
         } else {
-            if (prevScreenName == MY_FEED_SCREEN) {
-                navigateToMyPageFragment(KEY_TO_MYFEED, true)
-            } else {
-                navigateTo<WineyFeedFragment>()
-            }
+            navigateTo<WineyFeedFragment>()
         }
     }
 
@@ -214,13 +220,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun navigateToDetail(feedId: Int?) {
+    private fun navigateToDetailScreen(feedId: Int?) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(KEY_FEED_ID, feedId)
         startActivity(intent)
     }
 
-    private fun navigateToLevelupHelp() {
+    // todo: 레벨업 가이드 화면 바꿔야 할텐데!
+    private fun navigateToLevelUpGuideScreen() {
         val intent = Intent(this, MypageHelpActivity::class.java)
         startActivity(intent)
     }
@@ -235,6 +242,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
         const val KEY_FEED_ID = "feedId"
         const val KEY_TO_MYPAGE = "navigateMypage"
+        const val KEY_FROM_GOAL_PATH = "fromGoalPath"
 
         private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
         private const val MY_FEED_SCREEN = "MyFeedFragment"

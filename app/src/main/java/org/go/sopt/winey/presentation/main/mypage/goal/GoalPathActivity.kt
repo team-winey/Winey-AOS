@@ -1,6 +1,8 @@
 package org.go.sopt.winey.presentation.main.mypage.goal
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,6 +15,7 @@ import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityGoalPathBinding
 import org.go.sopt.winey.domain.repository.DataStoreRepository
+import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.util.binding.BindingActivity
@@ -22,7 +25,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activity_goal_path) {
     private val viewModel by viewModels<GoalPathViewModel>()
-    private val nowLevelUp by lazy { intent.getBooleanExtra(WineyFeedFragment.KEY_LEVEL_UP, false) }
+    private val fromWineyFeedLevelUp by lazy {
+        intent.getBooleanExtra(
+            WineyFeedFragment.KEY_LEVEL_UP,
+            false
+        )
+    }
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -30,9 +38,36 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.initLevelUpState(nowLevelUp)
+        viewModel.initLevelUpState(fromWineyFeedLevelUp)
+
         setupFragmentByLevel()
         initRemainingGoal()
+
+        initBackButtonClickListener()
+        registerBackPressedCallback()
+    }
+
+    private fun registerBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (fromWineyFeedLevelUp) {
+                    navigateToMainScreen()
+                } else {
+                    finish()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    private fun initBackButtonClickListener() {
+        binding.ivGoalPathBack.setOnClickListener {
+            if (fromWineyFeedLevelUp) {
+                navigateToMainScreen()
+            } else {
+                finish()
+            }
+        }
     }
 
     private fun setupFragmentByLevel() {
@@ -45,7 +80,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 }
 
                 UserLevel.SECOND.rankName -> {
-                    if (nowLevelUp) {
+                    if (fromWineyFeedLevelUp) {
                         navigateTo<GoalPathLevel1Fragment>()
                     } else {
                         navigateTo<GoalPathLevel2Fragment>()
@@ -53,7 +88,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 }
 
                 UserLevel.THIRD.rankName -> {
-                    if (nowLevelUp) {
+                    if (fromWineyFeedLevelUp) {
                         navigateTo<GoalPathLevel2Fragment>()
                     } else {
                         navigateTo<GoalPathLevel3Fragment>()
@@ -64,7 +99,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                     binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
                     binding.clGoalPathGuide.isVisible = false
 
-                    if (nowLevelUp) {
+                    if (fromWineyFeedLevelUp) {
                         navigateTo<GoalPathLevel3Fragment>()
                     } else {
                         navigateTo<GoalPathLevel4Fragment>()
@@ -84,6 +119,14 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 )
             binding.tvGoalPathRemainingFeed.text =
                 getString(R.string.goal_path_remaining_feed, userInfo.remainingCount)
+        }
+    }
+
+    private fun navigateToMainScreen() {
+        Intent(this@GoalPathActivity, MainActivity::class.java).apply {
+            putExtra(MainActivity.KEY_FROM_GOAL_PATH, true)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(this)
         }
     }
 
