@@ -60,7 +60,6 @@ class WineyFeedFragment :
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
-    private lateinit var wineyFeedGoalAdapter: WineyFeedGoalAdapter
     private var clickedFeedId = -1
 
     @Inject
@@ -111,8 +110,6 @@ class WineyFeedFragment :
                 navigateToWineyInstagram()
             }
         )
-        wineyFeedGoalAdapter = WineyFeedGoalAdapter()
-
         wineyFeedAdapter = WineyFeedAdapter(
             onlikeButtonClicked = { wineyFeed ->
                 viewModel.likeFeed(wineyFeed.feedId, !wineyFeed.isLiked)
@@ -130,7 +127,6 @@ class WineyFeedFragment :
 
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
-            wineyFeedGoalAdapter,
             wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
         )
     }

@@ -16,6 +16,7 @@
 
         <TextView
             android:id="@+id/tv_wineyfeed_goal_title"
+            updateUserNextLevel="@{user.userLevel}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -28,6 +29,7 @@
 
         <TextView
             android:id="@+id/tv_wineyfeed_goal_current_money"
+            updateCurrentMoney="@{user.accumulatedAmount}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -38,6 +40,7 @@
 
         <TextView
             android:id="@+id/tv_wineyfeed_goal_target_money"
+            updateTargetMoney="@{user.userLevel}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.WINEY.body_m_14"

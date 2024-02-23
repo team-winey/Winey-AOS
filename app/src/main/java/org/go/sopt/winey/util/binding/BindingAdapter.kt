@@ -511,3 +511,47 @@ fun TextView.switchFeedMoney(feedType: String, feedMoney: Long) {
         }
     }
 }
+
+@BindingAdapter("updateUserNextLevel")
+fun TextView.updateUserNextLevel(currentLevel: String) {
+    val context = this.context ?: return
+
+    val userLevels = listOf("평민", "기사", "귀족", "황제")
+    userLevels.forEachIndexed { index, level ->
+        if (index == userLevels.size - 1) return // todo: 황제는 별도 처리 필요
+        if (level == currentLevel) {
+            text = context.getString(
+                R.string.wineyfeed_goal_progressbar_title,
+                userLevels[index + 1]
+            )
+        }
+        return
+    }
+}
+
+@BindingAdapter("updateCurrentMoney")
+fun TextView.updateCurrentMoney(accumulatedAmount: Int) {
+    val context = this.context ?: return
+    text = context.getString(
+        R.string.wineyfeed_goal_progressbar_current_money,
+        accumulatedAmount.formatAmountNumber()
+    )
+}
+
+@BindingAdapter("updateTargetMoney")
+fun TextView.updateTargetMoney(currentLevel: String) {
+    val context = this.context ?: return
+
+    val userLevels = listOf("평민", "기사", "귀족")
+    val targetMoneys = listOf(3, 10, 15)
+
+    userLevels.forEachIndexed { index, level ->
+        if (level == currentLevel) {
+            text = context.getString(
+                R.string.wineyfeed_goal_progressbar_target_money,
+                targetMoneys[index]
+            )
+            return
+        }
+    }
+}
