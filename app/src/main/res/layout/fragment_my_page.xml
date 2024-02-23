@@ -272,7 +272,6 @@
                             android:layout_marginHorizontal="16dp"
                             android:indeterminate="false"
                             android:max="100"
-                            android:progress="50"
                             android:scaleY="2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

@@ -9,8 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -239,42 +237,86 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun setUpUserGoalByLevel(data: UserV2) {
-        val goalInfo = when (data.userLevel) {
-            "평민" -> Triple(R.string.mypage_goal_lv1, R.string.mypage_goal_amount_lv1, R.string.mypage_goal_count_lv1)
-            "기사" -> Triple(R.string.mypage_goal_lv2, R.string.mypage_goal_amount_lv2, R.string.mypage_goal_count_lv2)
-            "귀족" -> Triple(R.string.mypage_goal_lv3, R.string.mypage_goal_amount_lv3, R.string.mypage_goal_count_lv3)
-            "황제" -> null
-            else -> null
-        }
-
         binding.apply {
-            if (goalInfo == null) {
-                clMypageGoal.isVisible = false
-                pbMypage.isVisible = false
-            } else {
-                tvMypageProfileGoalItem.text = getString(goalInfo.first)
-                tvMypageGoalMoney.text = getString(goalInfo.second)
-                tvMypageGoalCount.text = getString(goalInfo.third)
+            when (data.userLevel) {
+                "평민" -> {
+                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv1)
+                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv1)
+                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
+                    tvMypageProfileGoal.text = "3만원"
+                    pbMypage.progress = if (data.accumulatedAmount <= 30000) {
+                        30000 / data.accumulatedAmount
+                    } else {
+                        100
+                    }
+                }
+
+                "기사" -> {
+                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv2)
+                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv2)
+                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
+                    tvMypageProfileGoal.text = "15만원"
+                    pbMypage.progress = if (data.accumulatedAmount <= 150000) {
+                        150000 / data.accumulatedAmount
+                    } else {
+                        100
+                    }
+                }
+
+                "귀족" -> {
+                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv3)
+                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
+                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
+                    tvMypageProfileGoal.text = "30만원"
+                    pbMypage.progress =  if (data.accumulatedAmount <= 300000) {
+                        300000 / data.accumulatedAmount
+                    } else {
+                        100
+                    }
+                }
+
+                "황제" -> {
+                    clMypageGoal.isVisible = false
+                    pbMypage.isVisible = false
+                }
             }
         }
     }
 
     private fun setUpUserDataByGoal(data: UserV2) {
         binding.apply {
-            tvMypageProfileMoney.text = getString(R.string.mypage_reamining_amount, formatWithCommaForMoney(data.remainingAmount))
-            tvMypageProfileCurrent.text = getString(R.string.mypage_current_amount, convertToKoreanCurrencyFormat(data.accumulatedAmount))
-            updateGoalStatus(data.isLevelUpAmountConditionMet, data.accumulatedAmount, tvMypageGoalMoneyCurrent, ivMypageGoalMoney)
-            updateGoalStatus(data.isLevelUpCountConditionMet, data.accumulatedCount, tvMypageGoalCountCurrent, ivMypageGoalCount)
-        }
-    }
+            tvMypageProfileMoney.text = getString(
+                R.string.mypage_reamining_amount,
+                formatWithCommaForMoney(data.remainingAmount)
+            )
+            tvMypageProfileCurrent.text = getString(
+                R.string.mypage_current_amount,
+                convertToKoreanCurrencyFormat(data.accumulatedAmount)
+            )
 
-    private fun updateGoalStatus(isConditionMet: Boolean, amount: Int, textGoal: TextView, imageGoal: ImageView) {
-        if (isConditionMet) {
-            textGoal.text = getString(R.string.mypage_goal_amount_complete, convertToKoreanCurrencyFormat(amount))
-            imageGoal.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
-        } else {
-            textGoal.text = getString(R.string.mypage_goal_amount_incomplete, convertToKoreanCurrencyFormat(amount))
-            imageGoal.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
+            if (data.isLevelUpAmountConditionMet) {
+                tvMypageGoalMoneyCurrent.text = getString(
+                    R.string.mypage_goal_amount_complete,
+                    convertToKoreanCurrencyFormat(data.accumulatedAmount)
+                )
+                ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
+            } else {
+                tvMypageGoalMoneyCurrent.text = getString(
+                    R.string.mypage_goal_amount_incomplete,
+                    convertToKoreanCurrencyFormat(data.accumulatedAmount)
+                )
+                ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
+            }
+
+            if (data.isLevelUpCountConditionMet) {
+                tvMypageGoalCountCurrent.text =
+                    getString(R.string.mypage_goal_count_complete, data.accumulatedCount)
+                ivMypageGoalCount.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
+            } else {
+                tvMypageGoalCountCurrent.text =
+                    getString(R.string.mypage_goal_count_incomplete, data.accumulatedCount)
+                ivMypageGoalCount.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
+            }
         }
     }
 
