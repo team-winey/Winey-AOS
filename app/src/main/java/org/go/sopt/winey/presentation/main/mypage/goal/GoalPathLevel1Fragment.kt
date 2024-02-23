@@ -16,13 +16,11 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentGoalPathLevel1Binding
-import org.go.sopt.winey.domain.entity.Goal
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.drawableOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,7 +35,7 @@ class GoalPathLevel1Fragment :
         super.onViewCreated(view, savedInstanceState)
 
         initGoalPathUnlockGuide()
-        checkLevelUpState()
+        initLevelUpStateObserver()
         initAnimatorListener()
     }
 
@@ -57,10 +55,12 @@ class GoalPathLevel1Fragment :
         }
     }
 
-    private fun checkLevelUpState() {
+    private fun initLevelUpStateObserver() {
         viewModel.levelUpState.flowWithLifecycle(viewLifeCycle).onEach { nowLevelUp ->
-            binding.ivGoalPathLv1.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_4))
-            binding.lottieGoalPathStep1.playAnimation()
+            if (nowLevelUp) {
+                binding.ivGoalPathLv1.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_4))
+                binding.lottieGoalPathStep1.playAnimation()
+            }
         }.launchIn(viewLifeCycleScope)
     }
 

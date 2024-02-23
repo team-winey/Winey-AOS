@@ -8,10 +8,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import javax.inject.Inject
 
-@HiltViewModel
-class GoalPathViewModel @Inject constructor(
-    private val dataStoreRepository: DataStoreRepository
-) : ViewModel() {
+class GoalPathViewModel : ViewModel() {
     private val _levelUpState = MutableStateFlow(false)
     val levelUpState: StateFlow<Boolean> = _levelUpState.asStateFlow()
 

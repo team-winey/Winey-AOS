@@ -35,7 +35,7 @@ class GoalPathLevel2Fragment :
         super.onViewCreated(view, savedInstanceState)
 
         initGoalPathUnlockGuide()
-        checkLevelUpState()
+        initLevelUpStateObserver()
         initAnimatorListener()
     }
 
@@ -55,10 +55,12 @@ class GoalPathLevel2Fragment :
         }
     }
 
-    private fun checkLevelUpState() {
+    private fun initLevelUpStateObserver() {
         viewModel.levelUpState.flowWithLifecycle(viewLifeCycle).onEach { nowLevelUp ->
-            binding.ivGoalPathLv2.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_4))
-            binding.lottieGoalPathStep2.playAnimation()
+            if (nowLevelUp) {
+                binding.ivGoalPathLv2.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_4))
+                binding.lottieGoalPathStep2.playAnimation()
+            }
         }.launchIn(viewLifeCycleScope)
     }
 

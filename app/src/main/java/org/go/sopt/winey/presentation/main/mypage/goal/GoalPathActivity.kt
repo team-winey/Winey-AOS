@@ -38,6 +38,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     private fun setupFragmentByLevel() {
         lifecycleScope.launch {
             val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
+
             when (userInfo.userLevel) {
                 UserLevel.FIRST.rankName -> {
                     navigateTo<GoalPathLevel1Fragment>()
