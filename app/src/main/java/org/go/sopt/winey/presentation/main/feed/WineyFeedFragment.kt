@@ -98,6 +98,7 @@ class WineyFeedFragment :
     }
 
     private fun addObserver() {
+        initGetUserStateObserver()
         initGetWineyFeedListStateObserver()
         initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
@@ -271,6 +272,25 @@ class WineyFeedFragment :
     }
 
     /** Observer */
+    private fun initGetUserStateObserver() {
+        // todo: 피드 업로드 직후에 메인 액티비티에서 getUser 함수 호출
+        mainViewModel.getUserState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        val userInfo = state.data ?: return@onEach
+                        wineyFeedGoalAdapter.updateUserInfo(userInfo)
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
     private fun initGetWineyFeedListStateObserver() {
         viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
