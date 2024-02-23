@@ -117,10 +117,13 @@ class DataStoreRepositoryImpl @Inject constructor(
                         nickname = "",
                         userLevel = "",
                         accumulatedAmount = 0,
+                        accumulatedCount = 0,
                         amountSavedHundredDays = 0,
                         amountSavedTwoWeeks = 0,
                         amountSpentTwoWeeks = 0,
-                        fcmIsAllowed = true
+                        fcmIsAllowed = true,
+                        remainingCount = 0,
+                        remainingAmount = 0
                     )
                 }
             }

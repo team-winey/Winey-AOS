@@ -21,12 +21,18 @@ data class ResponseGetUserDto(
         val fcmIsAllowed: Boolean,
         @SerialName("accumulatedAmount")
         val accumulatedAmount: Int,
+        @SerialName("accumulatedCount")
+        val accumulatedCount: Int,
         @SerialName("amountSavedHundredDays")
         val amountSavedHundredDays: Int,
         @SerialName("amountSavedTwoWeeks")
         val amountSavedTwoWeeks: Int,
         @SerialName("amountSpentTwoWeeks")
-        val amountSpentTwoWeeks: Int
+        val amountSpentTwoWeeks: Int,
+        @SerialName("remainingAmount")
+        val remainingAmount: Int,
+        @SerialName("remainingCount")
+        val remainingCount: Int,
     )
 
     fun toUser(): UserV2 {
@@ -35,9 +41,12 @@ data class ResponseGetUserDto(
             userLevel = userData.userLevel,
             fcmIsAllowed = userData.fcmIsAllowed,
             accumulatedAmount = userData.accumulatedAmount,
+            accumulatedCount = userData.accumulatedCount,
             amountSavedHundredDays = userData.amountSavedHundredDays,
             amountSavedTwoWeeks = userData.amountSavedTwoWeeks,
-            amountSpentTwoWeeks = userData.amountSpentTwoWeeks
+            amountSpentTwoWeeks = userData.amountSpentTwoWeeks,
+            remainingAmount = userData.remainingAmount,
+            remainingCount = userData.remainingCount
         )
     }
 }
