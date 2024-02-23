@@ -30,6 +30,7 @@ import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
+import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.activity.showReportGoogleForm
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
@@ -273,13 +274,18 @@ class WineyFeedFragment :
 
     /** Observer */
     private fun initGetUserStateObserver() {
-        // 피드 생성에 따른 유저 데이터 변경 (프로그레스바에 반영)
         mainViewModel.getUserState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
+                        // 피드 생성에 따라 유저 데이터 & 프로그레스바 변경
                         val userInfo = state.data ?: return@onEach
-                        wineyFeedGoalAdapter.updateUserInfo(userInfo)
+
+                        if (userInfo.userLevel == UserLevel.FORTH.rankName) {
+                            // todo: 황제 레벨은 별도 처리 필요
+                        } else {
+                            wineyFeedGoalAdapter.updateUserInfo(userInfo)
+                        }
                     }
 
                     is UiState.Failure -> {
