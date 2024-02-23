@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -357,41 +356,6 @@ class WineyFeedFragment :
         }
     }
 
-    private fun setupGetUserState() {
-        mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Success -> {
-                    val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@onEach
-
-                    // todo: 남은 금액, 횟수가 모두 0이면 -> 레벨업 축하 다이얼로그 -> 목표여정 액티비티로 전환
-                    //showCongratulationDialog()
-                }
-
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
-                }
-
-                else -> {}
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private fun showCongratulationDialog() {
-        val dialog = WineyDialogFragment.newInstance(
-            wineyDialogLabel = WineyDialogLabel(
-                title = stringOf(R.string.wineyfeed_congratulation_dialog_title),
-                subTitle = stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
-                positiveButtonLabel = stringOf(R.string.wineyfeed_congratulation_dialog_positive_button)
-            ),
-            handleNegativeButton = {},
-            handlePositiveButton = {
-                navigateToGoalPath()
-            }
-        )
-
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
-    }
-
     /** Navigation */
     private fun navigateToUpload(feedType: WineyFeedType) {
         Intent(requireContext(), UploadActivity::class.java).apply {
@@ -409,17 +373,34 @@ class WineyFeedFragment :
         }
     }
 
-    private fun navigateToGoalPath() {
-        Intent(requireContext(), GoalPathActivity::class.java).apply {
-            startActivity(this)
-        }
-    }
-
     /** Other */
     private fun removeRecyclerviewItemChangeAnimation() {
         val animator = binding.rvWineyfeedPost.itemAnimator
         if (animator is SimpleItemAnimator) {
             animator.supportsChangeAnimations = false
+        }
+    }
+
+    private fun showCongratulationDialog() {
+        WineyDialogFragment.newInstance(
+            wineyDialogLabel = WineyDialogLabel(
+                title = stringOf(R.string.wineyfeed_congratulation_dialog_title),
+                subTitle = stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
+                positiveButtonLabel = stringOf(R.string.wineyfeed_congratulation_dialog_positive_button)
+            ),
+            handleNegativeButton = {},
+            handlePositiveButton = {
+                navigateToGoalPath()
+            }
+        ).apply {
+            activity?.supportFragmentManager?.let { show(it, TAG_CONGRATULATION_DIALOG) }
+        }
+    }
+
+    private fun navigateToGoalPath() {
+        Intent(requireContext(), GoalPathActivity::class.java).apply {
+            putExtra(KEY_LEVEL_UP_MOMENT, true)
+            startActivity(this)
         }
     }
 
@@ -512,15 +493,16 @@ class WineyFeedFragment :
     companion object {
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val TAG_DEFAULT_GOAL_SETTING_DIALOG = "DEFAULT_GOAL_SETTING_DIALOG"
-        private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
+        private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
 
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
         const val KEY_FEED_TYPE = "feedType"
+        private const val KEY_LEVEL_UP_MOMENT = "LEVEL_UP_MOMENT"
 
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val VAL_WINEY_FEED_SCREEN = "WineyFeedFragment"
