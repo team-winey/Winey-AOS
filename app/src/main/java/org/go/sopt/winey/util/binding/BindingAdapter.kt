@@ -28,6 +28,7 @@ import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.number.formatAmountNumber
 import org.go.sopt.winey.util.view.InputUiState
 import org.go.sopt.winey.util.view.InputUiState.*
+import timber.log.Timber
 import java.text.DecimalFormat
 
 @BindingAdapter("likedAmount")
@@ -516,16 +517,17 @@ fun TextView.switchFeedMoney(feedType: String, feedMoney: Long) {
 fun TextView.updateUserNextLevel(currentLevel: String) {
     val context = this.context ?: return
 
-    val userLevels = listOf("평민", "기사", "귀족", "황제")
-    userLevels.forEachIndexed { index, level ->
-        if (index == userLevels.size - 1) return // todo: 황제는 별도 처리 필요
+    val currentLevels = listOf("평민", "기사", "귀족")
+    val nextLevels = listOf("기사가", "귀족이", "황제가")
+
+    currentLevels.forEachIndexed { index, level ->
         if (level == currentLevel) {
             text = context.getString(
                 R.string.wineyfeed_goal_progressbar_title,
-                userLevels[index + 1]
+                nextLevels[index]
             )
+            return
         }
-        return
     }
 }
 
