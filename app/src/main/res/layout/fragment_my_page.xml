@@ -42,6 +42,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
+            android:id="@+id/sv_mypage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -532,7 +533,128 @@
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <View
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_mypage_2weeks_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="39dp"
+                        android:background="@drawable/shape_gray0_fill_18_rect"
+                        app:layout_constraintTop_toBottomOf="@id/cl_mypage_save_work"
+                        app:layout_constraintBottom_toTopOf="@id/v_mypage_line4"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_mypage_2weeks_save_graph"
+                            android:paddingHorizontal="14dp"
+                            android:paddingVertical="16dp"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/tv_mypage_2weeks_1_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="한달 후"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/v_mypage_2weeks_1_month"
+                                app:layout_constraintBottom_toBottomOf="@id/v_mypage_2weeks_1_month"/>
+
+                            <TextView
+                                android:id="@+id/v_mypage_2weeks_1_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                                android:textColor="@color/gray_500"
+                                android:paddingVertical="10dp"
+                                android:paddingEnd="12dp"
+                                android:gravity="end"
+                                android:layout_marginStart="13dp"
+                                android:background="@drawable/shape_gray200_fill_8_rect"
+                                app:layout_constraintStart_toEndOf="@id/tv_mypage_2weeks_1_month"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/tv_mypage_2weeks_3_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="세달 후"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/v_mypage_2weeks_3_month"
+                                app:layout_constraintBottom_toBottomOf="@id/v_mypage_2weeks_3_month"/>
+
+                            <TextView
+                                android:id="@+id/v_mypage_2weeks_3_month"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                                android:textColor="@color/gray_0"
+                                android:layout_marginVertical="6dp"
+                                android:paddingVertical="10dp"
+                                android:paddingEnd="12dp"
+                                android:gravity="end"
+                                android:layout_marginStart="13dp"
+                                android:background="@drawable/shape_gray400_fill_8_rect"
+                                app:layout_constraintStart_toEndOf="@id/tv_mypage_2weeks_3_month"
+                                app:layout_constraintTop_toBottomOf="@id/v_mypage_2weeks_1_month" />
+
+                            <TextView
+                                android:id="@+id/tv_mypage_2weeks_1_year"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="일년 후"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/v_mypage_2weeks_1_year"
+                                app:layout_constraintBottom_toBottomOf="@id/v_mypage_2weeks_1_year"/>
+
+                            <TextView
+                                android:id="@+id/v_mypage_2weeks_1_year"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                                android:textColor="@color/gray_0"
+                                android:layout_marginVertical="6dp"
+                                android:paddingVertical="10dp"
+                                android:paddingEnd="12dp"
+                                android:gravity="end"
+                                android:layout_marginStart="13dp"
+                                android:background="@drawable/shape_green500_fill_8_rect"
+                                app:layout_constraintStart_toEndOf="@id/tv_mypage_2weeks_1_year"
+                                app:layout_constraintTop_toBottomOf="@id/v_mypage_2weeks_3_month"
+                                app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <View
+                            android:id="@+id/v_mypage_line7"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="11dp"
+                            android:background="@color/gray_100"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/cl_mypage_2weeks_save_graph" />
+
+
+                        <TextView
+                            android:id="@+id/tv_mypage_save_1_year"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                            android:textColor="@color/gray_400"
+                            android:layout_marginVertical="16dp"
+                            android:text="이렇게 절약한다면 일년 후에 60만원이 모여요!"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_mypage_line7"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <View
                         android:id="@+id/v_mypage_line4"
                         android:layout_width="match_parent"
                         android:layout_height="4dp"
@@ -540,7 +662,7 @@
                         android:background="@color/gray_200"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/cl_mypage_save_work" />
+                        app:layout_constraintTop_toBottomOf="@id/cl_mypage_2weeks_save" />
 
                     <TextView
                         android:id="@+id/tv_mypage_spend_title"

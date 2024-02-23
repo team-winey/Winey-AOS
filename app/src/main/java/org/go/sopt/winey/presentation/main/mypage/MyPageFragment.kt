@@ -1,6 +1,7 @@
 package org.go.sopt.winey.presentation.main.mypage
 
 import android.Manifest
+import android.animation.ValueAnimator
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -9,7 +10,11 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.ViewTreeObserver
+import android.widget.ScrollView
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.core.animation.doOnEnd
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -245,7 +250,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
                     tvMypageProfileGoal.text = "3만원"
                     pbMypage.progress = if (data.accumulatedAmount <= 30000) {
-                        30000 / data.accumulatedAmount
+                        100 / (30000 / data.accumulatedAmount)
                     } else {
                         100
                     }
@@ -257,7 +262,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
                     tvMypageProfileGoal.text = "15만원"
                     pbMypage.progress = if (data.accumulatedAmount <= 150000) {
-                        150000 / data.accumulatedAmount
+                        100 / (150000 / data.accumulatedAmount)
                     } else {
                         100
                     }
@@ -268,8 +273,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
                     tvMypageProfileGoal.text = "30만원"
-                    pbMypage.progress =  if (data.accumulatedAmount <= 300000) {
-                        300000 / data.accumulatedAmount
+                    pbMypage.progress = if (data.accumulatedAmount <= 300000) {
+                        100 / (300000 / data.accumulatedAmount)
                     } else {
                         100
                     }
@@ -329,6 +334,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     updateUserInfo(data)
                     setUpUserGoalByLevel(data)
                     setUpUserDataByGoal(data)
+                    // TODO : 2초간의 시간차 두기
+                    animateTextView(binding.vMypage2weeks1Month, 400, data.amountSavedTwoWeeks * 2)
+                    animateTextView(binding.vMypage2weeks3Month, 550, data.amountSavedTwoWeeks * 6)
+                    animateTextView(binding.vMypage2weeks1Year, 750, data.amountSavedTwoWeeks * 24)
                 }
 
                 is UiState.Failure -> {
@@ -343,6 +352,48 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun updateUserInfo(data: UserV2) {
         binding.data = data
     }
+
+    private fun animateTextView(textView: TextView, width: Int, amount: Int) {
+        val params = textView.layoutParams
+
+        // TODO : 현재 width 값 넣어주고 있음, 값 없이 기기 대응하면서 영역 너비 잡아줘야
+        // TODO : 애니메이션 끝났을 때만 금액 보여주도록 수정
+
+        textView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val animator = ValueAnimator.ofInt(0, width).apply {
+                    duration = 1000
+                    addUpdateListener { valueAnimator ->
+                        params?.width = valueAnimator.animatedValue as Int
+                        textView.requestLayout()
+                    }
+                    doOnEnd {
+                        textView.text = "+ " + amount
+                    }
+                }
+                animator.start()
+                textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                startAnimationOnVisible(binding.svMypage, textView, animator)
+            }
+        })
+    }
+
+    fun startAnimationOnVisible(
+        scrollView: ScrollView,
+        textView: TextView,
+        animator: ValueAnimator
+    ) {
+        scrollView.viewTreeObserver.addOnScrollChangedListener {
+            val scrollY = scrollView.scrollY
+            val location = IntArray(2)
+            textView.getLocationOnScreen(location)
+            if (location[1] > scrollY && location[1] + textView.height < scrollY + scrollView.height) {
+                animator.start()
+            }
+        }
+    }
+
 
     private fun showTargetSettingBottomSheet() {
         val bottomSheet = TargetAmountBottomSheetFragment()
