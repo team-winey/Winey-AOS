@@ -132,7 +132,7 @@
     <string name="mypage_goal_count_lv1">절약 피드 2개 이상 올리기</string>
     <string name="mypage_goal_count_lv2">절약 피드 4개 이상 올리기</string>
     <string name="mypage_goal_count_lv3">절약 피드 10개 이상 올리기</string>
-
+    <string name="mypage_2weeks_save_for_job">알바를 %d시간 뛴 금액과 같아요</string>
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>

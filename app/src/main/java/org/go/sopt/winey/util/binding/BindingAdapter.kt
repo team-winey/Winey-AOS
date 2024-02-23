@@ -27,6 +27,7 @@ import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.view.InputUiState
 import org.go.sopt.winey.util.view.InputUiState.*
 import java.text.DecimalFormat
+import kotlin.math.roundToInt
 
 @BindingAdapter("likedAmount")
 fun applyNumberFormat(view: TextView, amount: Long) {
@@ -463,4 +464,10 @@ fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
         Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
     )
     text = spannableString
+}
+
+@BindingAdapter("setMyPageWorkHours")
+fun TextView.setMyPageWorkHours(money: Long) {
+    val amount = (money / 9860.0).roundToInt()
+    text = context.getString(R.string.mypage_2weeks_save_for_job, amount)
 }
