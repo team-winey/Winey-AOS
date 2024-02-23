@@ -252,7 +252,7 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
         Intent(this, DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-            putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_FEED_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, MY_FEED_SCREEN)
             startActivity(this)
         }
     }
@@ -264,6 +264,6 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
 
         private const val MSG_MYFEED_ERROR = "ERROR"
         private const val TAG_FEED_DELETE_DIALOG = "DELETE_DIALOG"
-        private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
+        private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }

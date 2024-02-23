@@ -221,7 +221,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
-            putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, MY_PAGE_SCREEN)
             startActivity(this)
         }
     }
@@ -273,7 +273,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     companion object {
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        private const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
+        private const val MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_TO_MYFEED = "toMyFeed"

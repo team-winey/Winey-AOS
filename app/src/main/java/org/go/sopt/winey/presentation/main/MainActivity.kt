@@ -100,7 +100,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3,
             NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
             NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
-            NotificationType.GOAL_FAILED -> navigateToMyPageWithBundle(
+            NotificationType.GOAL_FAILED -> navigateToMyPageFragment(
                 KEY_FROM_NOTI,
                 true
             )
@@ -115,10 +115,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun initFragment() {
         if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
-            navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
+            navigateToMyPageFragment(KEY_FROM_NOTI, true)
         } else {
-            if (prevScreenName == VAL_MY_FEED_SCREEN) {
-                navigateToMyPageWithBundle(KEY_TO_MYFEED, true)
+            if (prevScreenName == MY_FEED_SCREEN) {
+                navigateToMyPageFragment(KEY_TO_MYFEED, true)
             } else {
                 navigateTo<WineyFeedFragment>()
             }
@@ -203,7 +203,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun navigateToMyPageWithBundle(key: String, value: Boolean) {
+    private fun navigateToMyPageFragment(key: String, value: Boolean) {
         supportFragmentManager.commit {
             val bundle = Bundle()
             bundle.putBoolean(key, value)
@@ -229,13 +229,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val KEY_FEED_UPLOAD = "upload"
         private const val KEY_FEED_DELETE = "delete"
 
-        private const val KEY_FEED_ID = "feedId"
         private const val KEY_NOTI_TYPE = "notiType"
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_TO_MYFEED = "toMyFeed"
-        private const val KEY_TO_MYPAGE = "navigateMypage"
 
-        private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
+        const val KEY_FEED_ID = "feedId"
+        const val KEY_TO_MYPAGE = "navigateMypage"
+
+        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }

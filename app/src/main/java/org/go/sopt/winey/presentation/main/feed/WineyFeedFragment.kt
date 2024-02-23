@@ -367,7 +367,7 @@ class WineyFeedFragment :
         Intent(requireContext(), DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-            putExtra(KEY_PREV_SCREEN_NAME, VAL_WINEY_FEED_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, WINEY_FEED_SCREEN)
             startActivity(this)
         }
     }
@@ -501,7 +501,7 @@ class WineyFeedFragment :
         private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
 
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        private const val VAL_WINEY_FEED_SCREEN = "WineyFeedFragment"
+        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
