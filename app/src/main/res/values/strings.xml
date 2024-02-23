@@ -116,6 +116,17 @@
     <string name="mypage_save_for_2weeks">원을 절약했어요</string>
     <string name="mypage_waste_for_2weeks">원을 낭비했어요</string>
 
+    <string name="mypage_goal_lv1">치킨값 절약하기</string>
+    <string name="mypage_goal_lv2">운동화값 절약하기</string>
+    <string name="mypage_goal_lv3">에어팟값 절약하기</string>
+    <string name="mypage_goal_lv4">목표를 다 이루었어요!</string>
+    <string name="mypage_goal_amount_lv1">누적 3만원 이상 절약하기</string>
+    <string name="mypage_goal_amount_lv2">누적 15만원 이상 절약하기</string>
+    <string name="mypage_goal_amount_lv3">누적 30만원 이상 절약하기</string>
+    <string name="mypage_goal_count_lv1">절약 피드 2개 이상 올리기</string>
+    <string name="mypage_goal_count_lv2">절약 피드 4개 이상 올리기</string>
+    <string name="mypage_goal_count_lv3">절약 피드 10개 이상 올리기</string>
+
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
     <string name="mypage_logout_dialog_negative_button">취소</string>
