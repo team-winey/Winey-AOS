@@ -21,6 +21,7 @@ class GoalPathLevel1Fragment :
     BindingFragment<FragmentGoalPathLevel1Binding>(R.layout.fragment_goal_path_level1) {
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -36,10 +37,10 @@ class GoalPathLevel1Fragment :
                 binding.ivGoalPathLv1.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_1))
             } else if (user.remainingAmount == 0 && user.remainingCount > 0) {
                 // 누적 금액 달성한 경우
-                binding.ivGoalPathLv1.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_1))
+                binding.ivGoalPathLv1.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_2))
             } else if (user.remainingAmount > 0 && user.remainingCount == 0) {
                 // 누적 횟수 달성한 경우
-                binding.ivGoalPathLv1.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_1))
+                binding.ivGoalPathLv1.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_3))
             }
         }
     }

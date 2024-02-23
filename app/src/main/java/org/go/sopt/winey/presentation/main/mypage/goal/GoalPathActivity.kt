@@ -28,21 +28,10 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setupFragmentByLevel()
-        initRemainingGoal()
-    }
+        navigateTo<GoalPathLevel3Fragment>()
 
-    private fun initRemainingGoal() {
-        lifecycleScope.launch {
-            val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
-            binding.tvGoalPathRemainingMoney.text =
-                getString(
-                    R.string.goal_path_remaining_money,
-                    userInfo.remainingAmount.formatAmountNumber()
-                )
-            binding.tvGoalPathRemainingFeed.text =
-                getString(R.string.goal_path_remaining_feed, userInfo.remainingCount)
-        }
+        //setupFragmentByLevel()
+        initRemainingGoal()
     }
 
     private fun setupFragmentByLevel() {
@@ -67,6 +56,19 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                     navigateTo<GoalPathLevel4Fragment>()
                 }
             }
+        }
+    }
+
+    private fun initRemainingGoal() {
+        lifecycleScope.launch {
+            val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
+            binding.tvGoalPathRemainingMoney.text =
+                getString(
+                    R.string.goal_path_remaining_money,
+                    userInfo.remainingAmount.formatAmountNumber()
+                )
+            binding.tvGoalPathRemainingFeed.text =
+                getString(R.string.goal_path_remaining_feed, userInfo.remainingCount)
         }
     }
 
