@@ -1,4 +1,4 @@
-package org.go.sopt.winey.presentation.main.mypage.goal.model
+package org.go.sopt.winey.presentation.model
 
 enum class UserLevel(val rankName: String) {
     FIRST("평민"),
