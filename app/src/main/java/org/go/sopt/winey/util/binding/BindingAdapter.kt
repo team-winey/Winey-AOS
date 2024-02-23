@@ -518,7 +518,7 @@ fun TextView.updateUserNextLevel(currentLevel: String) {
 
     val userLevels = listOf("평민", "기사", "귀족", "황제")
     userLevels.forEachIndexed { index, level ->
-        if (index == userLevels.size - 1) return // todo: 황제는 별도 처리 필요
+        if (index == userLevels.size - 1) return
         if (level == currentLevel) {
             text = context.getString(
                 R.string.wineyfeed_goal_progressbar_title,
@@ -527,15 +527,6 @@ fun TextView.updateUserNextLevel(currentLevel: String) {
         }
         return
     }
-}
-
-@BindingAdapter("updateCurrentMoney")
-fun TextView.updateCurrentMoney(accumulatedAmount: Int) {
-    val context = this.context ?: return
-    text = context.getString(
-        R.string.wineyfeed_goal_progressbar_current_money,
-        accumulatedAmount.formatAmountNumber()
-    )
 }
 
 @BindingAdapter("updateTargetMoney")
