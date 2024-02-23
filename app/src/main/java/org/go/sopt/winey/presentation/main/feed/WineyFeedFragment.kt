@@ -278,9 +278,8 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        // 피드 생성에 따라 유저 데이터 & 프로그레스바 변경
+                        // 피드 생성, 삭제에 따라 유저 데이터와 프로그레스바 진행률 갱신
                         val userInfo = state.data ?: return@onEach
-
                         if (userInfo.userLevel == UserLevel.FORTH.rankName) {
                             // todo: 황제 레벨은 별도 처리 필요
                         } else {
@@ -373,6 +372,8 @@ class WineyFeedFragment :
                             message = stringOf(R.string.snackbar_feed_delete_success),
                             type = SnackbarType.WineyFeedResult(isSuccess = true)
                         )
+
+                        mainViewModel.getUser()
 
                         // 상세피드 들어갔다 나올 때 성공 상태가 계속 관찰되어
                         // 스낵바가 반복해서 뜨지 않도록 UiState 초기화
