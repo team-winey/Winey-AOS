@@ -1,6 +1,7 @@
 package org.go.sopt.winey.presentation.main.mypage.goal
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -18,6 +19,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activity_goal_path) {
+    private val viewModel by viewModels<GoalPathViewModel>()
+
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
@@ -28,26 +31,23 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     }
 
     private fun setupFragmentByLevel() {
-        lifecycleScope.launch {
-            val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
-            when (userInfo.userLevel) {
-                UserLevel.FIRST.rankName -> {
-                    navigateTo<GoalPathLevel1Fragment>()
-                }
+        when (viewModel.userInfo.userLevel) {
+            UserLevel.FIRST.rankName -> {
+                navigateTo<GoalPathLevel1Fragment>()
+            }
 
-                UserLevel.SECOND.rankName -> {
-                    navigateTo<GoalPathLevel2Fragment>()
-                }
+            UserLevel.SECOND.rankName -> {
+                navigateTo<GoalPathLevel2Fragment>()
+            }
 
-                UserLevel.THIRD.rankName -> {
-                    navigateTo<GoalPathLevel3Fragment>()
-                }
+            UserLevel.THIRD.rankName -> {
+                navigateTo<GoalPathLevel3Fragment>()
+            }
 
-                UserLevel.FORTH.rankName -> {
-                    binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
-                    binding.clGoalPathGuide.isVisible = false
-                    navigateTo<GoalPathLevel4Fragment>()
-                }
+            UserLevel.FORTH.rankName -> {
+                binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
+                binding.clGoalPathGuide.isVisible = false
+                navigateTo<GoalPathLevel4Fragment>()
             }
         }
     }
