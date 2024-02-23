@@ -25,9 +25,10 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentMyPageBinding
-import org.go.sopt.winey.domain.entity.User
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
+import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedFragment
 import org.go.sopt.winey.presentation.main.mypage.setting.SettingActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
@@ -61,14 +62,22 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initUserData()
         initNavigation()
 
+        addListener()
+        addObserver()
+
+        checkFromWineyFeed()
+    }
+
+    private fun addListener() {
+        initEditNicknameButtonClickListener()
+        initMyFeedButtonClickListener()
         registerBackPressedCallback()
+    }
+
+    private fun addObserver() {
         setupGetUserState()
 
         checkFromWineyFeed()
-
-        binding.ivMypageSetting.setOnSingleClickListener {
-            navigateToSettingScreen()
-        }
     }
 
     private fun initCheckNotificationPermission() {
@@ -135,6 +144,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun initEditNicknameButtonClickListener() {
+        binding.ivMypageEditNickname.setOnSingleClickListener {
+            navigateToNicknameScreen()
+        }
+    }
+
+    private fun initMyFeedButtonClickListener() {
+        binding.btnMypageMyfeed.setOnSingleClickListener {
+            navigateToMyFeedScreen()
+        }
+    }
+
     // 마이페이지 왔다가 다시 알림 화면으로 돌아가도록
     private fun registerBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
@@ -168,7 +189,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         if (receivedBundle != null) {
             val value = receivedBundle.getBoolean(KEY_TO_MYFEED)
             if (value) {
-                navigateAndBackStack<MyFeedFragment>()
+                navigateToMyFeedScreen()
                 arguments?.clear()
             }
         }
@@ -195,6 +216,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun navigateToMyFeedScreen() {
+        Intent(requireContext(), MyFeedActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+
     private fun setupGetUserState() {
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
@@ -212,7 +239,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }.launchIn(lifecycleScope)
     }
 
-    private fun updateUserInfo(data: User) {
+    private fun updateUserInfo(data: UserV2) {
         binding.data = data
     }
 

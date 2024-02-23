@@ -1,11 +1,17 @@
 package org.go.sopt.winey.util.binding
 
 import android.net.Uri
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.TextAppearanceSpan
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
@@ -322,4 +328,139 @@ fun CircleImageView.setWriterLevelImage(writerLevel: Int) {
         else -> R.drawable.img_wineyfeed_profile
     }
     setImageResource(drawableResId)
+}
+
+@BindingAdapter("setMyPageLevelResource", "imageViewId")
+fun ImageView.setMyPageLevelResource(userLevel: String, imageViewId: String) {
+    userLevel.let { userLevel ->
+        imageViewId.let { imageViewId ->
+            val imageResource: Int = when (imageViewId) {
+                "SAVER" -> {
+                    when (userLevel) {
+                        "평민" -> R.drawable.img_mypage_saver_lv1
+                        "기사" -> R.drawable.img_mypage_saver_lv2
+                        "귀족" -> R.drawable.img_mypage_saver_lv3
+                        "황제" -> R.drawable.img_mypage_saver_lv4
+                        else -> {
+                            R.drawable.img_mypage_saver_lv1
+                        }
+                    }
+                }
+
+                "BUBBLE" -> {
+                    when (userLevel) {
+                        "평민" -> R.drawable.img_mypage_bubble_lv1
+                        "기사" -> R.drawable.img_mypage_bubble_lv2
+                        "귀족" -> R.drawable.img_mypage_bubble_lv3
+                        "황제" -> R.drawable.img_mypage_bubble_lv4
+                        else -> {
+                            R.drawable.img_mypage_bubble_lv1
+                        }
+                    }
+                }
+
+                else -> {
+                    R.drawable.img_mypage_saver_lv1
+                }
+            }
+            setImageResource(imageResource)
+        }
+    }
+}
+
+@BindingAdapter("setMyPageLevelBackground")
+fun ConstraintLayout.setMyPageLevelBackground(userLevel: String) {
+    val resourceId: Int = when (userLevel) {
+        "평민" -> R.drawable.img_mypage_background_lv1
+        "기사" -> R.drawable.img_mypage_background_lv2
+        "귀족" -> R.drawable.img_mypage_background_lv3
+        "황제" -> R.drawable.img_mypage_background_lv4
+        else -> {
+            R.drawable.img_mypage_background_lv1
+        }
+    }
+    this.setBackgroundResource(resourceId)
+}
+
+@BindingAdapter("setMyPageItemIcon")
+fun ImageView.setMyPageItemIcon(iconType: String?) {
+    iconType?.let {
+        val drawableResId = when (it) {
+            "AMERICANO" -> R.drawable.ic_mypage_coffee
+            "SNEAKERS" -> R.drawable.ic_mypage_sneakers
+            "AIRPODS" -> R.drawable.ic_mypage_airpods
+            "CHICKEN" -> R.drawable.ic_mypage_chicken
+            else -> {
+                R.drawable.ic_mypage_chicken
+            }
+        }
+        setImageResource(drawableResId)
+    }
+}
+
+@BindingAdapter("setMyPageItemDescription")
+fun TextView.setMyPageItemDescription(iconType: String?) {
+    text = iconType?.let {
+        when (it) {
+            "AMERICANO" -> context.getString(R.string.mypage_description_eat, "아메리카노를")
+            "SNEAKERS" -> context.getString(R.string.mypage_description_buy, "운동화를")
+            "AIRPODS" -> context.getString(R.string.mypage_description_buy, "에어팟을")
+            "CHICKEN" -> context.getString(R.string.mypage_description_eat, "치킨을")
+            else -> " "
+        }
+    } ?: " "
+}
+
+@BindingAdapter("setMyPageItemSavedAmount", "iconType")
+fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
+    val money: String = when (iconType) {
+        "AMERICANO" -> "5천원  x  "
+        "SNEAKERS" -> "3만원  x  "
+        "AIRPODS" -> "15만원  x  "
+        "CHICKEN" -> "30만원  x  "
+        else -> ""
+    }
+
+    val amount: String = when (iconType) {
+        "AMERICANO" -> (savedAmount / 5000).toString()
+        "SNEAKERS" -> (savedAmount / 150000).toString()
+        "AIRPODS" -> (savedAmount / 300000).toString()
+        "CHICKEN" -> (savedAmount / 30000).toString()
+        else -> ""
+    }
+
+    val measurement: String = when (iconType) {
+        "AMERICANO" -> " 잔"
+        "SNEAKERS" -> " 켤레"
+        "AIRPODS" -> " 개"
+        "CHICKEN" -> " 마리"
+        else -> ""
+    }
+
+    val spannableString = SpannableStringBuilder()
+        .append(money)
+        .append(amount)
+        .append(measurement)
+
+    spannableString.setSpan(
+        TextAppearanceSpan(context, R.style.TextAppearance_WINEY_detail_m_12),
+        0,
+        money.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    spannableString.setSpan(
+        TextAppearanceSpan(context, R.style.TextAppearance_WINEY_Headline_b_24_xxl),
+        money.length,
+        money.length + amount.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+
+    spannableString.setSpan(
+        ForegroundColorSpan(ContextCompat.getColor(context, R.color.gray_500)),
+        money.length + amount.length,
+        money.length + amount.length + measurement.length,
+        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    )
+    text = spannableString
 }

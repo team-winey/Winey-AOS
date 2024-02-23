@@ -17,13 +17,11 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentWineyFeedBinding
-import org.go.sopt.winey.domain.entity.User
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
@@ -45,10 +43,10 @@ import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.WineyPopupMenu
 import org.go.sopt.winey.util.view.setOnSingleClickListener
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
@@ -426,40 +424,6 @@ class WineyFeedFragment :
                 amplitudeUtils.logEvent("click_like", eventProperties)
 
             else -> {}
-        }
-    }
-
-    /** 1차 릴리즈 당시, 절약 피드 업로드 (더 이상 사용 X) */
-    private fun initGetUserStateObserver() {
-        viewLifeCycleScope.launch {
-            mainViewModel.getUserState.collect { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        val data = dataStoreRepository.getUserInfo().firstOrNull() ?: return@collect
-                        checkGoalSetting(data)
-                    }
-
-                    is UiState.Failure -> {
-                        snackBar(binding.root) { state.msg }
-                    }
-
-                    else -> Timber.tag("failure").e(MSG_WINEYFEED_ERROR)
-                }
-            }
-        }
-    }
-
-    private fun checkGoalSetting(data: User) {
-        // 목표를 설정한 적 없거나, 기간 내 목표 달성에 실패한 경우
-        if (data.isOver) {
-            showDefaultGoalSettingDialog()
-        }
-        // 기간 내 목표 달성에 성공한 경우
-        else if (data.isAttained) {
-            showCongratulationDialog()
-        } else {
-            // 새 목표를 설정한 경우
-            //navigateToUpload()
         }
     }
 
