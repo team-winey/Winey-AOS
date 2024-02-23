@@ -398,7 +398,7 @@ class WineyFeedFragment :
 
     private fun navigateToGoalPath() {
         Intent(requireContext(), GoalPathActivity::class.java).apply {
-            putExtra(KEY_LEVEL_UP_MOMENT, true)
+            putExtra(KEY_LEVEL_UP, true)
             startActivity(this)
         }
     }
@@ -490,6 +490,9 @@ class WineyFeedFragment :
     }
 
     companion object {
+        private const val INSTAGRAM_URL =
+            "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
+
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val TAG_DEFAULT_GOAL_SETTING_DIALOG = "DEFAULT_GOAL_SETTING_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
@@ -497,16 +500,13 @@ class WineyFeedFragment :
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
         private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
 
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val VAL_WINEY_FEED_SCREEN = "WineyFeedFragment"
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+
         const val KEY_FEED_TYPE = "feedType"
-        private const val KEY_LEVEL_UP_MOMENT = "LEVEL_UP_MOMENT"
-
-        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        private const val VAL_WINEY_FEED_SCREEN = "WineyFeedFragment"
-
-        private const val INSTAGRAM_URL =
-            "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
+        const val KEY_LEVEL_UP = "LEVEL_UP_MOMENT"
     }
 }
