@@ -105,6 +105,7 @@ class WineyFeedFragment :
         initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
+        initLevelUpStateObserver()
     }
 
     /** Adapter */
@@ -397,6 +398,31 @@ class WineyFeedFragment :
         }
     }
 
+    private fun initLevelUpStateObserver() {
+        mainViewModel.levelUpState.flowWithLifecycle(viewLifeCycle)
+            .onEach { nowLevelUp ->
+                if (nowLevelUp) {
+                    Timber.e("WINEY FEED LEVEL UP: $nowLevelUp")
+                    showCongratulationDialog()
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun showCongratulationDialog() {
+        val dialog = WineyDialogFragment.newInstance(
+            wineyDialogLabel = WineyDialogLabel(
+                title = stringOf(R.string.wineyfeed_congratulation_dialog_title),
+                subTitle = stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
+                positiveButtonLabel = stringOf(R.string.wineyfeed_congratulation_dialog_positive_button)
+            ),
+            handleNegativeButton = {},
+            handlePositiveButton = {
+                navigateToGoalPath()
+            }
+        )
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
+    }
+
     /** Navigation */
     private fun navigateToUpload(feedType: WineyFeedType) {
         Intent(requireContext(), UploadActivity::class.java).apply {
@@ -414,34 +440,18 @@ class WineyFeedFragment :
         }
     }
 
+    private fun navigateToGoalPath() {
+        Intent(requireContext(), GoalPathActivity::class.java).apply {
+            putExtra(KEY_LEVEL_UP, true)
+            startActivity(this)
+        }
+    }
+
     /** Other */
     private fun removeRecyclerviewItemChangeAnimation() {
         val animator = binding.rvWineyfeedPost.itemAnimator
         if (animator is SimpleItemAnimator) {
             animator.supportsChangeAnimations = false
-        }
-    }
-
-    private fun showCongratulationDialog() {
-        WineyDialogFragment.newInstance(
-            wineyDialogLabel = WineyDialogLabel(
-                title = stringOf(R.string.wineyfeed_congratulation_dialog_title),
-                subTitle = stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
-                positiveButtonLabel = stringOf(R.string.wineyfeed_congratulation_dialog_positive_button)
-            ),
-            handleNegativeButton = {},
-            handlePositiveButton = {
-                navigateToGoalPath()
-            }
-        ).apply {
-            activity?.supportFragmentManager?.let { show(it, TAG_CONGRATULATION_DIALOG) }
-        }
-    }
-
-    private fun navigateToGoalPath() {
-        Intent(requireContext(), GoalPathActivity::class.java).apply {
-            putExtra(KEY_LEVEL_UP, true)
-            startActivity(this)
         }
     }
 

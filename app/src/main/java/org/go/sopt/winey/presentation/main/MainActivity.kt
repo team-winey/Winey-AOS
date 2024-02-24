@@ -35,14 +35,15 @@ import org.go.sopt.winey.util.view.snackbar.SnackbarType
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<MainViewModel>()
 
-    private val isUploadSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_UPLOAD, false) }
-    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_DELETE, false) }
+    private val levelUpFromUpload by lazy { intent.getBooleanExtra(WineyFeedFragment.KEY_LEVEL_UP, false) }
+    private val isUploadSuccess by lazy { intent.getBooleanExtra(KEY_FEED_UPLOAD, false) }
+    private val isDeleteSuccess by lazy { intent.getBooleanExtra(KEY_FEED_DELETE, false) }
 
-    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
-    private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
-    private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
+    private val prevScreenName by lazy { intent.getStringExtra(KEY_PREV_SCREEN) }
+    private val notiType by lazy { intent.getStringExtra(KEY_NOTI_TYPE) }
+    private val feedId by lazy { intent.getStringExtra(KEY_FEED_ID) }
 
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -59,12 +60,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         requestNotificationPermission()
 
-        // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
-        mainViewModel.getUser()
-        mainViewModel.patchFcmToken()
+        viewModel.apply {
+            getUser() // 위니피드, 마이페이지 프래그먼트에서 관찰
+            patchFcmToken()
+            saveLevelUpState(levelUpFromUpload)
+        }
 
         initNotiTypeHandler()
         initFragment()
@@ -176,7 +178,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun setupLogoutState() {
-        mainViewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
+        viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
                 }

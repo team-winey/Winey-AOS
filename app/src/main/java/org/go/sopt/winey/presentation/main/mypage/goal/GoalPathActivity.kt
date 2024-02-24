@@ -25,7 +25,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activity_goal_path) {
     private val viewModel by viewModels<GoalPathViewModel>()
-    private val fromWineyFeedLevelUp by lazy {
+    private val levelUpFromWineyFeed by lazy {
         intent.getBooleanExtra(
             WineyFeedFragment.KEY_LEVEL_UP,
             false
@@ -38,7 +38,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.initLevelUpState(fromWineyFeedLevelUp)
+        viewModel.saveLevelUpState(levelUpFromWineyFeed)
 
         setupFragmentByLevel()
         initRemainingGoal()
@@ -50,7 +50,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     private fun registerBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (fromWineyFeedLevelUp) {
+                if (levelUpFromWineyFeed) {
                     navigateToMainScreen()
                 } else {
                     finish()
@@ -62,7 +62,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
 
     private fun initBackButtonClickListener() {
         binding.ivGoalPathBack.setOnClickListener {
-            if (fromWineyFeedLevelUp) {
+            if (levelUpFromWineyFeed) {
                 navigateToMainScreen()
             } else {
                 finish()
@@ -80,7 +80,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 }
 
                 UserLevel.SECOND.rankName -> {
-                    if (fromWineyFeedLevelUp) {
+                    if (levelUpFromWineyFeed) {
                         navigateTo<GoalPathLevel1Fragment>()
                     } else {
                         navigateTo<GoalPathLevel2Fragment>()
@@ -88,7 +88,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 }
 
                 UserLevel.THIRD.rankName -> {
-                    if (fromWineyFeedLevelUp) {
+                    if (levelUpFromWineyFeed) {
                         navigateTo<GoalPathLevel2Fragment>()
                     } else {
                         navigateTo<GoalPathLevel3Fragment>()
@@ -99,7 +99,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                     binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
                     binding.clGoalPathGuide.isVisible = false
 
-                    if (fromWineyFeedLevelUp) {
+                    if (levelUpFromWineyFeed) {
                         navigateTo<GoalPathLevel3Fragment>()
                     } else {
                         navigateTo<GoalPathLevel4Fragment>()
