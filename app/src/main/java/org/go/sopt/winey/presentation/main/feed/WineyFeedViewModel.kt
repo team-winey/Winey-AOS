@@ -62,6 +62,10 @@ class WineyFeedViewModel @Inject constructor(
         }
     }
 
+    fun initGetWineyFeedState() {
+        _getWineyFeedListState.value = UiState.Empty
+    }
+
     fun getDetailFeed(feedId: Int) {
         viewModelScope.launch {
             _getDetailFeedState.emit(UiState.Loading)

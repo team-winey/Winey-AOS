@@ -58,6 +58,7 @@
             android:layout_height="10dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="12dp"
+
             android:progress="70"
             android:progressDrawable="@drawable/progressbar_wineyfeed_goal"
             app:layout_constraintEnd_toEndOf="parent"
