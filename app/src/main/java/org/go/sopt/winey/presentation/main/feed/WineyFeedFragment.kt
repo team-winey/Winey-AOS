@@ -402,7 +402,6 @@ class WineyFeedFragment :
         mainViewModel.levelUpState.flowWithLifecycle(viewLifeCycle)
             .onEach { nowLevelUp ->
                 if (nowLevelUp) {
-                    Timber.e("WINEY FEED LEVEL UP: $nowLevelUp")
                     showCongratulationDialog()
                 }
             }.launchIn(viewLifeCycleScope)

@@ -3,7 +3,6 @@ package org.go.sopt.winey.presentation.main.mypage.goal
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -24,7 +23,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activity_goal_path) {
-    private val viewModel by viewModels<GoalPathViewModel>()
     private val levelUpFromWineyFeed by lazy {
         intent.getBooleanExtra(
             WineyFeedFragment.KEY_LEVEL_UP,
@@ -37,8 +35,6 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel.saveLevelUpState(levelUpFromWineyFeed)
 
         setupFragmentByLevel()
         initRemainingGoal()
@@ -125,7 +121,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     private fun navigateToMainScreen() {
         Intent(this@GoalPathActivity, MainActivity::class.java).apply {
             putExtra(MainActivity.KEY_FROM_GOAL_PATH, true)
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(this)
         }
     }

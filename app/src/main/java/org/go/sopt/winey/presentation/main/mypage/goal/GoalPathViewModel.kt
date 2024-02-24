@@ -6,10 +6,5 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class GoalPathViewModel : ViewModel() {
-    private val _levelUpState = MutableStateFlow(false)
-    val levelUpState: StateFlow<Boolean> = _levelUpState.asStateFlow()
 
-    fun saveLevelUpState(currentState: Boolean) {
-        _levelUpState.value = currentState
-    }
 }

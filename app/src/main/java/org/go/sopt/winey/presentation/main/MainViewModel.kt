@@ -135,7 +135,6 @@ class MainViewModel @Inject constructor(
     }
 
     fun saveLevelUpState(currentState: Boolean) {
-        Timber.e("MAIN LEVEL UP: $currentState")
         _levelUpState.value = currentState
     }
 

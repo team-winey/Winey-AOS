@@ -134,7 +134,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun showWineyFeedResultSnackBar() {
-        if (isUploadSuccess == true) {
+        if (isUploadSuccess) {
             wineySnackbar(
                 anchorView = binding.root,
                 message = stringOf(R.string.snackbar_upload_success),
@@ -142,7 +142,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             )
         }
 
-        if (isDeleteSuccess == true) {
+        if (isDeleteSuccess) {
             wineySnackbar(
                 anchorView = binding.root,
                 message = stringOf(R.string.snackbar_feed_delete_success),

@@ -8,19 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
-import androidx.lifecycle.flowWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentGoalPathLevel3Binding
 import org.go.sopt.winey.domain.repository.DataStoreRepository
+import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.drawableOf
-import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,7 +33,7 @@ class GoalPathLevel3Fragment :
         super.onViewCreated(view, savedInstanceState)
 
         initGoalPathUnlockGuide()
-        initLevelUpStateObserver()
+        checkNowLevelUp()
         initAnimatorListener()
     }
 
@@ -55,13 +53,14 @@ class GoalPathLevel3Fragment :
         }
     }
 
-    private fun initLevelUpStateObserver() {
-        viewModel.levelUpState.flowWithLifecycle(viewLifeCycle).onEach { nowLevelUp ->
-            if (nowLevelUp) {
+    private fun checkNowLevelUp() {
+        viewLifeCycleScope.launch {
+            val user = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
+            if (user.userLevel != UserLevel.THIRD.rankName) {
                 binding.ivGoalPathLv3.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_4))
                 binding.lottieGoalPathStep3.playAnimation()
             }
-        }.launchIn(viewLifeCycleScope)
+        }
     }
 
     private fun initAnimatorListener() {
