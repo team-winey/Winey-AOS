@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,14 +17,11 @@ import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.drawableOf
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class GoalPathLevel3Fragment :
     BindingFragment<FragmentGoalPathLevel3Binding>(R.layout.fragment_goal_path_level3) {
-    private val viewModel by activityViewModels<GoalPathViewModel>()
-
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 

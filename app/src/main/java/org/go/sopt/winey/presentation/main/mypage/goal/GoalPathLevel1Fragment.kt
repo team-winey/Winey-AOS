@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,8 +22,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class GoalPathLevel1Fragment :
     BindingFragment<FragmentGoalPathLevel1Binding>(R.layout.fragment_goal_path_level1) {
-    private val viewModel by activityViewModels<GoalPathViewModel>()
-
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
 
