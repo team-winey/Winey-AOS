@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/img_goal_path_background_other"
+        tools:context=".presentation.main.mypage.goal.GoalPathActivity">
+
+        <ImageView
+            android:id="@+id/iv_goal_path_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="16dp"
+            android:src="@drawable/ic_all_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_goal_path"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout="@layout/fragment_goal_path_level1" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_goal_path_guide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="23dp"
+            android:background="@drawable/shape_green_gray_fill_12_rect"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_goal_path_guide_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/goal_path_guide_level"
+                android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                android:textColor="@color/winey_yellow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider_goal_path_guide"
+                android:layout_width="1dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="12dp"
+                app:dividerColor="@color/green_gray_200"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tv_goal_path_guide_level"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_goal_path_remaining_money"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+                android:textColor="@color/gray_100"
+                app:layout_constraintStart_toEndOf="@id/divider_goal_path_guide"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="100,000원" />
+
+            <TextView
+                android:id="@+id/tv_goal_path_money_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/goal_path_remaining_money"
+                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                android:textColor="@color/gray_100"
+                app:layout_constraintBottom_toBottomOf="@id/tv_goal_path_remaining_money"
+                app:layout_constraintStart_toEndOf="@id/tv_goal_path_remaining_money"
+                app:layout_constraintTop_toTopOf="@id/tv_goal_path_remaining_money" />
+
+            <TextView
+                android:id="@+id/tv_goal_path_remaining_feed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+                android:textColor="@color/gray_100"
+                app:layout_constraintStart_toStartOf="@id/tv_goal_path_remaining_money"
+                app:layout_constraintTop_toBottomOf="@id/tv_goal_path_remaining_money"
+                tools:text="15개" />
+
+            <TextView
+                android:id="@+id/tv_goal_path_feed_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/goal_path_remaining_feed"
+                android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                android:textColor="@color/gray_100"
+                app:layout_constraintBottom_toBottomOf="@id/tv_goal_path_remaining_feed"
+                app:layout_constraintStart_toEndOf="@id/tv_goal_path_remaining_feed"
+                app:layout_constraintTop_toTopOf="@id/tv_goal_path_remaining_feed" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

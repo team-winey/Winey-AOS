@@ -23,8 +23,10 @@
     <string name="wineyfeed_banner4_subtitle">찾기 힘든 국가기관 금융혜택도</string>
     <string name="wineyfeed_banner4_title">위니 추천피드에서 한번에 볼 수 있어요!</string>
 
-    <string name="wineyfeed_fab_save">절약했어요</string>
-    <string name="wineyfeed_fab_consume">낭비했어요</string>
+    <string name="wineyfeed_feed_type_save">절약했어요</string>
+    <string name="wineyfeed_feed_type_consume">낭비했어요</string>
+    <string name="wineyfeed_item_save_money">&#160;+&#160;%s원</string>
+    <string name="wineyfeed_item_consume_money">&#160;-&#160;%s원</string>
 
     <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
     <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
@@ -273,4 +275,9 @@
     <string name="update_dialog_guide_content_2">• 위니 삭제 후 Google play 스토어를 강제 종료한 뒤, 재설치해 보세요.</string>
     <string name="update_dialog_guide_content_3">• 설정 → 어플리케이션 → Google play 스토어 → 저장공간 → 데이터 삭제 및 캐시 삭제, 강제 종료 후 재시작하여 위니를 재설치해 보세요.</string>
     <string name="update_dialog_btn_text">업데이트하러 가기</string>
+
+    <!-- goal path -->
+    <string name="goal_path_guide_level">다음 레벨까지</string>
+    <string name="goal_path_remaining_money">을 더 절약해보세요.</string>
+    <string name="goal_path_remaining_feed">의 절약피드를 더 올려야 해요.</string>
 </resources>

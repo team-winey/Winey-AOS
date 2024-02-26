@@ -17,12 +17,12 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_wineyfeed_profilephoto"
+            setWriterLevelImage="@{data.writerLevel}"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="12dp"
-            setWriterLevelImage="@{data.writerLevel}"
             app:civ_border_color="@color/gray_200"
             app:civ_border_width="1dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -106,24 +106,38 @@
             app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_like"
             tools:text="5,319" />
 
-        <TextView
-            android:id="@+id/tv_wineyfeed_money"
-            setAmount="@{data.feedMoney}"
-            setSuffix="@{@string/wineyfeed_money}"
+        <LinearLayout
+            android:id="@+id/ll_wineyfeed_money"
+            switchFeedTypeBackground="@{data.feedType}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="4000"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="6dp"
             android:layout_marginTop="13dp"
             android:layout_marginBottom="9dp"
-            android:textColor="@color/sub_green_500"
-            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
-            android:background="@drawable/shape_green500_line_6_rect"
-            app:layout_constraintTop_toBottomOf="@id/l_wineyfeed_image"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
             app:layout_constraintStart_toStartOf="@id/l_wineyfeed_image"
-            app:layout_constraintBottom_toTopOf="@id/tv_wineyfeed_title"/>
+            app:layout_constraintTop_toBottomOf="@id/l_wineyfeed_image"
+            tools:background="@drawable/shape_green500_line_6_rect">
 
+            <TextView
+                android:id="@+id/tv_wineyfeed_type"
+                switchFeedTypeText="@{data.feedType}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                tools:text="절약했어요"
+                tools:textColor="@color/sub_green_500" />
+
+            <TextView
+                android:id="@+id/tv_wineyfeed_money"
+                feedMoney="@{data.feedMoney}"
+                feedType="@{data.feedType}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                tools:text=" + 4,500원" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_wineyfeed_title"
@@ -137,7 +151,7 @@
             android:textColor="@color/gray_900"
             app:layout_constraintEnd_toStartOf="@id/iv_wineyfeed_like"
             app:layout_constraintStart_toStartOf="@id/l_wineyfeed_image"
-            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_money"
+            app:layout_constraintTop_toBottomOf="@id/ll_wineyfeed_money"
             tools:text="@string/wineyfeed_title" />
 
         <ImageView

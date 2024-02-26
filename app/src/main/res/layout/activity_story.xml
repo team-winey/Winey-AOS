@@ -30,7 +30,7 @@
             android:id="@+id/fl_story_nav_container"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/green_gray"
+            android:background="@color/green_gray_100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">

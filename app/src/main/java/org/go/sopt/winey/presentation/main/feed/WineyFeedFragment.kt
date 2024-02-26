@@ -84,7 +84,6 @@ class WineyFeedFragment :
     override fun onStart() {
         super.onStart()
         if (clickedFeedId != -1) {
-            Timber.d("onStart getDetailFeed")
             viewModel.getDetailFeed(clickedFeedId)
         }
     }
@@ -137,7 +136,6 @@ class WineyFeedFragment :
     }
 
     private fun saveClickedFeedId(feedId: Int) {
-        Timber.d("CLICKED FEED ID: $feedId")
         clickedFeedId = feedId
     }
 
@@ -266,10 +264,12 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        Timber.e("PAGING DATA SUBMIT in Fragment")
                         val pagingData = state.data
                         wineyFeedAdapter.submitData(pagingData)
-                        viewModel.initGetWineyFeedListState()
+
+                        // 상세피드 들어갔다 나올 때, 성공 상태가 계속 관찰되어
+                        // 이미 삭제된 항목이 되살아나는 일이 없도록 UiState 초기화
+                        viewModel.initGetWineyFeedState()
                     }
 
                     is UiState.Failure -> {
@@ -336,6 +336,8 @@ class WineyFeedFragment :
                             type = SnackbarType.WineyFeedResult(isSuccess = true)
                         )
 
+                        // 상세피드 들어갔다 나올 때 성공 상태가 계속 관찰되어
+                        // 스낵바가 반복해서 뜨지 않도록 UiState 초기화
                         viewModel.initDeleteFeedState()
                     }
 

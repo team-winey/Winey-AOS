@@ -1,5 +1,6 @@
 package org.go.sopt.winey.presentation.splash
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -101,6 +102,13 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         lifecycleScope.launch {
             delay(DELAY_TIME)
             checkAppUpdateInfo()
+        }
+    }
+
+    private inline fun <reified T : Activity> navigateTo() {
+        Intent(this, T::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
         }
     }
 

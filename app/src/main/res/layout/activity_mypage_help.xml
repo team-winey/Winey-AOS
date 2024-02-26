@@ -17,11 +17,11 @@
             android:id="@+id/btn_help_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="12dp"
             android:layout_marginVertical="4dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:padding="12dp"
+            android:src="@drawable/ic_all_back"
             app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/ic_myfeed_back"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_help_title"
