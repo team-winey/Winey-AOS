@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.viewModels
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -24,6 +25,8 @@ import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
+import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
+import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
@@ -72,6 +75,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
     private fun addObserver() {
         setupDeleteUserState()
         setupPatchAllowedNotificationState()
+        setupLogoutState()
     }
 
     private fun switchOnNotification() {
@@ -259,7 +263,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
                 when (state) {
                     is UiState.Success -> {
                         settingViewModel.clearDataStore()
-                        //navigateToGuideScreen()
+                        navigateToGuideScreen()
                     }
 
                     is UiState.Failure -> {
@@ -296,6 +300,41 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
                 }
             }
     }
+    private fun setupLogoutState() {
+        mainViewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Loading -> {
+                }
+
+                is UiState.Success -> {
+                    navigateToLoginScreen()
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                is UiState.Empty -> {
+                }
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun navigateToLoginScreen() {
+        Intent(this, LoginActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(this)
+            finish()
+        }
+    }
+
+    private fun navigateToGuideScreen() {
+        Intent(this, GuideActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
+        }
+    }
+
 
     companion object {
 
