@@ -66,6 +66,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         }
     }
 
+    // todo: 평상시에 잘 동작하는지 확인 필요함.
     private fun setupFragmentByLevel() {
         lifecycleScope.launch {
             val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
