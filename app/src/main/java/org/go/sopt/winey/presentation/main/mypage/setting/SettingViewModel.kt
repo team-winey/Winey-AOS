@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
 import org.go.sopt.winey.domain.repository.AuthRepository
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.util.view.UiState

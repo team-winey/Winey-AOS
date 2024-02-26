@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.viewModels
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -99,7 +98,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
     private fun showSystemNotificationSetting() {
         Intent().apply {
             action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
-            putExtra(Settings.EXTRA_APP_PACKAGE, this)
+            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
@@ -300,6 +299,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
                 }
             }
     }
+
     private fun setupLogoutState() {
         mainViewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
@@ -334,7 +334,6 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
             startActivity(this)
         }
     }
-
 
     companion object {
 
