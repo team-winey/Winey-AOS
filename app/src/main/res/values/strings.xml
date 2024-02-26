@@ -36,6 +36,8 @@
     <string name="wineyfeed_goal_progressbar_title">꾸준한 절약을 통해 %s 되어보아요</string>
     <string name="wineyfeed_goal_progressbar_current_money">%s원</string>
     <string name="wineyfeed_goal_progressbar_target_money">&#160;/&#160;%d만원</string>
+    <string name="wineyfeed_goal_progressbar_lv4_title">레벨 미션에 완료했어요</string>
+    <string name="wineyfeed_goal_progressbar_lv4_subTitle">절약을 통해 황제를 계속 유지해 보세요!</string>
 
     <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
     <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>

@@ -280,13 +280,9 @@ class WineyFeedFragment :
             .onEach { state ->
                 when (state) {
                     is UiState.Success -> {
-                        // 피드 생성, 삭제에 따라 유저 데이터와 프로그레스바 진행률 갱신
+                        // 피드 생성, 삭제에 따라 유저 데이터와 프로그레스바 갱신
                         val userInfo = state.data ?: return@onEach
-                        if (userInfo.userLevel == UserLevel.FORTH.rankName) {
-                            // todo: 황제 레벨은 별도 처리 필요
-                        } else {
-                            wineyFeedGoalAdapter.updateUserInfo(userInfo)
-                        }
+                        wineyFeedGoalAdapter.updateProgressBar(userInfo)
                     }
 
                     is UiState.Failure -> {
