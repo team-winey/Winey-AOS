@@ -13,12 +13,14 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import de.hdodenhof.circleimageview.CircleImageView
 import org.go.sopt.winey.R
 import org.go.sopt.winey.presentation.main.feed.WineyFeedType
+import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.VAL_MY_PAGE_SCREEN
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.VAL_STORY_SCREEN
 import org.go.sopt.winey.util.code.ErrorCode.*
@@ -513,13 +515,17 @@ fun TextView.switchFeedMoney(feedType: String, feedMoney: Long) {
     }
 }
 
-@BindingAdapter("updateUserNextLevel")
-fun TextView.updateUserNextLevel(currentLevel: String) {
+@BindingAdapter("setProgressBarTitle")
+fun TextView.setProgressBarTitle(currentLevel: String) {
     val context = this.context ?: return
+
+    if (currentLevel == UserLevel.FORTH.rankName) {
+        text = context.getString(R.string.wineyfeed_goal_progressbar_lv4_title)
+        return
+    }
 
     val currentLevels = context.resources.getStringArray(R.array.user_level)
     val nextLevels = listOf("기사가", "귀족이", "황제가")
-
     currentLevels.forEachIndexed { index, level ->
         if (level == currentLevel) {
             text = context.getString(
@@ -531,22 +537,27 @@ fun TextView.updateUserNextLevel(currentLevel: String) {
     }
 }
 
-@BindingAdapter("updateCurrentMoney")
-fun TextView.updateCurrentMoney(accumulatedAmount: Int) {
+@BindingAdapter("userLevel", "accumulatedAmount")
+fun TextView.setCurrentMoney(userLevel: String, accumulatedAmount: Int) {
     val context = this.context ?: return
-    text = context.getString(
-        R.string.wineyfeed_goal_progressbar_current_money,
-        accumulatedAmount.formatAmountNumber()
-    )
+
+    text = if (userLevel == UserLevel.FORTH.rankName) {
+        context.getString(R.string.wineyfeed_goal_progressbar_lv4_subTitle)
+    } else {
+        context.getString(
+            R.string.wineyfeed_goal_progressbar_current_money,
+            accumulatedAmount.formatAmountNumber()
+        )
+    }
 }
 
-@BindingAdapter("updateTargetMoney")
-fun TextView.updateTargetMoney(currentLevel: String) {
+@BindingAdapter("setTargetMoney")
+fun TextView.setTargetMoney(currentLevel: String) {
     val context = this.context ?: return
+    isVisible = currentLevel != UserLevel.FORTH.rankName
 
     val userLevels = context.resources.getStringArray(R.array.user_level)
     val targetMoneys = context.resources.getIntArray(R.array.target_money)
-
     userLevels.forEachIndexed { index, level ->
         if (level == currentLevel) {
             text = context.getString(
