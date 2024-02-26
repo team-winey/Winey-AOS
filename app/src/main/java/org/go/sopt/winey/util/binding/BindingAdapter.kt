@@ -30,7 +30,6 @@ import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.number.formatAmountNumber
 import org.go.sopt.winey.util.view.InputUiState
 import org.go.sopt.winey.util.view.InputUiState.*
-import timber.log.Timber
 import java.text.DecimalFormat
 
 @BindingAdapter("likedAmount")

@@ -3,13 +3,11 @@ package org.go.sopt.winey.presentation.main.feed
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ItemWineyfeedGoalBinding
 import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.presentation.model.UserLevel
-import timber.log.Timber
 import kotlin.math.roundToInt
 
 class WineyFeedGoalAdapter(
