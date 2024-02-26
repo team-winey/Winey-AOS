@@ -32,7 +32,7 @@ data class ResponseGetUserDto(
         @SerialName("remainingAmount")
         val remainingAmount: Int,
         @SerialName("remainingCount")
-        val remainingCount: Int,
+        val remainingCount: Int
     )
 
     fun toUser(): UserV2 {

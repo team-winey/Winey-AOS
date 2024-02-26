@@ -90,6 +90,4 @@ class NotificationActivity :
         val intent = Intent(this, MypageHelpActivity::class.java)
         startActivity(intent)
     }
-
-
 }
