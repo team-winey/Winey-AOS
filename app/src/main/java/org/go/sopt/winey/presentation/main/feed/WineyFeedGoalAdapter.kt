@@ -37,7 +37,7 @@ class WineyFeedGoalAdapter(
             if (!isInitialized) {
                 isInitialized = true
 
-                // 최초 1회만 실행 (아이템 뷰의 재활용에 따라 예전 초기 데이터가 반영되는 문제 해결)
+                // 최초 1회만 실행 (아이템 뷰의 재활용에 따라 예전 데이터가 다시 바인딩 되는 문제 해결)
                 updateProgressBar(initialUser)
             }
         }
