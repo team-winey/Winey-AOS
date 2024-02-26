@@ -102,8 +102,6 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         lifecycleScope.launch {
             delay(DELAY_TIME)
             checkAppUpdateInfo()
-
-            //navigateTo<GoalPathActivity>()
         }
     }
 

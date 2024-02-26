@@ -23,8 +23,10 @@
     <string name="wineyfeed_banner4_subtitle">찾기 힘든 국가기관 금융혜택도</string>
     <string name="wineyfeed_banner4_title">위니 추천피드에서 한번에 볼 수 있어요!</string>
 
-    <string name="wineyfeed_fab_save">절약했어요</string>
-    <string name="wineyfeed_fab_consume">낭비했어요</string>
+    <string name="wineyfeed_feed_type_save">절약했어요</string>
+    <string name="wineyfeed_feed_type_consume">낭비했어요</string>
+    <string name="wineyfeed_item_save_money">&#160;+&#160;%s원</string>
+    <string name="wineyfeed_item_consume_money">&#160;-&#160;%s원</string>
 
     <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
     <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
