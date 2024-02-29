@@ -107,9 +107,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             }
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION ->
-                navigateToDetail(feedId?.toInt())
+                navigateToDetailScreen(feedId?.toInt())
 
-            NotificationType.HOW_TO_LEVEL_UP -> navigateToGoalPath()
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToGoalPathScreen()
             else -> {}
         }
     }
@@ -227,7 +227,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         startActivity(intent)
     }
 
-    private fun navigateToGoalPath() {
+    private fun navigateToGoalPathScreen() {
         val intent = Intent(this, GoalPathActivity::class.java)
         startActivity(intent)
     }
