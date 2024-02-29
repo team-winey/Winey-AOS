@@ -27,6 +27,7 @@ import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.colorOf
+import org.go.sopt.winey.util.context.snackBar
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -112,7 +113,9 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     }
 
     private fun checkAppUpdateInfo() {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                 appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
@@ -121,6 +124,10 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
             } else {
                 checkAutoLogin()
             }
+        }
+
+        appUpdateInfoTask.addOnFailureListener { t ->
+            snackBar(binding.root) { t.message.toString() }
         }
     }
 
