@@ -23,6 +23,7 @@ import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
 import org.go.sopt.winey.presentation.main.mypage.MypageHelpActivity
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import org.go.sopt.winey.presentation.model.NotificationType
 import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
@@ -105,16 +106,16 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 true
             )
 
-            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
-            -> navigateToDetail(feedId?.toInt())
+            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION ->
+                navigateToDetail(feedId?.toInt())
 
-            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToGoalPath()
             else -> {}
         }
     }
 
     private fun initFragment() {
-        if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
+        if (intent.getBooleanExtra(KEY_TO_MY_PAGE, false)) {
             navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
         } else {
             if (prevScreenName == VAL_MY_FEED_SCREEN) {
@@ -220,22 +221,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         startActivity(intent)
     }
 
-    private fun navigateToLevelupHelp() {
-        val intent = Intent(this, MypageHelpActivity::class.java)
+    private fun navigateToGoalPath() {
+        val intent = Intent(this, GoalPathActivity::class.java)
         startActivity(intent)
     }
 
     companion object {
+        const val KEY_FEED_ID = "feedId"
+        const val KEY_TO_MY_PAGE = "navigateMyPage"
         private const val KEY_FEED_UPLOAD = "upload"
         private const val KEY_FEED_DELETE = "delete"
-
-        private const val KEY_FEED_ID = "feedId"
         private const val KEY_NOTI_TYPE = "notiType"
         private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_TO_MYFEED = "toMyFeed"
-        private const val KEY_TO_MYPAGE = "navigateMypage"
-
         private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
     }
 }
