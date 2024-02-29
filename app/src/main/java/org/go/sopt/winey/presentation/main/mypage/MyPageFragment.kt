@@ -28,6 +28,7 @@ import org.go.sopt.winey.databinding.FragmentMyPageBinding
 import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
@@ -70,6 +71,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun addListener() {
         initEditNicknameButtonClickListener()
         initMyFeedButtonClickListener()
+        initGoalPathButtonClickListener()
         registerBackPressedCallback()
     }
 
@@ -154,6 +156,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun initGoalPathButtonClickListener() {
+        binding.btnMypageTrip.setOnClickListener {
+            navigateToGoalPath()
+        }
+    }
+
+    private fun navigateToGoalPath() {
+        Intent(requireContext(), GoalPathActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+
     // 마이페이지 왔다가 다시 알림 화면으로 돌아가도록
     private fun registerBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
@@ -221,7 +235,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
-            putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, MY_PAGE_SCREEN)
             startActivity(this)
         }
     }
@@ -273,7 +287,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     companion object {
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        private const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
+        private const val MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_TO_MYFEED = "toMyFeed"

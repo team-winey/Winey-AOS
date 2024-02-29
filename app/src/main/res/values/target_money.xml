@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="target_money">
+        <item>3</item>
+        <item>15</item>
+        <item>30</item>
+    </integer-array>
+</resources>

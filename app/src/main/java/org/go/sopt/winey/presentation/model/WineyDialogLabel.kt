@@ -7,6 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class WineyDialogLabel(
     val title: String,
     val subTitle: String,
-    val negativeButtonLabel: String,
+    val negativeButtonLabel: String? = null,
     val positiveButtonLabel: String
 ) : Parcelable

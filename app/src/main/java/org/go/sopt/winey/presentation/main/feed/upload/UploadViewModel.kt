@@ -136,7 +136,6 @@ class UploadViewModel @Inject constructor(
             feedRepository.postWineyFeed(file, requestMap)
                 .onSuccess { response ->
                     _postWineyFeedState.value = UiState.Success(response)
-                    Timber.d("${response?.feedId} ${response?.createdAt}")
                 }
                 .onFailure { t ->
                     _postWineyFeedState.value = UiState.Failure(t.message.toString())

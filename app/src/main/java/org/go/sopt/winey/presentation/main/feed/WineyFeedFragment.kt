@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -28,6 +29,7 @@ import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.activity.showReportGoogleForm
@@ -59,6 +61,7 @@ class WineyFeedFragment :
     private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
     private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
+    private lateinit var wineyFeedGoalAdapter: WineyFeedGoalAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
     private var clickedFeedId = -1
 
@@ -96,20 +99,22 @@ class WineyFeedFragment :
     }
 
     private fun addObserver() {
+        initGetUserStateObserver()
         initGetWineyFeedListStateObserver()
         initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
+        initLevelUpStateObserver()
     }
 
     /** Adapter */
     private fun initAdapter() {
+        initGoalAdapter()
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter(
             onBannerClicked = {
                 navigateToWineyInstagram()
             }
         )
-        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         wineyFeedAdapter = WineyFeedAdapter(
             onlikeButtonClicked = { wineyFeed ->
                 viewModel.likeFeed(wineyFeed.feedId, !wineyFeed.isLiked)
@@ -123,10 +128,20 @@ class WineyFeedFragment :
                 saveClickedFeedId(wineyFeed.feedId)
             }
         )
+        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
+
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
+            wineyFeedGoalAdapter,
             wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
         )
+    }
+
+    private fun initGoalAdapter() {
+        viewLifeCycleScope.launch {
+            val user = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
+            wineyFeedGoalAdapter = WineyFeedGoalAdapter(requireContext(), user)
+        }
     }
 
     private fun navigateToWineyInstagram() {
@@ -259,6 +274,25 @@ class WineyFeedFragment :
     }
 
     /** Observer */
+    private fun initGetUserStateObserver() {
+        mainViewModel.getUserState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        // 피드 생성, 삭제에 따라 유저 데이터와 프로그레스바 갱신
+                        val userInfo = state.data ?: return@onEach
+                        wineyFeedGoalAdapter.updateProgressBar(userInfo)
+                    }
+
+                    is UiState.Failure -> {
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
     private fun initGetWineyFeedListStateObserver() {
         viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
@@ -336,6 +370,8 @@ class WineyFeedFragment :
                             type = SnackbarType.WineyFeedResult(isSuccess = true)
                         )
 
+                        mainViewModel.getUser()
+
                         // 상세피드 들어갔다 나올 때 성공 상태가 계속 관찰되어
                         // 스낵바가 반복해서 뜨지 않도록 UiState 초기화
                         viewModel.initDeleteFeedState()
@@ -357,6 +393,30 @@ class WineyFeedFragment :
         }
     }
 
+    private fun initLevelUpStateObserver() {
+        mainViewModel.levelUpState.flowWithLifecycle(viewLifeCycle)
+            .onEach { nowLevelUp ->
+                if (nowLevelUp) {
+                    showCongratulationDialog()
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun showCongratulationDialog() {
+        val dialog = WineyDialogFragment.newInstance(
+            wineyDialogLabel = WineyDialogLabel(
+                title = stringOf(R.string.wineyfeed_congratulation_dialog_title),
+                subTitle = stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
+                positiveButtonLabel = stringOf(R.string.wineyfeed_congratulation_dialog_positive_button)
+            ),
+            handleNegativeButton = {},
+            handlePositiveButton = {
+                navigateToGoalPath()
+            }
+        )
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
+    }
+
     /** Navigation */
     private fun navigateToUpload(feedType: WineyFeedType) {
         Intent(requireContext(), UploadActivity::class.java).apply {
@@ -369,7 +429,14 @@ class WineyFeedFragment :
         Intent(requireContext(), DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-            putExtra(KEY_PREV_SCREEN_NAME, VAL_WINEY_FEED_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, WINEY_FEED_SCREEN)
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToGoalPath() {
+        Intent(requireContext(), GoalPathActivity::class.java).apply {
+            putExtra(KEY_LEVEL_UP, true)
             startActivity(this)
         }
     }
@@ -451,28 +518,6 @@ class WineyFeedFragment :
         activity?.supportFragmentManager?.let { dialog.show(it, TAG_DEFAULT_GOAL_SETTING_DIALOG) }
     }
 
-    private fun showCongratulationDialog() {
-        amplitudeUtils.logEvent("view_goalsetting_popup")
-
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.wineyfeed_congratulation_dialog_title),
-                stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
-                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
-            ),
-            handleNegativeButton = {
-                sendDialogClickEvent(false)
-            },
-            handlePositiveButton = {
-                sendDialogClickEvent(true)
-                navigateToMyPageWithBundle()
-            }
-        )
-
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
-    }
-
     private fun navigateToMyPageWithBundle() {
         val myPageFragment = MyPageFragment().apply {
             arguments = Bundle().apply {
@@ -491,22 +536,23 @@ class WineyFeedFragment :
     }
 
     companion object {
+        private const val INSTAGRAM_URL =
+            "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
+
         private const val MSG_WINEYFEED_ERROR = "ERROR"
         private const val TAG_DEFAULT_GOAL_SETTING_DIALOG = "DEFAULT_GOAL_SETTING_DIALOG"
-        private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
+        private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
 
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
         private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+
         const val KEY_FEED_TYPE = "feedType"
-
-        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        private const val VAL_WINEY_FEED_SCREEN = "WineyFeedFragment"
-
-        private const val INSTAGRAM_URL =
-            "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
+        const val KEY_LEVEL_UP = "LEVEL_UP_MOMENT"
     }
 }

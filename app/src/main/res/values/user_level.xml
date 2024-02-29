@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="user_level">
+        <item>평민</item>
+        <item>기사</item>
+        <item>귀족</item>
+    </string-array>
+</resources>

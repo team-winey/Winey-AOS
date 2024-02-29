@@ -9,5 +9,7 @@ data class ResponsePostWineyFeedDto(
     @SerialName("feedId")
     val feedId: Int,
     @SerialName("createdAt")
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime,
+    @SerialName("levelUpgraded")
+    val levelUpgraded: Boolean
 )
