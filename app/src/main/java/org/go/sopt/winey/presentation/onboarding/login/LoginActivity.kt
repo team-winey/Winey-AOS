@@ -46,30 +46,6 @@ class LoginActivity :
         }
     }
 
-    private fun sendEventToAmplitude(type: EventType) {
-        val eventProperties = JSONObject()
-
-        try {
-            when (type) {
-                EventType.TYPE_VIEW_SCREEN -> eventProperties.put("screen_name", "sign_up")
-                EventType.TYPE_CLICK_BUTTON -> {
-                    eventProperties.put("button_name", "kakao_signup_button")
-                        .put("paging_number", 1)
-                }
-                else -> {}
-            }
-        } catch (e: JSONException) {
-            System.err.println("Invalid JSON")
-            e.printStackTrace()
-        }
-
-        when (type) {
-            EventType.TYPE_VIEW_SCREEN -> amplitudeUtils.logEvent("view_signup", eventProperties)
-            EventType.TYPE_CLICK_BUTTON -> amplitudeUtils.logEvent("click_button", eventProperties)
-            else -> {}
-        }
-    }
-
     private fun initLoginObserver() {
         viewModel.loginState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
@@ -78,11 +54,6 @@ class LoginActivity :
                 }
 
                 is UiState.Success -> {
-                    Timber.e("${state.data?.userId}")
-                    Timber.e("${state.data?.accessToken}")
-                    Timber.e("${state.data?.refreshToken}")
-                    Timber.e("${state.data?.isRegistered}")
-
                     if (state.data?.isRegistered == true) {
                         navigateTo<MainActivity>()
                     } else {
@@ -104,6 +75,30 @@ class LoginActivity :
         Intent(this@LoginActivity, T::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(this)
+        }
+    }
+
+    private fun sendEventToAmplitude(type: EventType) {
+        val eventProperties = JSONObject()
+
+        try {
+            when (type) {
+                EventType.TYPE_VIEW_SCREEN -> eventProperties.put("screen_name", "sign_up")
+                EventType.TYPE_CLICK_BUTTON -> {
+                    eventProperties.put("button_name", "kakao_signup_button")
+                        .put("paging_number", 1)
+                }
+                else -> {}
+            }
+        } catch (e: JSONException) {
+            System.err.println("Invalid JSON")
+            e.printStackTrace()
+        }
+
+        when (type) {
+            EventType.TYPE_VIEW_SCREEN -> amplitudeUtils.logEvent("view_signup", eventProperties)
+            EventType.TYPE_CLICK_BUTTON -> amplitudeUtils.logEvent("click_button", eventProperties)
+            else -> {}
         }
     }
 }
