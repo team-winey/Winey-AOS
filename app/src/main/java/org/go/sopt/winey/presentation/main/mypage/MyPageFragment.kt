@@ -335,27 +335,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     updateUserInfo(data)
                     setUpUserGoalByLevel(data)
                     setUpUserDataByGoal(data)
+                    animate2weeksSaveGraph(data.amountSavedTwoWeeks)
                     binding.tvMypageSave1Year.text = String.format(
                         getString(R.string.mypage_2weeks_save_for_1year),
                         formatWithCommaForMoney(data.amountSavedTwoWeeks * 24)
-                    )
-                    animateTextView(
-                        binding.vMypage2weeks1Month,
-                        data.amountSavedTwoWeeks * 2,
-                        0,
-                        "1MONTH"
-                    )
-                    animateTextView(
-                        binding.vMypage2weeks3Month,
-                        data.amountSavedTwoWeeks * 6,
-                        2000,
-                        "3MONTH"
-                    )
-                    animateTextView(
-                        binding.vMypage2weeks1Year,
-                        data.amountSavedTwoWeeks * 24,
-                        4000,
-                        "1YEAR"
                     )
                 }
 
@@ -371,6 +354,29 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun updateUserInfo(data: UserV2) {
         binding.data = data
     }
+
+    private fun animate2weeksSaveGraph(amountSavedTwoWeeks: Int){
+        animateTextView(
+            binding.vMypage2weeks1Month,
+            amountSavedTwoWeeks * 2,
+            0,
+            "1MONTH"
+        )
+        animateTextView(
+            binding.vMypage2weeks3Month,
+            amountSavedTwoWeeks * 6,
+            2000,
+            "3MONTH"
+        )
+        animateTextView(
+            binding.vMypage2weeks1Year,
+            amountSavedTwoWeeks * 24,
+            4000,
+            "1YEAR"
+        )
+    }
+
+
 
     private fun animateTextView(textView: TextView, amount: Int, delay: Int, type: String) {
         val params = textView.layoutParams
