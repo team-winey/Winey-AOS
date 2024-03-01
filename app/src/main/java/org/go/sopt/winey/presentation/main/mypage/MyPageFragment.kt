@@ -282,8 +282,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 }
 
                 "황제" -> {
-                    clMypageGoal.isVisible = false
-                    pbMypage.isVisible = false
+                    tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv4)
+                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
+                    tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
+                    tvMypageProfileGoal.text = "레벨 미션 완료"
+                    tvMypageProfileCurrent.isVisible = false
+                    pbMypage.progress = 100
                 }
             }
         }
@@ -291,10 +295,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun setUpUserDataByGoal(data: UserV2) {
         binding.apply {
-            tvMypageProfileMoney.text = getString(
-                R.string.mypage_reamining_amount,
-                formatWithCommaForMoney(data.remainingAmount)
-            )
+            tvMypageProfileMoney.text =
+                if (data.userLevel != "황제") {
+                    getString(
+                        R.string.mypage_reamining_amount,
+                        formatWithCommaForMoney(data.remainingAmount)
+                    )
+                } else {
+                    getString(R.string.mypage_lv4)
+                }
             tvMypageProfileCurrent.text = getString(
                 R.string.mypage_current_amount,
                 formatWithCommaForMoney(data.accumulatedAmount)

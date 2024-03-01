@@ -66,6 +66,10 @@ data class ResponseGetUserDto(
                 userData.accumulatedAmount >= 300000
             }
 
+            "황제" -> {
+                userData.accumulatedAmount >= 300000
+            }
+
             else -> {
                 false
             }
@@ -84,6 +88,10 @@ data class ResponseGetUserDto(
             }
 
             "귀족" -> {
+                userData.accumulatedCount >= 10
+            }
+
+            "황제" -> {
                 userData.accumulatedCount >= 10
             }
 
