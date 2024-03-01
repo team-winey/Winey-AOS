@@ -10,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.ScrollView
 import android.widget.TextView
@@ -337,21 +338,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     setUpUserDataByGoal(data)
                     animateTextView(
                         binding.vMypage2weeks1Month,
-                        400,
                         data.amountSavedTwoWeeks * 2,
-                        0
+                        0,
+                        "1MONTH"
                     )
                     animateTextView(
                         binding.vMypage2weeks3Month,
-                        550,
                         data.amountSavedTwoWeeks * 6,
-                        2000
+                        2000,
+                        "3MONTH"
                     )
                     animateTextView(
                         binding.vMypage2weeks1Year,
-                        750,
                         data.amountSavedTwoWeeks * 24,
-                        4000
+                        4000,
+                        "1YEAR"
                     )
                 }
 
@@ -368,16 +369,29 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.data = data
     }
 
-    private fun animateTextView(textView: TextView, width: Int, amount: Int, delay: Long) {
+    private fun animateTextView(textView: TextView, amount: Int, delay: Int, type: String) {
         val params = textView.layoutParams
+        val parentView = textView.parent as ViewGroup
+        val textViewWidth = parentView.measuredWidth - binding.tvMypage2weeks1Year.width
+        var width = 0
+        when (type) {
+            "1MONTH" -> {
+                width = textViewWidth * 3 / 5
+            }
 
-        // TODO : 현재 width 값 넣어주고 있음, 값 없이 기기 대응하면서 영역 너비 잡아줘야
+            "3MONTH" -> {
+                width = textViewWidth * 2 / 3
+            }
 
+            "1YEAR" -> {
+                width = textViewWidth * 5 / 6
+            }
+        }
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 val animator = ValueAnimator.ofInt(0, width).apply {
-                    startDelay = delay
+                    startDelay = delay.toLong()
                     duration = 1000
                     addUpdateListener { valueAnimator ->
                         params?.width = valueAnimator.animatedValue as Int
@@ -387,7 +401,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         textView.text = ""
                     }
                     doOnEnd {
-                        textView.text = "+" + formatWithCommaForMoney(amount) + "원"
+                        textView.text = "+ " + formatWithCommaForMoney(amount) + "원"
                     }
                 }
                 animator.start()
