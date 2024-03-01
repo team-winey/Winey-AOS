@@ -323,6 +323,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     getString(R.string.mypage_goal_count_incomplete, data.accumulatedCount)
                 ivMypageGoalCount.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
             }
+
+            tvMypageSave1Year.text = String.format(
+                getString(R.string.mypage_2weeks_save_for_1year),
+                formatWithCommaForMoney(data.amountSavedTwoWeeks * 24)
+            )
+            tvMypageSpend1Year.text = String.format(
+                getString(R.string.mypage_2weeks_spend_for_1year),
+                formatWithCommaForMoney(data.amountSpentTwoWeeks * 24)
+            )
         }
     }
 
@@ -337,14 +346,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     setUpUserDataByGoal(data)
                     animate2weeksSaveGraph(data.amountSavedTwoWeeks)
                     animate2weeksSpendGraph(data.amountSpentTwoWeeks)
-                    binding.tvMypageSave1Year.text = String.format(
-                        getString(R.string.mypage_2weeks_save_for_1year),
-                        formatWithCommaForMoney(data.amountSavedTwoWeeks * 24)
-                    )
-                    binding.tvMypageSpend1Year.text = String.format(
-                        getString(R.string.mypage_2weeks_spend_for_1year),
-                        formatWithCommaForMoney(data.amountSpentTwoWeeks * 24)
-                    )
                 }
 
                 is UiState.Failure -> {
@@ -360,7 +361,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.data = data
     }
 
-    private fun animate2weeksSaveGraph(amountSavedTwoWeeks: Int){
+    private fun animate2weeksSaveGraph(amountSavedTwoWeeks: Int) {
         animateTextView(
             binding.vMypage2weeks1Month,
             amountSavedTwoWeeks * 2,
@@ -381,7 +382,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         )
     }
 
-    private fun animate2weeksSpendGraph(amountSavedTwoWeeks: Int){
+    private fun animate2weeksSpendGraph(amountSavedTwoWeeks: Int) {
         animateTextView(
             binding.vMypageSpend2weeks1Month,
             amountSavedTwoWeeks * 2,
@@ -401,7 +402,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             "1YEAR"
         )
     }
-
 
 
     private fun animateTextView(textView: TextView, amount: Int, delay: Int, type: String) {
