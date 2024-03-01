@@ -468,6 +468,6 @@ fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
 
 @BindingAdapter("setMyPageWorkHours")
 fun TextView.setMyPageWorkHours(money: Long) {
-    val amount = (money / 9860.0).roundToInt()
+    val amount = money / 9860
     text = context.getString(R.string.mypage_2weeks_save_for_job, amount)
 }
