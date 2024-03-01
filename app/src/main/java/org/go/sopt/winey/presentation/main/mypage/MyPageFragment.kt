@@ -41,7 +41,6 @@ import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
-import org.go.sopt.winey.util.currency.MoneyCurrency
 import org.go.sopt.winey.util.currency.MoneyCurrency.convertToKoreanCurrencyFormat
 import org.go.sopt.winey.util.currency.MoneyCurrency.formatWithCommaForMoney
 import org.go.sopt.winey.util.fragment.drawableOf
@@ -336,10 +335,24 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     updateUserInfo(data)
                     setUpUserGoalByLevel(data)
                     setUpUserDataByGoal(data)
-                    // TODO : 2초간의 시간차 두기
-                    animateTextView(binding.vMypage2weeks1Month, 400, data.amountSavedTwoWeeks * 2)
-                    animateTextView(binding.vMypage2weeks3Month, 550, data.amountSavedTwoWeeks * 6)
-                    animateTextView(binding.vMypage2weeks1Year, 750, data.amountSavedTwoWeeks * 24)
+                    animateTextView(
+                        binding.vMypage2weeks1Month,
+                        400,
+                        data.amountSavedTwoWeeks * 2,
+                        0
+                    )
+                    animateTextView(
+                        binding.vMypage2weeks3Month,
+                        550,
+                        data.amountSavedTwoWeeks * 6,
+                        2000
+                    )
+                    animateTextView(
+                        binding.vMypage2weeks1Year,
+                        750,
+                        data.amountSavedTwoWeeks * 24,
+                        4000
+                    )
                 }
 
                 is UiState.Failure -> {
@@ -355,7 +368,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.data = data
     }
 
-    private fun animateTextView(textView: TextView, width: Int, amount: Int) {
+    private fun animateTextView(textView: TextView, width: Int, amount: Int, delay: Long) {
         val params = textView.layoutParams
 
         // TODO : 현재 width 값 넣어주고 있음, 값 없이 기기 대응하면서 영역 너비 잡아줘야
@@ -364,16 +377,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 val animator = ValueAnimator.ofInt(0, width).apply {
+                    startDelay = delay
                     duration = 1000
                     addUpdateListener { valueAnimator ->
                         params?.width = valueAnimator.animatedValue as Int
                         textView.requestLayout()
                     }
-                    doOnStart{
+                    doOnStart {
                         textView.text = ""
                     }
                     doOnEnd {
-                        textView.text = "+"+ formatWithCommaForMoney(amount) + "원"
+                        textView.text = "+" + formatWithCommaForMoney(amount) + "원"
                     }
                 }
                 animator.start()
