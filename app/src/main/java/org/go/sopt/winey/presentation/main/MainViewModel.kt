@@ -58,7 +58,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun postLogout() {
+    fun postLogout() {
         viewModelScope.launch {
             _logoutState.value = UiState.Loading
 
