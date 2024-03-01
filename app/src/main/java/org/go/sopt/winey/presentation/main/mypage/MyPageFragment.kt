@@ -346,43 +346,49 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun animate2weeksSaveGraph(amountSavedTwoWeeks: Int) {
         animateTextView(
-            binding.vMypage2weeks1Month,
-            amountSavedTwoWeeks * 2,
-            0,
-            "1MONTH"
+            textView = binding.vMypage2weeks1Month,
+            amount = amountSavedTwoWeeks * 2,
+            delay = 0,
+            periodType = "1MONTH",
+            moneyType = "SAVE"
         )
         animateTextView(
-            binding.vMypage2weeks3Month,
-            amountSavedTwoWeeks * 6,
-            2000,
-            "3MONTH"
+            textView = binding.vMypage2weeks3Month,
+            amount = amountSavedTwoWeeks * 6,
+            delay = 2000,
+            periodType = "3MONTH",
+            moneyType = "SAVE"
         )
         animateTextView(
-            binding.vMypage2weeks1Year,
-            amountSavedTwoWeeks * 24,
-            4000,
-            "1YEAR"
+            textView = binding.vMypage2weeks1Year,
+            amount = amountSavedTwoWeeks * 24,
+            delay = 4000,
+            periodType = "3MONTH",
+            moneyType = "SAVE"
         )
     }
 
-    private fun animate2weeksSpendGraph(amountSavedTwoWeeks: Int) {
+    private fun animate2weeksSpendGraph(amountSpendTwoWeeks: Int) {
         animateTextView(
-            binding.vMypageSpend2weeks1Month,
-            amountSavedTwoWeeks * 2,
-            0,
-            "1MONTH"
+            textView = binding.vMypageSpend2weeks1Month,
+            amount = amountSpendTwoWeeks * 2,
+            delay = 0,
+            periodType = "1MONTH",
+            moneyType = "SPEND"
         )
         animateTextView(
-            binding.vMypageSpend2weeks3Month,
-            amountSavedTwoWeeks * 6,
-            2000,
-            "3MONTH"
+            textView = binding.vMypageSpend2weeks3Month,
+            amount = amountSpendTwoWeeks * 6,
+            delay = 2000,
+            periodType = "3MONTH",
+            moneyType = "SPEND"
         )
         animateTextView(
-            binding.vMypageSpend2weeks1Year,
-            amountSavedTwoWeeks * 24,
-            4000,
-            "1YEAR"
+            textView = binding.vMypageSpend2weeks1Year,
+            amount = amountSpendTwoWeeks * 24,
+            delay = 4000,
+            periodType = "1YEAR",
+            moneyType = "SPEND"
         )
     }
 
@@ -396,11 +402,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
 
-    private fun animateTextView(textView: TextView, amount: Int, delay: Int, type: String) {
+    private fun animateTextView(
+        textView: TextView,
+        amount: Int,
+        delay: Int,
+        periodType: String,
+        moneyType: String
+    ) {
         val params = textView.layoutParams
         val parentView = textView.parent as ViewGroup
         val textViewWidth = parentView.measuredWidth - binding.tvMypage2weeks1Year.width
-        val width = getGraphAnimationWidth(textViewWidth, type)
+        val width = getGraphAnimationWidth(textViewWidth, periodType)
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -415,10 +427,25 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         textView.text = ""
                     }
                     doOnEnd {
-                        textView.text = String.format(
-                            getString(R.string.mypage_money),
-                            formatWithCommaForMoney(amount)
-                        )
+                        textView.text = when (moneyType) {
+                            "SAVE" -> {
+                                String.format(
+                                    getString(R.string.mypage_save_money),
+                                    formatWithCommaForMoney(amount)
+                                )
+                            }
+
+                            "SPEND" -> {
+                                String.format(
+                                    getString(R.string.mypage_spend_money),
+                                    formatWithCommaForMoney(amount)
+                                )
+                            }
+
+                            else -> {
+                                ""
+                            }
+                        }
                     }
                 }
                 animator.start()
