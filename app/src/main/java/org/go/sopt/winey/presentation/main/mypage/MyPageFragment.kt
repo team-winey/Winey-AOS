@@ -1,6 +1,7 @@
 package org.go.sopt.winey.presentation.main.mypage
 
 import android.Manifest
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -203,11 +204,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv1)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
                     tvMypageProfileGoal.text = "3만원"
-                    pbMypage.progress = if (data.accumulatedAmount <= 30000) {
-                        100 / (30000 / data.accumulatedAmount)
-                    } else {
-                        100
+                    pbMypage.progress = when {
+                        data.accumulatedAmount <= 0 -> 0
+                        data.accumulatedAmount <= 30000 -> 100 / (30000 / data.accumulatedAmount)
+                        else -> 100
                     }
+
                 }
 
                 "기사" -> {
@@ -215,10 +217,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv2)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
                     tvMypageProfileGoal.text = "15만원"
-                    pbMypage.progress = if (data.accumulatedAmount <= 150000) {
-                        100 / (150000 / data.accumulatedAmount)
-                    } else {
-                        100
+                    pbMypage.progress = when {
+                        data.accumulatedAmount <= 0 -> 0
+                        data.accumulatedAmount <= 150000 -> 100 / (30000 / data.accumulatedAmount)
+                        else -> 100
                     }
                 }
 
@@ -227,10 +229,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
                     tvMypageProfileGoal.text = "30만원"
-                    pbMypage.progress = if (data.accumulatedAmount <= 300000) {
-                        100 / (300000 / data.accumulatedAmount)
-                    } else {
-                        100
+                    pbMypage.progress = when {
+                        data.accumulatedAmount <= 0 -> 0
+                        data.accumulatedAmount <= 300000 -> 100 / (30000 / data.accumulatedAmount)
+                        else -> 100
                     }
                 }
 
