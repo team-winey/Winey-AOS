@@ -436,7 +436,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         textView.text = ""
                     }
                     doOnEnd {
-                        textView.text = "+ " + formatWithCommaForMoney(amount) + "원"
+                        textView.text = String.format(
+                            getString(R.string.mypage_money),
+                            formatWithCommaForMoney(amount)
+                        )
                     }
                 }
                 animator.start()

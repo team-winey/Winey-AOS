@@ -122,6 +122,7 @@
     <string name="mypage_goal_count_incomplete">누적 절약 피드 %d개</string>
     <string name="mypage_save_for_2weeks">원을 절약했어요</string>
     <string name="mypage_waste_for_2weeks">원을 낭비했어요</string>
+    <string name="mypage_money">+ %s원</string>
 
     <string name="mypage_goal_lv1">치킨값 절약하기</string>
     <string name="mypage_goal_lv2">운동화값 절약하기</string>
