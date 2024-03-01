@@ -15,6 +15,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.core.animation.doOnEnd
+import androidx.core.animation.doOnStart
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -40,6 +41,7 @@ import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
+import org.go.sopt.winey.util.currency.MoneyCurrency
 import org.go.sopt.winey.util.currency.MoneyCurrency.convertToKoreanCurrencyFormat
 import org.go.sopt.winey.util.currency.MoneyCurrency.formatWithCommaForMoney
 import org.go.sopt.winey.util.fragment.drawableOf
@@ -357,7 +359,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val params = textView.layoutParams
 
         // TODO : 현재 width 값 넣어주고 있음, 값 없이 기기 대응하면서 영역 너비 잡아줘야
-        // TODO : 애니메이션 끝났을 때만 금액 보여주도록 수정
 
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
@@ -368,8 +369,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         params?.width = valueAnimator.animatedValue as Int
                         textView.requestLayout()
                     }
+                    doOnStart{
+                        textView.text = ""
+                    }
                     doOnEnd {
-                        textView.text = "+ " + amount
+                        textView.text = "+"+ formatWithCommaForMoney(amount) + "원"
                     }
                 }
                 animator.start()
