@@ -647,7 +647,6 @@
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
                             android:textColor="@color/gray_400"
                             android:layout_marginVertical="16dp"
-                            android:text="이렇게 절약한다면 일년 후에 60만원이 모여요!"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"

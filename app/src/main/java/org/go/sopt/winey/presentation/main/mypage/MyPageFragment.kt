@@ -336,6 +336,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     updateUserInfo(data)
                     setUpUserGoalByLevel(data)
                     setUpUserDataByGoal(data)
+                    binding.tvMypageSave1Year.text = String.format(
+                        getString(R.string.mypage_2weeks_save_for_1year),
+                        formatWithCommaForMoney(data.amountSavedTwoWeeks * 24)
+                    )
                     animateTextView(
                         binding.vMypage2weeks1Month,
                         data.amountSavedTwoWeeks * 2,
