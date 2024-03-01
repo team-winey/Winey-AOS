@@ -80,11 +80,11 @@ data class ResponseGetUserDto(
             }
 
             "기사" -> {
-                userData.accumulatedAmount >= 4
+                userData.accumulatedCount >= 4
             }
 
             "귀족" -> {
-                userData.accumulatedAmount >= 10
+                userData.accumulatedCount >= 10
             }
 
             else -> {
