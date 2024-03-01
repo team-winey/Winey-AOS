@@ -52,15 +52,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
-        initCheckNotificationPermission()
 
+        initCheckNotificationPermission()
         initUserData()
         initNavigation()
-
         addListener()
         addObserver()
-
-        checkFromWineyFeed()
     }
 
     private fun addListener() {
@@ -72,8 +69,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun addObserver() {
         setupGetUserState()
-
-        checkFromWineyFeed()
     }
 
     private fun initCheckNotificationPermission() {
@@ -93,13 +88,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         super.onStart()
         mainViewModel.getUser()
         initCheckNotificationPermission()
-    }
-
-    private fun checkFromWineyFeed() {
-        val isFromWineyFeed = arguments?.getBoolean(KEY_FROM_WINEY_FEED)
-        if (isFromWineyFeed == true) {
-            showTargetSettingBottomSheet()
-        }
     }
 
     private fun initEditNicknameButtonClickListener() {
@@ -209,7 +197,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
-        private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_TO_MYFEED = "toMyFeed"
     }
 }

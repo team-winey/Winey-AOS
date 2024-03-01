@@ -533,13 +533,8 @@ class WineyFeedFragment :
     }
 
     private fun navigateToMyPageWithBundle() {
-        val myPageFragment = MyPageFragment().apply {
-            arguments = Bundle().apply {
-                putBoolean(KEY_FROM_WINEY_FEED, true)
-            }
-        }
         activity?.supportFragmentManager?.commit {
-            replace(R.id.fcv_main, myPageFragment)
+            replace(R.id.fcv_main, MyPageFragment())
         }
         syncBnvSelectedItem()
     }
@@ -557,7 +552,6 @@ class WineyFeedFragment :
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
 
-        private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
         const val KEY_FEED_TYPE = "feedType"
