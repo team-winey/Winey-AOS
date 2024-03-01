@@ -85,9 +85,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun addObserver() {
-        setupGetUserState()
-
-        checkFromWineyFeed()
+        setupGetUserStateObserver()
     }
 
     private fun initCheckNotificationPermission() {
@@ -319,7 +317,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
 
-    private fun setupGetUserState() {
+    private fun setupGetUserStateObserver() {
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {

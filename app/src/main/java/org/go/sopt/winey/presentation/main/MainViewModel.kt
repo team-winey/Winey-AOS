@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val notificationRepository: NotificationRepository
 ) : ViewModel() {
-    private val _getUserState = MutableStateFlow<UiState<UserV2?>>(UiState.Loading)
+    private val _getUserState = MutableStateFlow<UiState<UserV2?>>(UiState.Empty)
     val getUserState: StateFlow<UiState<UserV2?>> = _getUserState.asStateFlow()
 
     private val _logoutState = MutableStateFlow<UiState<ResponseLogoutDto?>>(UiState.Empty)
@@ -44,6 +44,7 @@ class MainViewModel @Inject constructor(
                     Timber.e("SUCCESS GET USER IN MAIN")
                     dataStoreRepository.saveUserInfo(response)
                     _getUserState.value = UiState.Success(response)
+                    _getUserState.value = UiState.Empty
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
@@ -54,6 +55,7 @@ class MainViewModel @Inject constructor(
                     }
                     Timber.e("${t.message}")
                     _getUserState.value = UiState.Failure("${t.message}")
+                    _getUserState.value = UiState.Empty
                 }
         }
     }
