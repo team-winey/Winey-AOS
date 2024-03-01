@@ -42,7 +42,6 @@ import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
-import org.go.sopt.winey.util.currency.MoneyCurrency.convertToKoreanCurrencyFormat
 import org.go.sopt.winey.util.currency.MoneyCurrency.formatWithCommaForMoney
 import org.go.sopt.winey.util.fragment.drawableOf
 import org.go.sopt.winey.util.fragment.snackBar
@@ -294,23 +293,23 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.apply {
             tvMypageProfileMoney.text = getString(
                 R.string.mypage_reamining_amount,
-                formatWithCommaForMoney(data.remainingAmount)
+                formatWithCommaForMoney(data.remainingAmount) + "원"
             )
             tvMypageProfileCurrent.text = getString(
                 R.string.mypage_current_amount,
-                convertToKoreanCurrencyFormat(data.accumulatedAmount)
+                formatWithCommaForMoney(data.accumulatedAmount) + "원"
             )
 
             if (data.isLevelUpAmountConditionMet) {
                 tvMypageGoalMoneyCurrent.text = getString(
                     R.string.mypage_goal_amount_complete,
-                    convertToKoreanCurrencyFormat(data.accumulatedAmount)
+                    formatWithCommaForMoney(data.accumulatedAmount) + "원"
                 )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
             } else {
                 tvMypageGoalMoneyCurrent.text = getString(
                     R.string.mypage_goal_amount_incomplete,
-                    convertToKoreanCurrencyFormat(data.accumulatedAmount)
+                    formatWithCommaForMoney(data.accumulatedAmount) + "원"
                 )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
             }
