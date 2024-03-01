@@ -17,12 +17,12 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentWineyFeedBinding
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
@@ -59,9 +59,9 @@ class WineyFeedFragment :
     private val viewModel by viewModels<WineyFeedViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
-    private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
-    private lateinit var wineyFeedGoalAdapter: WineyFeedGoalAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
+    private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
+    private var wineyFeedGoalAdapter: WineyFeedGoalAdapter? = null
     private var clickedFeedId = -1
 
     @Inject
@@ -107,7 +107,6 @@ class WineyFeedFragment :
 
     /** Adapter */
     private fun initAdapter() {
-        initGoalAdapter()
         wineyFeedHeaderAdapter = WineyFeedHeaderAdapter(
             onBannerClicked = {
                 navigateToWineyInstagram()
@@ -127,19 +126,14 @@ class WineyFeedFragment :
             }
         )
         wineyFeedLoadAdapter = WineyFeedLoadAdapter()
-
-        binding.rvWineyfeedPost.adapter = ConcatAdapter(
-            wineyFeedHeaderAdapter,
-            wineyFeedGoalAdapter,
-            wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
-        )
+        initConcatAdapter()
     }
 
-    private fun initGoalAdapter() {
-        viewLifeCycleScope.launch {
-            val user = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
-            wineyFeedGoalAdapter = WineyFeedGoalAdapter(requireContext(), user)
-        }
+    private fun initConcatAdapter() {
+        binding.rvWineyfeedPost.adapter = ConcatAdapter(
+            wineyFeedHeaderAdapter,
+            wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
+        )
     }
 
     private fun navigateToWineyInstagram() {
@@ -276,19 +270,50 @@ class WineyFeedFragment :
         mainViewModel.getUserState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
                 when (state) {
+                    is UiState.Loading -> {
+                        showLoadingProgressBar()
+                    }
+
                     is UiState.Success -> {
-                        // 피드 생성, 삭제에 따라 유저 데이터와 프로그레스바 갱신
                         val userInfo = state.data ?: return@onEach
-                        wineyFeedGoalAdapter.updateProgressBar(userInfo)
+
+                        if (wineyFeedGoalAdapter == null) {
+                            updateConcatAdapter(userInfo)
+                        } else {
+                            // 피드 생성, 삭제에 따라 유저 데이터와 프로그레스바 갱신
+                            wineyFeedGoalAdapter?.updateGoalProgressBar(userInfo)
+                        }
+
+                        dismissLoadingProgressBar()
                     }
 
                     is UiState.Failure -> {
+                        dismissLoadingProgressBar()
                         snackBar(binding.root) { state.msg }
                     }
 
                     else -> {}
                 }
             }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun updateConcatAdapter(user: UserV2) {
+        wineyFeedGoalAdapter = WineyFeedGoalAdapter(requireContext(), user)
+        binding.rvWineyfeedPost.adapter = ConcatAdapter(
+            wineyFeedHeaderAdapter,
+            wineyFeedGoalAdapter,
+            wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
+        )
+    }
+
+    private fun showLoadingProgressBar() {
+        binding.pbWineyfeedLoading.isVisible = true
+        binding.rvWineyfeedPost.isVisible = false
+    }
+
+    private fun dismissLoadingProgressBar() {
+        binding.pbWineyfeedLoading.isVisible = false
+        binding.rvWineyfeedPost.isVisible = true
     }
 
     private fun initGetWineyFeedListStateObserver() {

@@ -38,12 +38,12 @@ class WineyFeedGoalAdapter(
                 isInitialized = true
 
                 // 최초 1회만 실행 (아이템 뷰의 재활용에 따라 예전 데이터가 다시 바인딩 되는 문제 해결)
-                updateProgressBar(initialUser)
+                updateGoalProgressBar(initialUser)
             }
         }
     }
 
-    fun updateProgressBar(user: UserV2) {
+    fun updateGoalProgressBar(user: UserV2) {
         if (::binding.isInitialized) {
             binding.user = user
             updateProgressBarRate(user)
