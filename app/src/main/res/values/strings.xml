@@ -137,9 +137,9 @@
     <string name="mypage_goal_count_lv1">절약 피드 2개 이상 올리기</string>
     <string name="mypage_goal_count_lv2">절약 피드 4개 이상 올리기</string>
     <string name="mypage_goal_count_lv3">절약 피드 10개 이상 올리기</string>
-    <string name="mypage_2weeks_save_for_job">알바를 %d시간 뛴 금액과 같아요</string>
-    <string name="mypage_2weeks_save_for_1year">이렇게 절약한다면 일년 후에 %s원이 모여요!</string>
-    <string name="mypage_2weeks_spend_for_1year">이렇게 낭비한다면 일년 후에 %s원이 사라져요!</string>
+    <string name="mypage_2weeks_save_for_job">알바를 %s 뛴 금액과 같아요</string>
+    <string name="mypage_2weeks_save_for_1year">이렇게 절약한다면 일년 후에 %s이 모여요!</string>
+    <string name="mypage_2weeks_spend_for_1year">이렇게 낭비한다면 일년 후에 %s이 사라져요!</string>
 
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>

@@ -6,6 +6,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -288,13 +291,29 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 ivMypageGoalCount.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
             }
 
-            tvMypageSave1Year.text = String.format(
-                getString(R.string.mypage_2weeks_save_for_1year),
-                formatWithCommaForMoney(data.amountSavedTwoWeeks * 24)
+            setMyPageWorkHoursAndType(
+                binding.tvMypageSaveWork,
+                data.amountSavedTwoWeeks,
+                "SAVE",
+                "WORK"
             )
-            tvMypageSpend1Year.text = String.format(
-                getString(R.string.mypage_2weeks_spend_for_1year),
-                formatWithCommaForMoney(data.amountSpentTwoWeeks * 24)
+            setMyPageWorkHoursAndType(
+                binding.tvMypageSave1Year,
+                data.amountSavedTwoWeeks,
+                "SAVE",
+                "1YEAR"
+            )
+            setMyPageWorkHoursAndType(
+                binding.tvMypageSpendWork,
+                data.amountSpentTwoWeeks,
+                "SPEND",
+                "WORK"
+            )
+            setMyPageWorkHoursAndType(
+                binding.tvMypageSpend1Year,
+                data.amountSavedTwoWeeks,
+                "SPEND",
+                "1YEAR"
             )
         }
     }
@@ -424,6 +443,69 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun setMyPageWorkHoursAndType(
+        textView: TextView,
+        money: Int,
+        moneyType: String,
+        textType: String
+    ) {
+        var amountText = ""
+        var fullText = ""
+        when (textType) {
+            "WORK" -> {
+                amountText = (money / 9860).toString() + "시간"
+                fullText = getString(R.string.mypage_2weeks_save_for_job, amountText)
+            }
+
+            "1YEAR" -> {
+                amountText = formatWithCommaForMoney(money * 24) + "원"
+                when (moneyType) {
+                    "SAVE" -> {
+                        fullText = getString(R.string.mypage_2weeks_save_for_1year, amountText)
+                    }
+
+                    "SPEND" -> {
+                        fullText = getString(R.string.mypage_2weeks_spend_for_1year, amountText)
+                    }
+                }
+            }
+        }
+        val startIndex = fullText.indexOf(amountText)
+        val endIndex = startIndex + amountText.length
+
+        val spannableString = SpannableString(fullText).apply {
+            when (moneyType) {
+                "SAVE" -> {
+                    setSpan(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.sub_green_500
+                            )
+                        ),
+                        startIndex,
+                        endIndex,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+
+                "SPEND" -> {
+                    setSpan(
+                        ForegroundColorSpan(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.sub_red_500
+                            )
+                        ),
+                        startIndex,
+                        endIndex,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+            }
+        }
+        textView.text = spannableString
+    }
 
     private fun showTargetSettingBottomSheet() {
         val bottomSheet = TargetAmountBottomSheetFragment()

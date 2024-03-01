@@ -523,7 +523,6 @@
 
                         <TextView
                             android:id="@+id/tv_mypage_save_work"
-                            setMyPageWorkHours="@{data.amountSavedTwoWeeks}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="18dp"
@@ -649,7 +648,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="16dp"
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-                            android:textColor="@color/gray_400"
+                            android:textColor="@color/gray_600"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -722,7 +721,6 @@
 
                         <TextView
                             android:id="@+id/tv_mypage_spend_work"
-                            setMyPageWorkHours="@{data.amountSpentTwoWeeks}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="18dp"
@@ -847,7 +845,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="16dp"
                             android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-                            android:textColor="@color/gray_400"
+                            android:textColor="@color/gray_600"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
