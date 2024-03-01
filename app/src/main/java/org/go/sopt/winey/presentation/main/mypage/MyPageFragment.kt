@@ -41,7 +41,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val mainViewModel by activityViewModels<MainViewModel>()
-    private val myPageViewModel by viewModels<MyPageViewModel>()
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -160,13 +159,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun navigateToGuideScreen() {
-        Intent(requireContext(), GuideActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(this)
-        }
-    }
-
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
             putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
@@ -211,13 +203,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val bottomSheet = TargetAmountBottomSheetFragment()
         bottomSheet.show(parentFragmentManager, bottomSheet.tag)
         amplitudeUtils.logEvent("view_goalsetting")
-    }
-
-    private inline fun <reified T : Fragment> navigateAndBackStack() {
-        parentFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
-            addToBackStack(null)
-        }
     }
 
     companion object {
