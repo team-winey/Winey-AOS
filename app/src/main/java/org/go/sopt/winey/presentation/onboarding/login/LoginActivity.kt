@@ -20,7 +20,6 @@ import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.view.UiState
 import org.json.JSONException
 import org.json.JSONObject
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint

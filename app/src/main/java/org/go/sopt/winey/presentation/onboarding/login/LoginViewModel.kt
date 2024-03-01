@@ -9,16 +9,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.go.sopt.winey.data.model.remote.request.RequestLoginDto
 import org.go.sopt.winey.data.model.remote.response.ResponseLoginDto
-import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.AuthRepository
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.domain.repository.KakaoLoginRepository
-import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.util.view.UiState
 import retrofit2.HttpException
 import timber.log.Timber

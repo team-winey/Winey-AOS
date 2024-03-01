@@ -34,7 +34,7 @@ class WineyFeedGoalAdapter(
 
     override fun getItemCount(): Int = ITEM_COUNT
 
-    inner class WineyFeedGoalViewHolder: RecyclerView.ViewHolder(binding.root) {
+    inner class WineyFeedGoalViewHolder : RecyclerView.ViewHolder(binding.root) {
         private var isInitialized = false
 
         fun bind() {
