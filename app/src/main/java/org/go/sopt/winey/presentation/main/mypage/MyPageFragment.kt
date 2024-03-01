@@ -403,25 +403,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         )
     }
 
+    private fun getGraphAnimationWidth(textViewWidth: Int, type: String): Int {
+        return when (type) {
+            "1MONTH" -> textViewWidth * 3 / 5
+            "3MONTH" -> textViewWidth * 2 / 3
+            "1YEAR" -> textViewWidth * 5 / 6
+            else -> 0
+        }
+    }
+
 
     private fun animateTextView(textView: TextView, amount: Int, delay: Int, type: String) {
         val params = textView.layoutParams
         val parentView = textView.parent as ViewGroup
         val textViewWidth = parentView.measuredWidth - binding.tvMypage2weeks1Year.width
-        var width = 0
-        when (type) {
-            "1MONTH" -> {
-                width = textViewWidth * 3 / 5
-            }
-
-            "3MONTH" -> {
-                width = textViewWidth * 2 / 3
-            }
-
-            "1YEAR" -> {
-                width = textViewWidth * 5 / 6
-            }
-        }
+        val width = getGraphAnimationWidth(textViewWidth, type)
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
