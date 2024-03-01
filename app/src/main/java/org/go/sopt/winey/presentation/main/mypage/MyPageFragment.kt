@@ -293,23 +293,23 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         binding.apply {
             tvMypageProfileMoney.text = getString(
                 R.string.mypage_reamining_amount,
-                formatWithCommaForMoney(data.remainingAmount) + "원"
+                formatWithCommaForMoney(data.remainingAmount)
             )
             tvMypageProfileCurrent.text = getString(
                 R.string.mypage_current_amount,
-                formatWithCommaForMoney(data.accumulatedAmount) + "원"
+                formatWithCommaForMoney(data.accumulatedAmount)
             )
 
             if (data.isLevelUpAmountConditionMet) {
                 tvMypageGoalMoneyCurrent.text = getString(
                     R.string.mypage_goal_amount_complete,
-                    formatWithCommaForMoney(data.accumulatedAmount) + "원"
+                    formatWithCommaForMoney(data.accumulatedAmount)
                 )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
             } else {
                 tvMypageGoalMoneyCurrent.text = getString(
                     R.string.mypage_goal_amount_incomplete,
-                    formatWithCommaForMoney(data.accumulatedAmount) + "원"
+                    formatWithCommaForMoney(data.accumulatedAmount)
                 )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
             }
@@ -336,9 +336,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     setUpUserGoalByLevel(data)
                     setUpUserDataByGoal(data)
                     animate2weeksSaveGraph(data.amountSavedTwoWeeks)
+                    animate2weeksSpendGraph(data.amountSpentTwoWeeks)
                     binding.tvMypageSave1Year.text = String.format(
                         getString(R.string.mypage_2weeks_save_for_1year),
                         formatWithCommaForMoney(data.amountSavedTwoWeeks * 24)
+                    )
+                    binding.tvMypageSpend1Year.text = String.format(
+                        getString(R.string.mypage_2weeks_spend_for_1year),
+                        formatWithCommaForMoney(data.amountSpentTwoWeeks * 24)
                     )
                 }
 
@@ -370,6 +375,27 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         )
         animateTextView(
             binding.vMypage2weeks1Year,
+            amountSavedTwoWeeks * 24,
+            4000,
+            "1YEAR"
+        )
+    }
+
+    private fun animate2weeksSpendGraph(amountSavedTwoWeeks: Int){
+        animateTextView(
+            binding.vMypageSpend2weeks1Month,
+            amountSavedTwoWeeks * 2,
+            0,
+            "1MONTH"
+        )
+        animateTextView(
+            binding.vMypageSpend2weeks3Month,
+            amountSavedTwoWeeks * 6,
+            2000,
+            "3MONTH"
+        )
+        animateTextView(
+            binding.vMypageSpend2weeks1Year,
             amountSavedTwoWeeks * 24,
             4000,
             "1YEAR"
@@ -440,11 +466,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val bottomSheet = TargetAmountBottomSheetFragment()
         bottomSheet.show(parentFragmentManager, bottomSheet.tag)
         amplitudeUtils.logEvent("view_goalsetting")
-    }
-
-    private fun showTargetNotOverDialog() {
-        val dialog = MyPageNotOverDialogFragment()
-        dialog.show(parentFragmentManager, dialog.tag)
     }
 
     private inline fun <reified T : Fragment> navigateAndBackStack() {
