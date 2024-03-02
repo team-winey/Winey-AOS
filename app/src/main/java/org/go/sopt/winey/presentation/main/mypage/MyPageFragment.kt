@@ -307,21 +307,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         animateTextView(
             textView = binding.vMypage2weeks1Month,
             amount = amountSavedTwoWeeks * 2,
-            delay = 0,
             periodType = "1MONTH",
             moneyType = "SAVE"
         )
         animateTextView(
             textView = binding.vMypage2weeks3Month,
             amount = amountSavedTwoWeeks * 6,
-            delay = 2000,
             periodType = "3MONTH",
             moneyType = "SAVE"
         )
         animateTextView(
             textView = binding.vMypage2weeks1Year,
             amount = amountSavedTwoWeeks * 24,
-            delay = 4000,
             periodType = "1YEAR",
             moneyType = "SAVE"
         )
@@ -331,21 +328,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         animateTextView(
             textView = binding.vMypageSpend2weeks1Month,
             amount = amountSpendTwoWeeks * 2,
-            delay = 0,
             periodType = "1MONTH",
             moneyType = "SPEND"
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks3Month,
             amount = amountSpendTwoWeeks * 6,
-            delay = 2000,
             periodType = "3MONTH",
             moneyType = "SPEND"
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks1Year,
             amount = amountSpendTwoWeeks * 24,
-            delay = 4000,
             periodType = "1YEAR",
             moneyType = "SPEND"
         )
@@ -363,7 +357,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun animateTextView(
         textView: TextView,
         amount: Int,
-        delay: Int,
         periodType: String,
         moneyType: String
     ) {
@@ -375,7 +368,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     val animator = ValueAnimator.ofInt(0, width).apply {
-                        startDelay = delay.toLong()
                         duration = 1000
                         addUpdateListener { valueAnimator ->
                             params?.width = valueAnimator.animatedValue as Int
