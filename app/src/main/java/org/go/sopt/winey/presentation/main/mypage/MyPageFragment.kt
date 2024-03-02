@@ -359,7 +359,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             textView = binding.vMypage2weeks1Year,
             amount = amountSavedTwoWeeks * 24,
             delay = 4000,
-            periodType = "3MONTH",
+            periodType = "1YEAR",
             moneyType = "SAVE"
         )
     }
