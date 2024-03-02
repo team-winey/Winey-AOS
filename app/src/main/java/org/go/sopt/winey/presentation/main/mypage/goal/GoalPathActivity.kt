@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityGoalPathBinding
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
@@ -23,6 +24,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activity_goal_path) {
+    @Inject
+    lateinit var dataStoreRepository: DataStoreRepository
+
+    private var userInfo: UserV2? = null
     private val levelUpFromWineyFeed by lazy {
         intent.getBooleanExtra(
             WineyFeedFragment.KEY_LEVEL_UP,
@@ -30,47 +35,37 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         )
     }
 
-    @Inject
-    lateinit var dataStoreRepository: DataStoreRepository
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setupFragmentByLevel()
+        initUserData()
         initRemainingGoal()
-
+        setupFragmentByLevel()
         initBackButtonClickListener()
         registerBackPressedCallback()
     }
 
-    private fun registerBackPressedCallback() {
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (levelUpFromWineyFeed) {
-                    navigateToMainScreen()
-                } else {
-                    finish()
-                }
-            }
+    private fun initUserData() {
+        lifecycleScope.launch {
+            userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
         }
-        onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    private fun initBackButtonClickListener() {
-        binding.ivGoalPathBack.setOnClickListener {
-            if (levelUpFromWineyFeed) {
-                navigateToMainScreen()
-            } else {
-                finish()
-            }
+    private fun initRemainingGoal() {
+        lifecycleScope.launch {
+            binding.tvGoalPathRemainingMoney.text =
+                getString(
+                    R.string.goal_path_remaining_money,
+                    userInfo?.remainingAmount?.formatAmountNumber()
+                )
+            binding.tvGoalPathRemainingFeed.text =
+                getString(R.string.goal_path_remaining_feed, userInfo?.remainingCount)
         }
     }
 
     private fun setupFragmentByLevel() {
         lifecycleScope.launch {
-            val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
-
-            when (userInfo.userLevel) {
+            when (userInfo?.userLevel) {
                 UserLevel.FIRST.rankName -> {
                     navigateTo<GoalPathLevel1Fragment>()
                 }
@@ -105,17 +100,27 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         }
     }
 
-    private fun initRemainingGoal() {
-        lifecycleScope.launch {
-            val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
-            binding.tvGoalPathRemainingMoney.text =
-                getString(
-                    R.string.goal_path_remaining_money,
-                    userInfo.remainingAmount.formatAmountNumber()
-                )
-            binding.tvGoalPathRemainingFeed.text =
-                getString(R.string.goal_path_remaining_feed, userInfo.remainingCount)
+    private fun initBackButtonClickListener() {
+        binding.ivGoalPathBack.setOnClickListener {
+            if (levelUpFromWineyFeed) {
+                navigateToMainScreen()
+            } else {
+                finish()
+            }
         }
+    }
+
+    private fun registerBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (levelUpFromWineyFeed) {
+                    navigateToMainScreen()
+                } else {
+                    finish()
+                }
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun navigateToMainScreen() {
