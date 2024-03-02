@@ -98,13 +98,12 @@
             likedAmount="@{data.likes}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
-            android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
-            android:textColor="@color/gray_700"
             android:layout_marginEnd="4dp"
-            app:layout_constraintTop_toTopOf="@id/iv_wineyfeed_like"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_700"
             app:layout_constraintBottom_toBottomOf="@id/iv_wineyfeed_like"
             app:layout_constraintEnd_toStartOf="@id/iv_wineyfeed_like"
+            app:layout_constraintTop_toTopOf="@id/iv_wineyfeed_like"
             tools:text="5,319개" />
 
         <LinearLayout
@@ -144,69 +143,48 @@
             android:id="@+id/tv_wineyfeed_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="5dp"
-            android:minHeight="44dp"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="6dp"
             android:text="@{data.feedTitle}"
-            android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
             android:textColor="@color/gray_900"
-            app:layout_constraintEnd_toStartOf="@id/iv_wineyfeed_like"
-            app:layout_constraintStart_toStartOf="@id/l_wineyfeed_image"
+            app:layout_constraintEnd_toEndOf="@id/iv_wineyfeed_like"
+            app:layout_constraintStart_toStartOf="@id/ll_wineyfeed_money"
             app:layout_constraintTop_toBottomOf="@id/ll_wineyfeed_money"
             tools:text="@string/wineyfeed_title" />
-
-        <ImageView
-            android:id="@+id/iv_wineyfeed_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_wineyfeed_comment"
-            app:layout_constraintStart_toStartOf="@id/l_wineyfeed_image"
-            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title"
-            tools:src="@drawable/ic_wineyfeed_comment" />
 
         <TextView
             android:id="@+id/tv_wineyfeed_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:text="@{String.valueOf(data.comments)}"
-            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-            android:textColor="@color/gray_500"
-            app:layout_constraintStart_toEndOf="@id/iv_wineyfeed_comment"
-            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title" />
-
-        <ImageView
-            android:id="@+id/iv_wineyfeed_seperator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/img_wineyfeed_seperator"
-            app:layout_constraintStart_toEndOf="@id/tv_wineyfeed_comment"
+            android:text="@{@string/wineyfeed_item_comment_number(data.comments)}"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_300"
+            app:layout_constraintStart_toStartOf="@id/tv_wineyfeed_title"
             app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title"
-            tools:src="@drawable/img_wineyfeed_seperator" />
+            tools:text="댓글 2개 모두 보기 ・ " />
 
         <TextView
             android:id="@+id/tv_wineyfeed_createdAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:text="@{data.timeAgo}"
-            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-            android:textColor="@color/gray_500"
-            app:layout_constraintStart_toEndOf="@id/iv_wineyfeed_seperator"
-            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title" />
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_300"
+            app:layout_constraintStart_toEndOf="@id/tv_wineyfeed_comment"
+            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title"
+            tools:text="9초전" />
 
         <View
             android:id="@+id/view_wineyfeed_end"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="18dp"
             android:background="@color/gray_100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_createdAt" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
