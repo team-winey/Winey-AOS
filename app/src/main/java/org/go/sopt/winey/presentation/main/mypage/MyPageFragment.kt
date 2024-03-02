@@ -207,7 +207,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageProfileGoal.text = "3만원"
                     pbMypage.progress = when {
                         data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 30000 -> 100 / (30000 / data.accumulatedAmount)
+                        data.accumulatedAmount <= 30000 -> ((data.accumulatedAmount / 30000.0) * 100).toInt()
                         else -> 100
                     }
                 }
@@ -219,7 +219,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageProfileGoal.text = "15만원"
                     pbMypage.progress = when {
                         data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 150000 -> 100 / (30000 / data.accumulatedAmount)
+                        data.accumulatedAmount <= 150000 -> ((data.accumulatedAmount / 150000.0) * 100).toInt()
                         else -> 100
                     }
                 }
@@ -231,7 +231,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageProfileGoal.text = "30만원"
                     pbMypage.progress = when {
                         data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 300000 -> 100 / (30000 / data.accumulatedAmount)
+                        data.accumulatedAmount <= 300000 -> ((data.accumulatedAmount / 300000.0) * 100).toInt()
                         else -> 100
                     }
                 }
