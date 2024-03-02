@@ -41,7 +41,7 @@ class MainViewModel @Inject constructor(
 
             authRepository.getUser()
                 .onSuccess { response ->
-                    Timber.e("SUCCESS GET USER IN MAIN")
+                    Timber.d("SUCCESS GET USER IN MAIN")
                     dataStoreRepository.saveUserInfo(response)
                     _getUserState.value = UiState.Success(response)
                     _getUserState.value = UiState.Empty

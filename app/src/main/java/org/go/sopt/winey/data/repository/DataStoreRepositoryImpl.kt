@@ -116,12 +116,12 @@ class DataStoreRepositoryImpl @Inject constructor(
                     UserV2(
                         nickname = "",
                         userLevel = "",
+                        fcmIsAllowed = true,
                         accumulatedAmount = 0,
                         accumulatedCount = 0,
                         amountSavedHundredDays = 0,
                         amountSavedTwoWeeks = 0,
                         amountSpentTwoWeeks = 0,
-                        fcmIsAllowed = true,
                         remainingCount = 0,
                         remainingAmount = 0,
                         isLevelUpAmountConditionMet = false,

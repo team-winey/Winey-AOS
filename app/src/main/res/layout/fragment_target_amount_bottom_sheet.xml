@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="18dp"
-                android:text="@string/target_amount_won"
+                android:text="@string/all_money_unit"
                 android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
                 app:layout_constraintEnd_toEndOf="@id/til_target_amount_set_amount"
                 app:layout_constraintTop_toTopOf="@id/til_target_amount_set_amount" />
