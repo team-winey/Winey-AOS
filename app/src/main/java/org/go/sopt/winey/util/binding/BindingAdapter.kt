@@ -420,9 +420,9 @@ fun TextView.setMyPageItemDescription(iconType: String?) {
 fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
     val money: String = when (iconType) {
         "AMERICANO" -> "5천원  x  "
-        "SNEAKERS" -> "3만원  x  "
-        "AIRPODS" -> "15만원  x  "
-        "CHICKEN" -> "30만원  x  "
+        "CHICKEN" -> "3만원  x  "
+        "SNEAKERS" -> "15만원  x  "
+        "AIRPODS" -> "30만원  x  "
         else -> ""
     }
 
