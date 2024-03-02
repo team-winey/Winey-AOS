@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import org.go.sopt.winey.BuildConfig
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivitySplashBinding
 import org.go.sopt.winey.domain.repository.DataStoreRepository
@@ -101,7 +102,12 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
     private fun showLottieAnimation() {
         lifecycleScope.launch {
             delay(DELAY_TIME)
-            checkAppUpdateInfo()
+
+            if (BuildConfig.DEBUG) {
+                checkAutoLogin()
+            } else {
+                checkAppUpdateInfo()
+            }
         }
     }
 

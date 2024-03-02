@@ -22,6 +22,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentWineyFeedBinding
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
@@ -58,8 +59,9 @@ class WineyFeedFragment :
     private val viewModel by viewModels<WineyFeedViewModel>()
     private val mainViewModel by activityViewModels<MainViewModel>()
     private lateinit var wineyFeedAdapter: WineyFeedAdapter
-    private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
     private lateinit var wineyFeedLoadAdapter: WineyFeedLoadAdapter
+    private lateinit var wineyFeedHeaderAdapter: WineyFeedHeaderAdapter
+    private var wineyFeedGoalAdapter: WineyFeedGoalAdapter? = null
     private var clickedFeedId = -1
 
     @Inject
@@ -96,6 +98,7 @@ class WineyFeedFragment :
     }
 
     private fun addObserver() {
+        initGetUserStateObserver()
         initGetWineyFeedListStateObserver()
         initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
@@ -109,7 +112,6 @@ class WineyFeedFragment :
                 navigateToWineyInstagram()
             }
         )
-        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
         wineyFeedAdapter = WineyFeedAdapter(
             onlikeButtonClicked = { wineyFeed ->
                 viewModel.likeFeed(wineyFeed.feedId, !wineyFeed.isLiked)
@@ -123,6 +125,11 @@ class WineyFeedFragment :
                 saveClickedFeedId(wineyFeed.feedId)
             }
         )
+        wineyFeedLoadAdapter = WineyFeedLoadAdapter()
+        initConcatAdapter()
+    }
+
+    private fun initConcatAdapter() {
         binding.rvWineyfeedPost.adapter = ConcatAdapter(
             wineyFeedHeaderAdapter,
             wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
@@ -259,6 +266,56 @@ class WineyFeedFragment :
     }
 
     /** Observer */
+    private fun initGetUserStateObserver() {
+        mainViewModel.getUserState.flowWithLifecycle(viewLifeCycle)
+            .onEach { state ->
+                when (state) {
+                    is UiState.Loading -> {
+                        showLoadingProgressBar()
+                    }
+
+                    is UiState.Success -> {
+                        val userInfo = state.data ?: return@onEach
+
+                        if (wineyFeedGoalAdapter == null) {
+                            updateConcatAdapter(userInfo)
+                        } else {
+                            // 피드 생성, 삭제에 따라 유저 데이터와 프로그레스바 갱신
+                            wineyFeedGoalAdapter?.updateGoalProgressBar(userInfo)
+                        }
+
+                        dismissLoadingProgressBar()
+                    }
+
+                    is UiState.Failure -> {
+                        dismissLoadingProgressBar()
+                        snackBar(binding.root) { state.msg }
+                    }
+
+                    else -> {}
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun updateConcatAdapter(user: UserV2) {
+        wineyFeedGoalAdapter = WineyFeedGoalAdapter(requireContext(), user)
+        binding.rvWineyfeedPost.adapter = ConcatAdapter(
+            wineyFeedHeaderAdapter,
+            wineyFeedGoalAdapter,
+            wineyFeedAdapter.withLoadStateFooter(wineyFeedLoadAdapter)
+        )
+    }
+
+    private fun showLoadingProgressBar() {
+        binding.pbWineyfeedLoading.isVisible = true
+        binding.rvWineyfeedPost.isVisible = false
+    }
+
+    private fun dismissLoadingProgressBar() {
+        binding.pbWineyfeedLoading.isVisible = false
+        binding.rvWineyfeedPost.isVisible = true
+    }
+
     private fun initGetWineyFeedListStateObserver() {
         viewModel.getWineyFeedListState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
@@ -335,6 +392,8 @@ class WineyFeedFragment :
                             message = stringOf(R.string.snackbar_feed_delete_success),
                             type = SnackbarType.WineyFeedResult(isSuccess = true)
                         )
+
+                        mainViewModel.getUser()
 
                         // 상세피드 들어갔다 나올 때 성공 상태가 계속 관찰되어
                         // 스낵바가 반복해서 뜨지 않도록 UiState 초기화
@@ -474,13 +533,8 @@ class WineyFeedFragment :
     }
 
     private fun navigateToMyPageWithBundle() {
-        val myPageFragment = MyPageFragment().apply {
-            arguments = Bundle().apply {
-                putBoolean(KEY_FROM_WINEY_FEED, true)
-            }
-        }
         activity?.supportFragmentManager?.commit {
-            replace(R.id.fcv_main, myPageFragment)
+            replace(R.id.fcv_main, MyPageFragment())
         }
         syncBnvSelectedItem()
     }
@@ -498,7 +552,6 @@ class WineyFeedFragment :
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
 
-        private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
         const val KEY_FEED_TYPE = "feedType"

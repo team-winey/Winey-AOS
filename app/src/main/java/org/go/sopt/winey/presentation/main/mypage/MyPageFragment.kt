@@ -8,11 +8,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +25,6 @@ import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.main.mypage.setting.SettingActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
-import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.snackBar
@@ -41,7 +36,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val mainViewModel by activityViewModels<MainViewModel>()
-    private val myPageViewModel by viewModels<MyPageViewModel>()
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -53,15 +47,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
-        initCheckNotificationPermission()
 
+        initCheckNotificationPermission()
         initUserData()
         initNavigation()
-
         addListener()
         addObserver()
-
-        checkFromWineyFeed()
     }
 
     private fun addListener() {
@@ -73,8 +64,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     private fun addObserver() {
         setupGetUserState()
-
-        checkFromWineyFeed()
     }
 
     private fun initCheckNotificationPermission() {
@@ -94,13 +83,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         super.onStart()
         mainViewModel.getUser()
         initCheckNotificationPermission()
-    }
-
-    private fun checkFromWineyFeed() {
-        val isFromWineyFeed = arguments?.getBoolean(KEY_FROM_WINEY_FEED)
-        if (isFromWineyFeed == true) {
-            showTargetSettingBottomSheet()
-        }
     }
 
     private fun initEditNicknameButtonClickListener() {
@@ -160,13 +142,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun navigateToGuideScreen() {
-        Intent(requireContext(), GuideActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(this)
-        }
-    }
-
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
             putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
@@ -213,18 +188,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         amplitudeUtils.logEvent("view_goalsetting")
     }
 
-    private inline fun <reified T : Fragment> navigateAndBackStack() {
-        parentFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
-            addToBackStack(null)
-        }
-    }
-
     companion object {
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
-        private const val KEY_FROM_WINEY_FEED = "fromWineyFeed"
         private const val KEY_TO_MYFEED = "toMyFeed"
     }
 }
