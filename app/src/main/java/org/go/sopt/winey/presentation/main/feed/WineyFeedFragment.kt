@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -14,7 +13,6 @@ import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -28,7 +26,7 @@ import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.feed.upload.UploadActivity
-import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.activity.showReportGoogleForm
@@ -103,6 +101,7 @@ class WineyFeedFragment :
         initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
+        initLevelUpStateObserver()
     }
 
     /** Adapter */
@@ -416,6 +415,30 @@ class WineyFeedFragment :
         }
     }
 
+    private fun initLevelUpStateObserver() {
+        mainViewModel.levelUpState.flowWithLifecycle(viewLifeCycle)
+            .onEach { nowLevelUp ->
+                if (nowLevelUp) {
+                    showCongratulationDialog()
+                }
+            }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun showCongratulationDialog() {
+        val dialog = WineyDialogFragment.newInstance(
+            wineyDialogLabel = WineyDialogLabel(
+                title = stringOf(R.string.wineyfeed_congratulation_dialog_title),
+                subTitle = stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
+                positiveButtonLabel = stringOf(R.string.wineyfeed_congratulation_dialog_positive_button)
+            ),
+            handleNegativeButton = {},
+            handlePositiveButton = {
+                navigateToGoalPath()
+            }
+        )
+        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
+    }
+
     /** Navigation */
     private fun navigateToUpload(feedType: WineyFeedType) {
         Intent(requireContext(), UploadActivity::class.java).apply {
@@ -428,7 +451,14 @@ class WineyFeedFragment :
         Intent(requireContext(), DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-            putExtra(KEY_PREV_SCREEN_NAME, VAL_WINEY_FEED_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, WINEY_FEED_SCREEN)
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToGoalPath() {
+        Intent(requireContext(), GoalPathActivity::class.java).apply {
+            putExtra(KEY_LEVEL_UP, true)
             startActivity(this)
         }
     }
@@ -442,23 +472,6 @@ class WineyFeedFragment :
     }
 
     /** Amplitude Event Tagging */
-    private fun sendDialogClickEvent(isNavigate: Boolean) {
-        val eventProperties = JSONObject()
-
-        try {
-            if (isNavigate) {
-                eventProperties.put("method", "yes")
-            } else {
-                eventProperties.put("method", "no")
-            }
-        } catch (e: JSONException) {
-            System.err.println("Invalid JSON")
-            e.printStackTrace()
-        }
-
-        amplitudeUtils.logEvent("click_goalsetting", eventProperties)
-    }
-
     private fun sendWineyFeedEvent(type: EventType, feed: WineyFeed) {
         val eventProperties = JSONObject()
 
@@ -488,78 +501,22 @@ class WineyFeedFragment :
         }
     }
 
-    private fun showDefaultGoalSettingDialog() {
-        amplitudeUtils.logEvent("view_goalsetting_popup")
-
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.wineyfeed_goal_dialog_title),
-                stringOf(R.string.wineyfeed_goal_dialog_subtitle),
-                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
-            ),
-            handleNegativeButton = {
-                sendDialogClickEvent(false)
-            },
-            handlePositiveButton = {
-                sendDialogClickEvent(true)
-                navigateToMyPageWithBundle()
-            }
-        )
-
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_DEFAULT_GOAL_SETTING_DIALOG) }
-    }
-
-    private fun showCongratulationDialog() {
-        amplitudeUtils.logEvent("view_goalsetting_popup")
-
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.wineyfeed_congratulation_dialog_title),
-                stringOf(R.string.wineyfeed_congratulation_dialog_subtitle),
-                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
-            ),
-            handleNegativeButton = {
-                sendDialogClickEvent(false)
-            },
-            handlePositiveButton = {
-                sendDialogClickEvent(true)
-                navigateToMyPageWithBundle()
-            }
-        )
-
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_CONGRATULATION_DIALOG) }
-    }
-
-    private fun navigateToMyPageWithBundle() {
-        activity?.supportFragmentManager?.commit {
-            replace(R.id.fcv_main, MyPageFragment())
-        }
-        syncBnvSelectedItem()
-    }
-
-    private fun syncBnvSelectedItem() {
-        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
-        bottomNav.selectedItemId = R.id.menu_mypage
-    }
-
     companion object {
+        private const val INSTAGRAM_URL =
+            "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
         private const val MSG_WINEYFEED_ERROR = "ERROR"
-        private const val TAG_DEFAULT_GOAL_SETTING_DIALOG = "DEFAULT_GOAL_SETTING_DIALOG"
-        private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
+
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
-
-        private const val KEY_FEED_ID = "feedId"
-        private const val KEY_FEED_WRITER_ID = "feedWriterId"
-        const val KEY_FEED_TYPE = "feedType"
+        private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
 
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        private const val VAL_WINEY_FEED_SCREEN = "WineyFeedFragment"
+        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
+        private const val KEY_FEED_ID = "feedId"
+        private const val KEY_FEED_WRITER_ID = "feedWriterId"
 
-        private const val INSTAGRAM_URL =
-            "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
+        const val KEY_FEED_TYPE = "feedType"
+        const val KEY_LEVEL_UP = "LEVEL_UP_MOMENT"
     }
 }

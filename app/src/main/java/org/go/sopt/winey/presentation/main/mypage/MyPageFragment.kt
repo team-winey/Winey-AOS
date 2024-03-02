@@ -3,8 +3,6 @@ package org.go.sopt.winey.presentation.main.mypage
 import android.Manifest
 import android.animation.ValueAnimator
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -25,6 +23,7 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -33,6 +32,7 @@ import org.go.sopt.winey.databinding.FragmentMyPageBinding
 import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.main.mypage.setting.SettingActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
@@ -62,17 +62,33 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         super.onViewCreated(view, savedInstanceState)
         amplitudeUtils.logEvent("view_mypage")
 
-        initCheckNotificationPermission()
         initUserData()
-        initNavigation()
         addListener()
         addObserver()
     }
 
+    // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
+    override fun onStart() {
+        super.onStart()
+        mainViewModel.getUser()
+    }
+
+    private fun initUserData() {
+        viewLifeCycleScope.launch {
+            val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
+            updateUserInfo(userInfo)
+        }
+    }
+
+    private fun updateUserInfo(data: UserV2) {
+        binding.data = data
+    }
+
     private fun addListener() {
         initEditNicknameButtonClickListener()
-        initMyFeedButtonClickListener()
         initSettingButtonClickListener()
+        initMyFeedButtonClickListener()
+        initGoalPathButtonClickListener()
         registerBackPressedCallback()
     }
 
@@ -80,28 +96,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         setupGetUserStateObserver()
     }
 
-    private fun initCheckNotificationPermission() {
-        isNotificationPermissionAllowed =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            } else {
-                true
-            }
-    }
-
-    // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
-    override fun onStart() {
-        super.onStart()
-        mainViewModel.getUser()
-        initCheckNotificationPermission()
-    }
-
     private fun initEditNicknameButtonClickListener() {
         binding.ivMypageEditNickname.setOnSingleClickListener {
             navigateToNicknameScreen()
+        }
+    }
+
+    private fun initSettingButtonClickListener() {
+        binding.ivMypageSetting.setOnClickListener {
+            navigateToSettingScreen()
         }
     }
 
@@ -111,9 +114,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun initSettingButtonClickListener() {
-        binding.ivMypageSetting.setOnClickListener {
-            navigateToSettingScreen()
+    private fun initGoalPathButtonClickListener() {
+        binding.btnMypageTrip.setOnClickListener {
+            navigateToGoalPathScreen()
         }
     }
 
@@ -136,29 +139,9 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
-    private fun initUserData() {
-        viewLifeCycleScope.launch {
-            val data = dataStoreRepository.getUserInfo().first()
-            if (data != null) {
-                updateUserInfo(data)
-            }
-        }
-    }
-
-    private fun initNavigation() {
-        val receivedBundle = arguments
-        if (receivedBundle != null) {
-            val value = receivedBundle.getBoolean(KEY_TO_MYFEED)
-            if (value) {
-                navigateToMyFeedScreen()
-                arguments?.clear()
-            }
-        }
-    }
-
     private fun navigateToNicknameScreen() {
         Intent(requireContext(), NicknameActivity::class.java).apply {
-            putExtra(KEY_PREV_SCREEN_NAME, VAL_MY_PAGE_SCREEN)
+            putExtra(KEY_PREV_SCREEN_NAME, MY_PAGE_SCREEN)
             startActivity(this)
         }
     }
@@ -175,6 +158,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun navigateToGoalPathScreen() {
+        Intent(requireContext(), GoalPathActivity::class.java).apply {
+            startActivity(this)
+        }
+    }
+
+    private fun setupGetUserState() {
     private fun setUpUserGoalByLevel(data: UserV2) {
         binding.apply {
             when (data.userLevel) {
@@ -515,8 +505,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     companion object {
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        private const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
+        private const val MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
-        private const val KEY_TO_MYFEED = "toMyFeed"
     }
 }

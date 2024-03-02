@@ -35,6 +35,9 @@ class MainViewModel @Inject constructor(
     private val _notiState = MutableStateFlow(true)
     val notiState: LiveData<Boolean> = _notiState.asLiveData()
 
+    private val _levelUpState = MutableStateFlow(false)
+    val levelUpState: StateFlow<Boolean> = _levelUpState.asStateFlow()
+
     fun getUser() {
         viewModelScope.launch {
             _getUserState.value = UiState.Loading
@@ -131,6 +134,10 @@ class MainViewModel @Inject constructor(
                     Timber.e("${t.message}")
                 }
         }
+    }
+
+    fun saveLevelUpState(currentState: Boolean) {
+        _levelUpState.value = currentState
     }
 
     companion object {

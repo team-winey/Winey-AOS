@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentAmountBinding
 import org.go.sopt.winey.presentation.main.MainActivity
+import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.fragment.stringOf
@@ -72,7 +73,8 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     }
 
                     is UiState.Success -> {
-                        navigateToMainScreen()
+                        val response = state.data ?: return@onEach
+                        navigateToMainScreen(nowLevelUp = response.levelUpgraded)
                     }
 
                     is UiState.Failure -> {
@@ -93,11 +95,15 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         binding.btnAmountNext.isClickable = false
     }
 
-    private fun navigateToMainScreen() {
+    private fun navigateToMainScreen(nowLevelUp: Boolean) {
         val context = context ?: return
         Intent(context, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra(KEY_FEED_UPLOAD, true)
+            if (nowLevelUp) {
+                putExtra(WineyFeedFragment.KEY_LEVEL_UP, true)
+            } else {
+                putExtra(KEY_FEED_UPLOAD, true)
+            }
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
     }

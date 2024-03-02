@@ -35,14 +35,14 @@ import org.go.sopt.winey.util.view.snackbar.SnackbarType
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-    private val mainViewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<MainViewModel>()
 
-    private val isUploadSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_UPLOAD, false) }
-    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(KEY_FEED_DELETE, false) }
+    private val levelUpFromUpload by lazy { intent.getBooleanExtra(WineyFeedFragment.KEY_LEVEL_UP, false) }
+    private val isUploadSuccess by lazy { intent.getBooleanExtra(KEY_FEED_UPLOAD, false) }
+    private val isDeleteSuccess by lazy { intent.getBooleanExtra(KEY_FEED_DELETE, false) }
 
-    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
-    private val notiType by lazy { intent.extras?.getString(KEY_NOTI_TYPE, "") }
-    private val feedId by lazy { intent.extras?.getString(KEY_FEED_ID) }
+    private val notiType by lazy { intent.getStringExtra(KEY_NOTI_TYPE) }
+    private val feedId by lazy { intent.getStringExtra(KEY_FEED_ID) }
 
     private val notificationPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
@@ -59,12 +59,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         requestNotificationPermission()
 
-        // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
-        mainViewModel.getUser()
-        mainViewModel.patchFcmToken()
+        viewModel.apply {
+            getUser() // 위니피드, 마이페이지 프래그먼트에서 관찰
+            patchFcmToken()
+            saveLevelUpState(levelUpFromUpload)
+        }
 
         initNotiTypeHandler()
         initFragment()
@@ -100,33 +101,35 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3,
             NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
             NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
-            NotificationType.GOAL_FAILED -> navigateToMyPageWithBundle(
-                KEY_FROM_NOTI,
-                true
-            )
+            NotificationType.GOAL_FAILED -> {
+                navigateToMyPageFragment(KEY_FROM_NOTI, true)
+            }
 
-            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION
-            -> navigateToDetail(feedId?.toInt())
+            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION -> {
+                navigateToDetailScreen(feedId?.toInt())
+            }
 
-            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelupHelp()
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelUpGuideScreen()
             else -> {}
         }
     }
 
     private fun initFragment() {
-        if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
-            navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
-        } else {
-            if (prevScreenName == VAL_MY_FEED_SCREEN) {
-                navigateToMyPageWithBundle(KEY_TO_MYFEED, true)
-            } else {
-                navigateTo<WineyFeedFragment>()
-            }
+        if (intent.getBooleanExtra(KEY_FROM_GOAL_PATH, false)) {
+            navigateTo<MyPageFragment>()
+            return
         }
+
+        if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
+            navigateToMyPageFragment(KEY_FROM_NOTI, true)
+            return
+        }
+
+        navigateTo<WineyFeedFragment>()
     }
 
     private fun showWineyFeedResultSnackBar() {
-        if (isUploadSuccess == true) {
+        if (isUploadSuccess) {
             wineySnackbar(
                 anchorView = binding.root,
                 message = stringOf(R.string.snackbar_upload_success),
@@ -134,7 +137,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             )
         }
 
-        if (isDeleteSuccess == true) {
+        if (isDeleteSuccess) {
             wineySnackbar(
                 anchorView = binding.root,
                 message = stringOf(R.string.snackbar_feed_delete_success),
@@ -170,7 +173,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun setupLogoutState() {
-        mainViewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
+        viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
                 }
@@ -197,13 +200,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
-        supportFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
-        }
-    }
-
-    private fun navigateToMyPageWithBundle(key: String, value: Boolean) {
+    private fun navigateToMyPageFragment(key: String, value: Boolean) {
         supportFragmentManager.commit {
             val bundle = Bundle()
             bundle.putBoolean(key, value)
@@ -214,28 +211,32 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private fun navigateToDetail(feedId: Int?) {
+    private fun navigateToDetailScreen(feedId: Int?) {
         val intent = Intent(this, DetailActivity::class.java)
         intent.putExtra(KEY_FEED_ID, feedId)
         startActivity(intent)
     }
 
-    private fun navigateToLevelupHelp() {
+    // todo: 레벨업 가이드 화면 바꿔야 할텐데!
+    private fun navigateToLevelUpGuideScreen() {
         val intent = Intent(this, MypageHelpActivity::class.java)
         startActivity(intent)
+    }
+
+    private inline fun <reified T : Fragment> navigateTo() {
+        supportFragmentManager.commit {
+            replace<T>(R.id.fcv_main, T::class.simpleName)
+        }
     }
 
     companion object {
         private const val KEY_FEED_UPLOAD = "upload"
         private const val KEY_FEED_DELETE = "delete"
-
-        private const val KEY_FEED_ID = "feedId"
         private const val KEY_NOTI_TYPE = "notiType"
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
         private const val KEY_FROM_NOTI = "fromNoti"
-        private const val KEY_TO_MYFEED = "toMyFeed"
-        private const val KEY_TO_MYPAGE = "navigateMypage"
 
-        private const val VAL_MY_FEED_SCREEN = "MyFeedFragment"
+        const val KEY_FEED_ID = "feedId"
+        const val KEY_TO_MYPAGE = "navigateMypage"
+        const val KEY_FROM_GOAL_PATH = "fromGoalPath"
     }
 }
