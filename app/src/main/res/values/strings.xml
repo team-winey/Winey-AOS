@@ -232,8 +232,8 @@
     <string name="guide_wineyfeed_detail">나와 사람들의 절약 방법을 볼 수 있어요</string>
     <string name="guide_recommend_title">추천 피드에서\n절약법을 추천해 드릴게요!</string>
     <string name="guide_recommend_detail">흩어져 있는 절약법을 한눈에 볼 수 있어요</string>
-    <string name="guide_level_title">절약 목표를 세우고 실천하며\n캐릭터를 키워보세요!</string>
-    <string name="guide_level_detail">캐릭터를 통해 절약을 재밌게 실천할 수 있어요</string>
+    <string name="guide_level_title">절약 목표를 달성해\n캐릭터를 키워보세요!</string>
+    <string name="guide_level_detail">레벨업을 통해 절약을 재미있게 실천할 수 있어요</string>
 
     <!-- story -->
     <string name="story_nav_number">%d/3</string>
