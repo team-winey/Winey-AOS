@@ -24,11 +24,16 @@ import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainViewModel
+import org.go.sopt.winey.presentation.main.feed.adapter.WineyFeedAdapter
+import org.go.sopt.winey.presentation.main.feed.adapter.WineyFeedGoalAdapter
+import org.go.sopt.winey.presentation.main.feed.adapter.WineyFeedHeaderAdapter
+import org.go.sopt.winey.presentation.main.feed.adapter.WineyFeedLoadAdapter
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.feed.upload.UploadActivity
 import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.activity.showReportGoogleForm
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.amplitude.type.EventType
