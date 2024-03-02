@@ -67,12 +67,13 @@
                         android:id="@+id/iv_mypage_bubble"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="33dp"
-                        android:layout_marginBottom="30dp"
+                        android:layout_marginTop="47dp"
+                        android:layout_marginBottom="15dp"
                         app:imageViewId='@{"BUBBLE"}'
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toTopOf="@id/iv_mypage_saver"
                         app:setMyPageLevelResource="@{data.userLevel}" />
 
                     <ImageView
@@ -90,7 +91,7 @@
                         android:id="@+id/tv_mypage_edit_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="25dp"
+                        android:layout_marginTop="17dp"
                         android:text="@{data.nickname}"
                         android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
                         app:layout_constraintEnd_toStartOf="@id/iv_mypage_edit_nickname"
