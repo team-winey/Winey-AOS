@@ -111,6 +111,13 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         }
     }
 
+    private inline fun <reified T : Activity> navigateTo() {
+        Intent(this, T::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(this)
+        }
+    }
+
     private fun checkAppUpdateInfo() {
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 

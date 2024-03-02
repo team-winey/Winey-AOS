@@ -1,4 +1,4 @@
-package org.go.sopt.winey.presentation.main.mypage
+package org.go.sopt.winey.presentation.main.mypage.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,15 +15,17 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MyPageViewModel @Inject constructor(
+class SettingViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val dataStoreRepository: DataStoreRepository
 ) : ViewModel() {
+
     private val _deleteUserState = MutableStateFlow<UiState<Unit>>(UiState.Empty)
     val deleteUserState: StateFlow<UiState<Unit>> = _deleteUserState.asStateFlow()
 
     private val _patchAllowedNotificationState = MutableStateFlow<UiState<Boolean?>>(UiState.Empty)
-    val patchAllowedNotificationState: StateFlow<UiState<Boolean?>> = _patchAllowedNotificationState.asStateFlow()
+    val patchAllowedNotificationState: StateFlow<UiState<Boolean?>> =
+        _patchAllowedNotificationState.asStateFlow()
 
     fun deleteUser() {
         viewModelScope.launch {
