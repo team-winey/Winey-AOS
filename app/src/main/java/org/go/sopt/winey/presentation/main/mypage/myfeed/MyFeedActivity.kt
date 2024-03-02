@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentMyfeedBinding
 import org.go.sopt.winey.domain.entity.WineyFeed
-import org.go.sopt.winey.presentation.main.feed.WineyFeedLoadAdapter
+import org.go.sopt.winey.presentation.main.feed.adapter.WineyFeedLoadAdapter
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.binding.BindingActivity

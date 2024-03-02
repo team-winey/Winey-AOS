@@ -12,7 +12,7 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityNotificationBinding
 import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
-import org.go.sopt.winey.presentation.main.mypage.MypageHelpActivity
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.view.UiState
@@ -22,6 +22,7 @@ class NotificationActivity :
     BindingActivity<ActivityNotificationBinding>(R.layout.activity_notification) {
     private val viewModel by viewModels<NotificationViewModel>()
     private lateinit var notificationAdapter: NotificationAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNotificationAdapter()
@@ -34,8 +35,8 @@ class NotificationActivity :
     private fun initNotificationAdapter() {
         notificationAdapter = NotificationAdapter(
             navigateFeedDetail = { feedId -> navigateToDetail(feedId) },
-            navigateLevelupHelp = { navigateToLevelupHelp() },
-            navigateMypage = { navigateToMypage() }
+            navigateGoalPath = { navigateToGoalPath() },
+            navigateMyPage = { navigateToMyPage() }
         )
         binding.rvNotificationPost.adapter = notificationAdapter
     }
@@ -79,15 +80,15 @@ class NotificationActivity :
         startActivity(intent)
     }
 
-    private fun navigateToMypage() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(MainActivity.KEY_TO_MYPAGE, true)
+    private fun navigateToGoalPath() {
+        val intent = Intent(this, GoalPathActivity::class.java)
         startActivity(intent)
-        this.finish()
     }
 
-    private fun navigateToLevelupHelp() {
-        val intent = Intent(this, MypageHelpActivity::class.java)
+    private fun navigateToMyPage() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra(MainActivity.KEY_TO_MY_PAGE, true)
         startActivity(intent)
+        this.finish()
     }
 }

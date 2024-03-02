@@ -17,7 +17,7 @@ import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import org.go.sopt.winey.domain.repository.FeedRepository
-import org.go.sopt.winey.presentation.main.feed.WineyFeedType
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.code.ErrorCode
 import org.go.sopt.winey.util.multipart.UriToRequestBody
 import org.go.sopt.winey.util.view.InputUiState
