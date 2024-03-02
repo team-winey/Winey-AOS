@@ -111,13 +111,12 @@
             switchFeedTypeBackground="@{data.feedType}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="13dp"
-            android:layout_marginBottom="9dp"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp"
             android:paddingVertical="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_wineyfeed_like"
             app:layout_constraintStart_toStartOf="@id/l_wineyfeed_image"
-            app:layout_constraintTop_toBottomOf="@id/l_wineyfeed_image"
+            app:layout_constraintTop_toTopOf="@id/iv_wineyfeed_like"
             tools:background="@drawable/shape_green500_line_6_rect">
 
             <TextView
@@ -150,7 +149,7 @@
             android:textColor="@color/gray_900"
             app:layout_constraintEnd_toEndOf="@id/iv_wineyfeed_like"
             app:layout_constraintStart_toStartOf="@id/ll_wineyfeed_money"
-            app:layout_constraintTop_toBottomOf="@id/ll_wineyfeed_money"
+            app:layout_constraintTop_toBottomOf="@id/iv_wineyfeed_like"
             tools:text="@string/wineyfeed_title" />
 
         <TextView
@@ -169,12 +168,13 @@
             android:id="@+id/tv_wineyfeed_createdAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="@{data.timeAgo}"
             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_300"
+            app:="@id/tv_wineyfeed_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_wineyfeed_comment"
             app:layout_constraintStart_toEndOf="@id/tv_wineyfeed_comment"
-            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_title"
+            app:layout_constraintTop_toTopOf="@id/tv_wineyfeed_comment"
             tools:text="9초전" />
 
         <View
