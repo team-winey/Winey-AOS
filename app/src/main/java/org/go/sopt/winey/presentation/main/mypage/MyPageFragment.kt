@@ -1,6 +1,5 @@
 package org.go.sopt.winey.presentation.main.mypage
 
-import android.Manifest
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
@@ -17,7 +16,6 @@ import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -78,10 +76,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             val userInfo = dataStoreRepository.getUserInfo().firstOrNull() ?: return@launch
             updateUserInfo(userInfo)
         }
-    }
-
-    private fun updateUserInfo(data: UserV2) {
-        binding.data = data
     }
 
     private fun addListener() {
@@ -164,7 +158,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-    private fun setupGetUserState() {
     private fun setUpUserGoalByLevel(data: UserV2) {
         binding.apply {
             when (data.userLevel) {
