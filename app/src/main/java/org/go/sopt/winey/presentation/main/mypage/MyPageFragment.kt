@@ -308,7 +308,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSpend1Year,
-                data.amountSavedTwoWeeks,
+                data.amountSpentTwoWeeks,
                 "SPEND",
                 "1YEAR"
             )
