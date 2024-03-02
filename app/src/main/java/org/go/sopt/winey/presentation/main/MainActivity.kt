@@ -22,7 +22,7 @@ import org.go.sopt.winey.databinding.ActivityMainBinding
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
-import org.go.sopt.winey.presentation.main.mypage.MypageHelpActivity
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.recommend.RecommendFragment
 import org.go.sopt.winey.presentation.model.NotificationType
 import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
@@ -105,11 +105,10 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 navigateToMyPageFragment(KEY_FROM_NOTI, true)
             }
 
-            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION -> {
+            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION ->
                 navigateToDetailScreen(feedId?.toInt())
-            }
 
-            NotificationType.HOW_TO_LEVEL_UP -> navigateToLevelUpGuideScreen()
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToGoalPathScreen()
             else -> {}
         }
     }
@@ -120,7 +119,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             return
         }
 
-        if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
+        if (intent.getBooleanExtra(KEY_TO_MY_PAGE, false)) {
             navigateToMyPageFragment(KEY_FROM_NOTI, true)
             return
         }
@@ -217,9 +216,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         startActivity(intent)
     }
 
-    // todo: 레벨업 가이드 화면 바꿔야 할텐데!
-    private fun navigateToLevelUpGuideScreen() {
-        val intent = Intent(this, MypageHelpActivity::class.java)
+    private fun navigateToGoalPathScreen() {
+        val intent = Intent(this, GoalPathActivity::class.java)
         startActivity(intent)
     }
 
@@ -236,7 +234,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val KEY_FROM_NOTI = "fromNoti"
 
         const val KEY_FEED_ID = "feedId"
-        const val KEY_TO_MYPAGE = "navigateMypage"
+        const val KEY_TO_MY_PAGE = "navigateMyPage"
         const val KEY_FROM_GOAL_PATH = "fromGoalPath"
     }
 }

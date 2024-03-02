@@ -1,4 +1,4 @@
-package org.go.sopt.winey.presentation.main.feed
+package org.go.sopt.winey.presentation.main.feed.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

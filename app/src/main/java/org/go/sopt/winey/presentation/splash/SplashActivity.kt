@@ -1,6 +1,5 @@
 package org.go.sopt.winey.presentation.splash
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -27,6 +26,7 @@ import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.onboarding.guide.GuideActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.colorOf
+import org.go.sopt.winey.util.context.snackBar
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -111,15 +111,10 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
         }
     }
 
-    private inline fun <reified T : Activity> navigateTo() {
-        Intent(this, T::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(this)
-        }
-    }
-
     private fun checkAppUpdateInfo() {
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
                 appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
@@ -128,6 +123,10 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
             } else {
                 checkAutoLogin()
             }
+        }
+
+        appUpdateInfoTask.addOnFailureListener { t ->
+            snackBar(binding.root) { t.message.toString() }
         }
     }
 

@@ -7,7 +7,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityUploadBinding
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
-import org.go.sopt.winey.presentation.main.feed.WineyFeedType
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.intent.getCompatibleSerializable
 
