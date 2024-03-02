@@ -8,7 +8,6 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ItemWineyfeedGoalBinding
 import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.presentation.model.UserLevel
-import timber.log.Timber
 import kotlin.math.roundToInt
 
 class WineyFeedGoalAdapter(
