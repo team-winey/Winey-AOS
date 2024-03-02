@@ -10,5 +10,7 @@ data class UserV2(
     val amountSavedTwoWeeks: Int,
     val amountSpentTwoWeeks: Int,
     val remainingAmount: Int,
-    val remainingCount: Int
+    val remainingCount: Int,
+    val isLevelUpAmountConditionMet: Boolean,
+    val isLevelUpCountConditionMet: Boolean
 )

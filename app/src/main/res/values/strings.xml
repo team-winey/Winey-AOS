@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Winey</string>
     <string name="main_feed">피드</string>
     <string name="main_recommend">추천</string>
@@ -124,8 +125,32 @@
     <string name="mypage_description_buy">%s 이만큼\n살 수 있어요</string>
     <string name="mypage_save_for_100days_prefix">100일간 총\t</string>
     <string name="mypage_save_for_100days_suffix">원을 아꼈네요.</string>
+    <string name="mypage_reamining_amount">%s원만 더!</string>
+    <string name="mypage_lv4">절약을 통해 황제를 계속 유지해 보세요!</string>
+    <string name="mypage_current_amount">%s원 절약중</string>
+    <string name="mypage_goal_amount_complete">%s원 절약 완료</string>
+    <string name="mypage_goal_amount_incomplete">누적 절약 금액 %s원</string>
+    <string name="mypage_goal_count_complete">절약 피드 %d개 업로드 완료</string>
+    <string name="mypage_goal_count_incomplete">누적 절약 피드 %d개</string>
     <string name="mypage_save_for_2weeks">원을 절약했어요</string>
     <string name="mypage_waste_for_2weeks">원을 낭비했어요</string>
+    <string name="mypage_save_money">+ %s원</string>
+    <string name="mypage_spend_money">- %s원</string>
+
+    <string name="mypage_goal_lv1">치킨값 절약하기</string>
+    <string name="mypage_goal_lv2">운동화값 절약하기</string>
+    <string name="mypage_goal_lv3">에어팟값 절약하기</string>
+    <string name="mypage_goal_lv4">목표를 다 이루었어요!</string>
+    <string name="mypage_goal_amount_lv1">누적 3만원 이상 절약하기</string>
+    <string name="mypage_goal_amount_lv2">누적 15만원 이상 절약하기</string>
+    <string name="mypage_goal_amount_lv3">누적 30만원 이상 절약하기</string>
+    <string name="mypage_goal_count_lv1">절약 피드 2개 이상 올리기</string>
+    <string name="mypage_goal_count_lv2">절약 피드 4개 이상 올리기</string>
+    <string name="mypage_goal_count_lv3">절약 피드 10개 이상 올리기</string>
+    <string name="mypage_2weeks_save_for_job">알바를 %s 뛴 금액과 같아요</string>
+    <string name="mypage_2weeks_save_for_1year">이렇게 절약한다면 일년 후에 %s이 모여요!</string>
+    <string name="mypage_2weeks_spend_for_1year">이렇게 낭비한다면 일년 후에 %s이 사라져요!</string>
+
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
