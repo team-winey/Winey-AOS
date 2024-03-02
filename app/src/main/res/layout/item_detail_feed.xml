@@ -21,47 +21,55 @@
             android:layout_height="wrap_content"
             android:background="@color/white">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_detail_profile"
-                setWriterLevelImage="@{data.writerLevel}"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="14dp"
-                android:layout_marginBottom="8dp"
-                app:civ_border_color="@color/gray_200"
-                app:civ_border_width="1dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/img_wineyfeed_profile" />
-
-            <TextView
-                android:id="@+id/iv_detail_nickname"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_detail_profile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:text="@{data.nickName}"
-                android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
-                app:layout_constraintBottom_toBottomOf="@id/iv_detail_profile"
-                app:layout_constraintEnd_toStartOf="@id/btn_detail_more"
-                app:layout_constraintStart_toEndOf="@id/iv_detail_profile"
-                app:layout_constraintTop_toTopOf="@id/iv_detail_profile"
-                tools:text="@string/wineyfeed_nickname" />
-
-            <ImageButton
-                android:id="@+id/btn_detail_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="10dp"
-                android:background="@android:color/transparent"
-                android:padding="6dp"
-                android:src="@drawable/ic_wineyfeed_more"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_detail_profile"
+                    setWriterLevelImage="@{data.writerLevel}"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    app:civ_border_color="@color/gray_200"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:src="@drawable/img_wineyfeed_profile" />
+
+                <TextView
+                    android:id="@+id/iv_detail_nickname"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{data.nickName}"
+                    android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_detail_more"
+                    app:layout_constraintStart_toEndOf="@id/iv_detail_profile"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/wineyfeed_nickname" />
+
+                <ImageButton
+                    android:id="@+id/btn_detail_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:padding="6dp"
+                    android:src="@drawable/ic_wineyfeed_more"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_detail_image"
@@ -71,7 +79,7 @@
                 android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_detail_profile">
+                app:layout_constraintTop_toBottomOf="@id/cl_detail_profile">
 
                 <ImageView
                     android:id="@+id/iv_detail_image"
