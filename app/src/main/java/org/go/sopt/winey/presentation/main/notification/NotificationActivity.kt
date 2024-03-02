@@ -75,13 +75,13 @@ class NotificationActivity :
 
     private fun navigateToDetail(feedId: Int?) {
         val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra("feedId", feedId)
+        intent.putExtra(MainActivity.KEY_FEED_ID, feedId)
         startActivity(intent)
     }
 
     private fun navigateToMypage() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("navigateMypage", true)
+        intent.putExtra(MainActivity.KEY_TO_MYPAGE, true)
         startActivity(intent)
         this.finish()
     }

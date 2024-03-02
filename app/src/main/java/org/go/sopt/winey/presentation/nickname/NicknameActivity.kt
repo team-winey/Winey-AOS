@@ -112,8 +112,8 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
                     is UiState.Loading -> preventContinuousButtonClick()
                     is UiState.Success -> {
                         when (prevScreenName) {
-                            VAL_STORY_SCREEN -> navigateTo<MainActivity>()
-                            VAL_MY_PAGE_SCREEN -> finish() // 마이페이지 onStart에서 유저 데이터 갱신
+                            STORY_SCREEN -> navigateTo<MainActivity>()
+                            MY_PAGE_SCREEN -> finish() // 마이페이지 onStart에서 유저 데이터 갱신
                         }
                     }
 
@@ -129,11 +129,11 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     private fun switchEditTextHint() {
         when (prevScreenName) {
-            VAL_STORY_SCREEN -> {
+            STORY_SCREEN -> {
                 binding.etNickname.hint = stringOf(R.string.nickname_default_hint)
             }
 
-            VAL_MY_PAGE_SCREEN -> {
+            MY_PAGE_SCREEN -> {
                 lifecycleScope.launch {
                     val user = dataStoreRepository.getUserInfo().first() ?: return@launch
                     binding.etNickname.hint = user.nickname
@@ -177,7 +177,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     companion object {
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        const val VAL_MY_PAGE_SCREEN = "MyPageFragment"
-        const val VAL_STORY_SCREEN = "StoryActivity"
+        const val MY_PAGE_SCREEN = "MyPageFragment"
+        const val STORY_SCREEN = "StoryActivity"
     }
 }
