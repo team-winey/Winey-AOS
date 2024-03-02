@@ -41,7 +41,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private val isUploadSuccess by lazy { intent.getBooleanExtra(KEY_FEED_UPLOAD, false) }
     private val isDeleteSuccess by lazy { intent.getBooleanExtra(KEY_FEED_DELETE, false) }
 
-    private val prevScreenName by lazy { intent.getStringExtra(KEY_PREV_SCREEN) }
     private val notiType by lazy { intent.getStringExtra(KEY_NOTI_TYPE) }
     private val feedId by lazy { intent.getStringExtra(KEY_FEED_ID) }
 
@@ -126,11 +125,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             return
         }
 
-        if (prevScreenName == MY_FEED_SCREEN) {
-            navigateToMyPageFragment(KEY_TO_MYFEED, true)
-        } else {
-            navigateTo<WineyFeedFragment>()
-        }
+        navigateTo<WineyFeedFragment>()
     }
 
     private fun showWineyFeedResultSnackBar() {
@@ -205,12 +200,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
-        supportFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
-        }
-    }
-
     private fun navigateToMyPageFragment(key: String, value: Boolean) {
         supportFragmentManager.commit {
             val bundle = Bundle()
@@ -234,19 +223,20 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         startActivity(intent)
     }
 
+    private inline fun <reified T : Fragment> navigateTo() {
+        supportFragmentManager.commit {
+            replace<T>(R.id.fcv_main, T::class.simpleName)
+        }
+    }
+
     companion object {
         private const val KEY_FEED_UPLOAD = "upload"
         private const val KEY_FEED_DELETE = "delete"
-
         private const val KEY_NOTI_TYPE = "notiType"
         private const val KEY_FROM_NOTI = "fromNoti"
-        private const val KEY_TO_MYFEED = "toMyFeed"
 
         const val KEY_FEED_ID = "feedId"
         const val KEY_TO_MYPAGE = "navigateMypage"
         const val KEY_FROM_GOAL_PATH = "fromGoalPath"
-
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
-        private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }
