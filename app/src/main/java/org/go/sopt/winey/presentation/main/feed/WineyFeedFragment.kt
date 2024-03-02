@@ -475,23 +475,6 @@ class WineyFeedFragment :
     }
 
     /** Amplitude Event Tagging */
-    private fun sendDialogClickEvent(isNavigate: Boolean) {
-        val eventProperties = JSONObject()
-
-        try {
-            if (isNavigate) {
-                eventProperties.put("method", "yes")
-            } else {
-                eventProperties.put("method", "no")
-            }
-        } catch (e: JSONException) {
-            System.err.println("Invalid JSON")
-            e.printStackTrace()
-        }
-
-        amplitudeUtils.logEvent("click_goalsetting", eventProperties)
-    }
-
     private fun sendWineyFeedEvent(type: EventType, feed: WineyFeed) {
         val eventProperties = JSONObject()
 
@@ -521,46 +504,11 @@ class WineyFeedFragment :
         }
     }
 
-    private fun showDefaultGoalSettingDialog() {
-        amplitudeUtils.logEvent("view_goalsetting_popup")
-
-        val dialog = WineyDialogFragment.newInstance(
-            WineyDialogLabel(
-                stringOf(R.string.wineyfeed_goal_dialog_title),
-                stringOf(R.string.wineyfeed_goal_dialog_subtitle),
-                stringOf(R.string.wineyfeed_goal_dialog_negative_button),
-                stringOf(R.string.wineyfeed_goal_dialog_positive_button)
-            ),
-            handleNegativeButton = {
-                sendDialogClickEvent(false)
-            },
-            handlePositiveButton = {
-                sendDialogClickEvent(true)
-                navigateToMyPageWithBundle()
-            }
-        )
-
-        activity?.supportFragmentManager?.let { dialog.show(it, TAG_DEFAULT_GOAL_SETTING_DIALOG) }
-    }
-
-    private fun navigateToMyPageWithBundle() {
-        activity?.supportFragmentManager?.commit {
-            replace(R.id.fcv_main, MyPageFragment())
-        }
-        syncBnvSelectedItem()
-    }
-
-    private fun syncBnvSelectedItem() {
-        val bottomNav: BottomNavigationView = requireActivity().findViewById(R.id.bnv_main)
-        bottomNav.selectedItemId = R.id.menu_mypage
-    }
-
     companion object {
         private const val INSTAGRAM_URL =
             "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
-
         private const val MSG_WINEYFEED_ERROR = "ERROR"
-        private const val TAG_DEFAULT_GOAL_SETTING_DIALOG = "DEFAULT_GOAL_SETTING_DIALOG"
+
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_FEED_REPORT_DIALOG = "FEED_REPORT_DIALOG"
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
@@ -570,6 +518,7 @@ class WineyFeedFragment :
         private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+
         const val KEY_FEED_TYPE = "feedType"
         const val KEY_LEVEL_UP = "LEVEL_UP_MOMENT"
     }
