@@ -15,9 +15,9 @@ class WineyFeedGoalAdapter(
     private val initialUser: UserV2
 ) : RecyclerView.Adapter<WineyFeedGoalAdapter.WineyFeedGoalViewHolder>() {
     private lateinit var binding: ItemWineyfeedGoalBinding
-    private var isInitialized = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WineyFeedGoalViewHolder {
+        Timber.d("onCreateViewHolder")
         binding = ItemWineyfeedGoalBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
@@ -27,24 +27,28 @@ class WineyFeedGoalAdapter(
     }
 
     override fun onBindViewHolder(holder: WineyFeedGoalViewHolder, position: Int) {
+        Timber.d("onBindViewHolder")
         holder.bind()
     }
 
     override fun getItemCount(): Int = ITEM_COUNT
 
     inner class WineyFeedGoalViewHolder : RecyclerView.ViewHolder(binding.root) {
+        private var isInitialized = false
+
         fun bind() {
             if (!isInitialized) {
                 isInitialized = true
 
-                // 최초 1회만 실행 (아이템 뷰의 재활용에 따라 예전 초기 데이터가 반영되는 문제 해결)
-                updateProgressBar(initialUser)
+                // 초기 유저 데이터로 최초 1회만 바인딩
+                updateGoalProgressBar(initialUser)
             }
         }
     }
 
-    fun updateProgressBar(user: UserV2) {
+    fun updateGoalProgressBar(user: UserV2) {
         if (::binding.isInitialized) {
+            // 피드 생성, 삭제에 따라 바뀌는 유저 데이터 반영
             binding.user = user
             updateProgressBarRate(user)
         }

@@ -26,7 +26,7 @@ class MainViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val notificationRepository: NotificationRepository
 ) : ViewModel() {
-    private val _getUserState = MutableStateFlow<UiState<UserV2?>>(UiState.Loading)
+    private val _getUserState = MutableStateFlow<UiState<UserV2?>>(UiState.Empty)
     val getUserState: StateFlow<UiState<UserV2?>> = _getUserState.asStateFlow()
 
     private val _logoutState = MutableStateFlow<UiState<ResponseLogoutDto?>>(UiState.Empty)
@@ -44,7 +44,7 @@ class MainViewModel @Inject constructor(
 
             authRepository.getUser()
                 .onSuccess { response ->
-                    Timber.e("SUCCESS GET USER IN MAIN")
+                    Timber.d("SUCCESS GET USER IN MAIN")
                     dataStoreRepository.saveUserInfo(response)
                     _getUserState.value = UiState.Success(response)
                 }
@@ -61,7 +61,7 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun postLogout() {
+    fun postLogout() {
         viewModelScope.launch {
             _logoutState.value = UiState.Loading
 
