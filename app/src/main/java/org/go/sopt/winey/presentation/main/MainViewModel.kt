@@ -47,7 +47,6 @@ class MainViewModel @Inject constructor(
                     Timber.d("SUCCESS GET USER IN MAIN")
                     dataStoreRepository.saveUserInfo(response)
                     _getUserState.value = UiState.Success(response)
-                    _getUserState.value = UiState.Empty
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
@@ -61,6 +60,10 @@ class MainViewModel @Inject constructor(
                     _getUserState.value = UiState.Empty
                 }
         }
+    }
+
+    fun initGetUserState() {
+        _getUserState.value = UiState.Empty
     }
 
     fun postLogout() {
