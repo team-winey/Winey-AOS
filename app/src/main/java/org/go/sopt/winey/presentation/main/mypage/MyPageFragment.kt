@@ -210,7 +210,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         data.accumulatedAmount <= 30000 -> 100 / (30000 / data.accumulatedAmount)
                         else -> 100
                     }
-
                 }
 
                 "기사" -> {
@@ -316,7 +315,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-
     private fun setupGetUserStateObserver() {
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
@@ -399,7 +397,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-
     private fun animateTextView(
         textView: TextView,
         amount: Int,
@@ -412,45 +409,45 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val textViewWidth = parentView.measuredWidth - binding.tvMypage2weeks1Year.width
         val width = getGraphAnimationWidth(textViewWidth, periodType)
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                val animator = ValueAnimator.ofInt(0, width).apply {
-                    startDelay = delay.toLong()
-                    duration = 1000
-                    addUpdateListener { valueAnimator ->
-                        params?.width = valueAnimator.animatedValue as Int
-                        textView.requestLayout()
-                    }
-                    doOnStart {
-                        textView.text = ""
-                    }
-                    doOnEnd {
-                        textView.text = when (moneyType) {
-                            "SAVE" -> {
-                                String.format(
-                                    getString(R.string.mypage_save_money),
-                                    formatWithCommaForMoney(amount)
-                                )
-                            }
+                ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val animator = ValueAnimator.ofInt(0, width).apply {
+                        startDelay = delay.toLong()
+                        duration = 1000
+                        addUpdateListener { valueAnimator ->
+                            params?.width = valueAnimator.animatedValue as Int
+                            textView.requestLayout()
+                        }
+                        doOnStart {
+                            textView.text = ""
+                        }
+                        doOnEnd {
+                            textView.text = when (moneyType) {
+                                "SAVE" -> {
+                                    String.format(
+                                        getString(R.string.mypage_save_money),
+                                        formatWithCommaForMoney(amount)
+                                    )
+                                }
 
-                            "SPEND" -> {
-                                String.format(
-                                    getString(R.string.mypage_spend_money),
-                                    formatWithCommaForMoney(amount)
-                                )
-                            }
+                                "SPEND" -> {
+                                    String.format(
+                                        getString(R.string.mypage_spend_money),
+                                        formatWithCommaForMoney(amount)
+                                    )
+                                }
 
-                            else -> {
-                                ""
+                                else -> {
+                                    ""
+                                }
                             }
                         }
                     }
+                    animator.start()
+                    textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    startAnimationOnVisible(binding.svMypage, textView, animator)
                 }
-                animator.start()
-                textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                startAnimationOnVisible(binding.svMypage, textView, animator)
-            }
-        })
+            })
     }
 
     fun startAnimationOnVisible(

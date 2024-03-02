@@ -5,7 +5,7 @@ import java.text.NumberFormat
 object MoneyCurrency {
     fun convertToKoreanCurrencyFormat(amount: Int): String {
         return when (amount) {
-            in 0 .. 99 -> "${amount}원"
+            in 0..99 -> "${amount}원"
             in 100..999 -> "${amount / 100}백원"
             in 1000..9999 -> "${amount / 1000}천원"
             in 10000..9999999 -> "${amount / 10000}만원"
@@ -17,5 +17,4 @@ object MoneyCurrency {
         val numberFormat = NumberFormat.getNumberInstance()
         return numberFormat.format(number)
     }
-
 }
