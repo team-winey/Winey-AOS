@@ -57,13 +57,8 @@ class MainViewModel @Inject constructor(
                     }
                     Timber.e("${t.message}")
                     _getUserState.value = UiState.Failure("${t.message}")
-                    _getUserState.value = UiState.Empty
                 }
         }
-    }
-
-    fun initGetUserState() {
-        _getUserState.value = UiState.Empty
     }
 
     fun postLogout() {
