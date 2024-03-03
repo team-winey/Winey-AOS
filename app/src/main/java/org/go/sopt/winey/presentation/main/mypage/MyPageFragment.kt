@@ -54,7 +54,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
     @Inject
     lateinit var amplitudeUtils: AmplitudeUtils
-    private var isNotificationPermissionAllowed = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -286,8 +285,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     setUpUserDataByGoal(data)
                     animate2weeksSaveGraph(data.amountSavedTwoWeeks)
                     animate2weeksSpendGraph(data.amountSpentTwoWeeks)
-                    // 마이피드 삭제 후에도 성공 상태 계속 관찰되어 절약금액이 줄어들지 않는 현상 해결하기 위해 state 초기화
-                    mainViewModel.initGetUserState()
                 }
 
                 is UiState.Failure -> {
@@ -482,12 +479,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
         }
         textView.text = spannableString
-    }
-
-    private fun showTargetSettingBottomSheet() {
-        val bottomSheet = TargetAmountBottomSheetFragment()
-        bottomSheet.show(parentFragmentManager, bottomSheet.tag)
-        amplitudeUtils.logEvent("view_goalsetting")
     }
 
     companion object {

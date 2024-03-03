@@ -33,6 +33,8 @@
 
     <string name="wineyfeed_item_save_money">&#160;+&#160;%s원</string>
     <string name="wineyfeed_item_consume_money">&#160;-&#160;%s원</string>
+    <string name="wineyfeed_item_like_number">%s개</string>
+    <string name="wineyfeed_item_comment_number">댓글 %d개 모두 보기&#160;・&#160;</string>
 
     <string name="wineyfeed_goal_progressbar_title">꾸준한 절약을 통해 %s 되어보아요</string>
     <string name="wineyfeed_goal_progressbar_current_money">%s원</string>
