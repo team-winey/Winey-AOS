@@ -132,12 +132,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initFragment() {
-        if (intent.getBooleanExtra(KEY_FROM_GOAL_PATH, false)) {
-            navigateTo(MyPageFragment.newInstance())
-            syncBnvSelectedItem(R.id.menu_mypage)
-            return
-        }
-
         if (intent.getBooleanExtra(KEY_TO_MY_PAGE, false)) {
             navigateTo(
                 fragment = MyPageFragment.newInstance(),
@@ -145,6 +139,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     putBoolean(KEY_FROM_NOTI, true)
                 }
             )
+            syncBnvSelectedItem(R.id.menu_mypage)
+            return
+        }
+
+        if (intent.getBooleanExtra(KEY_FROM_GOAL_PATH, false)) {
+            navigateTo(MyPageFragment.newInstance())
             syncBnvSelectedItem(R.id.menu_mypage)
             return
         }
