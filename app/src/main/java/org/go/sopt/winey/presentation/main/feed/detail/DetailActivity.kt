@@ -22,6 +22,7 @@ import org.go.sopt.winey.domain.entity.Comment
 import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
+import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.activity.hideKeyboard
 import org.go.sopt.winey.util.activity.showReportGoogleForm
@@ -352,7 +353,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.deleteFeedDetailState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    navigateToMainWithBundle()
+                    navigateToPreviousScreen()
                 }
 
                 is UiState.Failure -> {
@@ -434,10 +435,25 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun isCommentNumberZero(commentNumber: Int) = commentNumber == 0
 
-    private fun navigateToMainWithBundle() {
+    private fun navigateToPreviousScreen() {
+        if (prevScreenName == MY_FEED_SCREEN) {
+            navigateToMyFeedScreen()
+        } else {
+            navigateToMainScreen()
+        }
+    }
+
+    private fun navigateToMyFeedScreen() {
+        Intent(this, MyFeedActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(KEY_FEED_DELETE, true)
+            startActivity(this)
+        }
+    }
+
+    private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            putExtra(KEY_PREV_SCREEN_NAME, prevScreenName)
             putExtra(KEY_FEED_DELETE, true)
             startActivity(this)
         }
@@ -473,8 +489,9 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val KEY_FEED_DELETE = "delete"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val MY_FEED_SCREEN = "MyFeedActivity"
 
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"

@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.IdRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,14 +32,20 @@ import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.snackbar.SnackbarType
+import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel by viewModels<MainViewModel>()
 
-    private val levelUpFromUpload by lazy { intent.getBooleanExtra(WineyFeedFragment.KEY_LEVEL_UP, false) }
     private val isUploadSuccess by lazy { intent.getBooleanExtra(KEY_FEED_UPLOAD, false) }
     private val isDeleteSuccess by lazy { intent.getBooleanExtra(KEY_FEED_DELETE, false) }
+    private val levelUpFromUpload by lazy {
+        intent.getBooleanExtra(
+            WineyFeedFragment.KEY_LEVEL_UP,
+            false
+        )
+    }
 
     private val notiType by lazy { intent.getStringExtra(KEY_NOTI_TYPE) }
     private val feedId by lazy { intent.getStringExtra(KEY_FEED_ID) }
@@ -59,7 +65,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requestNotificationPermission()
+        initNotiTypeHandler()
 
         viewModel.apply {
             getUser() // 위니피드, 마이페이지 프래그먼트에서 관찰
@@ -67,22 +75,19 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             saveLevelUpState(levelUpFromUpload)
         }
 
-        initNotiTypeHandler()
-        initFragment()
-        initBnvItemSelectedListener()
-        syncBottomNavigationSelection()
+        addListener()
+        addObserver()
 
-        setupLogoutState()
+        initFragment()
         showWineyFeedResultSnackBar()
     }
 
-    private fun showSystemNotificationSetting() {
-        Intent().apply {
-            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
-            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(this)
-        }
+    private fun addListener() {
+        initBnvItemSelectedListener()
+    }
+
+    private fun addObserver() {
+        setupLogoutState()
     }
 
     private fun requestNotificationPermission() {
@@ -95,6 +100,15 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }
     }
 
+    private fun showSystemNotificationSetting() {
+        Intent().apply {
+            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(this)
+        }
+    }
+
     private fun initNotiTypeHandler() {
         val notificationType = NotificationType.values().find { it.key == notiType }
         when (notificationType) {
@@ -102,7 +116,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
             NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
             NotificationType.GOAL_FAILED -> {
-                navigateToMyPageFragment(KEY_FROM_NOTI, true)
+                navigateTo(
+                    fragment = MyPageFragment.newInstance(),
+                    args = Bundle().apply {
+                        putBoolean(KEY_FROM_NOTI, true)
+                    })
             }
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION ->
@@ -115,16 +133,38 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun initFragment() {
         if (intent.getBooleanExtra(KEY_FROM_GOAL_PATH, false)) {
-            navigateTo<MyPageFragment>()
+            navigateTo(MyPageFragment.newInstance())
+            syncBottomNavigationItem(R.id.menu_mypage)
             return
         }
 
         if (intent.getBooleanExtra(KEY_TO_MY_PAGE, false)) {
-            navigateToMyPageFragment(KEY_FROM_NOTI, true)
+            navigateTo(
+                fragment = MyPageFragment.newInstance(),
+                args = Bundle().apply {
+                    putBoolean(KEY_FROM_NOTI, true)
+                })
+            syncBottomNavigationItem(R.id.menu_mypage)
             return
         }
 
-        navigateTo<WineyFeedFragment>()
+        navigateTo(WineyFeedFragment.newInstance())
+    }
+
+    // todo: 다른 화면에서 프래그먼트 전환하는 경우
+    private fun syncBottomNavigationItem(@IdRes selectedItemId: Int) {
+        binding.bnvMain.selectedItemId = selectedItemId
+    }
+
+    private fun initBnvItemSelectedListener() {
+        binding.bnvMain.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_feed -> navigateTo(WineyFeedFragment.newInstance())
+                R.id.menu_recommend -> navigateTo(RecommendFragment.newInstance())
+                R.id.menu_mypage -> navigateTo(MyPageFragment.newInstance())
+            }
+            true
+        }
     }
 
     private fun showWineyFeedResultSnackBar() {
@@ -142,32 +182,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 message = stringOf(R.string.snackbar_feed_delete_success),
                 type = SnackbarType.WineyFeedResult(isSuccess = true)
             )
-        }
-    }
-
-    private fun initBnvItemSelectedListener() {
-        binding.bnvMain.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.menu_feed -> navigateTo<WineyFeedFragment>()
-                R.id.menu_recommend -> navigateTo<RecommendFragment>()
-                R.id.menu_mypage -> navigateTo<MyPageFragment>()
-            }
-            true
-        }
-    }
-
-    private fun syncBottomNavigationSelection() {
-        supportFragmentManager.addOnBackStackChangedListener {
-            syncBottomNavigation()
-        }
-    }
-
-    private fun syncBottomNavigation() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fcv_main)
-        when (currentFragment) {
-            is WineyFeedFragment -> binding.bnvMain.selectedItemId = R.id.menu_feed
-            is RecommendFragment -> binding.bnvMain.selectedItemId = R.id.menu_recommend
-            is MyPageFragment -> binding.bnvMain.selectedItemId = R.id.menu_mypage
         }
     }
 
@@ -191,22 +205,21 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }.launchIn(lifecycleScope)
     }
 
-    private fun navigateToLoginScreen() {
-        Intent(this@MainActivity, LoginActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(this)
-            finish()
+    private fun navigateTo(fragment: Fragment, args: Bundle? = null) {
+        args?.let {
+            fragment.arguments = it
+        }
+
+        supportFragmentManager.commit {
+            replace(R.id.fcv_main, fragment)
         }
     }
 
-    private fun navigateToMyPageFragment(key: String, value: Boolean) {
-        supportFragmentManager.commit {
-            val bundle = Bundle()
-            bundle.putBoolean(key, value)
-            val myPageFragment = MyPageFragment()
-            myPageFragment.arguments = bundle
-            replace(R.id.fcv_main, myPageFragment)
-            binding.bnvMain.selectedItemId = R.id.menu_mypage
+    private fun navigateToLoginScreen() {
+        Intent(this, LoginActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(this)
+            finish()
         }
     }
 
@@ -221,12 +234,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         startActivity(intent)
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
-        supportFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
-        }
-    }
-
     companion object {
         private const val KEY_FEED_UPLOAD = "upload"
         private const val KEY_FEED_DELETE = "delete"
@@ -236,5 +243,6 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         const val KEY_FEED_ID = "feedId"
         const val KEY_TO_MY_PAGE = "navigateMyPage"
         const val KEY_FROM_GOAL_PATH = "fromGoalPath"
+
     }
 }

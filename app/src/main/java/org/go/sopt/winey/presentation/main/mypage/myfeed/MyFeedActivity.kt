@@ -39,15 +39,30 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        removeRecyclerviewItemChangeAnimation()
+
         initAdapter()
+
+        initPagingLoadStateListener()
         initBackButtonClickListener()
 
         initGetMyFeedListStateObserver()
         initGetDetailFeedStateObserver()
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
-        initPagingLoadStateListener()
+
+        removeRecyclerviewItemChangeAnimation()
+        showFeedDeleteSuccessSnackBar()
+    }
+
+    private fun showFeedDeleteSuccessSnackBar() {
+        val isDeleteSuccess = intent.getBooleanExtra(KEY_FEED_DELETE, false)
+        if (isDeleteSuccess) {
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_feed_delete_success),
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
+            )
+        }
     }
 
     override fun onStart() {
@@ -266,10 +281,12 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
+        private const val KEY_FEED_DELETE = "delete"
+
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val MY_FEED_SCREEN = "MyFeedActivity"
 
         private const val MSG_MYFEED_ERROR = "ERROR"
         private const val TAG_FEED_DELETE_DIALOG = "DELETE_DIALOG"
-        private const val MY_FEED_SCREEN = "MyFeedFragment"
     }
 }
