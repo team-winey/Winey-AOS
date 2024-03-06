@@ -103,4 +103,9 @@ class RecommendFragment : BindingFragment<FragmentRecommendBinding>(R.layout.fra
             startActivity(intent)
         }
     }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = RecommendFragment()
+    }
 }

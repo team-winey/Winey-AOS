@@ -32,7 +32,6 @@ import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.snackbar.SnackbarType
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
@@ -120,7 +119,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     fragment = MyPageFragment.newInstance(),
                     args = Bundle().apply {
                         putBoolean(KEY_FROM_NOTI, true)
-                    })
+                    }
+                )
             }
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION ->
@@ -143,7 +143,8 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                 fragment = MyPageFragment.newInstance(),
                 args = Bundle().apply {
                     putBoolean(KEY_FROM_NOTI, true)
-                })
+                }
+            )
             syncBottomNavigationItem(R.id.menu_mypage)
             return
         }
@@ -243,6 +244,5 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         const val KEY_FEED_ID = "feedId"
         const val KEY_TO_MY_PAGE = "navigateMyPage"
         const val KEY_FROM_GOAL_PATH = "fromGoalPath"
-
     }
 }
