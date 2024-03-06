@@ -134,7 +134,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     private fun initFragment() {
         if (intent.getBooleanExtra(KEY_FROM_GOAL_PATH, false)) {
             navigateTo(MyPageFragment.newInstance())
-            syncBottomNavigationItem(R.id.menu_mypage)
+            syncBnvSelectedItem(R.id.menu_mypage)
             return
         }
 
@@ -145,15 +145,14 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
                     putBoolean(KEY_FROM_NOTI, true)
                 }
             )
-            syncBottomNavigationItem(R.id.menu_mypage)
+            syncBnvSelectedItem(R.id.menu_mypage)
             return
         }
 
         navigateTo(WineyFeedFragment.newInstance())
     }
 
-    // todo: 다른 화면에서 프래그먼트 전환하는 경우
-    private fun syncBottomNavigationItem(@IdRes selectedItemId: Int) {
+    private fun syncBnvSelectedItem(@IdRes selectedItemId: Int) {
         binding.bnvMain.selectedItemId = selectedItemId
     }
 
