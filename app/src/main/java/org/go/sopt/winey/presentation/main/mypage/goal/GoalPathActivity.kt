@@ -181,10 +181,10 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
             override fun onAnimationEnd(animation: Animator) {
                 with(binding) {
                     lottieGoalPath.isVisible = false
-                    clGoalPathGuide.isVisible = true
 
                     initNextLevelGoalPath()
                     ivGoalPathAfter.isVisible = true
+                    clGoalPathGuide.isVisible = userInfo?.userLevel != UserLevel.FORTH.rankName
                 }
             }
 
@@ -235,7 +235,6 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         onBackPressedDispatcher.addCallback(this, callback)
     }
 
-    // todo: 메인의 위니피드 -> 목표여정 -> 메인의 마이페이지
     private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
