@@ -254,25 +254,25 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             setMyPageWorkHoursAndType(
                 binding.tvMypageSaveWork,
                 data.amountSavedTwoWeeks,
-                "SAVE",
+                WineyFeedType.SAVE,
                 "WORK"
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSave1Year,
                 data.amountSavedTwoWeeks,
-                "SAVE",
+                WineyFeedType.SAVE,
                 "1YEAR"
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSpendWork,
                 data.amountSpentTwoWeeks,
-                "SPEND",
+                WineyFeedType.CONSUME,
                 "WORK"
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSpend1Year,
                 data.amountSpentTwoWeeks,
-                "SPEND",
+                WineyFeedType.CONSUME,
                 "1YEAR"
             )
         }
@@ -306,19 +306,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun animate2weeksSaveGraph(amountSavedTwoWeeks: Int) {
         animateTextView(
             textView = binding.vMypage2weeks1Month,
-            amount = amountSavedTwoWeeks * 2,
+            amount = amountSavedTwoWeeks * VALUE_FOR_1_MONTH,
             periodType = "1MONTH",
             moneyType = WineyFeedType.SAVE
         )
         animateTextView(
             textView = binding.vMypage2weeks3Month,
-            amount = amountSavedTwoWeeks * 6,
+            amount = amountSavedTwoWeeks * VALUE_FOR_3_MONTH,
             periodType = "3MONTH",
             moneyType = WineyFeedType.SAVE
         )
         animateTextView(
             textView = binding.vMypage2weeks1Year,
-            amount = amountSavedTwoWeeks * 24,
+            amount = amountSavedTwoWeeks * VALUE_FOR_1_YEAR,
             periodType = "1YEAR",
             moneyType = WineyFeedType.SAVE
         )
@@ -327,19 +327,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun animate2weeksSpendGraph(amountSpendTwoWeeks: Int) {
         animateTextView(
             textView = binding.vMypageSpend2weeks1Month,
-            amount = amountSpendTwoWeeks * 2,
+            amount = amountSpendTwoWeeks * VALUE_FOR_1_MONTH,
             periodType = "1MONTH",
             moneyType = WineyFeedType.CONSUME
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks3Month,
-            amount = amountSpendTwoWeeks * 6,
+            amount = amountSpendTwoWeeks * VALUE_FOR_3_MONTH,
             periodType = "3MONTH",
             moneyType = WineyFeedType.CONSUME
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks1Year,
-            amount = amountSpendTwoWeeks * 24,
+            amount = amountSpendTwoWeeks * VALUE_FOR_1_YEAR,
             periodType = "1YEAR",
             moneyType = WineyFeedType.CONSUME
         )
@@ -368,7 +368,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     val animator = ValueAnimator.ofInt(0, width).apply {
-                        duration = 1000
+                        duration = ANIMATION_DURATION.toLong()
                         addUpdateListener { valueAnimator ->
                             params?.width = valueAnimator.animatedValue as Int
                             textView.requestLayout()
@@ -423,25 +423,25 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setMyPageWorkHoursAndType(
         textView: TextView,
         money: Int,
-        moneyType: String,
+        moneyType: WineyFeedType,
         textType: String
     ) {
         var amountText = ""
         var fullText = ""
         when (textType) {
             "WORK" -> {
-                amountText = (money / 9860).toString() + "시간"
+                amountText = (money / HOURLY_PAY).toString() + "시간"
                 fullText = getString(R.string.mypage_2weeks_save_for_job, amountText)
             }
 
             "1YEAR" -> {
-                amountText = formatWithCommaForMoney(money * 24) + "원"
+                amountText = formatWithCommaForMoney(money * VALUE_FOR_1_YEAR) + "원"
                 when (moneyType) {
-                    "SAVE" -> {
+                    WineyFeedType.SAVE-> {
                         fullText = getString(R.string.mypage_2weeks_save_for_1year, amountText)
                     }
 
-                    "SPEND" -> {
+                    WineyFeedType.CONSUME-> {
                         fullText = getString(R.string.mypage_2weeks_spend_for_1year, amountText)
                     }
                 }
@@ -452,7 +452,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         val spannableString = SpannableString(fullText).apply {
             when (moneyType) {
-                "SAVE" -> {
+                WineyFeedType.SAVE -> {
                     setSpan(
                         ForegroundColorSpan(
                             ContextCompat.getColor(
@@ -466,7 +466,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     )
                 }
 
-                "SPEND" -> {
+                WineyFeedType.CONSUME -> {
                     setSpan(
                         ForegroundColorSpan(
                             ContextCompat.getColor(
@@ -489,6 +489,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
 
+        private const val HOURLY_PAY = 9860
+        private const val VALUE_FOR_1_MONTH = 2
+        private const val VALUE_FOR_3_MONTH = 6
+        private const val VALUE_FOR_1_YEAR = 24
 
+
+        private const val ANIMATION_DURATION = 1000
     }
 }
