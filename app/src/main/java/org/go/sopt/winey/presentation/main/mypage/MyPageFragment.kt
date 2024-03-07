@@ -251,7 +251,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 binding.tvMypageSaveWork,
                 data.amountSavedTwoWeeks,
                 WineyFeedType.SAVE,
-                "WORK"
+                TYPE_WORK
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSave1Year,
@@ -263,7 +263,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 binding.tvMypageSpendWork,
                 data.amountSpentTwoWeeks,
                 WineyFeedType.CONSUME,
-                "WORK"
+                TYPE_WORK
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSpend1Year,
@@ -421,7 +421,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         var amountText = ""
         var fullText = ""
         when (textType) {
-            "WORK" -> {
+            TYPE_WORK -> {
                 amountText = (money / HOURLY_PAY).toString() + "시간"
                 fullText = getString(R.string.mypage_2weeks_save_for_job, amountText)
             }
@@ -487,5 +487,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val VALUE_FOR_1_YEAR = 24
 
         private const val ANIMATION_DURATION = 1000
+        private const val TYPE_WORK = "WORK"
     }
 }
