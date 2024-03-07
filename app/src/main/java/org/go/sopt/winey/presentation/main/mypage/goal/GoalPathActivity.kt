@@ -237,7 +237,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
 
     private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra(MainActivity.KEY_FROM_GOAL_PATH, true)
             startActivity(this)
         }

@@ -151,7 +151,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
 
     private fun navigateToGuideScreen() {
         Intent(this, GuideActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
     }
@@ -162,7 +162,7 @@ class SplashActivity : BindingActivity<ActivitySplashBinding>(R.layout.activity_
                 putExtra(KEY_NOTI_TYPE, intent.getStringExtra(KEY_NOTI_TYPE))
                 putExtra(KEY_FEED_ID, intent.getStringExtra(KEY_FEED_ID))
             }
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
     }

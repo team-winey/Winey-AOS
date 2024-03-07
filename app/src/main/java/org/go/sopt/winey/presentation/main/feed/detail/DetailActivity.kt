@@ -445,7 +445,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun navigateToMyFeedScreen() {
         Intent(this, MyFeedActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra(KEY_FEED_DELETE, true)
             startActivity(this)
         }
@@ -453,7 +453,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
 
     private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra(KEY_FEED_DELETE, true)
             startActivity(this)
         }

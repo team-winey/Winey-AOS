@@ -75,7 +75,7 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
 
     private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             putExtra(KEY_FEED_UPLOAD, true)
             startActivity(this)
         }
