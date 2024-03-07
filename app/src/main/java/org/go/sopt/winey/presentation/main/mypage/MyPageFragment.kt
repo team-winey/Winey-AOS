@@ -40,10 +40,10 @@ import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
-import org.go.sopt.winey.util.currency.MoneyCurrency.formatWithCommaForMoney
 import org.go.sopt.winey.util.fragment.drawableOf
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
+import org.go.sopt.winey.util.number.formatAmountNumber
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
@@ -213,26 +213,26 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 if (data.userLevel != UserLevel.FOURTH.rankName) {
                     getString(
                         R.string.mypage_reamining_amount,
-                        formatWithCommaForMoney(data.remainingAmount)
+                        (data.remainingAmount).formatAmountNumber()
                     )
                 } else {
                     getString(R.string.mypage_lv4)
                 }
             tvMypageProfileCurrent.text = getString(
                 R.string.mypage_current_amount,
-                formatWithCommaForMoney(data.accumulatedAmount)
+                (data.accumulatedAmount).formatAmountNumber()
             )
 
             if (data.isLevelUpAmountConditionMet) {
                 tvMypageGoalMoneyCurrent.text = getString(
                     R.string.mypage_goal_amount_complete,
-                    formatWithCommaForMoney(data.accumulatedAmount)
+                    (data.accumulatedAmount).formatAmountNumber()
                 )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
             } else {
                 tvMypageGoalMoneyCurrent.text = getString(
                     R.string.mypage_goal_amount_incomplete,
-                    formatWithCommaForMoney(data.accumulatedAmount)
+                    (data.accumulatedAmount).formatAmountNumber()
                 )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
             }
@@ -361,40 +361,40 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val textViewWidth = parentView.measuredWidth - binding.tvMypage2weeks1Year.width
         val width = getGraphAnimationWidth(textViewWidth, periodType)
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
-                ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val animator = ValueAnimator.ofInt(0, width).apply {
-                        duration = ANIMATION_DURATION.toLong()
-                        addUpdateListener { valueAnimator ->
-                            params?.width = valueAnimator.animatedValue as Int
-                            textView.requestLayout()
-                        }
-                        doOnStart {
-                            textView.text = ""
-                        }
-                        doOnEnd {
-                            textView.text = when (moneyType) {
-                                WineyFeedType.SAVE -> {
-                                    String.format(
-                                        getString(R.string.mypage_save_money),
-                                        formatWithCommaForMoney(amount)
-                                    )
-                                }
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val animator = ValueAnimator.ofInt(0, width).apply {
+                    duration = ANIMATION_DURATION.toLong()
+                    addUpdateListener { valueAnimator ->
+                        params?.width = valueAnimator.animatedValue as Int
+                        textView.requestLayout()
+                    }
+                    doOnStart {
+                        textView.text = ""
+                    }
+                    doOnEnd {
+                        textView.text = when (moneyType) {
+                            WineyFeedType.SAVE -> {
+                                String.format(
+                                    getString(R.string.mypage_save_money),
+                                    amount.formatAmountNumber()
+                                )
+                            }
 
-                                WineyFeedType.CONSUME -> {
-                                    String.format(
-                                        getString(R.string.mypage_spend_money),
-                                        formatWithCommaForMoney(amount)
-                                    )
-                                }
+                            WineyFeedType.CONSUME -> {
+                                String.format(
+                                    getString(R.string.mypage_spend_money),
+                                    amount.formatAmountNumber()
+                                )
                             }
                         }
                     }
-                    animator.start()
-                    textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    startAnimationOnVisible(binding.svMypage, textView, animator)
                 }
-            })
+                animator.start()
+                textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                startAnimationOnVisible(binding.svMypage, textView, animator)
+            }
+        })
     }
 
     fun startAnimationOnVisible(
@@ -427,7 +427,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             }
 
             SavePeriod.ONE_YEAR.period -> {
-                amountText = formatWithCommaForMoney(money * VALUE_FOR_1_YEAR) + "원"
+                amountText = (money * VALUE_FOR_1_YEAR).formatAmountNumber() + "원"
                 fullText = when (moneyType) {
                     WineyFeedType.SAVE -> {
                         getString(R.string.mypage_2weeks_save_for_1year, amountText)
