@@ -168,7 +168,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
-
     private fun setUpUserGoalByLevel(data: UserV2) {
         binding.apply {
             when (data.userLevel) {
