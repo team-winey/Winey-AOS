@@ -34,6 +34,7 @@ import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.main.mypage.setting.SettingActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
+import org.go.sopt.winey.presentation.model.SavePeriod
 import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
@@ -257,7 +258,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 binding.tvMypageSave1Year,
                 data.amountSavedTwoWeeks,
                 WineyFeedType.SAVE,
-                "1YEAR"
+                SavePeriod.ONE_YEAR.period
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSpendWork,
@@ -269,7 +270,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 binding.tvMypageSpend1Year,
                 data.amountSpentTwoWeeks,
                 WineyFeedType.CONSUME,
-                "1YEAR"
+                SavePeriod.ONE_YEAR.period
             )
         }
     }
@@ -303,19 +304,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         animateTextView(
             textView = binding.vMypage2weeks1Month,
             amount = amountSavedTwoWeeks * VALUE_FOR_1_MONTH,
-            periodType = "1MONTH",
+            periodType = SavePeriod.ONE_MONTH.period,
             moneyType = WineyFeedType.SAVE
         )
         animateTextView(
             textView = binding.vMypage2weeks3Month,
             amount = amountSavedTwoWeeks * VALUE_FOR_3_MONTH,
-            periodType = "3MONTH",
+            periodType = SavePeriod.THREE_MONTH.period,
             moneyType = WineyFeedType.SAVE
         )
         animateTextView(
             textView = binding.vMypage2weeks1Year,
             amount = amountSavedTwoWeeks * VALUE_FOR_1_YEAR,
-            periodType = "1YEAR",
+            periodType = SavePeriod.ONE_YEAR.period,
             moneyType = WineyFeedType.SAVE
         )
     }
@@ -324,28 +325,28 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         animateTextView(
             textView = binding.vMypageSpend2weeks1Month,
             amount = amountSpendTwoWeeks * VALUE_FOR_1_MONTH,
-            periodType = "1MONTH",
+            periodType = SavePeriod.ONE_MONTH.period,
             moneyType = WineyFeedType.CONSUME
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks3Month,
             amount = amountSpendTwoWeeks * VALUE_FOR_3_MONTH,
-            periodType = "3MONTH",
+            periodType = SavePeriod.THREE_MONTH.period,
             moneyType = WineyFeedType.CONSUME
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks1Year,
             amount = amountSpendTwoWeeks * VALUE_FOR_1_YEAR,
-            periodType = "1YEAR",
+            periodType = SavePeriod.ONE_YEAR.period,
             moneyType = WineyFeedType.CONSUME
         )
     }
 
     private fun getGraphAnimationWidth(textViewWidth: Int, type: String): Int {
         return when (type) {
-            "1MONTH" -> textViewWidth * 3 / 5
-            "3MONTH" -> textViewWidth * 2 / 3
-            "1YEAR" -> textViewWidth * 5 / 6
+            SavePeriod.ONE_MONTH.period -> textViewWidth * 3 / 5
+            SavePeriod.THREE_MONTH.period -> textViewWidth * 2 / 3
+            SavePeriod.ONE_YEAR.period -> textViewWidth * 5 / 6
             else -> 0
         }
     }
@@ -387,10 +388,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                                         formatWithCommaForMoney(amount)
                                     )
                                 }
-
-                                else -> {
-                                    ""
-                                }
                             }
                         }
                     }
@@ -430,15 +427,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 fullText = getString(R.string.mypage_2weeks_save_for_job, amountText)
             }
 
-            "1YEAR" -> {
+            SavePeriod.ONE_YEAR.period -> {
                 amountText = formatWithCommaForMoney(money * VALUE_FOR_1_YEAR) + "원"
-                when (moneyType) {
+                fullText = when (moneyType) {
                     WineyFeedType.SAVE -> {
-                        fullText = getString(R.string.mypage_2weeks_save_for_1year, amountText)
+                        getString(R.string.mypage_2weeks_save_for_1year, amountText)
                     }
 
                     WineyFeedType.CONSUME -> {
-                        fullText = getString(R.string.mypage_2weeks_spend_for_1year, amountText)
+                        getString(R.string.mypage_2weeks_spend_for_1year, amountText)
                     }
                 }
             }
@@ -489,7 +486,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val VALUE_FOR_1_MONTH = 2
         private const val VALUE_FOR_3_MONTH = 6
         private const val VALUE_FOR_1_YEAR = 24
-
 
         private const val ANIMATION_DURATION = 1000
     }
