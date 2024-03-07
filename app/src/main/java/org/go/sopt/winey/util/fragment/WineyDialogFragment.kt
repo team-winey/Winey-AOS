@@ -61,6 +61,7 @@ class WineyDialogFragment :
     companion object {
         private const val KEY_DIALOG_LABEL = "winey_dialog_label"
 
+        @JvmStatic
         fun newInstance(
             wineyDialogLabel: WineyDialogLabel,
             handleNegativeButton: () -> Unit,

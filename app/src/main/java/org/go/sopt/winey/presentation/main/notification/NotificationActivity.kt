@@ -87,8 +87,7 @@ class NotificationActivity :
 
     private fun navigateToMyPage() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra(MainActivity.KEY_TO_MY_PAGE, true)
+        intent.putExtra(MainActivity.KEY_FROM_NOTI, true)
         startActivity(intent)
-        this.finish()
     }
 }

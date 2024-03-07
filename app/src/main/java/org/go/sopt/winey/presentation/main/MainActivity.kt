@@ -115,12 +115,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
             NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
             NotificationType.GOAL_FAILED -> {
-                navigateTo(
-                    fragment = MyPageFragment.newInstance(),
+                navigateTo(MyPageFragment.newInstance(
                     args = Bundle().apply {
                         putBoolean(KEY_FROM_NOTI, true)
                     }
-                )
+                ))
             }
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION ->
@@ -132,13 +131,12 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     private fun initFragment() {
-        if (intent.getBooleanExtra(KEY_TO_MY_PAGE, false)) {
-            navigateTo(
-                fragment = MyPageFragment.newInstance(),
+        if (intent.getBooleanExtra(KEY_FROM_NOTI, false)) {
+            navigateTo(MyPageFragment.newInstance(
                 args = Bundle().apply {
                     putBoolean(KEY_FROM_NOTI, true)
                 }
-            )
+            ))
             syncBnvSelectedItem(R.id.menu_mypage)
             return
         }
@@ -205,11 +203,7 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }.launchIn(lifecycleScope)
     }
 
-    private fun navigateTo(fragment: Fragment, args: Bundle? = null) {
-        args?.let {
-            fragment.arguments = it
-        }
-
+    private fun navigateTo(fragment: Fragment) {
         supportFragmentManager.commit {
             replace(R.id.fcv_main, fragment)
         }
@@ -238,10 +232,9 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         private const val KEY_FEED_UPLOAD = "upload"
         private const val KEY_FEED_DELETE = "delete"
         private const val KEY_NOTI_TYPE = "notiType"
-        private const val KEY_FROM_NOTI = "fromNoti"
 
         const val KEY_FEED_ID = "feedId"
-        const val KEY_TO_MY_PAGE = "navigateMyPage"
         const val KEY_FROM_GOAL_PATH = "fromGoalPath"
+        const val KEY_FROM_NOTI = "fromNoti"
     }
 }
