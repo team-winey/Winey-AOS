@@ -160,6 +160,15 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun calculateSaveProgressBar(accumulatedAmount: Int, goalAmount: Int): Int {
+        return when {
+            accumulatedAmount <= 0 -> 0
+            accumulatedAmount <= goalAmount -> ((accumulatedAmount / goalAmount.toDouble()) * 100).toInt()
+            else -> 100
+        }
+    }
+
+
     private fun setUpUserGoalByLevel(data: UserV2) {
         binding.apply {
             when (data.userLevel) {
@@ -167,43 +176,31 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv1)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv1)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
-                    tvMypageProfileGoal.text = "3만원"
-                    pbMypage.progress = when {
-                        data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 30000 -> ((data.accumulatedAmount / 30000.0) * 100).toInt()
-                        else -> 100
-                    }
+                    tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv1)
+                    pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 30000)
                 }
 
                 UserLevel.SECOND.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv2)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv2)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
-                    tvMypageProfileGoal.text = "15만원"
-                    pbMypage.progress = when {
-                        data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 150000 -> ((data.accumulatedAmount / 150000.0) * 100).toInt()
-                        else -> 100
-                    }
+                    tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv2)
+                    pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 150000)
                 }
 
                 UserLevel.THIRD.rankName-> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv3)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
-                    tvMypageProfileGoal.text = "30만원"
-                    pbMypage.progress = when {
-                        data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 300000 -> ((data.accumulatedAmount / 300000.0) * 100).toInt()
-                        else -> 100
-                    }
+                    tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv3)
+                    pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 300000)
                 }
 
                 UserLevel.FOURTH.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv4)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
-                    tvMypageProfileGoal.text = "레벨 미션 완료"
+                    tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv4)
                     tvMypageProfileCurrent.isVisible = false
                     pbMypage.progress = 100
                 }
