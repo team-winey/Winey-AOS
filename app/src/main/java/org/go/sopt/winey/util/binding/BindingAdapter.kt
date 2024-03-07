@@ -519,7 +519,7 @@ fun TextView.switchFeedMoney(feedType: String, feedMoney: Long) {
 fun TextView.setProgressBarTitle(currentLevel: String) {
     val context = this.context ?: return
 
-    if (currentLevel == UserLevel.FORTH.rankName) {
+    if (currentLevel == UserLevel.FOURTH.rankName) {
         text = context.getString(R.string.wineyfeed_goal_progressbar_lv4_title)
         return
     }
@@ -541,7 +541,7 @@ fun TextView.setProgressBarTitle(currentLevel: String) {
 fun TextView.setCurrentMoney(userLevel: String, accumulatedAmount: Int) {
     val context = this.context ?: return
 
-    text = if (userLevel == UserLevel.FORTH.rankName) {
+    text = if (userLevel == UserLevel.FOURTH.rankName) {
         context.getString(R.string.wineyfeed_goal_progressbar_lv4_subTitle)
     } else {
         context.getString(
@@ -554,7 +554,7 @@ fun TextView.setCurrentMoney(userLevel: String, accumulatedAmount: Int) {
 @BindingAdapter("setTargetMoney")
 fun TextView.setTargetMoney(currentLevel: String) {
     val context = this.context ?: return
-    isVisible = currentLevel != UserLevel.FORTH.rankName
+    isVisible = currentLevel != UserLevel.FOURTH.rankName
 
     val userLevels = context.resources.getStringArray(R.array.user_level)
     val targetMoneys = context.resources.getIntArray(R.array.target_money)

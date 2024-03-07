@@ -19,6 +19,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.crashlytics.internal.model.CrashlyticsReport.Session.User
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -34,6 +35,8 @@ import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.main.mypage.setting.SettingActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
+import org.go.sopt.winey.presentation.model.UserLevel
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
@@ -160,7 +163,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setUpUserGoalByLevel(data: UserV2) {
         binding.apply {
             when (data.userLevel) {
-                "평민" -> {
+                UserLevel.FIRST.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv1)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv1)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
@@ -172,7 +175,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     }
                 }
 
-                "기사" -> {
+                UserLevel.SECOND.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv2)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv2)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
@@ -184,7 +187,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     }
                 }
 
-                "귀족" -> {
+                UserLevel.THIRD.rankName-> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv3)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
@@ -196,7 +199,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     }
                 }
 
-                "황제" -> {
+                UserLevel.FOURTH.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv4)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
@@ -305,19 +308,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             textView = binding.vMypage2weeks1Month,
             amount = amountSavedTwoWeeks * 2,
             periodType = "1MONTH",
-            moneyType = "SAVE"
+            moneyType = WineyFeedType.SAVE
         )
         animateTextView(
             textView = binding.vMypage2weeks3Month,
             amount = amountSavedTwoWeeks * 6,
             periodType = "3MONTH",
-            moneyType = "SAVE"
+            moneyType = WineyFeedType.SAVE
         )
         animateTextView(
             textView = binding.vMypage2weeks1Year,
             amount = amountSavedTwoWeeks * 24,
             periodType = "1YEAR",
-            moneyType = "SAVE"
+            moneyType = WineyFeedType.SAVE
         )
     }
 
@@ -326,19 +329,19 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             textView = binding.vMypageSpend2weeks1Month,
             amount = amountSpendTwoWeeks * 2,
             periodType = "1MONTH",
-            moneyType = "SPEND"
+            moneyType = WineyFeedType.CONSUME
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks3Month,
             amount = amountSpendTwoWeeks * 6,
             periodType = "3MONTH",
-            moneyType = "SPEND"
+            moneyType = WineyFeedType.CONSUME
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks1Year,
             amount = amountSpendTwoWeeks * 24,
             periodType = "1YEAR",
-            moneyType = "SPEND"
+            moneyType = WineyFeedType.CONSUME
         )
     }
 
@@ -355,7 +358,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         textView: TextView,
         amount: Int,
         periodType: String,
-        moneyType: String
+        moneyType: WineyFeedType
     ) {
         val params = textView.layoutParams
         val parentView = textView.parent as ViewGroup
@@ -375,14 +378,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         }
                         doOnEnd {
                             textView.text = when (moneyType) {
-                                "SAVE" -> {
+                                WineyFeedType.SAVE -> {
                                     String.format(
                                         getString(R.string.mypage_save_money),
                                         formatWithCommaForMoney(amount)
                                     )
                                 }
 
-                                "SPEND" -> {
+                                WineyFeedType.CONSUME -> {
                                     String.format(
                                         getString(R.string.mypage_spend_money),
                                         formatWithCommaForMoney(amount)
@@ -485,5 +488,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"
+
+
     }
 }

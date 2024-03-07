@@ -86,7 +86,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                     }
                 }
 
-                UserLevel.FORTH.rankName -> {
+                UserLevel.FOURTH.rankName -> {
                     binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
                     binding.clGoalPathGuide.isVisible = false
 
