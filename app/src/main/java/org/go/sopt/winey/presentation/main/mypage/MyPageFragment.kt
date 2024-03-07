@@ -19,7 +19,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.google.firebase.crashlytics.internal.model.CrashlyticsReport.Session.User
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
@@ -188,7 +187,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 150000)
                 }
 
-                UserLevel.THIRD.rankName-> {
+                UserLevel.THIRD.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv3)
                     tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
@@ -211,7 +210,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setUpUserDataByGoal(data: UserV2) {
         binding.apply {
             tvMypageProfileMoney.text =
-                if (data.userLevel != "황제") {
+                if (data.userLevel != UserLevel.FOURTH.rankName) {
                     getString(
                         R.string.mypage_reamining_amount,
                         formatWithCommaForMoney(data.remainingAmount)
@@ -434,11 +433,11 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             "1YEAR" -> {
                 amountText = formatWithCommaForMoney(money * VALUE_FOR_1_YEAR) + "원"
                 when (moneyType) {
-                    WineyFeedType.SAVE-> {
+                    WineyFeedType.SAVE -> {
                         fullText = getString(R.string.mypage_2weeks_save_for_1year, amountText)
                     }
 
-                    WineyFeedType.CONSUME-> {
+                    WineyFeedType.CONSUME -> {
                         fullText = getString(R.string.mypage_2weeks_spend_for_1year, amountText)
                     }
                 }

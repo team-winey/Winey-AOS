@@ -19,8 +19,8 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import de.hdodenhof.circleimageview.CircleImageView
 import org.go.sopt.winey.R
-import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.model.UserLevel
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.MY_PAGE_SCREEN
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.STORY_SCREEN
 import org.go.sopt.winey.util.code.ErrorCode.*
