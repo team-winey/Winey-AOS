@@ -115,11 +115,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
             NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
             NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
             NotificationType.GOAL_FAILED -> {
-                navigateTo(MyPageFragment.newInstance(
-                    args = Bundle().apply {
-                        putBoolean(KEY_FROM_NOTI, true)
-                    }
-                ))
+                navigateTo(
+                    MyPageFragment.newInstance(
+                        args = Bundle().apply {
+                            putBoolean(KEY_FROM_NOTI, true)
+                        }
+                    )
+                )
             }
 
             NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION ->
@@ -132,11 +134,13 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
 
     private fun initFragment() {
         if (intent.getBooleanExtra(KEY_FROM_NOTI, false)) {
-            navigateTo(MyPageFragment.newInstance(
-                args = Bundle().apply {
-                    putBoolean(KEY_FROM_NOTI, true)
-                }
-            ))
+            navigateTo(
+                MyPageFragment.newInstance(
+                    args = Bundle().apply {
+                        putBoolean(KEY_FROM_NOTI, true)
+                    }
+                )
+            )
             syncBnvSelectedItem(R.id.menu_mypage)
             return
         }

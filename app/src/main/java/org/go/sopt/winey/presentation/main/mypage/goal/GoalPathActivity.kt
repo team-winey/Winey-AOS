@@ -107,11 +107,9 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         userInfo?.let { user ->
             if (!user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
                 binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_1))
-            }
-            else if (user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
+            } else if (user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
                 binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_2))
-            }
-            else if (!user.isLevelUpAmountConditionMet && user.isLevelUpCountConditionMet) {
+            } else if (!user.isLevelUpAmountConditionMet && user.isLevelUpCountConditionMet) {
                 binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_3))
             }
         }
@@ -121,11 +119,9 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         userInfo?.let { user ->
             if (!user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
                 binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_1))
-            }
-            else if (user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
+            } else if (user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
                 binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_2))
-            }
-            else if (!user.isLevelUpAmountConditionMet && user.isLevelUpCountConditionMet) {
+            } else if (!user.isLevelUpAmountConditionMet && user.isLevelUpCountConditionMet) {
                 binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_3))
             }
         }
