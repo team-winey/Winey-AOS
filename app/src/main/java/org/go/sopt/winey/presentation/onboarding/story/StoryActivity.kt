@@ -109,7 +109,7 @@ class StoryActivity : BindingActivity<ActivityStoryBinding>(R.layout.activity_st
 
     private fun navigateToNicknameScreen() {
         Intent(this, NicknameActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             putExtra(KEY_PREV_SCREEN_NAME, STORY_SCREEN)
             startActivity(this)
         }

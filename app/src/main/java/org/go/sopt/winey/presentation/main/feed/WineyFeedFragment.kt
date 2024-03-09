@@ -456,7 +456,6 @@ class WineyFeedFragment :
         Intent(requireContext(), DetailActivity::class.java).apply {
             putExtra(KEY_FEED_ID, wineyFeed.feedId)
             putExtra(KEY_FEED_WRITER_ID, wineyFeed.userId)
-            putExtra(KEY_PREV_SCREEN_NAME, WINEY_FEED_SCREEN)
             startActivity(this)
         }
     }
@@ -507,6 +506,9 @@ class WineyFeedFragment :
     }
 
     companion object {
+        @JvmStatic
+        fun newInstance() = WineyFeedFragment()
+
         private const val INSTAGRAM_URL =
             "https://instagram.com/winey__official?igshid=MzRlODBiNWFlZA=="
         private const val MSG_WINEYFEED_ERROR = "ERROR"
@@ -516,8 +518,6 @@ class WineyFeedFragment :
         private const val TAG_UPLOAD_DIALOG = "UPLOAD_DIALOG"
         private const val TAG_CONGRATULATION_DIALOG = "CONGRATULATION_DIALOG"
 
-        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
-        private const val WINEY_FEED_SCREEN = "WineyFeedFragment"
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
 

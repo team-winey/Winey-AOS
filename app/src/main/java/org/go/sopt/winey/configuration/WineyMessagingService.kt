@@ -42,9 +42,9 @@ class WineyMessagingService : FirebaseMessagingService() {
 
     private fun createNotificationIntent(remoteMessage: RemoteMessage): Intent {
         return Intent(this, SplashActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             putExtra(KEY_NOTI_TYPE, remoteMessage.data[KEY_NOTI_TYPE])
             putExtra(KEY_FEED_ID, remoteMessage.data[KEY_FEED_ID])
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
     }
 
