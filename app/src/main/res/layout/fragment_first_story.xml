@@ -3,14 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray_50"
+        android:background="@drawable/bg_story_lottie"
         tools:context=".presentation.onboarding.story.FirstStoryFragment">
 
         <TextView
@@ -75,7 +71,6 @@
         <com.airbnb.lottie.LottieAnimationView
             android:layout_width="0dp"
             android:layout_height="375dp"
-            android:background="@drawable/bg_story_lottie"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
