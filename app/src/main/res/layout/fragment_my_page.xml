@@ -508,7 +508,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="12dp"
-                        android:background="@drawable/shape_gray0_fill_12_rect"
+                        android:background="@drawable/shape_gray0_fill_8_rect"
                         app:layout_constraintTop_toBottomOf="@id/tv_mypage_saved_description">
 
                         <ImageView
@@ -543,7 +543,7 @@
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="14dp"
                         android:layout_marginBottom="39dp"
-                        android:background="@drawable/shape_gray0_fill_18_rect"
+                        android:background="@drawable/shape_gray0_fill_8_rect"
                         app:layout_constraintBottom_toTopOf="@id/v_mypage_line4"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -704,7 +704,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginVertical="12dp"
-                        android:background="@drawable/shape_gray0_fill_12_rect"
+                        android:background="@drawable/shape_gray0_fill_8_rect"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintBottom_toTopOf="@id/cl_mypage_2weeks_spend"
                         app:layout_constraintTop_toBottomOf="@id/tv_mypage_spend_description">
@@ -741,7 +741,7 @@
                         android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="14dp"
                         android:layout_marginBottom="30dp"
-                        android:background="@drawable/shape_gray0_fill_18_rect"
+                        android:background="@drawable/shape_gray0_fill_8_rect"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
