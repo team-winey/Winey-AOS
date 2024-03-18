@@ -11,7 +11,7 @@
 위니(₩iney)는 ₩in+Money의 합성어입니다. '나와의 절약 싸움에서 이겨 위니 왕국으로 돌아가자'라는 세계관과 흥미로운 스토리텔링이 담긴 게이미피케이션 요소를 통해 쉽고
 재미있게 절약을 표현했습니다.
 
-절약 방법이 어려운 고객을 위해 일상에서도 언제든 가능한 절약 방법을 추천하고, 사진을 통한 절약 인증과 절약 목표 달성률에 따라 캐릭터를 성장시키는 기능이 담겨있습니다.
+절약 방법이 어려운 고객을 위해 일상에서도 언제든 가능한 절약 방법을 추천하고, 사진을 통한 절약 인증과 절약 미션 달성률에 따라 캐릭터를 성장시키는 기능이 담겨있습니다.
 
 한마디로 위니는 '좌충우돌 나만의 절약 방법을 공유하는 게임형 절약 SNS' 서비스입니다.
 
@@ -21,52 +21,23 @@
 
 ## 🌱 Contributors
 
-|                                          [@leeeha](https://github.com/leeeha)                                          |                                          [@sxunea](https://github.com/sxunea)                                          |                                     [@Sangwook123](https://github.com/Sangwook123)                                     |
-|:----------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------:|
-| <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/c393f52d-2e3f-42c8-9f38-a935184831f1" /> | <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/7eb22b00-ef67-4ad0-9ae9-1bc5e579524b" /> | <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/352352e9-9a4c-4de8-8fdb-dc73c26a271e" /> |
-|                                         스플래시, 온보딩, 피드 업로드, <br> 댓글 생성/삭제, 회원 탈퇴                                         |                                             위니 피드, 마이 피드, <br> 상세 피드, 댓글 조회                                             |                                            카카오 로그인, 마이페이지, <br> 추천 피드, 알림                                            |
-
-## ✨ Features 
-
-### 온보딩, 로그인 
-
-https://github.com/team-winey/Winey-AOS/assets/68090939/dfbfc25e-8359-4ab7-ba37-2f19704ba180
-
-### 위니 피드, 상세 피드, 댓글
-
-https://github.com/team-winey/Winey-AOS/assets/68090939/b901af11-5b14-42ea-b426-dc8dedbbee73
-
-### 마이페이지
-
-https://github.com/team-winey/Winey-AOS/assets/68090939/c49e0369-7595-47f0-992f-566813dc8deb
-
-### 레벨업
-
-https://github.com/team-winey/Winey-AOS/assets/68090939/c178c9f8-d113-448e-8813-cf42f4f6fb6e
-
-### 마이 피드
-
-https://github.com/team-winey/Winey-AOS/assets/68090939/1be2cdb5-3f69-449e-924f-6fecb25e819c
-
-### 추천 피드
-
-https://github.com/team-winey/Winey-AOS/assets/68090939/785df9d2-bf77-4dae-a607-7bbbebbd0d72
-
-### 알림 
-
-https://github.com/team-winey/Winey-AOS/assets/68090939/d190e491-efe5-4a02-89d1-bca4410e49f8
+||                                          [@leeeha](https://github.com/leeeha)                                          |                                          [@sxunea](https://github.com/sxunea)                                          |                                     [@Sangwook123](https://github.com/Sangwook123)                                     |
+|:---:| :--------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------: |
+|| <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/9eedf973-cd28-4601-abf5-e419d2152410" /> | <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/7eb22b00-ef67-4ad0-9ae9-1bc5e579524b" /> | <img width="200" src="https://github.com/team-winey/Winey-AOS/assets/68090939/352352e9-9a4c-4de8-8fdb-dc73c26a271e" /> |
+|1차 릴리즈|                            스플래시, 온보딩, 절약 피드 생성 <br> 댓글 생성/삭제, 회원 탈퇴                              |                                    위니 피드, 상세 피드 <br> 마이 피드, 댓글 조회                                    |                                    카카오 로그인, 마이페이지 <br> 추천 피드, 알림 목록                                     |
+|2차 릴리즈|과소비 피드 생성 <br> 위니/상세/마이 피드 UI 수정 <br> 목표 여정 | 마이페이지 전면 수정 <br> 설정 화면 | FCM 푸시 알림 |
 
 ## 🛠 Tech Stack
 
-| 구분                      | 기술 스택                                                                     |
-|-------------------------|---------------------------------------------------------------------------|
+| 구분                    | 기술 스택                                                                 |
+| ----------------------- | ------------------------------------------------------------------------- |
 | Architecture            | MVVM                                                                      |
 | Design Pattern          | Observer Pattern, Repository Pattern, State Pattern                       |
 | JetPack Components      | LifeCycle, ViewModel, LiveData, StateFlow, DataBinding, DataStore, Paging |
 | Dependency Injection    | Hilt                                                                      |
-| Network                 | Retrofit, OkHttp, kotlinx.serialization                                     |
+| Network                 | Retrofit, OkHttp, kotlinx.serialization                                   |
 | Asynchronous Processing | Coroutine, Flow                                                           |
-| Third Party Library     | Kakao Login, Coil, Lottie, Timber, CircleImageView                        |
+| Third Party Library     | Kakao Login, FCM, Coil, Lottie, Timber, CircleImageView                  |
 | Branch Strategy         | Git Flow                                                                  |
 | CI/CD                   | GitHub Actions (KtLint, Compile Check)                                    |
 | Data Analytics          | Amplitude                                                                 |
@@ -86,6 +57,7 @@ https://github.com/team-winey/Winey-AOS/assets/68090939/d190e491-efe5-4a02-89d1-
 
 ```
 📂 org.go.sopt.winey
+┣ 📂 configuration
 ┣ 📂 data
 ┃ ┣ 📂 interceptor
 ┃ ┣ 📂 model
@@ -106,6 +78,7 @@ https://github.com/team-winey/Winey-AOS/assets/68090939/d190e491-efe5-4a02-89d1-
 ┃ ┃ ┃ ┣ 📂 myfeed
 ┃ ┃ ┣ 📂 notification
 ┃ ┃ ┣ 📂 recommend
+┃ ┣ 📂 model
 ┃ ┣ 📂 nickname
 ┃ ┣ 📂 onboarding
 ┃ ┃ ┣ 📂 guide
@@ -114,3 +87,7 @@ https://github.com/team-winey/Winey-AOS/assets/68090939/d190e491-efe5-4a02-89d1-
 ┃ ┣ 📂 splash
 ┣ 📂 util
 ```
+
+## 📷 Demo Video
+
+[Wiki에서 확인해주세요 🤗](https://github.com/team-winey/Winey-AOS/wiki/%EC%9C%84%EB%8B%88-%EB%8D%B0%EB%AA%A8-%EB%B9%84%EB%94%94%EC%98%A4)
