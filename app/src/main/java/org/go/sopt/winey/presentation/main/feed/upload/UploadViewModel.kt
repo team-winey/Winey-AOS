@@ -59,7 +59,7 @@ class UploadViewModel @Inject constructor(
 
     /** AmountFragment properties */
     val _amount = MutableStateFlow("")
-    val amount: String get() = _amount.value
+    val commaAmount: String get() = _amount.value
 
     val isValidAmount: StateFlow<Boolean> = _amount.map { validateAmount(it) }
         .stateIn(
@@ -135,6 +135,11 @@ class UploadViewModel @Inject constructor(
 
             feedRepository.postWineyFeed(file, requestMap)
                 .onSuccess { response ->
+                    if (response == null) {
+                        _postWineyFeedState.value = UiState.Failure("POST feed response is null")
+                        return@launch
+                    }
+
                     _postWineyFeedState.value = UiState.Success(response)
                 }
                 .onFailure { t ->
