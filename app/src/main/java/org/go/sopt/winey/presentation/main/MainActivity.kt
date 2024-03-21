@@ -233,12 +233,11 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
     }
 
     companion object {
-        const val KEY_FEED_UPLOAD = "upload"
         const val KEY_FEED_ID = "feedId"
+        const val KEY_NOTI_TYPE = "notiType"
         const val KEY_FROM_GOAL_PATH = "fromGoalPath"
         const val KEY_FROM_NOTI = "fromNoti"
-
-        private const val KEY_FEED_DELETE = "delete"
-        private const val KEY_NOTI_TYPE = "notiType"
+        const val KEY_FEED_UPLOAD = "upload"
+        const val KEY_FEED_DELETE = "delete"
     }
 }
