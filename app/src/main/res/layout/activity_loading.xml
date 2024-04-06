@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="saveItem"
+            name="itemName"
             type="String" />
 
     </data>
@@ -79,7 +79,7 @@
                     android:layout_marginTop="6dp"
                     android:background="@drawable/shape_yellow_fill_rect"
                     android:paddingHorizontal="10dp"
-                    android:text="@{@string/upload_loading_title(saveItem)}"
+                    android:text="@{@string/upload_loading_title(itemName)}"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
                     tools:text="추파춥스 값을" />
 
