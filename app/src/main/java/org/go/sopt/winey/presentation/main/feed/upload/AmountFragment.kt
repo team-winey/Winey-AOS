@@ -142,7 +142,7 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun navigateToLoadingScreen(nowLevelUp: Boolean) {
         val context = context ?: return
         Intent(context, LoadingActivity::class.java).apply {
-            putExtra(KEY_SAVE_AMOUNT, uploadViewModel.commaAmount.removeComma())
+            putExtra(KEY_AMOUNT, uploadViewModel.commaAmount.removeComma().toInt())
             putExtra(WineyFeedFragment.KEY_FEED_TYPE, uploadViewModel.feedType)
             if (uploadViewModel.feedType == WineyFeedType.SAVE) {
                 putExtra(WineyFeedFragment.KEY_LEVEL_UP, nowLevelUp)
@@ -154,6 +154,6 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
     private fun String.removeComma() = replace(",", "")
 
     companion object {
-        const val KEY_SAVE_AMOUNT = "amount"
+        const val KEY_AMOUNT = "amount"
     }
 }
