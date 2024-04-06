@@ -14,44 +14,43 @@ import org.go.sopt.winey.presentation.main.feed.upload.AmountFragment
 import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.intent.getCompatibleSerializableExtra
-import timber.log.Timber
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
     private val amount by lazy { intent.getIntExtra(AmountFragment.KEY_AMOUNT, 0) }
-    private val feedType: WineyFeedType? by lazy {
+    private val feedType: WineyFeedType by lazy {
         intent.getCompatibleSerializableExtra(
             WineyFeedFragment.KEY_FEED_TYPE
-        )
+        ) ?: WineyFeedType.SAVE
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        classifyFeedType()
-        playLottieAnimation()
+        switchTitle()
+        switchItemCategory()
+        switchLottieAnimation()
     }
 
-    private fun classifyFeedType() {
+    private fun switchTitle() {
+        binding.tvUploadLoadingTitleLine3.text = when (feedType) {
+            WineyFeedType.SAVE -> getString(R.string.upload_loading_title_other_save_line3)
+            WineyFeedType.CONSUME -> getString(R.string.upload_loading_title_other_consume_line3)
+        }
+    }
+
+    private fun switchItemCategory() {
         when (feedType) {
             WineyFeedType.SAVE -> {
-                binding.tvUploadLoadingTitleLine3.text =
-                    getString(R.string.upload_loading_title_other_save_line3)
-
                 val saveAmountRange = resources.getIntArray(R.array.save_amount_range)
                 val saveItems = resources.getStringArray(R.array.save_item_categories)
                 categorizeItemsByAmount(amountRange = saveAmountRange, items = saveItems)
             }
 
             WineyFeedType.CONSUME -> {
-                binding.tvUploadLoadingTitleLine3.text =
-                    getString(R.string.upload_loading_title_other_consume_line3)
-
                 val consumeAmountRange = resources.getIntArray(R.array.consume_amount_range)
                 val consumeItems = resources.getStringArray(R.array.consume_item_categories)
                 categorizeItemsByAmount(amountRange = consumeAmountRange, items = consumeItems)
             }
-
-            else -> Timber.e("feed type extra data is null")
         }
     }
 
@@ -90,7 +89,7 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
         binding.llLoadingTitleOther.isVisible = true
     }
 
-    private fun playLottieAnimation() {
+    private fun switchLottieAnimation() {
         when (feedType) {
             WineyFeedType.SAVE -> {
                 binding.lottieConsumeLoading.isVisible = false
@@ -107,8 +106,6 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
                     playAnimation()
                 }
             }
-
-            else -> Timber.e("feed type extra data is null")
         }
 
         lifecycleScope.launch {
