@@ -41,14 +41,14 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="visible">
+                android:visibility="invisible">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/shape_yellow_fill_rect"
                     android:paddingHorizontal="10dp"
-                    android:text="@string/upload_loading_title_first__line1"
+                    android:text="@string/upload_loading_title_first_line1"
                     android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
 
                 <TextView
@@ -65,7 +65,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="invisible">
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,17 +84,19 @@
                     tools:text="추파춥스 값을" />
 
                 <TextView
+                    android:id="@+id/tv_upload_loading_title_line3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="@string/upload_loading_title_other_line3"
-                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl" />
+                    android:textAppearance="@style/TextAppearance.WINEY.Headline_b_28_xxl"
+                    tools:text="절약했어요" />
 
             </LinearLayout>
 
         </FrameLayout>
 
         <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottie_upload_loading"
             android:layout_width="312dp"
             android:layout_height="0dp"
             android:layout_marginStart="52dp"
@@ -104,7 +106,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/fl_loading_title"
             app:lottie_autoPlay="true"
-            app:lottie_rawRes="@raw/lottie_upload_loading" />
+            app:lottie_rawRes="@raw/lottie_save_loading" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

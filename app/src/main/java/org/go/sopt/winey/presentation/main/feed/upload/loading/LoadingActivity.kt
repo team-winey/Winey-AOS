@@ -34,19 +34,26 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     private fun classifyFeedType() {
         when (feedType) {
             WineyFeedType.SAVE -> {
+                binding.lottieUploadLoading.setAnimation(R.raw.lottie_save_loading)
+
+                binding.tvUploadLoadingTitleLine3.text =
+                    getString(R.string.upload_loading_title_other_save_line3)
+
                 val saveAmountRange = resources.getIntArray(R.array.save_amount_range)
                 val saveItems = resources.getStringArray(R.array.save_item_categories)
                 categorizeItemsByAmount(amountRange = saveAmountRange, items = saveItems)
-
-                // todo: 로티 변경
             }
 
             WineyFeedType.CONSUME -> {
+                binding.lottieUploadLoading.setAnimation(R.raw.lottie_consume_loading)
+                binding.lottieUploadLoading.repeatCount = 3
+
+                binding.tvUploadLoadingTitleLine3.text =
+                    getString(R.string.upload_loading_title_other_consume_line3)
+
                 val consumeAmountRange = resources.getIntArray(R.array.consume_amount_range)
                 val consumeItems = resources.getStringArray(R.array.consume_item_categories)
                 categorizeItemsByAmount(amountRange = consumeAmountRange, items = consumeItems)
-
-                // todo: 로티 변경
             }
 
             else -> Timber.e("feed type extra data is null")
