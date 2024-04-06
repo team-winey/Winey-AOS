@@ -36,8 +36,8 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         binding.vm = uploadViewModel
 
         updateRequestBody()
-        initListener()
-        initObserver()
+        addListener()
+        addObserver()
     }
 
     private fun updateRequestBody() {
@@ -46,14 +46,14 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         uploadViewModel.updateRequestBody(requestBody)
     }
 
-    private fun initListener() {
+    private fun addListener() {
         initAmountTextChangedListener()
         initUploadButtonClickListener()
         initRootLayoutClickListener()
         initBackButtonClickListener()
     }
 
-    private fun initObserver() {
+    private fun addObserver() {
         initPostImageStateObserver()
     }
 
