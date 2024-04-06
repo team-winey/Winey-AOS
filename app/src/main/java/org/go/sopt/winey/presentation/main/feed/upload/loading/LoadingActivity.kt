@@ -28,14 +28,12 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
         super.onCreate(savedInstanceState)
 
         classifyFeedType()
-        showLottieAnimation()
+        playLottieAnimation()
     }
 
     private fun classifyFeedType() {
         when (feedType) {
             WineyFeedType.SAVE -> {
-                binding.lottieUploadLoading.setAnimation(R.raw.lottie_save_loading)
-
                 binding.tvUploadLoadingTitleLine3.text =
                     getString(R.string.upload_loading_title_other_save_line3)
 
@@ -45,9 +43,6 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
             }
 
             WineyFeedType.CONSUME -> {
-                binding.lottieUploadLoading.setAnimation(R.raw.lottie_consume_loading)
-                binding.lottieUploadLoading.repeatCount = 3
-
                 binding.tvUploadLoadingTitleLine3.text =
                     getString(R.string.upload_loading_title_other_consume_line3)
 
@@ -95,7 +90,27 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
         binding.llLoadingTitleOther.isVisible = true
     }
 
-    private fun showLottieAnimation() {
+    private fun playLottieAnimation() {
+        when (feedType) {
+            WineyFeedType.SAVE -> {
+                binding.lottieConsumeLoading.isVisible = false
+                binding.lottieSaveLoading.apply {
+                    isVisible = true
+                    playAnimation()
+                }
+            }
+
+            WineyFeedType.CONSUME -> {
+                binding.lottieSaveLoading.isVisible = false
+                binding.lottieConsumeLoading.apply {
+                    isVisible = true
+                    playAnimation()
+                }
+            }
+
+            else -> Timber.e("feed type extra data is null")
+        }
+
         lifecycleScope.launch {
             delay(DELAY_TIME)
             navigateToMainScreen()
