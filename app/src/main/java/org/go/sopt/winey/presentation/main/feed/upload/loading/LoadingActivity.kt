@@ -11,43 +11,58 @@ import org.go.sopt.winey.databinding.ActivityLoadingBinding
 import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.main.feed.upload.AmountFragment
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.binding.BindingActivity
+import org.go.sopt.winey.util.intent.getCompatibleSerializableExtra
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
-    private val amountRange by lazy { resources.getIntArray(R.array.save_amount_range) }
-    private val itemCategories by lazy { resources.getStringArray(R.array.save_item_categories) }
+    val amount = intent.getIntExtra(AmountFragment.KEY_AMOUNT, 0)
+    private val feedType: WineyFeedType? by lazy {
+        intent.getCompatibleSerializableExtra(
+            WineyFeedFragment.KEY_FEED_TYPE
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        classifyItemCategory()
+        categorizeSaveItems()
+        categorizeConsumeItems()
+
         showLottieAnimation()
     }
 
-    private fun classifyItemCategory() {
-        val amount = intent.getStringExtra(AmountFragment.KEY_SAVE_AMOUNT)?.toInt() ?: return
+    private fun categorizeSaveItems() {
+        val saveAmountRange = resources.getIntArray(R.array.save_amount_range)
+        val saveItems = resources.getStringArray(R.array.save_item_categories)
 
-        for (index in amountRange.indices) {
-            if (isLastCategory(index)) {
-                showOtherCategoryTitle()
-                binding.saveItem = itemCategories[index - 1]
-                return
-            }
+        if (amount >= saveAmountRange.last()) {
+            showLastItem(name = saveItems.last())
+            return
+        }
 
-            if (amount >= amountRange[index] && amount < amountRange[index + 1]) {
+        for (index in 0 until saveAmountRange.lastIndex) {
+            if (amount in saveAmountRange[index] until saveAmountRange[index + 1]) {
                 if (index == 0) {
                     showFirstCategoryTitle()
                     return
                 }
 
                 showOtherCategoryTitle()
-                binding.saveItem = itemCategories[index - 1]
+                binding.itemName = saveItems[index - 1]
                 return
             }
         }
     }
 
-    private fun isLastCategory(index: Int) = index == amountRange.size - 1
+    private fun showLastItem(name: String) {
+        showOtherCategoryTitle()
+        binding.itemName = name
+    }
+
+    private fun categorizeConsumeItems() {
+
+    }
 
     private fun showFirstCategoryTitle() {
         binding.llLoadingTitleFirst.isVisible = true
