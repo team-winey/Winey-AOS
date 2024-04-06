@@ -14,6 +14,7 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentAmountBinding
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.fragment.stringOf
@@ -142,7 +143,10 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         val context = context ?: return
         Intent(context, LoadingActivity::class.java).apply {
             putExtra(KEY_SAVE_AMOUNT, uploadViewModel.commaAmount.removeComma())
-            putExtra(WineyFeedFragment.KEY_LEVEL_UP, nowLevelUp)
+            putExtra(WineyFeedFragment.KEY_FEED_TYPE, uploadViewModel.feedType)
+            if (uploadViewModel.feedType == WineyFeedType.SAVE) {
+                putExtra(WineyFeedFragment.KEY_LEVEL_UP, nowLevelUp)
+            }
             startActivity(this)
         }
     }
