@@ -14,9 +14,10 @@ import org.go.sopt.winey.presentation.main.feed.upload.AmountFragment
 import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.intent.getCompatibleSerializableExtra
+import timber.log.Timber
 
 class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activity_loading) {
-    val amount = intent.getIntExtra(AmountFragment.KEY_AMOUNT, 0)
+    private val amount by lazy { intent.getIntExtra(AmountFragment.KEY_AMOUNT, 0) }
     private val feedType: WineyFeedType? by lazy {
         intent.getCompatibleSerializableExtra(
             WineyFeedFragment.KEY_FEED_TYPE
@@ -26,30 +27,47 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        categorizeSaveItems()
-        categorizeConsumeItems()
-
+        classifyFeedType()
         showLottieAnimation()
     }
 
-    private fun categorizeSaveItems() {
-        val saveAmountRange = resources.getIntArray(R.array.save_amount_range)
-        val saveItems = resources.getStringArray(R.array.save_item_categories)
+    private fun classifyFeedType() {
+        when (feedType) {
+            WineyFeedType.SAVE -> {
+                val saveAmountRange = resources.getIntArray(R.array.save_amount_range)
+                val saveItems = resources.getStringArray(R.array.save_item_categories)
+                categorizeItemsByAmount(amountRange = saveAmountRange, items = saveItems)
 
-        if (amount >= saveAmountRange.last()) {
-            showLastItem(name = saveItems.last())
+                // todo: 로티 변경
+            }
+
+            WineyFeedType.CONSUME -> {
+                val consumeAmountRange = resources.getIntArray(R.array.consume_amount_range)
+                val consumeItems = resources.getStringArray(R.array.consume_item_categories)
+                categorizeItemsByAmount(amountRange = consumeAmountRange, items = consumeItems)
+
+                // todo: 로티 변경
+            }
+
+            else -> Timber.e("feed type extra data is null")
+        }
+    }
+
+    private fun categorizeItemsByAmount(amountRange: IntArray, items: Array<String>) {
+        if (amount >= amountRange.last()) {
+            showLastItem(name = items.last())
             return
         }
 
-        for (index in 0 until saveAmountRange.lastIndex) {
-            if (amount in saveAmountRange[index] until saveAmountRange[index + 1]) {
+        for (index in 0 until amountRange.lastIndex) {
+            if (amount in amountRange[index] until amountRange[index + 1]) {
                 if (index == 0) {
                     showFirstCategoryTitle()
                     return
                 }
 
                 showOtherCategoryTitle()
-                binding.itemName = saveItems[index - 1]
+                binding.itemName = items[index - 1]
                 return
             }
         }
@@ -58,10 +76,6 @@ class LoadingActivity : BindingActivity<ActivityLoadingBinding>(R.layout.activit
     private fun showLastItem(name: String) {
         showOtherCategoryTitle()
         binding.itemName = name
-    }
-
-    private fun categorizeConsumeItems() {
-
     }
 
     private fun showFirstCategoryTitle() {
