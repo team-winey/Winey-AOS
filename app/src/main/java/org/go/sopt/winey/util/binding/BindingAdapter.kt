@@ -352,18 +352,6 @@ fun ImageView.setMyPageLevelResource(userLevel: String, imageViewId: String) {
                     }
                 }
 
-                "BUBBLE" -> {
-                    when (userLevel) {
-                        "평민" -> R.drawable.img_mypage_bubble_lv1
-                        "기사" -> R.drawable.img_mypage_bubble_lv2
-                        "귀족" -> R.drawable.img_mypage_bubble_lv3
-                        "황제" -> R.drawable.img_mypage_bubble_lv4
-                        else -> {
-                            R.drawable.img_mypage_bubble_lv1
-                        }
-                    }
-                }
-
                 else -> {
                     R.drawable.img_mypage_saver_lv1
                 }
