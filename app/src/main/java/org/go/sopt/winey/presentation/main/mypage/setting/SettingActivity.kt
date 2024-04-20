@@ -322,7 +322,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
 
     private fun navigateToLoginScreen() {
         Intent(this, LoginActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(this)
             finish()
         }
@@ -330,7 +330,7 @@ class SettingActivity : BindingActivity<ActivitySettingBinding>(R.layout.activit
 
     private fun navigateToGuideScreen() {
         Intent(this, GuideActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
     }

@@ -29,6 +29,7 @@ import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentMyPageBinding
 import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
+import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.main.MainViewModel
 import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
@@ -51,6 +52,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val mainViewModel by activityViewModels<MainViewModel>()
+    private val isFromNoti by lazy { arguments?.getBoolean(MainActivity.KEY_FROM_NOTI, false) }
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -65,6 +67,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initUserData()
         addListener()
         addObserver()
+        registerBackPressedCallback()
     }
 
     // 닉네임 액티비티 갔다가 다시 돌아왔을 때 유저 데이터 갱신하도록
@@ -85,7 +88,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         initSettingButtonClickListener()
         initMyFeedButtonClickListener()
         initGoalPathButtonClickListener()
-        registerBackPressedCallback()
     }
 
     private fun addObserver() {
@@ -120,19 +122,17 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun registerBackPressedCallback() {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val receivedBundle = arguments
-                if (receivedBundle != null) {
-                    val isFromNotification = receivedBundle.getBoolean(KEY_FROM_NOTI)
-                    if (isFromNotification) {
-                        val intent = Intent(requireContext(), NotificationActivity::class.java)
-                        startActivity(intent)
-                        requireActivity().finish()
+                if (isFromNoti == true) {
+                    Intent(requireContext(), NotificationActivity::class.java).apply {
+                        startActivity(this)
                     }
+                } else {
+                    activity?.finish()
                 }
-                requireActivity().finish()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
+
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun navigateToNicknameScreen() {
@@ -477,6 +477,13 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     companion object {
+        @JvmStatic
+        fun newInstance(args: Bundle? = null) = MyPageFragment().apply {
+            args?.let {
+                arguments = it
+            }
+        }
+
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val MY_PAGE_SCREEN = "MyPageFragment"
         private const val KEY_FROM_NOTI = "fromNoti"

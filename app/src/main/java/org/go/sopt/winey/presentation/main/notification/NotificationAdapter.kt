@@ -13,8 +13,7 @@ class NotificationAdapter(
     private val navigateFeedDetail: (feedId: Int?) -> Unit,
     private val navigateMyPage: () -> Unit,
     private val navigateGoalPath: () -> Unit
-) :
-    ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(DiffUtil) {
+) : ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(DiffUtil) {
 
     fun setData(dataList: List<Notification>?) {
         val filteredDataList = filterData(dataList)

@@ -1,12 +1,10 @@
 package org.go.sopt.winey.presentation.main.mypage.goal
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.firstOrNull
@@ -19,6 +17,7 @@ import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.util.binding.BindingActivity
+import org.go.sopt.winey.util.context.drawableOf
 import org.go.sopt.winey.util.number.formatAmountNumber
 import javax.inject.Inject
 
@@ -40,7 +39,11 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
 
         initUserData()
         initRemainingGoal()
-        setupFragmentByLevel()
+
+        initCurrentLevelGoalPath()
+        checkNowLevelUp()
+        initAnimatorListener()
+
         initBackButtonClickListener()
         registerBackPressedCallback()
     }
@@ -63,56 +66,154 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         }
     }
 
-    private fun setupFragmentByLevel() {
-        lifecycleScope.launch {
-            when (userInfo?.userLevel) {
-                UserLevel.FIRST.rankName -> {
-                    navigateTo<GoalPathLevel1Fragment>()
+    private fun initCurrentLevelGoalPath() {
+        when (userInfo?.userLevel) {
+            UserLevel.FIRST.rankName -> {
+                initLevel1GoalPath()
+            }
+
+            UserLevel.SECOND.rankName -> {
+                initLevel2GoalPath()
+            }
+
+            UserLevel.THIRD.rankName -> {
+                initLevel3GoalPath()
+            }
+
+            UserLevel.FORTH.rankName -> {
+                initLevel4GoalPath()
+            }
+        }
+    }
+
+    private fun initLevel1GoalPath() {
+        userInfo?.let { user ->
+            // 어떤 것도 달성하지 못한 경우
+            if (!user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_1))
+            }
+            // 누적 금액 달성한 경우
+            else if (user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_2))
+            }
+            // 누적 업로드 횟수 달성한 경우
+            else if (!user.isLevelUpAmountConditionMet && user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_3))
+            }
+        }
+    }
+
+    private fun initLevel2GoalPath() {
+        userInfo?.let { user ->
+            if (!user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_1))
+            } else if (user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_2))
+            } else if (!user.isLevelUpAmountConditionMet && user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_3))
+            }
+        }
+    }
+
+    private fun initLevel3GoalPath() {
+        userInfo?.let { user ->
+            if (!user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_1))
+            } else if (user.isLevelUpAmountConditionMet && !user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_2))
+            } else if (!user.isLevelUpAmountConditionMet && user.isLevelUpCountConditionMet) {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_3))
+            }
+        }
+    }
+
+    private fun initLevel4GoalPath() {
+        binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv4))
+        binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
+        binding.clGoalPathGuide.isVisible = false
+    }
+    UserLevel.FOURTH.rankName ->
+    {
+        binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
+        binding.clGoalPathGuide.isVisible = false
+
+        private fun checkNowLevelUp() {
+            if (levelUpFromWineyFeed) {
+                binding.clGoalPathGuide.isVisible = false
+
+                when (userInfo?.userLevel) {
+                    UserLevel.SECOND.rankName -> {
+                        binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_4))
+                        binding.lottieGoalPath.apply {
+                            setAnimation(R.raw.lottie_goal_path_step1)
+                            playAnimation()
+                        }
+                    }
+
+                    UserLevel.THIRD.rankName -> {
+                        binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_4))
+                        binding.lottieGoalPath.apply {
+                            setAnimation(R.raw.lottie_goal_path_step2)
+                            playAnimation()
+                        }
+                    }
+
+                    UserLevel.FORTH.rankName -> {
+                        binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_4))
+                        binding.lottieGoalPath.apply {
+                            setAnimation(R.raw.lottie_goal_path_step3)
+                            playAnimation()
+                        }
+                    }
+                }
+            }
+        }
+
+        private fun initAnimatorListener() {
+            binding.lottieGoalPath.addAnimatorListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                    with(binding) {
+                        ivGoalPathBefore.isVisible = false
+                        lottieGoalPath.isVisible = true
+                    }
                 }
 
-                UserLevel.SECOND.rankName -> {
-                    if (levelUpFromWineyFeed) {
-                        navigateTo<GoalPathLevel1Fragment>()
-                    } else {
-                        navigateTo<GoalPathLevel2Fragment>()
+                override fun onAnimationEnd(animation: Animator) {
+                    with(binding) {
+                        lottieGoalPath.isVisible = false
+
+                        initNextLevelGoalPath()
+                        ivGoalPathAfter.isVisible = true
+                        clGoalPathGuide.isVisible = userInfo?.userLevel != UserLevel.FORTH.rankName
                     }
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                }
+
+                override fun onAnimationRepeat(animation: Animator) {
+                }
+            })
+        }
+
+        private fun initNextLevelGoalPath() {
+            when (userInfo?.userLevel) {
+                UserLevel.SECOND.rankName -> {
+                    binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_1))
                 }
 
                 UserLevel.THIRD.rankName -> {
-                    if (levelUpFromWineyFeed) {
-                        navigateTo<GoalPathLevel2Fragment>()
-                    } else {
-                        navigateTo<GoalPathLevel3Fragment>()
-                    }
+                    binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_1))
                 }
 
-                UserLevel.FOURTH.rankName -> {
-                    binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
-                    binding.clGoalPathGuide.isVisible = false
-
-                    if (levelUpFromWineyFeed) {
-                        navigateTo<GoalPathLevel3Fragment>()
-                    } else {
-                        navigateTo<GoalPathLevel4Fragment>()
-                    }
+                UserLevel.FORTH.rankName -> {
+                    binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv4))
                 }
             }
         }
-    }
 
-    private fun initBackButtonClickListener() {
-        binding.ivGoalPathBack.setOnClickListener {
-            if (levelUpFromWineyFeed) {
-                navigateToMainScreen()
-            } else {
-                finish()
-            }
-        }
-    }
-
-    private fun registerBackPressedCallback() {
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
+        private fun initBackButtonClickListener() {
+            binding.ivGoalPathBack.setOnClickListener {
                 if (levelUpFromWineyFeed) {
                     navigateToMainScreen()
                 } else {
@@ -120,20 +221,25 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 }
             }
         }
-        onBackPressedDispatcher.addCallback(this, callback)
-    }
 
-    private fun navigateToMainScreen() {
-        Intent(this@GoalPathActivity, MainActivity::class.java).apply {
-            putExtra(MainActivity.KEY_FROM_GOAL_PATH, true)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(this)
+        private fun registerBackPressedCallback() {
+            val callback = object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (levelUpFromWineyFeed) {
+                        navigateToMainScreen()
+                    } else {
+                        finish()
+                    }
+                }
+            }
+            onBackPressedDispatcher.addCallback(this, callback)
+        }
+
+        private fun navigateToMainScreen() {
+            Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                putExtra(MainActivity.KEY_FROM_GOAL_PATH, true)
+                startActivity(this)
+            }
         }
     }
-
-    private inline fun <reified T : Fragment> navigateTo() {
-        supportFragmentManager.commit {
-            replace<T>(R.id.fcv_goal_path, T::class.simpleName)
-        }
-    }
-}
