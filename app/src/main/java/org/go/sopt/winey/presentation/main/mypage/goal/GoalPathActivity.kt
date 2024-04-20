@@ -80,7 +80,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 initLevel3GoalPath()
             }
 
-            UserLevel.FORTH.rankName -> {
+            UserLevel.FOURTH.rankName -> {
                 initLevel4GoalPath()
             }
         }
@@ -132,88 +132,95 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
         binding.clGoalPathGuide.isVisible = false
     }
-    UserLevel.FOURTH.rankName ->
-    {
-        binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
-        binding.clGoalPathGuide.isVisible = false
 
-        private fun checkNowLevelUp() {
-            if (levelUpFromWineyFeed) {
-                binding.clGoalPathGuide.isVisible = false
+    private fun checkNowLevelUp() {
+        if (levelUpFromWineyFeed) {
+            binding.clGoalPathGuide.isVisible = false
 
-                when (userInfo?.userLevel) {
-                    UserLevel.SECOND.rankName -> {
-                        binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_4))
-                        binding.lottieGoalPath.apply {
-                            setAnimation(R.raw.lottie_goal_path_step1)
-                            playAnimation()
-                        }
-                    }
-
-                    UserLevel.THIRD.rankName -> {
-                        binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_4))
-                        binding.lottieGoalPath.apply {
-                            setAnimation(R.raw.lottie_goal_path_step2)
-                            playAnimation()
-                        }
-                    }
-
-                    UserLevel.FORTH.rankName -> {
-                        binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_4))
-                        binding.lottieGoalPath.apply {
-                            setAnimation(R.raw.lottie_goal_path_step3)
-                            playAnimation()
-                        }
-                    }
-                }
-            }
-        }
-
-        private fun initAnimatorListener() {
-            binding.lottieGoalPath.addAnimatorListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator) {
-                    with(binding) {
-                        ivGoalPathBefore.isVisible = false
-                        lottieGoalPath.isVisible = true
-                    }
-                }
-
-                override fun onAnimationEnd(animation: Animator) {
-                    with(binding) {
-                        lottieGoalPath.isVisible = false
-
-                        initNextLevelGoalPath()
-                        ivGoalPathAfter.isVisible = true
-                        clGoalPathGuide.isVisible = userInfo?.userLevel != UserLevel.FORTH.rankName
-                    }
-                }
-
-                override fun onAnimationCancel(animation: Animator) {
-                }
-
-                override fun onAnimationRepeat(animation: Animator) {
-                }
-            })
-        }
-
-        private fun initNextLevelGoalPath() {
             when (userInfo?.userLevel) {
                 UserLevel.SECOND.rankName -> {
-                    binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_1))
+                    binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_4))
+                    binding.lottieGoalPath.apply {
+                        setAnimation(R.raw.lottie_goal_path_step1)
+                        playAnimation()
+                    }
                 }
 
                 UserLevel.THIRD.rankName -> {
-                    binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_1))
+                    binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_4))
+                    binding.lottieGoalPath.apply {
+                        setAnimation(R.raw.lottie_goal_path_step2)
+                        playAnimation()
+                    }
                 }
 
-                UserLevel.FORTH.rankName -> {
-                    binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv4))
+                UserLevel.FOURTH.rankName -> {
+                    binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_4))
+                    binding.lottieGoalPath.apply {
+                        setAnimation(R.raw.lottie_goal_path_step3)
+                        playAnimation()
+                    }
                 }
             }
         }
+    }
 
-        private fun initBackButtonClickListener() {
-            binding.ivGoalPathBack.setOnClickListener {
+    private fun initAnimatorListener() {
+        binding.lottieGoalPath.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationStart(animation: Animator) {
+                with(binding) {
+                    ivGoalPathBefore.isVisible = false
+                    lottieGoalPath.isVisible = true
+                }
+            }
+
+            override fun onAnimationEnd(animation: Animator) {
+                with(binding) {
+                    lottieGoalPath.isVisible = false
+
+                    initNextLevelGoalPath()
+                    ivGoalPathAfter.isVisible = true
+                    clGoalPathGuide.isVisible = userInfo?.userLevel != UserLevel.FOURTH.rankName
+                }
+            }
+
+            override fun onAnimationCancel(animation: Animator) {
+            }
+
+            override fun onAnimationRepeat(animation: Animator) {
+            }
+        })
+    }
+
+    private fun initNextLevelGoalPath() {
+        when (userInfo?.userLevel) {
+            UserLevel.SECOND.rankName -> {
+                binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_1))
+            }
+
+            UserLevel.THIRD.rankName -> {
+                binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_1))
+            }
+
+            UserLevel.FOURTH.rankName -> {
+                binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv4))
+            }
+        }
+    }
+
+    private fun initBackButtonClickListener() {
+        binding.ivGoalPathBack.setOnClickListener {
+            if (levelUpFromWineyFeed) {
+                navigateToMainScreen()
+            } else {
+                finish()
+            }
+        }
+    }
+
+    private fun registerBackPressedCallback() {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
                 if (levelUpFromWineyFeed) {
                     navigateToMainScreen()
                 } else {
@@ -221,25 +228,14 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 }
             }
         }
+        onBackPressedDispatcher.addCallback(this, callback)
+    }
 
-        private fun registerBackPressedCallback() {
-            val callback = object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (levelUpFromWineyFeed) {
-                        navigateToMainScreen()
-                    } else {
-                        finish()
-                    }
-                }
-            }
-            onBackPressedDispatcher.addCallback(this, callback)
-        }
-
-        private fun navigateToMainScreen() {
-            Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                putExtra(MainActivity.KEY_FROM_GOAL_PATH, true)
-                startActivity(this)
-            }
+    private fun navigateToMainScreen() {
+        Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(MainActivity.KEY_FROM_GOAL_PATH, true)
+            startActivity(this)
         }
     }
+}

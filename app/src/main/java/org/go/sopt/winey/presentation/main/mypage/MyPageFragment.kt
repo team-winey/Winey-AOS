@@ -361,40 +361,40 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val textViewWidth = parentView.measuredWidth - binding.tvMypage2weeks1Year.width
         val width = getGraphAnimationWidth(textViewWidth, periodType)
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
-            ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                val animator = ValueAnimator.ofInt(0, width).apply {
-                    duration = ANIMATION_DURATION.toLong()
-                    addUpdateListener { valueAnimator ->
-                        params?.width = valueAnimator.animatedValue as Int
-                        textView.requestLayout()
-                    }
-                    doOnStart {
-                        textView.text = ""
-                    }
-                    doOnEnd {
-                        textView.text = when (moneyType) {
-                            WineyFeedType.SAVE -> {
-                                String.format(
-                                    getString(R.string.mypage_save_money),
-                                    amount.formatAmountNumber()
-                                )
-                            }
+                ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val animator = ValueAnimator.ofInt(0, width).apply {
+                        duration = ANIMATION_DURATION.toLong()
+                        addUpdateListener { valueAnimator ->
+                            params?.width = valueAnimator.animatedValue as Int
+                            textView.requestLayout()
+                        }
+                        doOnStart {
+                            textView.text = ""
+                        }
+                        doOnEnd {
+                            textView.text = when (moneyType) {
+                                WineyFeedType.SAVE -> {
+                                    String.format(
+                                        getString(R.string.mypage_save_money),
+                                        amount.formatAmountNumber()
+                                    )
+                                }
 
-                            WineyFeedType.CONSUME -> {
-                                String.format(
-                                    getString(R.string.mypage_spend_money),
-                                    amount.formatAmountNumber()
-                                )
+                                WineyFeedType.CONSUME -> {
+                                    String.format(
+                                        getString(R.string.mypage_spend_money),
+                                        amount.formatAmountNumber()
+                                    )
+                                }
                             }
                         }
                     }
+                    animator.start()
+                    textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    startAnimationOnVisible(binding.svMypage, textView, animator)
                 }
-                animator.start()
-                textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                startAnimationOnVisible(binding.svMypage, textView, animator)
-            }
-        })
+            })
     }
 
     fun startAnimationOnVisible(
