@@ -221,6 +221,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
             if (data.isLevelUpAmountConditionMet) {
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
+                if(data.userLevel == UserLevel.FOURTH.rankName){
+                    tvMypageProfileMoney.text = "절약을 통해 황제를 계속 유지해 보세요!"
+                }else{
+                    tvMypageProfileMoney.text = "절약 금액을 달성했어요!"
+                }
+
             } else {
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
             }
