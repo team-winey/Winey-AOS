@@ -1,5 +1,7 @@
 package org.go.sopt.winey.presentation.main.mypage
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
@@ -402,20 +404,32 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             })
     }
 
+    var is2weekGraphAnimating = false
+
     fun startAnimationOnVisible(
         scrollView: ScrollView,
         textView: TextView,
         animator: ValueAnimator
     ) {
         scrollView.viewTreeObserver.addOnScrollChangedListener {
-            val scrollY = scrollView.scrollY
-            val location = IntArray(2)
-            textView.getLocationOnScreen(location)
-            if (location[1] > scrollY && location[1] + textView.height < scrollY + scrollView.height) {
-                animator.start()
+            if (!is2weekGraphAnimating) {
+                val scrollY = scrollView.scrollY
+                val location = IntArray(2)
+                textView.getLocationOnScreen(location)
+                if (location[1] > scrollY && location[1] + textView.height < scrollY + scrollView.height) {
+                    is2weekGraphAnimating = true
+                    animator.addListener(object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            is2weekGraphAnimating = false
+                        }
+                    })
+                    animator.start()
+                }
             }
         }
     }
+
+
 
     private fun setMyPageWorkHoursAndType(
         textView: TextView,
