@@ -67,8 +67,8 @@
                         android:id="@+id/iv_mypage_saver"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:imageViewId='@{"SAVER"}'
                         android:layout_marginTop="47dp"
+                        app:imageViewId='@{"SAVER"}'
                         app:layout_constraintBottom_toTopOf="@id/tv_mypage_edit_nickname"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -152,108 +152,26 @@
                             app:layout_constraintTop_toBottomOf="@id/tv_mypage_profile_goal_item" />
 
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/cl_mypage_goal"
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:id="@+id/iv_mypage_goal_money"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="16dp"
-                            android:layout_marginTop="12dp"
-                            android:background="@drawable/shape_gray200_line_8_rect"
-                            android:padding="12dp"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginStart="16dp"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_mypage_profile_money"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/v_mypage_line">
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/cl_mypage_goal_money"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent">
-
-                                <ImageView
-                                    android:id="@+id/iv_mypage_goal_money"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                                <TextView
-                                    android:id="@+id/tv_mypage_goal_money"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="6dp"
-                                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
-                                    android:textColor="@color/gray_900"
-                                    app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_money"
-                                    app:layout_constraintStart_toEndOf="@id/iv_mypage_goal_money"
-                                    app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_money" />
-
-                                <TextView
-                                    android:id="@+id/tv_mypage_goal_money_current"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
-                                    android:textColor="@color/gray_400"
-                                    app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_money"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_money" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-                            <androidx.constraintlayout.widget.ConstraintLayout
-                                android:id="@+id/cl_mypage_goal_count"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@id/cl_mypage_goal_money">
-
-                                <ImageView
-                                    android:id="@+id/iv_mypage_goal_count"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                                <TextView
-                                    android:id="@+id/tv_mypage_goal_count"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="6dp"
-                                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
-                                    android:textColor="@color/gray_900"
-                                    app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_count"
-                                    app:layout_constraintStart_toEndOf="@id/iv_mypage_goal_count"
-                                    app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_count" />
-
-                                <TextView
-                                    android:id="@+id/tv_mypage_goal_count_current"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_11"
-                                    android:textColor="@color/gray_400"
-                                    app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_count"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_count" />
-                            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
+                            app:layout_constraintTop_toTopOf="@id/tv_mypage_profile_money" />
 
                         <TextView
                             android:id="@+id/tv_mypage_profile_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="16dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginStart="6dp"
+                            android:layout_marginTop="10dp"
                             android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
                             android:textColor="@color/gray_900"
                             app:layout_constraintBottom_toTopOf="@id/pb_mypage"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/cl_mypage_goal" />
+                            app:layout_constraintStart_toEndOf="@id/iv_mypage_goal_money"
+                            app:layout_constraintTop_toBottomOf="@id/v_mypage_line" />
 
                         <ProgressBar
                             android:id="@+id/pb_mypage"
@@ -261,7 +179,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="8dp"
                             android:layout_marginHorizontal="16dp"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="10dp"
                             android:indeterminate="false"
                             android:max="100"
                             android:progressDrawable="@drawable/layer_mypage_progress_bar"
@@ -284,13 +202,63 @@
                             android:id="@+id/tv_mypage_profile_goal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="16dp"
                             android:layout_marginTop="6dp"
+                            android:layout_marginEnd="16dp"
                             android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
                             android:textColor="@color/gray_400"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/pb_mypage" />
 
+                        <View
+                            android:id="@+id/v_mypage_line9"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/gray_100"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tv_mypage_profile_current" />
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cl_mypage_goal_count"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/v_mypage_line9">
+
+                            <ImageView
+                                android:id="@+id/iv_mypage_goal_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <TextView
+                                android:id="@+id/tv_mypage_goal_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:textAppearance="@style/TextAppearance.WINEY.detail_b_12"
+                                android:textColor="@color/gray_900"
+                                app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_count"
+                                app:layout_constraintStart_toEndOf="@id/iv_mypage_goal_count"
+                                app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_count" />
+
+                            <TextView
+                                android:id="@+id/tv_mypage_goal_count_current"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                                android:textColor="@color/gray_400"
+                                app:layout_constraintBottom_toBottomOf="@id/iv_mypage_goal_count"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/iv_mypage_goal_count" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_mypage_myfeed"
@@ -310,7 +278,7 @@
                             app:layout_constraintEnd_toStartOf="@id/btn_mypage_trip"
                             app:layout_constraintHorizontal_weight="1"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/tv_mypage_profile_goal" />
+                            app:layout_constraintTop_toBottomOf="@id/cl_mypage_goal_count" />
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btn_mypage_trip"
@@ -729,8 +697,8 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="30dp"
                         android:background="@drawable/shape_gray0_fill_8_rect"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/cl_mypage_spend_work">
 

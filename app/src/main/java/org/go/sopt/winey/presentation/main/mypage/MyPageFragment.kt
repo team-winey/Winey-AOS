@@ -173,7 +173,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             when (data.userLevel) {
                 UserLevel.FIRST.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv1)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv1)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
                     tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv1)
                     pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 30000)
@@ -181,7 +180,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
                 UserLevel.SECOND.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv2)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv2)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
                     tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv2)
                     pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 150000)
@@ -189,7 +187,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
                 UserLevel.THIRD.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv3)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
                     tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv3)
                     pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 300000)
@@ -197,7 +194,6 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
                 UserLevel.FOURTH.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv4)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
                     tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv4)
                     tvMypageProfileCurrent.isVisible = false
@@ -224,16 +220,8 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             )
 
             if (data.isLevelUpAmountConditionMet) {
-                tvMypageGoalMoneyCurrent.text = getString(
-                    R.string.mypage_goal_amount_complete,
-                    (data.accumulatedAmount).formatAmountNumber()
-                )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
             } else {
-                tvMypageGoalMoneyCurrent.text = getString(
-                    R.string.mypage_goal_amount_incomplete,
-                    (data.accumulatedAmount).formatAmountNumber()
-                )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
             }
 
