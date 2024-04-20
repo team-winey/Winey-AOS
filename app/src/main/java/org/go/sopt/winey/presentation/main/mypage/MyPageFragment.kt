@@ -404,7 +404,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             })
     }
 
-    var is2weekGraphAnimating = false
+    private val is2weekGraphAnimating = mutableMapOf<Int, Boolean>()
 
     fun startAnimationOnVisible(
         scrollView: ScrollView,
@@ -412,23 +412,24 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         animator: ValueAnimator
     ) {
         scrollView.viewTreeObserver.addOnScrollChangedListener {
-            if (!is2weekGraphAnimating) {
-                val scrollY = scrollView.scrollY
-                val location = IntArray(2)
-                textView.getLocationOnScreen(location)
-                if (location[1] > scrollY && location[1] + textView.height < scrollY + scrollView.height) {
-                    is2weekGraphAnimating = true
-                    animator.addListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            is2weekGraphAnimating = false
-                        }
-                    })
-                    animator.start()
-                }
+            val textViewId = textView.id
+            if (is2weekGraphAnimating[textViewId] == true) {
+                return@addOnScrollChangedListener
+            }
+            val scrollY = scrollView.scrollY
+            val location = IntArray(2)
+            textView.getLocationOnScreen(location)
+            if (location[1] > scrollY && location[1] + textView.height < scrollY + scrollView.height) {
+                is2weekGraphAnimating[textViewId] = true
+                animator.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        is2weekGraphAnimating[textViewId] = false
+                    }
+                })
+                animator.start()
             }
         }
     }
-
 
 
     private fun setMyPageWorkHoursAndType(
