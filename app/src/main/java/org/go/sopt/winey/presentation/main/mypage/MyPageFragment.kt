@@ -364,44 +364,44 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         val textViewWidth = parentView.measuredWidth - binding.tvMypage2weeks1Year.width
         val width = getGraphAnimationWidth(textViewWidth, periodType)
         textView.viewTreeObserver.addOnGlobalLayoutListener(object :
-                ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val animator = ValueAnimator.ofInt(0, width).apply {
-                        duration = 1000
-                        addUpdateListener { valueAnimator ->
-                            params?.width = valueAnimator.animatedValue as Int
-                            textView.requestLayout()
-                        }
-                        doOnStart {
-                            textView.text = ""
-                        }
-                        doOnEnd {
-                            textView.text = when (moneyType) {
-                                "SAVE" -> {
-                                    String.format(
-                                        getString(R.string.mypage_save_money),
-                                        formatWithCommaForMoney(amount)
-                                    )
-                                }
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val animator = ValueAnimator.ofInt(0, width).apply {
+                    duration = 1000
+                    addUpdateListener { valueAnimator ->
+                        params?.width = valueAnimator.animatedValue as Int
+                        textView.requestLayout()
+                    }
+                    doOnStart {
+                        textView.text = ""
+                    }
+                    doOnEnd {
+                        textView.text = when (moneyType) {
+                            "SAVE" -> {
+                                String.format(
+                                    getString(R.string.mypage_save_money),
+                                    formatWithCommaForMoney(amount)
+                                )
+                            }
 
-                                "SPEND" -> {
-                                    String.format(
-                                        getString(R.string.mypage_spend_money),
-                                        formatWithCommaForMoney(amount)
-                                    )
-                                }
+                            "SPEND" -> {
+                                String.format(
+                                    getString(R.string.mypage_spend_money),
+                                    formatWithCommaForMoney(amount)
+                                )
+                            }
 
-                                else -> {
-                                    ""
-                                }
+                            else -> {
+                                ""
                             }
                         }
                     }
-                    animator.start()
-                    textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    startAnimationOnVisible(binding.svMypage, textView, animator)
                 }
-            })
+                animator.start()
+                textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                startAnimationOnVisible(binding.svMypage, textView, animator)
+            }
+        })
     }
 
     private val is2weekGraphAnimating = mutableMapOf<Int, Boolean>()
@@ -414,15 +414,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         scrollView.viewTreeObserver.addOnScrollChangedListener {
             val textViewId = textView.id
             if (is2weekGraphAnimating[textViewId] == true) {
+                // 이 TextView에 대한 애니메이션이 이미 실행 중일때는 무시
                 return@addOnScrollChangedListener
             }
             val scrollY = scrollView.scrollY
             val location = IntArray(2)
             textView.getLocationOnScreen(location)
             if (location[1] > scrollY && location[1] + textView.height < scrollY + scrollView.height) {
+                // 사용자의 스크롤 위치가 textView를 완전히 보는 경우에 위치했을때, 애니메이션 시작
                 is2weekGraphAnimating[textViewId] = true
                 animator.addListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator) {
+                        // 애니메이션이 끝난 경우 false로 바꿔주어 animator.start의 중복 실행 방지
                         is2weekGraphAnimating[textViewId] = false
                     }
                 })
