@@ -35,13 +35,16 @@ import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
 import org.go.sopt.winey.presentation.main.mypage.setting.SettingActivity
 import org.go.sopt.winey.presentation.main.notification.NotificationActivity
+import org.go.sopt.winey.presentation.model.SavePeriod
+import org.go.sopt.winey.presentation.model.UserLevel
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
-import org.go.sopt.winey.util.currency.MoneyCurrency.formatWithCommaForMoney
 import org.go.sopt.winey.util.fragment.drawableOf
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
+import org.go.sopt.winey.util.number.formatAmountNumber
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
@@ -157,50 +160,42 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun calculateSaveProgressBar(accumulatedAmount: Int, goalAmount: Int): Int {
+        return when {
+            accumulatedAmount <= 0 -> 0
+            accumulatedAmount <= goalAmount -> ((accumulatedAmount / goalAmount.toDouble()) * 100).toInt()
+            else -> 100
+        }
+    }
+
     private fun setUpUserGoalByLevel(data: UserV2) {
         binding.apply {
             when (data.userLevel) {
-                "평민" -> {
+                UserLevel.FIRST.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv1)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv1)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv1)
-                    tvMypageProfileGoal.text = "3만원"
-                    pbMypage.progress = when {
-                        data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 30000 -> ((data.accumulatedAmount / 30000.0) * 100).toInt()
-                        else -> 100
-                    }
+                    tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv1)
+                    pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 30000)
                 }
 
-                "기사" -> {
+                UserLevel.SECOND.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv2)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv2)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv2)
-                    tvMypageProfileGoal.text = "15만원"
-                    pbMypage.progress = when {
-                        data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 150000 -> ((data.accumulatedAmount / 150000.0) * 100).toInt()
-                        else -> 100
-                    }
+                    tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv2)
+                    pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 150000)
                 }
 
-                "귀족" -> {
+                UserLevel.THIRD.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv3)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
-                    tvMypageProfileGoal.text = "30만원"
-                    pbMypage.progress = when {
-                        data.accumulatedAmount <= 0 -> 0
-                        data.accumulatedAmount <= 300000 -> ((data.accumulatedAmount / 300000.0) * 100).toInt()
-                        else -> 100
-                    }
+                    tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv3)
+                    pbMypage.progress = calculateSaveProgressBar(data.accumulatedAmount, 300000)
                 }
 
-                "황제" -> {
+                UserLevel.FOURTH.rankName -> {
                     tvMypageProfileGoalItem.text = getString(R.string.mypage_goal_lv4)
-                    tvMypageGoalMoney.text = getString(R.string.mypage_goal_amount_lv3)
                     tvMypageGoalCount.text = getString(R.string.mypage_goal_count_lv3)
-                    tvMypageProfileGoal.text = "레벨 미션 완료"
+                    tvMypageProfileGoal.text = getString(R.string.mypage_goal_money_lv4)
                     tvMypageProfileCurrent.isVisible = false
                     pbMypage.progress = 100
                 }
@@ -211,30 +206,27 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setUpUserDataByGoal(data: UserV2) {
         binding.apply {
             tvMypageProfileMoney.text =
-                if (data.userLevel != "황제") {
+                if (data.userLevel != UserLevel.FOURTH.rankName) {
                     getString(
                         R.string.mypage_reamining_amount,
-                        formatWithCommaForMoney(data.remainingAmount)
+                        (data.remainingAmount).formatAmountNumber()
                     )
                 } else {
                     getString(R.string.mypage_lv4)
                 }
             tvMypageProfileCurrent.text = getString(
                 R.string.mypage_current_amount,
-                formatWithCommaForMoney(data.accumulatedAmount)
+                (data.accumulatedAmount).formatAmountNumber()
             )
 
             if (data.isLevelUpAmountConditionMet) {
-                tvMypageGoalMoneyCurrent.text = getString(
-                    R.string.mypage_goal_amount_complete,
-                    formatWithCommaForMoney(data.accumulatedAmount)
-                )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_checked))
+                if (data.userLevel == UserLevel.FOURTH.rankName) {
+                    tvMypageProfileMoney.text = "절약을 통해 황제를 계속 유지해 보세요!"
+                } else {
+                    tvMypageProfileMoney.text = "절약 금액을 달성했어요!"
+                }
             } else {
-                tvMypageGoalMoneyCurrent.text = getString(
-                    R.string.mypage_goal_amount_incomplete,
-                    formatWithCommaForMoney(data.accumulatedAmount)
-                )
                 ivMypageGoalMoney.setImageDrawable(drawableOf(R.drawable.ic_mypage_unchecked))
             }
 
@@ -251,26 +243,26 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             setMyPageWorkHoursAndType(
                 binding.tvMypageSaveWork,
                 data.amountSavedTwoWeeks,
-                "SAVE",
-                "WORK"
+                WineyFeedType.SAVE,
+                TYPE_WORK
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSave1Year,
                 data.amountSavedTwoWeeks,
-                "SAVE",
-                "1YEAR"
+                WineyFeedType.SAVE,
+                SavePeriod.ONE_YEAR.period
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSpendWork,
                 data.amountSpentTwoWeeks,
-                "SPEND",
-                "WORK"
+                WineyFeedType.CONSUME,
+                TYPE_WORK
             )
             setMyPageWorkHoursAndType(
                 binding.tvMypageSpend1Year,
                 data.amountSpentTwoWeeks,
-                "SPEND",
-                "1YEAR"
+                WineyFeedType.CONSUME,
+                SavePeriod.ONE_YEAR.period
             )
         }
     }
@@ -303,50 +295,50 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun animate2weeksSaveGraph(amountSavedTwoWeeks: Int) {
         animateTextView(
             textView = binding.vMypage2weeks1Month,
-            amount = amountSavedTwoWeeks * 2,
-            periodType = "1MONTH",
-            moneyType = "SAVE"
+            amount = amountSavedTwoWeeks * VALUE_FOR_1_MONTH,
+            periodType = SavePeriod.ONE_MONTH.period,
+            moneyType = WineyFeedType.SAVE
         )
         animateTextView(
             textView = binding.vMypage2weeks3Month,
-            amount = amountSavedTwoWeeks * 6,
-            periodType = "3MONTH",
-            moneyType = "SAVE"
+            amount = amountSavedTwoWeeks * VALUE_FOR_3_MONTH,
+            periodType = SavePeriod.THREE_MONTH.period,
+            moneyType = WineyFeedType.SAVE
         )
         animateTextView(
             textView = binding.vMypage2weeks1Year,
-            amount = amountSavedTwoWeeks * 24,
-            periodType = "1YEAR",
-            moneyType = "SAVE"
+            amount = amountSavedTwoWeeks * VALUE_FOR_1_YEAR,
+            periodType = SavePeriod.ONE_YEAR.period,
+            moneyType = WineyFeedType.SAVE
         )
     }
 
     private fun animate2weeksSpendGraph(amountSpendTwoWeeks: Int) {
         animateTextView(
             textView = binding.vMypageSpend2weeks1Month,
-            amount = amountSpendTwoWeeks * 2,
-            periodType = "1MONTH",
-            moneyType = "SPEND"
+            amount = amountSpendTwoWeeks * VALUE_FOR_1_MONTH,
+            periodType = SavePeriod.ONE_MONTH.period,
+            moneyType = WineyFeedType.CONSUME
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks3Month,
-            amount = amountSpendTwoWeeks * 6,
-            periodType = "3MONTH",
-            moneyType = "SPEND"
+            amount = amountSpendTwoWeeks * VALUE_FOR_3_MONTH,
+            periodType = SavePeriod.THREE_MONTH.period,
+            moneyType = WineyFeedType.CONSUME
         )
         animateTextView(
             textView = binding.vMypageSpend2weeks1Year,
-            amount = amountSpendTwoWeeks * 24,
-            periodType = "1YEAR",
-            moneyType = "SPEND"
+            amount = amountSpendTwoWeeks * VALUE_FOR_1_YEAR,
+            periodType = SavePeriod.ONE_YEAR.period,
+            moneyType = WineyFeedType.CONSUME
         )
     }
 
     private fun getGraphAnimationWidth(textViewWidth: Int, type: String): Int {
         return when (type) {
-            "1MONTH" -> textViewWidth * 3 / 5
-            "3MONTH" -> textViewWidth * 2 / 3
-            "1YEAR" -> textViewWidth * 5 / 6
+            SavePeriod.ONE_MONTH.period -> textViewWidth * 3 / 5
+            SavePeriod.THREE_MONTH.period -> textViewWidth * 2 / 3
+            SavePeriod.ONE_YEAR.period -> textViewWidth * 5 / 6
             else -> 0
         }
     }
@@ -355,7 +347,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         textView: TextView,
         amount: Int,
         periodType: String,
-        moneyType: String
+        moneyType: WineyFeedType
     ) {
         val params = textView.layoutParams
         val parentView = textView.parent as ViewGroup
@@ -365,7 +357,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     val animator = ValueAnimator.ofInt(0, width).apply {
-                        duration = 1000
+                        duration = ANIMATION_DURATION.toLong()
                         addUpdateListener { valueAnimator ->
                             params?.width = valueAnimator.animatedValue as Int
                             textView.requestLayout()
@@ -375,22 +367,18 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                         }
                         doOnEnd {
                             textView.text = when (moneyType) {
-                                "SAVE" -> {
+                                WineyFeedType.SAVE -> {
                                     String.format(
                                         getString(R.string.mypage_save_money),
-                                        formatWithCommaForMoney(amount)
+                                        amount.formatAmountNumber()
                                     )
                                 }
 
-                                "SPEND" -> {
+                                WineyFeedType.CONSUME -> {
                                     String.format(
                                         getString(R.string.mypage_spend_money),
-                                        formatWithCommaForMoney(amount)
+                                        amount.formatAmountNumber()
                                     )
-                                }
-
-                                else -> {
-                                    ""
                                 }
                             }
                         }
@@ -420,26 +408,26 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     private fun setMyPageWorkHoursAndType(
         textView: TextView,
         money: Int,
-        moneyType: String,
+        moneyType: WineyFeedType,
         textType: String
     ) {
         var amountText = ""
         var fullText = ""
         when (textType) {
-            "WORK" -> {
-                amountText = (money / 9860).toString() + "시간"
+            TYPE_WORK -> {
+                amountText = (money / HOURLY_PAY).toString() + "시간"
                 fullText = getString(R.string.mypage_2weeks_save_for_job, amountText)
             }
 
-            "1YEAR" -> {
-                amountText = formatWithCommaForMoney(money * 24) + "원"
-                when (moneyType) {
-                    "SAVE" -> {
-                        fullText = getString(R.string.mypage_2weeks_save_for_1year, amountText)
+            SavePeriod.ONE_YEAR.period -> {
+                amountText = (money * VALUE_FOR_1_YEAR).formatAmountNumber() + "원"
+                fullText = when (moneyType) {
+                    WineyFeedType.SAVE -> {
+                        getString(R.string.mypage_2weeks_save_for_1year, amountText)
                     }
 
-                    "SPEND" -> {
-                        fullText = getString(R.string.mypage_2weeks_spend_for_1year, amountText)
+                    WineyFeedType.CONSUME -> {
+                        getString(R.string.mypage_2weeks_spend_for_1year, amountText)
                     }
                 }
             }
@@ -449,7 +437,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         val spannableString = SpannableString(fullText).apply {
             when (moneyType) {
-                "SAVE" -> {
+                WineyFeedType.SAVE -> {
                     setSpan(
                         ForegroundColorSpan(
                             ContextCompat.getColor(
@@ -463,7 +451,7 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                     )
                 }
 
-                "SPEND" -> {
+                WineyFeedType.CONSUME -> {
                     setSpan(
                         ForegroundColorSpan(
                             ContextCompat.getColor(
@@ -491,5 +479,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val MY_PAGE_SCREEN = "MyPageFragment"
+        private const val KEY_FROM_NOTI = "fromNoti"
+
+        private const val HOURLY_PAY = 9860
+        private const val VALUE_FOR_1_MONTH = 2
+        private const val VALUE_FOR_3_MONTH = 6
+        private const val VALUE_FOR_1_YEAR = 24
+
+        private const val ANIMATION_DURATION = 1000
+        private const val TYPE_WORK = "WORK"
     }
 }

@@ -19,8 +19,8 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import de.hdodenhof.circleimageview.CircleImageView
 import org.go.sopt.winey.R
-import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.model.UserLevel
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.MY_PAGE_SCREEN
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.STORY_SCREEN
 import org.go.sopt.winey.util.code.ErrorCode.*
@@ -352,18 +352,6 @@ fun ImageView.setMyPageLevelResource(userLevel: String, imageViewId: String) {
                     }
                 }
 
-                "BUBBLE" -> {
-                    when (userLevel) {
-                        "평민" -> R.drawable.img_mypage_bubble_lv1
-                        "기사" -> R.drawable.img_mypage_bubble_lv2
-                        "귀족" -> R.drawable.img_mypage_bubble_lv3
-                        "황제" -> R.drawable.img_mypage_bubble_lv4
-                        else -> {
-                            R.drawable.img_mypage_bubble_lv1
-                        }
-                    }
-                }
-
                 else -> {
                     R.drawable.img_mypage_saver_lv1
                 }
@@ -519,7 +507,7 @@ fun TextView.switchFeedMoney(feedType: String, feedMoney: Long) {
 fun TextView.setProgressBarTitle(currentLevel: String) {
     val context = this.context ?: return
 
-    if (currentLevel == UserLevel.FORTH.rankName) {
+    if (currentLevel == UserLevel.FOURTH.rankName) {
         text = context.getString(R.string.wineyfeed_goal_progressbar_lv4_title)
         return
     }
@@ -541,7 +529,7 @@ fun TextView.setProgressBarTitle(currentLevel: String) {
 fun TextView.setCurrentMoney(userLevel: String, accumulatedAmount: Int) {
     val context = this.context ?: return
 
-    text = if (userLevel == UserLevel.FORTH.rankName) {
+    text = if (userLevel == UserLevel.FOURTH.rankName) {
         context.getString(R.string.wineyfeed_goal_progressbar_lv4_subTitle)
     } else {
         context.getString(
@@ -554,7 +542,7 @@ fun TextView.setCurrentMoney(userLevel: String, accumulatedAmount: Int) {
 @BindingAdapter("setTargetMoney")
 fun TextView.setTargetMoney(currentLevel: String) {
     val context = this.context ?: return
-    isVisible = currentLevel != UserLevel.FORTH.rankName
+    isVisible = currentLevel != UserLevel.FOURTH.rankName
 
     val userLevels = context.resources.getStringArray(R.array.user_level)
     val targetMoneys = context.resources.getIntArray(R.array.target_money)

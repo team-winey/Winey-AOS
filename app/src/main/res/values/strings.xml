@@ -139,6 +139,10 @@
     <string name="mypage_save_money">+ %s원</string>
     <string name="mypage_spend_money">- %s원</string>
 
+    <string name="mypage_goal_money_lv1">3만원</string>
+    <string name="mypage_goal_money_lv2">15만원</string>
+    <string name="mypage_goal_money_lv3">30만원</string>
+    <string name="mypage_goal_money_lv4">레벨 미션 완료</string>
     <string name="mypage_goal_lv1">치킨값 절약하기</string>
     <string name="mypage_goal_lv2">운동화값 절약하기</string>
     <string name="mypage_goal_lv3">에어팟값 절약하기</string>

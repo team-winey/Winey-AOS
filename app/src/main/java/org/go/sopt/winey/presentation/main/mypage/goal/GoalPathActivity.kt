@@ -80,7 +80,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 initLevel3GoalPath()
             }
 
-            UserLevel.FORTH.rankName -> {
+            UserLevel.FOURTH.rankName -> {
                 initLevel4GoalPath()
             }
         }
@@ -154,7 +154,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                     }
                 }
 
-                UserLevel.FORTH.rankName -> {
+                UserLevel.FOURTH.rankName -> {
                     binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_4))
                     binding.lottieGoalPath.apply {
                         setAnimation(R.raw.lottie_goal_path_step3)
@@ -180,7 +180,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
 
                     initNextLevelGoalPath()
                     ivGoalPathAfter.isVisible = true
-                    clGoalPathGuide.isVisible = userInfo?.userLevel != UserLevel.FORTH.rankName
+                    clGoalPathGuide.isVisible = userInfo?.userLevel != UserLevel.FOURTH.rankName
                 }
             }
 
@@ -202,7 +202,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
                 binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_1))
             }
 
-            UserLevel.FORTH.rankName -> {
+            UserLevel.FOURTH.rankName -> {
                 binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv4))
             }
         }
