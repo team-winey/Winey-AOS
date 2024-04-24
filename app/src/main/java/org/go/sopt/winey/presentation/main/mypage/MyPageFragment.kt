@@ -1,5 +1,7 @@
 package org.go.sopt.winey.presentation.main.mypage
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
@@ -390,16 +392,31 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             })
     }
 
+    private val is2weekGraphAnimating = mutableMapOf<Int, Boolean>()
+
     fun startAnimationOnVisible(
         scrollView: ScrollView,
         textView: TextView,
         animator: ValueAnimator
     ) {
         scrollView.viewTreeObserver.addOnScrollChangedListener {
+            val textViewId = textView.id
+            if (is2weekGraphAnimating[textViewId] == true) {
+                // 이 TextView에 대한 애니메이션이 이미 실행 중일때는 무시
+                return@addOnScrollChangedListener
+            }
             val scrollY = scrollView.scrollY
             val location = IntArray(2)
             textView.getLocationOnScreen(location)
             if (location[1] > scrollY && location[1] + textView.height < scrollY + scrollView.height) {
+                // 사용자의 스크롤 위치가 textView를 완전히 보는 경우에 위치했을때, 애니메이션 시작
+                is2weekGraphAnimating[textViewId] = true
+                animator.addListener(object : AnimatorListenerAdapter() {
+                    override fun onAnimationEnd(animation: Animator) {
+                        // 애니메이션이 끝난 경우 false로 바꿔주어 animator.start의 중복 실행 방지
+                        is2weekGraphAnimating[textViewId] = false
+                    }
+                })
                 animator.start()
             }
         }
