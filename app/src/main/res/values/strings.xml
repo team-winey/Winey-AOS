@@ -299,10 +299,11 @@
     <string name="popup_delete_title">삭제하기</string>
     <string name="popup_report_title">신고하기</string>
     <string name="story_skip_btn_text">건너뛰기</string>
-    <string name="upload_loading_title_first__line1">티끌 모아 태산</string>
+    <string name="upload_loading_title_first_line1">티끌 모아 태산</string>
     <string name="upload_loading_title_first_line2">조금 더 아껴볼까요?</string>
     <string name="upload_loading_title_other_line1">오늘은</string>
-    <string name="upload_loading_title_other_line3">절약했어요</string>
+    <string name="upload_loading_title_other_save_line3">절약했어요</string>
+    <string name="upload_loading_title_other_consume_line3">낭비했어요</string>
 
     <!-- error -->
     <string name="error_winey_feed_loading">Can\'t loading winey feed list</string>

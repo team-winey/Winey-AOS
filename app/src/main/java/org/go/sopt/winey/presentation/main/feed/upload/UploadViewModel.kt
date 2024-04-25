@@ -33,13 +33,13 @@ class UploadViewModel @Inject constructor(
     /** Common properties */
     lateinit var feedType: WineyFeedType
 
-    /** Properties associated with PhotoFragment */
+    /** PhotoFragment properties */
     private val _isImageSelected = MutableStateFlow(false)
     val isImageSelected: StateFlow<Boolean> = _isImageSelected.asStateFlow()
     private val _imageUri = MutableStateFlow<Uri?>(null)
     val imageUri: StateFlow<Uri?> = _imageUri.asStateFlow()
 
-    /** Properties associated with ContentFragment */
+    /** ContentFragment properties */
     val _content = MutableStateFlow("")
     val content: String get() = _content.value
 
@@ -57,9 +57,9 @@ class UploadViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
 
-    /** Properties associated with AmountFragment */
+    /** AmountFragment properties */
     val _amount = MutableStateFlow("")
-    val amount: String get() = _amount.value
+    val commaAmount: String get() = _amount.value
 
     val isValidAmount: StateFlow<Boolean> = _amount.map { validateAmount(it) }
         .stateIn(
@@ -68,7 +68,7 @@ class UploadViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(PRODUCE_STOP_TIMEOUT)
         )
 
-    /** Properties associated with Multipart */
+    /** Multipart properties */
     private var imageRequestBody: UriToRequestBody? = null
     private val _postWineyFeedState =
         MutableStateFlow<UiState<ResponsePostWineyFeedDto?>>(UiState.Empty)
@@ -80,7 +80,7 @@ class UploadViewModel @Inject constructor(
         this.feedType = feedType
     }
 
-    /** Functions associated with PhotoFragment */
+    /** PhotoFragment functions */
     fun activateNextButton() {
         _isImageSelected.value = true
     }
@@ -89,7 +89,7 @@ class UploadViewModel @Inject constructor(
         _imageUri.value = imageUri
     }
 
-    /** Functions associated with ContentFragment */
+    /** ContentFragment functions */
     private fun validateContent(state: InputUiState) = state == InputUiState.Success
 
     private fun checkInputUiState(content: String): InputUiState {
@@ -103,7 +103,7 @@ class UploadViewModel @Inject constructor(
     private fun checkContentLength(content: String) =
         content.length in MIN_CONTENT_LENGTH..MAX_CONTENT_LENGTH
 
-    /** Functions associated with AmountFragment */
+    /** AmountFragment functions */
     private fun validateAmount(amount: String): Boolean {
         if (amount.isBlank()) return false
 
@@ -116,7 +116,7 @@ class UploadViewModel @Inject constructor(
 
     private fun checkAmountRange(amountNumber: Long) = amountNumber in MIN_AMOUNT..MAX_AMOUNT
 
-    /** Functions associated with Multipart */
+    /** Multipart functions */
     fun updateRequestBody(requestBody: UriToRequestBody) {
         this.imageRequestBody = requestBody
     }
@@ -135,6 +135,11 @@ class UploadViewModel @Inject constructor(
 
             feedRepository.postWineyFeed(file, requestMap)
                 .onSuccess { response ->
+                    if (response == null) {
+                        _postWineyFeedState.value = UiState.Failure("POST feed response is null")
+                        return@launch
+                    }
+
                     _postWineyFeedState.value = UiState.Success(response)
                 }
                 .onFailure { t ->

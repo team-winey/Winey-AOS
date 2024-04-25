@@ -446,7 +446,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     private fun navigateToMyFeedScreen() {
         Intent(this, MyFeedActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            putExtra(KEY_FEED_DELETE, true)
+            putExtra(MainActivity.KEY_FEED_DELETE, true)
             startActivity(this)
         }
     }
@@ -454,7 +454,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     private fun navigateToMainScreen() {
         Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            putExtra(KEY_FEED_DELETE, true)
+            putExtra(MainActivity.KEY_FEED_DELETE, true)
             startActivity(this)
         }
     }
@@ -489,7 +489,6 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-        private const val KEY_FEED_DELETE = "delete"
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val MY_FEED_SCREEN = "MyFeedActivity"
 
