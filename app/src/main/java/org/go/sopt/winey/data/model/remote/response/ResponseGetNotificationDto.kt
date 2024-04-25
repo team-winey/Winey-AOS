@@ -1,8 +1,8 @@
 package org.go.sopt.winey.data.model.remote.response
 
-import org.go.sopt.winey.domain.entity.Notification
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.go.sopt.winey.domain.entity.Notification
 
 @Serializable
 data class ResponseGetNotificationDto(
