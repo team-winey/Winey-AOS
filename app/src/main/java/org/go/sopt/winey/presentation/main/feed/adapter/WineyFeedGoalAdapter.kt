@@ -53,7 +53,7 @@ class WineyFeedGoalAdapter(
     }
 
     private fun updateProgressBarRate(user: UserV2) {
-        if (user.userLevel == UserLevel.FORTH.rankName) {
+        if (user.userLevel == UserLevel.FOURTH.rankName) {
             binding.pbWineyfeedGoal.progress = 100
             return
         }
