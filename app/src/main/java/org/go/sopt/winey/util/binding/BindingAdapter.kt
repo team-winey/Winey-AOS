@@ -1,10 +1,6 @@
 package org.go.sopt.winey.util.binding
 
 import android.net.Uri
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.ForegroundColorSpan
-import android.text.style.TextAppearanceSpan
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -12,7 +8,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import coil.load
@@ -404,16 +399,22 @@ fun TextView.setMyPageItemDescription(iconType: String?) {
     } ?: " "
 }
 
-@BindingAdapter("setMyPageItemSavedAmount", "iconType")
-fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
+@BindingAdapter("setMyPageItemSavedMoney", "iconType")
+fun TextView.setMyPageItemSavedMoney(savedAmount: Int, iconType: String) {
+    val context = this.context ?: return
     val money: String = when (iconType) {
-        "AMERICANO" -> "5천원  x  "
-        "CHICKEN" -> "3만원  x  "
-        "SNEAKERS" -> "15만원  x  "
-        "AIRPODS" -> "30만원  x  "
+        "AMERICANO" -> context.stringOf(R.string.mypage_americano_money)
+        "CHICKEN" -> context.stringOf(R.string.mypage_chicken_money)
+        "SNEAKERS" -> context.stringOf(R.string.mypage_sneakers_money)
+        "AIRPODS" -> context.stringOf(R.string.mypage_airpods_money)
         else -> ""
     }
 
+    text = money
+}
+
+@BindingAdapter("setMyPageItemSavedAmount", "iconType")
+fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
     val amount: String = when (iconType) {
         "AMERICANO" -> (savedAmount / 5000).toString()
         "SNEAKERS" -> (savedAmount / 150000).toString()
@@ -422,40 +423,21 @@ fun TextView.setMyPageItemSavedAmount(savedAmount: Int, iconType: String) {
         else -> ""
     }
 
+    text = amount
+}
+
+@BindingAdapter("setMyPageItemSavedMeasurement", "iconType")
+fun TextView.setMyPageItemSavedMeasurement(savedAmount: Int, iconType: String) {
+    val context = this.context ?: return
     val measurement: String = when (iconType) {
-        "AMERICANO" -> " 잔"
-        "SNEAKERS" -> " 켤레"
-        "AIRPODS" -> " 개"
-        "CHICKEN" -> " 마리"
+        "AMERICANO" -> context.stringOf(R.string.mypage_americano_measurement)
+        "SNEAKERS" -> context.stringOf(R.string.mypage_sneakers_measurement)
+        "AIRPODS" -> context.stringOf(R.string.mypage_airpods_measurement)
+        "CHICKEN" -> context.stringOf(R.string.mypage_chicken_measurement)
         else -> ""
     }
 
-    val spannableString = SpannableStringBuilder()
-        .append(money)
-        .append(amount)
-        .append(measurement)
-
-    spannableString.setSpan(
-        TextAppearanceSpan(context, R.style.TextAppearance_WINEY_detail_m_12),
-        0,
-        money.length,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
-
-    spannableString.setSpan(
-        TextAppearanceSpan(context, R.style.TextAppearance_WINEY_Headline_b_24_xxl),
-        money.length,
-        money.length + amount.length,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
-
-    spannableString.setSpan(
-        ForegroundColorSpan(ContextCompat.getColor(context, R.color.gray_500)),
-        money.length + amount.length,
-        money.length + amount.length + measurement.length,
-        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-    )
-    text = spannableString
+    text = measurement
 }
 
 @BindingAdapter("switchFeedTypeBackground")
