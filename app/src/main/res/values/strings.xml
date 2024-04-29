@@ -157,6 +157,14 @@
     <string name="mypage_2weeks_save_for_1year">이렇게 절약한다면 일년 후에 %s이 모여요!</string>
     <string name="mypage_2weeks_spend_for_1year">이렇게 낭비한다면 일년 후에 %s이 사라져요!</string>
 
+    <string name="mypage_americano_money">5천원</string>
+    <string name="mypage_sneakers_money">15만원</string>
+    <string name="mypage_airpods_money">30만원</string>
+    <string name="mypage_chicken_money">3만원</string>
+    <string name="mypage_americano_measurement">잔</string>
+    <string name="mypage_sneakers_measurement">켤레</string>
+    <string name="mypage_airpods_measurement">개</string>
+    <string name="mypage_chicken_measurement">마리</string>
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
