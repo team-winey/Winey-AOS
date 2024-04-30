@@ -40,7 +40,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         initUserData()
         initRemainingGoal()
 
-        initCurrentLevelGoalPath()
+        initGoalPath()
         checkNowLevelUp()
         initAnimatorListener()
 
@@ -66,7 +66,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         }
     }
 
-    private fun initCurrentLevelGoalPath() {
+    private fun initGoalPath() {
         when (userInfo?.userLevel) {
             UserLevel.FIRST.rankName -> {
                 initLevel1GoalPath()
@@ -128,38 +128,49 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
     }
 
     private fun initLevel4GoalPath() {
-        binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv4))
-        binding.clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
-        binding.clGoalPathGuide.isVisible = false
+        with(binding) {
+            ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv4))
+            clGoalPathBackground.setBackgroundResource(R.drawable.img_goal_path_background_lv4)
+            clGoalPathGuideOther.isVisible = false
+            clGoalPathGuideLv4.isVisible = true
+        }
     }
 
     private fun checkNowLevelUp() {
         if (levelUpFromWineyFeed) {
-            binding.clGoalPathGuide.isVisible = false
+            hideGoalPathGuideBox()
+            playLottieAnimation()
+        }
+    }
 
-            when (userInfo?.userLevel) {
-                UserLevel.SECOND.rankName -> {
-                    binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_4))
-                    binding.lottieGoalPath.apply {
-                        setAnimation(R.raw.lottie_goal_path_step1)
-                        playAnimation()
-                    }
+    private fun hideGoalPathGuideBox() {
+        binding.clGoalPathGuideOther.isVisible = false
+        binding.clGoalPathGuideLv4.isVisible = false
+    }
+
+    private fun playLottieAnimation() {
+        when (userInfo?.userLevel) {
+            UserLevel.SECOND.rankName -> {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv1_4))
+                binding.lottieGoalPath.apply {
+                    setAnimation(R.raw.lottie_goal_path_step1)
+                    playAnimation()
                 }
+            }
 
-                UserLevel.THIRD.rankName -> {
-                    binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_4))
-                    binding.lottieGoalPath.apply {
-                        setAnimation(R.raw.lottie_goal_path_step2)
-                        playAnimation()
-                    }
+            UserLevel.THIRD.rankName -> {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_4))
+                binding.lottieGoalPath.apply {
+                    setAnimation(R.raw.lottie_goal_path_step2)
+                    playAnimation()
                 }
+            }
 
-                UserLevel.FOURTH.rankName -> {
-                    binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_4))
-                    binding.lottieGoalPath.apply {
-                        setAnimation(R.raw.lottie_goal_path_step3)
-                        playAnimation()
-                    }
+            UserLevel.FOURTH.rankName -> {
+                binding.ivGoalPathBefore.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv3_4))
+                binding.lottieGoalPath.apply {
+                    setAnimation(R.raw.lottie_goal_path_step3)
+                    playAnimation()
                 }
             }
         }
@@ -177,10 +188,9 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
             override fun onAnimationEnd(animation: Animator) {
                 with(binding) {
                     lottieGoalPath.isVisible = false
-
-                    initNextLevelGoalPath()
                     ivGoalPathAfter.isVisible = true
-                    clGoalPathGuide.isVisible = userInfo?.userLevel != UserLevel.FOURTH.rankName
+                    updateGoalPath()
+                    updateGoalPathGuideBox()
                 }
             }
 
@@ -192,7 +202,7 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
         })
     }
 
-    private fun initNextLevelGoalPath() {
+    private fun updateGoalPath() {
         when (userInfo?.userLevel) {
             UserLevel.SECOND.rankName -> {
                 binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv2_1))
@@ -205,6 +215,16 @@ class GoalPathActivity : BindingActivity<ActivityGoalPathBinding>(R.layout.activ
             UserLevel.FOURTH.rankName -> {
                 binding.ivGoalPathAfter.setImageDrawable(drawableOf(R.drawable.img_goal_path_lv4))
             }
+        }
+    }
+
+    private fun updateGoalPathGuideBox() {
+        if (userInfo?.userLevel == UserLevel.FOURTH.rankName) {
+            binding.clGoalPathGuideLv4.isVisible = true
+            binding.clGoalPathGuideOther.isVisible = false
+        } else {
+            binding.clGoalPathGuideLv4.isVisible = false
+            binding.clGoalPathGuideOther.isVisible = true
         }
     }
 
