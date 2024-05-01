@@ -330,4 +330,6 @@
     <string name="goal_path_feed_guide">의 절약피드를 더 올려야 해요.</string>
     <string name="goal_path_remaining_money">%s원</string>
     <string name="goal_path_remaining_feed">%d개</string>
+    <string name="goal_path_guide_lv4_title">축하합니다. 모든 목표를 다 이루었어요!</string>
+    <string name="goal_path_guide_lv4_desc">레벨이 떨어지지 않게 꾸준히 절약을 실천해 보세요</string>
 </resources>
