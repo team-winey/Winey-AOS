@@ -2,6 +2,7 @@ package org.go.sopt.winey.util.view
 
 import android.content.Context
 import android.util.TypedValue
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +59,12 @@ class WineyPopupMenu(
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, dm).toInt()
     }
 
+    fun showCustomPosition(anchorView: View) {
+        showAsDropDown(anchorView, -POPUP_MENU_OFFSET, -POPUP_MENU_OFFSET, Gravity.END)
+    }
+
     companion object {
         private const val POPUP_MENU_WIDTH = 120f
+        private const val POPUP_MENU_OFFSET = 65
     }
 }

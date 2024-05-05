@@ -2,12 +2,15 @@ package org.go.sopt.winey.data.service
 
 import org.go.sopt.winey.data.model.remote.request.RequestCreateGoalDto
 import org.go.sopt.winey.data.model.remote.request.RequestLoginDto
+import org.go.sopt.winey.data.model.remote.request.RequestPatchAllowedNotificationDto
+import org.go.sopt.winey.data.model.remote.request.RequestPatchFcmTokenDto
 import org.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import org.go.sopt.winey.data.model.remote.response.ResponseCreateGoalDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetNicknameDuplicateCheckDto
 import org.go.sopt.winey.data.model.remote.response.ResponseGetUserDto
 import org.go.sopt.winey.data.model.remote.response.ResponseLoginDto
 import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
+import org.go.sopt.winey.data.model.remote.response.ResponsePatchAllowedNotificationDto
 import org.go.sopt.winey.data.model.remote.response.ResponseReIssueTokenDto
 import org.go.sopt.winey.data.model.remote.response.base.BaseResponse
 import retrofit2.http.Body
@@ -52,5 +55,15 @@ interface AuthService {
     @PATCH("user/nickname")
     suspend fun patchNickname(
         @Body requestPatchNicknameDto: RequestPatchNicknameDto
+    ): BaseResponse<Unit>
+
+    @PATCH("user/notification")
+    suspend fun patchAllowedNotification(
+        @Body requestPatchAllowedNotificationDto: RequestPatchAllowedNotificationDto
+    ): BaseResponse<ResponsePatchAllowedNotificationDto>
+
+    @PATCH("user/fcmtoken")
+    suspend fun patchFcmToken(
+        @Body requestPatchFcmTokenDto: RequestPatchFcmTokenDto
     ): BaseResponse<Unit>
 }

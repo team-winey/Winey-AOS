@@ -1,11 +1,17 @@
 package org.go.sopt.winey.presentation.main
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.annotation.IdRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,89 +20,175 @@ import kotlinx.coroutines.flow.onEach
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.ActivityMainBinding
 import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
+import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.mypage.MyPageFragment
+import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.presentation.main.recommend.RecommendFragment
+import org.go.sopt.winey.presentation.model.NotificationType
 import org.go.sopt.winey.presentation.onboarding.login.LoginActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
 import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {
-    private val mainViewModel by viewModels<MainViewModel>()
-    private val isUploadSuccess by lazy { intent.extras?.getBoolean(EXTRA_UPLOAD_KEY, false) }
-    private val isDeleteSuccess by lazy { intent.extras?.getBoolean(EXTRA_DELETE_KEY, false) }
-    private val isReportSuccess by lazy { intent.extras?.getBoolean(EXTRA_REPORT_KEY, false) }
-    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
+    private val viewModel by viewModels<MainViewModel>()
+
+    private val isUploadSuccess by lazy { intent.getBooleanExtra(KEY_FEED_UPLOAD, false) }
+    private val isDeleteSuccess by lazy { intent.getBooleanExtra(KEY_FEED_DELETE, false) }
+    private val levelUpFromUpload by lazy {
+        intent.getBooleanExtra(
+            WineyFeedFragment.KEY_LEVEL_UP,
+            false
+        )
+    }
+
+    private val notiType by lazy { intent.getStringExtra(KEY_NOTI_TYPE) }
+    private val feedId by lazy { intent.getStringExtra(KEY_FEED_ID) }
+
+    private val notificationPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (!isGranted) {
+                wineySnackbar(
+                    anchorView = binding.root,
+                    message = stringOf(R.string.snackbar_noti_permission_denied),
+                    type = SnackbarType.NotiPermission(
+                        onActionClicked = { showSystemNotificationSetting() }
+                    )
+                )
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 위니피드, 마이페이지 프래그먼트에서 getUserState 관찰
-        mainViewModel.getUser()
+        requestNotificationPermission()
+        initNotiTypeHandler()
+
+        viewModel.apply {
+            getUser() // 위니피드, 마이페이지 프래그먼트에서 관찰
+            patchFcmToken()
+            saveLevelUpState(levelUpFromUpload)
+        }
+
+        addListener()
+        addObserver()
 
         initFragment()
-        initBnvItemSelectedListener()
-        syncBottomNavigationSelection()
+        showWineyFeedResultSnackBar()
+    }
 
+    private fun addListener() {
+        initBnvItemSelectedListener()
+    }
+
+    private fun addObserver() {
         setupLogoutState()
-        showSuccessSnackBar()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) == PackageManager.PERMISSION_DENIED
+        ) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    private fun showSystemNotificationSetting() {
+        Intent().apply {
+            action = Settings.ACTION_APP_NOTIFICATION_SETTINGS
+            putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(this)
+        }
+    }
+
+    private fun initNotiTypeHandler() {
+        val notificationType = NotificationType.values().find { it.key == notiType }
+        when (notificationType) {
+            NotificationType.RANK_UP_TO_2, NotificationType.RANK_UP_TO_3,
+            NotificationType.RANK_UP_TO_4, NotificationType.RANK_DOWN_TO_1,
+            NotificationType.RANK_DOWN_TO_2, NotificationType.RANK_DOWN_TO_3,
+            NotificationType.GOAL_FAILED -> {
+                navigateTo(
+                    MyPageFragment.newInstance(
+                        args = Bundle().apply {
+                            putBoolean(KEY_FROM_NOTI, true)
+                        }
+                    )
+                )
+            }
+
+            NotificationType.LIKE_NOTIFICATION, NotificationType.COMMENT_NOTIFICATION ->
+                navigateToDetailScreen(feedId?.toInt())
+
+            NotificationType.HOW_TO_LEVEL_UP -> navigateToGoalPathScreen()
+            else -> {}
+        }
     }
 
     private fun initFragment() {
-        if (intent.getBooleanExtra(KEY_TO_MYPAGE, false)) {
-            navigateToMyPageWithBundle(KEY_FROM_NOTI, true)
-        } else {
-            if (prevScreenName == MY_FEED_SCREEN) {
-                navigateToMyPageWithBundle(KEY_TO_MYFEED, true)
-            } else {
-                navigateTo<WineyFeedFragment>()
-            }
+        if (intent.getBooleanExtra(KEY_FROM_NOTI, false)) {
+            navigateTo(
+                MyPageFragment.newInstance(
+                    args = Bundle().apply {
+                        putBoolean(KEY_FROM_NOTI, true)
+                    }
+                )
+            )
+            syncBnvSelectedItem(R.id.menu_mypage)
+            return
         }
+
+        if (intent.getBooleanExtra(KEY_FROM_GOAL_PATH, false)) {
+            navigateTo(MyPageFragment.newInstance())
+            syncBnvSelectedItem(R.id.menu_mypage)
+            return
+        }
+
+        navigateTo(WineyFeedFragment.newInstance())
     }
 
-    private fun showSuccessSnackBar() {
-        if (isUploadSuccess != null && isUploadSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_upload_success))
-        }
-        if (isDeleteSuccess != null && isDeleteSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_feed_delete_success))
-        }
-        if (isReportSuccess != null && isReportSuccess == true) {
-            wineySnackbar(binding.root, true, stringOf(R.string.snackbar_report_success))
-        }
+    private fun syncBnvSelectedItem(@IdRes selectedItemId: Int) {
+        binding.bnvMain.selectedItemId = selectedItemId
     }
 
     private fun initBnvItemSelectedListener() {
         binding.bnvMain.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.menu_feed -> navigateTo<WineyFeedFragment>()
-                R.id.menu_recommend -> navigateTo<RecommendFragment>()
-                R.id.menu_mypage -> navigateTo<MyPageFragment>()
+                R.id.menu_feed -> navigateTo(WineyFeedFragment.newInstance())
+                R.id.menu_recommend -> navigateTo(RecommendFragment.newInstance())
+                R.id.menu_mypage -> navigateTo(MyPageFragment.newInstance())
             }
             true
         }
     }
 
-    private fun syncBottomNavigationSelection() {
-        supportFragmentManager.addOnBackStackChangedListener {
-            syncBottomNavigation()
+    private fun showWineyFeedResultSnackBar() {
+        if (isUploadSuccess) {
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_upload_success),
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
+            )
         }
-    }
 
-    private fun syncBottomNavigation() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fcv_main)
-        when (currentFragment) {
-            is WineyFeedFragment -> binding.bnvMain.selectedItemId = R.id.menu_feed
-            is RecommendFragment -> binding.bnvMain.selectedItemId = R.id.menu_recommend
-            is MyPageFragment -> binding.bnvMain.selectedItemId = R.id.menu_mypage
+        if (isDeleteSuccess) {
+            wineySnackbar(
+                anchorView = binding.root,
+                message = stringOf(R.string.snackbar_feed_delete_success),
+                type = SnackbarType.WineyFeedResult(isSuccess = true)
+            )
         }
     }
 
     private fun setupLogoutState() {
-        mainViewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
+        viewModel.logoutState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Loading -> {
                 }
@@ -115,41 +207,37 @@ class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main
         }.launchIn(lifecycleScope)
     }
 
+    private fun navigateTo(fragment: Fragment) {
+        supportFragmentManager.commit {
+            replace(R.id.fcv_main, fragment)
+        }
+    }
+
     private fun navigateToLoginScreen() {
-        Intent(this@MainActivity, LoginActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(this)
             finish()
         }
     }
 
-    private inline fun <reified T : Fragment> navigateTo() {
-        supportFragmentManager.commit {
-            replace<T>(R.id.fcv_main, T::class.simpleName)
-        }
+    private fun navigateToDetailScreen(feedId: Int?) {
+        val intent = Intent(this, DetailActivity::class.java)
+        intent.putExtra(KEY_FEED_ID, feedId)
+        startActivity(intent)
     }
 
-    private fun navigateToMyPageWithBundle(key: String, value: Boolean) {
-        supportFragmentManager.commit {
-            val bundle = Bundle()
-            bundle.putBoolean(key, value)
-            val myPageFragment = MyPageFragment()
-            myPageFragment.arguments = bundle
-            replace(R.id.fcv_main, myPageFragment)
-            binding.bnvMain.selectedItemId = R.id.menu_mypage
-        }
+    private fun navigateToGoalPathScreen() {
+        val intent = Intent(this, GoalPathActivity::class.java)
+        startActivity(intent)
     }
 
     companion object {
-        private const val EXTRA_UPLOAD_KEY = "upload"
-        private const val EXTRA_DELETE_KEY = "delete"
-        private const val EXTRA_REPORT_KEY = "report"
-
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
-        private const val KEY_FROM_NOTI = "fromNoti"
-        private const val KEY_TO_MYFEED = "toMyFeed"
-        private const val KEY_TO_MYPAGE = "navigateMypage"
-
-        private const val MY_FEED_SCREEN = "MyFeedFragment"
+        const val KEY_FEED_ID = "feedId"
+        const val KEY_NOTI_TYPE = "notiType"
+        const val KEY_FROM_GOAL_PATH = "fromGoalPath"
+        const val KEY_FROM_NOTI = "fromNoti"
+        const val KEY_FEED_UPLOAD = "upload"
+        const val KEY_FEED_DELETE = "delete"
     }
 }

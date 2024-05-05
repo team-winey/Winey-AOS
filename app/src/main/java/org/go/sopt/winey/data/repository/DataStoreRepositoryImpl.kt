@@ -10,7 +10,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
-import org.go.sopt.winey.domain.entity.User
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import java.io.IOException
 import javax.inject.Inject
@@ -37,6 +37,12 @@ class DataStoreRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveDeviceToken(deviceToken: String) {
+        dataStore.edit {
+            it[DEVICE_TOKEN] = deviceToken
+        }
+    }
+
     override suspend fun saveUserId(userId: Int) {
         dataStore.edit {
             it[USER_ID] = userId
@@ -49,6 +55,10 @@ class DataStoreRepositoryImpl @Inject constructor(
 
     override suspend fun getRefreshToken(): Flow<String?> {
         return getStringValue(REFRESH_TOKEN)
+    }
+
+    override suspend fun getDeviceToken(): Flow<String?> {
+        return getStringValue(DEVICE_TOKEN)
     }
 
     override suspend fun getStringValue(key: Preferences.Key<String>): Flow<String?> {
@@ -81,14 +91,14 @@ class DataStoreRepositoryImpl @Inject constructor(
             }
     }
 
-    override suspend fun saveUserInfo(userInfo: User?) {
+    override suspend fun saveUserInfo(userInfo: UserV2?) {
         dataStore.edit {
             val json = Gson().toJson(userInfo)
             it[USER_INFO] = json
         }
     }
 
-    override suspend fun getUserInfo(): Flow<User> {
+    override suspend fun getUserInfo(): Flow<UserV2> {
         return dataStore.data
             .catch { exception ->
                 if (exception is IOException) {
@@ -101,9 +111,22 @@ class DataStoreRepositoryImpl @Inject constructor(
             .map {
                 val json = it[USER_INFO]
                 try {
-                    Gson().fromJson(json, User::class.java)
+                    Gson().fromJson(json, UserV2::class.java)
                 } catch (e: Exception) {
-                    User()
+                    UserV2(
+                        nickname = "",
+                        userLevel = "",
+                        fcmIsAllowed = true,
+                        accumulatedAmount = 0,
+                        accumulatedCount = 0,
+                        amountSavedHundredDays = 0,
+                        amountSavedTwoWeeks = 0,
+                        amountSpentTwoWeeks = 0,
+                        remainingCount = 0,
+                        remainingAmount = 0,
+                        isLevelUpAmountConditionMet = false,
+                        isLevelUpCountConditionMet = false
+                    )
                 }
             }
     }
@@ -119,6 +142,7 @@ class DataStoreRepositoryImpl @Inject constructor(
             stringPreferencesKey("social_refresh_token")
         private val ACCESS_TOKEN: Preferences.Key<String> = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN: Preferences.Key<String> = stringPreferencesKey("refresh_token")
+        private val DEVICE_TOKEN: Preferences.Key<String> = stringPreferencesKey("device_token")
         private val USER_ID: Preferences.Key<Int> = intPreferencesKey("user_id")
         private val USER_INFO: Preferences.Key<String> = stringPreferencesKey("user_info")
     }

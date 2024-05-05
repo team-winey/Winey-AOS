@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="String" />
+        <variable
+            name="savedAmount"
+            type="Integer" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_gray0_fill_12_rect">
+
+
+        <ImageView
+            android:id="@+id/iv_mypage_icon"
+            setMyPageItemIcon="@{item}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="63dp"
+            android:layout_marginTop="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_mypage_description"
+            setMyPageItemDescription="@{item}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+            android:textColor="@color/gray_700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_mypage_icon" />
+
+        <View
+            android:id="@+id/v_mypage_seperator"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:layout_marginTop="14dp"
+            android:background="@color/gray_200"
+            app:layout_constraintEnd_toEndOf="@id/tv_mypage_description"
+            app:layout_constraintStart_toStartOf="@id/tv_mypage_description"
+            app:layout_constraintTop_toBottomOf="@id/tv_mypage_description" />
+
+        <TextView
+            android:id="@+id/tv_mypage_money"
+            iconType="@{item}"
+            setMyPageItemSavedMoney="@{savedAmount}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="13dp"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_mypage_sign"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/v_mypage_seperator" />
+
+
+        <TextView
+            android:id="@+id/tv_mypage_sign"
+            android:text="×"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="13dp"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_700"
+            android:layout_marginHorizontal="8dp"
+            app:layout_constraintEnd_toStartOf="@id/tv_mypage_amount"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_mypage_money"
+            app:layout_constraintTop_toBottomOf="@id/v_mypage_seperator" />
+
+
+        <TextView
+            android:id="@+id/tv_mypage_amount"
+            iconType="@{item}"
+            setMyPageItemSavedAmount="@{savedAmount}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="13dp"
+            android:textAppearance="@style/TextAppearance.WINEY.Headline_b_24_xxl"
+            android:textColor="@color/gray_700"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_mypage_measurement"
+            app:layout_constraintStart_toEndOf="@id/tv_mypage_sign"
+            app:layout_constraintTop_toBottomOf="@id/v_mypage_seperator" />
+
+
+        <TextView
+            android:id="@+id/tv_mypage_measurement"
+            iconType="@{item}"
+            setMyPageItemSavedMeasurement="@{savedAmount}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="13dp"
+            android:layout_marginStart="5dp"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_500"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_mypage_amount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintTop_toBottomOf="@id/v_mypage_seperator" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

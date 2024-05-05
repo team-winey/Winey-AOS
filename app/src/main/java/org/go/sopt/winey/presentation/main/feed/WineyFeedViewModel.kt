@@ -57,13 +57,12 @@ class WineyFeedViewModel @Inject constructor(
                     handleFailureState(_getWineyFeedListState, t)
                 }
                 .collectLatest { pagingData ->
-                    Timber.e("PAGING DATA COLLECT in ViewModel")
                     _getWineyFeedListState.emit(UiState.Success(pagingData))
                 }
         }
     }
 
-    fun initGetWineyFeedListState() {
+    fun initGetWineyFeedState() {
         _getWineyFeedListState.value = UiState.Empty
     }
 

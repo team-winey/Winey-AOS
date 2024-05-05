@@ -1,58 +1,104 @@
 package org.go.sopt.winey.data.model.remote.response
 
-import org.go.sopt.winey.domain.entity.User
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import org.go.sopt.winey.domain.entity.UserV2
 
 @Serializable
 data class ResponseGetUserDto(
-    @SerialName("userResponseGoalDto")
-    val userResponseGoalDto: UserResponseGoalDto?,
-    @SerialName("userResponseUserDto")
-    val userResponseUserDto: UserResponseUserDto?
+    @SerialName("userData")
+    val userData: UserData
 ) {
     @Serializable
-    data class UserResponseGoalDto(
-        @SerialName("duringGoalAmount")
-        val duringGoalAmount: Long,
-        @SerialName("duringGoalCount")
-        val duringGoalCount: Long,
-        @SerialName("isAttained")
-        val isAttained: Boolean,
-        @SerialName("isOver")
-        val isOver: Boolean,
-        @SerialName("targetDay")
-        val targetDay: Int,
-        @SerialName("targetMoney")
-        val targetMoney: Int,
-        @SerialName("dday")
-        val dday: Int
-    )
-
-    @Serializable
-    data class UserResponseUserDto(
-        @SerialName("nickname")
-        val nickname: String,
+    data class UserData(
         @SerialName("userId")
         val userId: Int,
+        @SerialName("nickname")
+        val nickname: String,
         @SerialName("userLevel")
-        val userLevel: String
+        val userLevel: String,
+        @SerialName("fcmIsAllowed")
+        val fcmIsAllowed: Boolean,
+        @SerialName("accumulatedAmount")
+        val accumulatedAmount: Int,
+        @SerialName("accumulatedCount")
+        val accumulatedCount: Int,
+        @SerialName("amountSavedHundredDays")
+        val amountSavedHundredDays: Int,
+        @SerialName("amountSavedTwoWeeks")
+        val amountSavedTwoWeeks: Int,
+        @SerialName("amountSpentTwoWeeks")
+        val amountSpentTwoWeeks: Int,
+        @SerialName("remainingAmount")
+        val remainingAmount: Int,
+        @SerialName("remainingCount")
+        val remainingCount: Int
     )
 
-    fun toUser(): User {
-        val data = this
-        val userResponseUserDto = data.userResponseUserDto
-
-        return User(
-            nickname = userResponseUserDto?.nickname.orEmpty(),
-            userLevel = userResponseUserDto?.userLevel.orEmpty(),
-            duringGoalAmount = data.userResponseGoalDto?.duringGoalAmount ?: 0,
-            duringGoalCount = data.userResponseGoalDto?.duringGoalCount ?: 0,
-            targetMoney = data.userResponseGoalDto?.targetMoney ?: 0,
-            targetDay = data.userResponseGoalDto?.targetDay ?: 0,
-            dday = data.userResponseGoalDto?.dday ?: 0,
-            isOver = data.userResponseGoalDto?.isOver ?: true,
-            isAttained = data.userResponseGoalDto?.isAttained ?: false
+    fun toUser(): UserV2 {
+        return UserV2(
+            nickname = userData.nickname,
+            userLevel = userData.userLevel,
+            fcmIsAllowed = userData.fcmIsAllowed,
+            accumulatedAmount = userData.accumulatedAmount,
+            accumulatedCount = userData.accumulatedCount,
+            amountSavedHundredDays = userData.amountSavedHundredDays,
+            amountSavedTwoWeeks = userData.amountSavedTwoWeeks,
+            amountSpentTwoWeeks = userData.amountSpentTwoWeeks,
+            remainingAmount = userData.remainingAmount,
+            remainingCount = userData.remainingCount,
+            isLevelUpAmountConditionMet = checkIsLevelUpAmountConditionMet(userData),
+            isLevelUpCountConditionMet = checkIsLevelUpCountConditionMet(userData)
         )
+    }
+
+    private fun checkIsLevelUpAmountConditionMet(userData: UserData): Boolean {
+        val isLevelUpAmountConditionMet: Boolean = when (userData.userLevel) {
+            "평민" -> {
+                userData.accumulatedAmount >= 30000
+            }
+
+            "기사" -> {
+                userData.accumulatedAmount >= 150000
+            }
+
+            "귀족" -> {
+                userData.accumulatedAmount >= 300000
+            }
+
+            "황제" -> {
+                userData.accumulatedAmount >= 300000
+            }
+
+            else -> {
+                false
+            }
+        }
+        return isLevelUpAmountConditionMet
+    }
+
+    private fun checkIsLevelUpCountConditionMet(userData: UserData): Boolean {
+        val isLevelUpCountConditionMet: Boolean = when (userData.userLevel) {
+            "평민" -> {
+                userData.accumulatedCount >= 2
+            }
+
+            "기사" -> {
+                userData.accumulatedCount >= 4
+            }
+
+            "귀족" -> {
+                userData.accumulatedCount >= 10
+            }
+
+            "황제" -> {
+                userData.accumulatedCount >= 10
+            }
+
+            else -> {
+                false
+            }
+        }
+        return isLevelUpCountConditionMet
     }
 }

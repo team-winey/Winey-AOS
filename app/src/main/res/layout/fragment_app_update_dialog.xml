@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_white_fill_5_rect"
+        android:paddingHorizontal="14dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="16dp">
+
+        <ImageView
+            android:id="@+id/iv_update_saver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="117dp"
+            android:src="@drawable/img_app_update_saver"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_update_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/update_dialog_title"
+            android:textAppearance="@style/TextAppearance.WINEY.Headline_b_18_xl"
+            app:layout_constraintEnd_toEndOf="@id/iv_update_saver"
+            app:layout_constraintStart_toStartOf="@id/iv_update_saver"
+            app:layout_constraintTop_toBottomOf="@id/iv_update_saver" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_update_guide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_gray100_fill_5_rect"
+            android:paddingTop="14dp"
+            android:paddingBottom="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_update_title">
+
+            <TextView
+                android:id="@+id/tv_update_guide_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/update_dialog_guide_title"
+                android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+                android:textColor="@color/purple_400"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/ll_update_guide"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="14dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_update_guide_title">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update_dialog_guide_content_1"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+                    android:textColor="@color/gray_500" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update_dialog_guide_content_2"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+                    android:textColor="@color/gray_500" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/update_dialog_guide_content_3"
+                    android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
+                    android:textColor="@color/gray_500" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_update"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/shape_yellow_fill_5_rect"
+            android:stateListAnimator="@null"
+            android:text="@string/update_dialog_btn_text"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
+            android:textColor="@color/gray_900"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_update_guide" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

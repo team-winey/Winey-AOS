@@ -20,7 +20,6 @@ import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.view.UiState
 import org.json.JSONException
 import org.json.JSONObject
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -46,6 +45,38 @@ class LoginActivity :
         }
     }
 
+    private fun initLoginObserver() {
+        viewModel.loginState.flowWithLifecycle(lifecycle).onEach { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    binding.btnLoginKakao.isEnabled = false
+                }
+
+                is UiState.Success -> {
+                    if (state.data?.isRegistered == true) {
+                        navigateTo<MainActivity>()
+                    } else {
+                        navigateTo<StoryActivity>()
+                    }
+                }
+
+                is UiState.Failure -> {
+                    snackBar(binding.root) { state.msg }
+                }
+
+                is UiState.Empty -> {
+                }
+            }
+        }.launchIn(lifecycleScope)
+    }
+
+    private inline fun <reified T : Activity> navigateTo() {
+        Intent(this@LoginActivity, T::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(this)
+        }
+    }
+
     private fun sendEventToAmplitude(type: EventType) {
         val eventProperties = JSONObject()
 
@@ -67,43 +98,6 @@ class LoginActivity :
             EventType.TYPE_VIEW_SCREEN -> amplitudeUtils.logEvent("view_signup", eventProperties)
             EventType.TYPE_CLICK_BUTTON -> amplitudeUtils.logEvent("click_button", eventProperties)
             else -> {}
-        }
-    }
-
-    private fun initLoginObserver() {
-        viewModel.loginState.flowWithLifecycle(lifecycle).onEach { state ->
-            when (state) {
-                is UiState.Loading -> {
-                    binding.btnLoginKakao.isEnabled = false
-                }
-
-                is UiState.Success -> {
-                    Timber.e("${state.data?.userId}")
-                    Timber.e("${state.data?.accessToken}")
-                    Timber.e("${state.data?.refreshToken}")
-                    Timber.e("${state.data?.isRegistered}")
-
-                    if (state.data?.isRegistered == true) {
-                        navigateTo<MainActivity>()
-                    } else {
-                        navigateTo<StoryActivity>()
-                    }
-                }
-
-                is UiState.Failure -> {
-                    snackBar(binding.root) { state.msg }
-                }
-
-                is UiState.Empty -> {
-                }
-            }
-        }.launchIn(lifecycleScope)
-    }
-
-    private inline fun <reified T : Activity> navigateTo() {
-        Intent(this@LoginActivity, T::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(this)
         }
     }
 }

@@ -6,14 +6,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.go.sopt.winey.databinding.ItemNotificationPostBinding
 import org.go.sopt.winey.domain.entity.Notification
+import org.go.sopt.winey.presentation.model.NotificationType
 import org.go.sopt.winey.util.view.ItemDiffCallback
 
 class NotificationAdapter(
     private val navigateFeedDetail: (feedId: Int?) -> Unit,
-    private val navigateMypage: () -> Unit,
-    private val navigateLevelupHelp: () -> Unit
-) :
-    ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(DiffUtil) {
+    private val navigateMyPage: () -> Unit,
+    private val navigateGoalPath: () -> Unit
+) : ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(DiffUtil) {
 
     fun setData(dataList: List<Notification>?) {
         val filteredDataList = filterData(dataList)
@@ -26,11 +26,12 @@ class NotificationAdapter(
                 data.notiReceiver == data.notiMessage.substring(0, data.notiReceiver.length)
         }
     }
+
     class NotificationViewHolder(
         private val binding: ItemNotificationPostBinding,
         private val navigateFeedDetail: (feedId: Int?) -> Unit,
-        private val navigateMypage: () -> Unit,
-        private val navigateLevelupHelp: () -> Unit
+        private val navigateMyPage: () -> Unit,
+        private val navigateGoalPath: () -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun onBind(data: Notification?) {
@@ -39,13 +40,16 @@ class NotificationAdapter(
                 if (data == null) {
                     return
                 }
+
                 binding.root.setOnClickListener {
-                    when (data?.notiType) {
-                        "HOWTOLEVELUP" -> navigateLevelupHelp.invoke()
-                        "LIKENOTI", "COMMENTNOTI" -> navigateFeedDetail(data.linkId)
-                        else -> navigateMypage.invoke()
+                    when (data.notiType) {
+                        NotificationType.LIKE_NOTIFICATION.key,
+                        NotificationType.COMMENT_NOTIFICATION.key -> navigateFeedDetail(data.linkId)
+                        NotificationType.HOW_TO_LEVEL_UP.key -> navigateGoalPath.invoke()
+                        else -> navigateMyPage.invoke()
                     }
                 }
+
                 executePendingBindings()
             }
         }
@@ -54,7 +58,7 @@ class NotificationAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         val binding =
             ItemNotificationPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NotificationViewHolder(binding, navigateFeedDetail, navigateMypage, navigateLevelupHelp)
+        return NotificationViewHolder(binding, navigateFeedDetail, navigateMyPage, navigateGoalPath)
     }
 
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {

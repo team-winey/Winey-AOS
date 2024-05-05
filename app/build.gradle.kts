@@ -8,6 +8,9 @@ plugins {
     id(ModulePlugins.kotlinSerialization)
     id(ModulePlugins.hilt)
     id(ModulePlugins.oss)
+    id(ModulePlugins.googleService)
+    id(ModulePlugins.firebaseAppdistribution)
+    id(ModulePlugins.firebaseCrashlytics)
 }
 
 android {
@@ -102,6 +105,7 @@ dependencies {
         implementation(lifecycleLiveDataKtx)
         implementation(lifecycleViewModelKtx)
         implementation(lifecycleJava8)
+        implementation(lifecycleService)
         implementation(splashScreen)
         implementation(pagingRuntime)
         implementation(workManager)
@@ -117,11 +121,16 @@ dependencies {
         androidTestImplementation(espresso)
     }
 
-    implementation(MaterialDesignDependencies.materialDesign)
-
     KaptDependencies.run {
         kapt(hiltAndroidCompiler)
         kapt(hiltWorkManagerCompiler)
+    }
+
+    GoogleDependencies.run {
+        implementation(materialDesign)
+        implementation(ossLicense)
+        implementation(inAppUpdate)
+        implementation(inAppUpdateKtx)
     }
 
     ThirdPartyDependencies.run {
@@ -132,7 +141,6 @@ dependencies {
         implementation(retrofit)
         implementation(retrofitJsonConverter)
         implementation(timber)
-        implementation(ossLicense)
         implementation(progressView)
         implementation(balloon)
         implementation(lottie)
@@ -144,5 +152,13 @@ dependencies {
         debugImplementation(flipperNetwork)
         debugImplementation(flipperLeakCanary)
         debugImplementation(soloader)
+    }
+
+    FirebaseDependencies.run {
+        implementation(platform(bom))
+        implementation(messaging)
+        implementation(analytics)
+        implementation(crashlytics)
+        implementation(remoteConfig)
     }
 }

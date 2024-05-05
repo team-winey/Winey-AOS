@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <style name="Widget.Winey.EditText" parent="Widget.AppCompat.EditText">
         <item name="android:textColorHint">@color/gray_400</item>

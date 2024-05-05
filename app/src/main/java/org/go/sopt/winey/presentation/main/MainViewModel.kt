@@ -8,9 +8,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.response.ResponseLogoutDto
-import org.go.sopt.winey.domain.entity.User
+import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.AuthRepository
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.domain.repository.NotificationRepository
@@ -25,8 +26,8 @@ class MainViewModel @Inject constructor(
     private val dataStoreRepository: DataStoreRepository,
     private val notificationRepository: NotificationRepository
 ) : ViewModel() {
-    private val _getUserState = MutableStateFlow<UiState<User?>>(UiState.Loading)
-    val getUserState: StateFlow<UiState<User?>> = _getUserState.asStateFlow()
+    private val _getUserState = MutableStateFlow<UiState<UserV2?>>(UiState.Empty)
+    val getUserState: StateFlow<UiState<UserV2?>> = _getUserState.asStateFlow()
 
     private val _logoutState = MutableStateFlow<UiState<ResponseLogoutDto?>>(UiState.Empty)
     val logoutState: StateFlow<UiState<ResponseLogoutDto?>> = _logoutState.asStateFlow()
@@ -34,20 +35,23 @@ class MainViewModel @Inject constructor(
     private val _notiState = MutableStateFlow(true)
     val notiState: LiveData<Boolean> = _notiState.asLiveData()
 
+    private val _levelUpState = MutableStateFlow(false)
+    val levelUpState: StateFlow<Boolean> = _levelUpState.asStateFlow()
+
     fun getUser() {
         viewModelScope.launch {
             _getUserState.value = UiState.Loading
 
             authRepository.getUser()
                 .onSuccess { response ->
-                    Timber.e("SUCCESS GET USER IN MAIN")
+                    Timber.d("SUCCESS GET USER IN MAIN")
                     dataStoreRepository.saveUserInfo(response)
                     _getUserState.value = UiState.Success(response)
                 }
                 .onFailure { t ->
                     if (t is HttpException) {
                         Timber.e("HTTP 실패 ${t.code()}")
-                        if (t.code() == CODE_TOKEN_EXPIRED) {
+                        if (t.code() == CODE_TOKEN_EXPIRED || t.code() == CODE_INVALID_USER) {
                             postLogout()
                         }
                     }
@@ -113,7 +117,29 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    fun patchFcmToken() {
+        viewModelScope.launch {
+            val token = dataStoreRepository.getDeviceToken().first()
+            if (token.isNullOrBlank()) return@launch
+            authRepository.patchFcmToken(token)
+                .onSuccess {
+                    Timber.e("디바이스 토큰 보내기 성공")
+                }
+                .onFailure { t ->
+                    if (t is HttpException) {
+                        Timber.e("HTTP 실패")
+                    }
+                    Timber.e("${t.message}")
+                }
+        }
+    }
+
+    fun saveLevelUpState(currentState: Boolean) {
+        _levelUpState.value = currentState
+    }
+
     companion object {
         private const val CODE_TOKEN_EXPIRED = 401
+        private const val CODE_INVALID_USER = 404
     }
 }

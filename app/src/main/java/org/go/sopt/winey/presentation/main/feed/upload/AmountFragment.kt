@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentAmountBinding
+import org.go.sopt.winey.presentation.main.feed.WineyFeedFragment
 import org.go.sopt.winey.presentation.main.feed.upload.loading.LoadingActivity
+import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.fragment.stringOf
@@ -20,9 +22,10 @@ import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.multipart.UriToRequestBody
+import org.go.sopt.winey.util.number.formatAmountNumber
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
-import java.text.DecimalFormat
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 
 @AndroidEntryPoint
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {
@@ -33,12 +36,8 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         binding.vm = uploadViewModel
 
         updateRequestBody()
-        initPostImageStateObserver()
-        initUploadButtonClickListener()
-
-        initRootLayoutClickListener()
-        initBackButtonClickListener()
-        initEditTextWatcher()
+        addListener()
+        addObserver()
     }
 
     private fun updateRequestBody() {
@@ -47,14 +46,68 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         uploadViewModel.updateRequestBody(requestBody)
     }
 
+    private fun addListener() {
+        initAmountTextChangedListener()
+        initUploadButtonClickListener()
+        initRootLayoutClickListener()
+        initBackButtonClickListener()
+    }
+
+    private fun addObserver() {
+        initPostImageStateObserver()
+    }
+
+    /** Listener */
+    private fun initAmountTextChangedListener() {
+        var prevAmount = ""
+        binding.etUploadAmount.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable?) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val currentAmount = s.toString()
+
+                // 문자열이 비어있거나 이전과 변함 없으면 그대로 둔다.
+                if (currentAmount.isBlank() || currentAmount == prevAmount) return
+
+                val newAmount = currentAmount.removeComma().toInt()
+                prevAmount = newAmount.formatAmountNumber()
+
+                binding.etUploadAmount.apply {
+                    setText(prevAmount)
+
+                    // 커서를 오른쪽 끝으로 보낸다.
+                    setSelection(prevAmount.length)
+                }
+            }
+        })
+    }
+
     private fun initUploadButtonClickListener() {
         binding.btnAmountNext.setOnSingleClickListener {
             uploadViewModel.apply {
-                postWineyFeed(content, amount.removeComma())
+                postWineyFeed(
+                    content = content,
+                    amount = commaAmount.removeComma(),
+                    feedType = feedType.name
+                )
             }
         }
     }
 
+    private fun initBackButtonClickListener() {
+        binding.ivAmountBack.setOnClickListener {
+            parentFragmentManager.popBackStack()
+        }
+    }
+
+    private fun initRootLayoutClickListener() {
+        binding.root.setOnClickListener {
+            context?.hideKeyboard(binding.root)
+            binding.etUploadAmount.clearFocus()
+        }
+    }
+
+    /** Observer */
     private fun initPostImageStateObserver() {
         uploadViewModel.postWineyFeedState.flowWithLifecycle(viewLifeCycle)
             .onEach { state ->
@@ -64,16 +117,20 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
                     }
 
                     is UiState.Success -> {
-                        navigateLoadingScreen()
+                        val response = state.data ?: return@onEach
+                        navigateToLoadingScreen(response.levelUpgraded)
                     }
 
                     is UiState.Failure -> {
-                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_upload_fail))
+                        wineySnackbar(
+                            anchorView = binding.root,
+                            message = stringOf(R.string.snackbar_upload_fail),
+                            type = SnackbarType.WineyFeedResult(isSuccess = false)
+                        )
                         uploadViewModel.initPostWineyFeedState()
                     }
 
-                    is UiState.Empty -> {
-                    }
+                    else -> {}
                 }
             }.launchIn(viewLifeCycleScope)
     }
@@ -82,59 +139,21 @@ class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_
         binding.btnAmountNext.isClickable = false
     }
 
-    private fun navigateLoadingScreen() {
-        Intent(requireContext(), LoadingActivity::class.java).apply {
-            putExtra(EXTRA_AMOUNT_KEY, uploadViewModel.amount.removeComma())
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+    private fun navigateToLoadingScreen(nowLevelUp: Boolean) {
+        val context = context ?: return
+        Intent(context, LoadingActivity::class.java).apply {
+            putExtra(KEY_AMOUNT, uploadViewModel.commaAmount.removeComma().toInt())
+            putExtra(WineyFeedFragment.KEY_FEED_TYPE, uploadViewModel.feedType)
+            if (uploadViewModel.feedType == WineyFeedType.SAVE) {
+                putExtra(WineyFeedFragment.KEY_LEVEL_UP, nowLevelUp)
+            }
             startActivity(this)
         }
     }
 
     private fun String.removeComma() = replace(",", "")
 
-    private fun initBackButtonClickListener() {
-        binding.ivAmountBack.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-    }
-
-    private fun initEditTextWatcher() {
-        var temp = ""
-        binding.etUploadAmount.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable?) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val input = s.toString()
-
-                // 문자열이 비어있거나 이전과 변함 없으면 그대로 둔다.
-                if (input.isBlank() || input == temp) return
-
-                temp = makeCommaString(input.replace(",", "").toLong())
-                binding.etUploadAmount.apply {
-                    setText(temp)
-                    setSelection(temp.length) // 커서를 오른쪽 끝으로 보낸다.
-                }
-            }
-        })
-    }
-
-    private fun makeCommaString(input: Long): String {
-        val formatter = DecimalFormat("#,###")
-        return formatter.format(input)
-    }
-
-    private fun initRootLayoutClickListener() {
-        binding.root.setOnClickListener {
-            requireContext().hideKeyboard(binding.root)
-            focusOutEditText()
-        }
-    }
-
-    private fun focusOutEditText() {
-        binding.etUploadAmount.clearFocus()
-    }
-
     companion object {
-        private const val EXTRA_AMOUNT_KEY = "amount"
+        const val KEY_AMOUNT = "amount"
     }
 }

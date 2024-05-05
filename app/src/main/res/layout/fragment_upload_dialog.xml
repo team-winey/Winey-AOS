@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_wineyfeed_fab_sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_wineyfeed_fab"
+            app:layout_constraintBottom_toTopOf="@id/cv_wineyfeed_fab_save"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/wineyfeed_upload_dialog_title"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+            android:textColor="@color/gray_0" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_wineyfeed_fab_save"
+            app:cardCornerRadius="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_wineyfeed_fab"
+            app:layout_constraintStart_toStartOf="@id/tv_wineyfeed_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="100dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_wineyfeed_fab_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_wineyfeed_fab_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="14dp"
+                        android:layout_marginStart="15dp"
+                        android:src="@drawable/img_wineyfeed_fab_save" />
+
+                    <TextView
+                        android:id="@+id/tv_wineyfeed_fab_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="17dp"
+                        android:text="@string/wineyfeed_feed_type_save"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                        android:textColor="@color/gray_800" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/v_popup_seperator"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="14dp"
+                    android:background="@color/gray_200" />
+
+                <LinearLayout
+                    android:id="@+id/ll_wineyfeed_fab_consume"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_wineyfeed_fab_consume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="14dp"
+                        android:layout_marginStart="15dp"
+                        android:src="@drawable/img_wineyfeed_fab_consume" />
+
+                    <TextView
+                        android:id="@+id/tv_wineyfeed_fab_consume"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginVertical="16dp"
+                        android:layout_marginStart="10dp"
+                        android:text="@string/wineyfeed_feed_type_consume"
+                        android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
+                        android:textColor="@color/gray_800" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/iv_wineyfeed_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="72dp"
+            android:src="@drawable/ic_wineyfeed_close"
+            app:layout_constraintTop_toBottomOf="@id/cv_wineyfeed_fab_save"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

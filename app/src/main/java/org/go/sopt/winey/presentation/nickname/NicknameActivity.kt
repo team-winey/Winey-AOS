@@ -33,7 +33,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activity_nickname) {
     private val viewModel by viewModels<NicknameViewModel>()
-    private val prevScreenName by lazy { intent.extras?.getString(EXTRA_KEY, "") }
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN_NAME, "") }
 
     @Inject
     lateinit var dataStoreRepository: DataStoreRepository
@@ -158,7 +158,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     private inline fun <reified T : Activity> navigateTo() {
         Intent(this, T::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(this)
         }
     }
@@ -176,7 +176,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     }
 
     companion object {
-        private const val EXTRA_KEY = "PREV_SCREEN_NAME"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         const val MY_PAGE_SCREEN = "MyPageFragment"
         const val STORY_SCREEN = "StoryActivity"
     }

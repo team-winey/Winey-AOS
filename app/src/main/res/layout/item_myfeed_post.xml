@@ -15,58 +15,68 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_myfeed_profilephoto"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="14dp"
-            android:layout_marginBottom="12dp"
-            setWriterLevelImage="@{data.writerLevel}"
-            app:civ_border_color="@color/gray_200"
-            app:civ_border_width="1dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/img_wineyfeed_profile" />
-
-        <TextView
-            android:id="@+id/iv_myfeed_nickname"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_myfeed_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="@{data.nickName}"
-            android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
-            android:textColor="@color/gray_700"
-            app:layout_constraintBottom_toBottomOf="@id/iv_myfeed_profilephoto"
-            app:layout_constraintEnd_toStartOf="@id/btn_wineyfeed_more"
-            app:layout_constraintStart_toEndOf="@id/iv_myfeed_profilephoto"
-            app:layout_constraintTop_toTopOf="@id/iv_myfeed_profilephoto"
-            tools:text="@string/myfeed_nickname" />
-
-        <ImageButton
-            android:id="@+id/btn_wineyfeed_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="10dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_wineyfeed_more"
+            android:layout_marginTop="10dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/iv_myfeed_profilephoto"
+                setWriterLevelImage="@{data.writerLevel}"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:civ_border_color="@color/gray_200"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/img_wineyfeed_profile" />
+
+            <TextView
+                android:id="@+id/iv_myfeed_nickname"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{data.nickName}"
+                android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
+                android:textColor="@color/gray_700"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_wineyfeed_more"
+                app:layout_constraintStart_toEndOf="@id/iv_myfeed_profilephoto"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/myfeed_nickname" />
+
+            <ImageButton
+                android:id="@+id/btn_wineyfeed_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_feed_more"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/l_myfeed_image"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="10dp"
             app:layout_constraintDimensionRatio="H,4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_myfeed_profilephoto">
+            app:layout_constraintTop_toBottomOf="@id/cl_myfeed_profile">
 
             <ImageView
                 android:id="@+id/iv_myfeed_image"
@@ -79,22 +89,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/img_wineyfeed_default" />
-
-            <TextView
-                android:id="@+id/tv_myfeed_money"
-                setAmount="@{data.feedMoney}"
-                setSuffix="@{@string/wineyfeed_money}"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/shape_yellow_fill_99_rect"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="10dp"
-                android:textAppearance="@style/TextAppearance.WINEY.detail_m_13"
-                android:textColor="@color/gray_900"
-                app:layout_constraintBottom_toBottomOf="@+id/iv_myfeed_image"
-                app:layout_constraintStart_toStartOf="@+id/iv_myfeed_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -115,82 +109,92 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
+            android:layout_marginEnd="4dp"
             android:gravity="center"
-            android:textAppearance="@style/TextAppearance.WINEY.body2_m_15"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
             android:textColor="@color/gray_700"
-            app:layout_constraintEnd_toEndOf="@id/iv_myfeed_like"
-            app:layout_constraintStart_toStartOf="@id/iv_myfeed_like"
-            app:layout_constraintTop_toBottomOf="@id/iv_myfeed_like"
-            tools:text="5,319" />
+            app:layout_constraintBottom_toBottomOf="@id/iv_myfeed_like"
+            app:layout_constraintEnd_toStartOf="@id/iv_myfeed_like"
+            app:layout_constraintTop_toTopOf="@id/iv_myfeed_like"
+            tools:text="5,319개" />
+
+        <LinearLayout
+            android:id="@+id/ll_myfeed_money"
+            switchFeedTypeBackground="@{data.feedType}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_myfeed_like"
+            app:layout_constraintStart_toStartOf="@id/l_myfeed_image"
+            app:layout_constraintTop_toBottomOf="@id/l_myfeed_image"
+            app:layout_constraintTop_toTopOf="@id/iv_myfeed_like"
+            tools:background="@drawable/shape_green500_line_6_rect">
+
+            <TextView
+                android:id="@+id/tv_myfeed_type"
+                switchFeedTypeText="@{data.feedType}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                tools:text="절약했어요"
+                tools:textColor="@color/sub_green_500" />
+
+            <TextView
+                android:id="@+id/tv_myfeed_money"
+                feedMoney="@{data.feedMoney}"
+                feedType="@{data.feedType}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+                tools:text=" + 4,500원" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_myfeed_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:minHeight="44dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginTop="6dp"
             android:text="@{data.feedTitle}"
-            android:textAppearance="@style/TextAppearance.WINEY.body_b_16"
+            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
             android:textColor="@color/gray_900"
-            app:layout_constraintEnd_toStartOf="@id/iv_myfeed_like"
+            app:layout_constraintEnd_toEndOf="@id/iv_myfeed_like"
             app:layout_constraintStart_toStartOf="@id/l_myfeed_image"
-            app:layout_constraintTop_toBottomOf="@id/l_myfeed_image"
+            app:layout_constraintTop_toBottomOf="@id/iv_myfeed_like"
             tools:text="@string/myfeed_title" />
-
-        <ImageView
-            android:id="@+id/iv_myfeed_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_wineyfeed_comment"
-            app:layout_constraintStart_toStartOf="@id/l_myfeed_image"
-            app:layout_constraintTop_toBottomOf="@id/tv_myfeed_title"
-            tools:src="@drawable/ic_wineyfeed_comment" />
 
         <TextView
             android:id="@+id/tv_myfeed_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:text="@{String.valueOf(data.comments)}"
-            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-            android:textColor="@color/gray_500"
-            app:layout_constraintStart_toEndOf="@id/iv_myfeed_comment"
-            app:layout_constraintTop_toBottomOf="@id/tv_myfeed_title" />
-
-        <ImageView
-            android:id="@+id/iv_myfeed_seperator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/img_wineyfeed_seperator"
-            app:layout_constraintStart_toEndOf="@id/tv_myfeed_comment"
+            android:text="@{@string/wineyfeed_item_comment_number(data.comments)}"
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_300"
+            app:layout_constraintStart_toStartOf="@id/tv_myfeed_title"
             app:layout_constraintTop_toBottomOf="@id/tv_myfeed_title"
-            tools:src="@drawable/img_wineyfeed_seperator" />
+            tools:text="댓글 2개 모두 보기 ・ " />
 
         <TextView
             android:id="@+id/tv_myfeed_createdAt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
             android:text="@{data.timeAgo}"
-            android:textAppearance="@style/TextAppearance.WINEY.body_m_14"
-            android:textColor="@color/gray_500"
-            app:layout_constraintStart_toEndOf="@id/iv_myfeed_seperator"
-            app:layout_constraintTop_toBottomOf="@id/tv_myfeed_title" />
+            android:textAppearance="@style/TextAppearance.WINEY.detail_m_12"
+            android:textColor="@color/gray_300"
+            app:layout_constraintBottom_toBottomOf="@id/tv_myfeed_comment"
+            app:layout_constraintStart_toEndOf="@id/tv_myfeed_comment"
+            app:layout_constraintTop_toTopOf="@id/tv_myfeed_comment"
+            tools:text="9초전" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="18dp"
             android:background="@color/gray_50"
             app:layout_constraintTop_toBottomOf="@id/tv_myfeed_createdAt" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

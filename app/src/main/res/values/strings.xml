@@ -1,12 +1,16 @@
 <resources>
+
     <string name="app_name">Winey</string>
     <string name="main_feed">피드</string>
     <string name="main_recommend">추천</string>
     <string name="main_mypage">마이페이지</string>
 
+    <!-- all -->
+    <string name="all_money_unit">원</string>
+
     <!-- winey feed -->
     <string name="wineyfeed_head">위니와 절약을 더 쉽고 재밌게!</string>
-    <string name="wineyfeed_sub">절약한 소비를 피드에 올리고\n사람들과 소통해요</string>
+    <string name="wineyfeed_sub">절약한 소비를 피드에 올리고 사람들과 소통해요</string>
     <string name="wineyfeed_nickname">부자가 되고싶어</string>
     <string name="wineyfeed_title">교통비를 아끼기 위해 대중교통 대신</string>
     <string name="wineyfeed_money">원 절약</string>
@@ -15,20 +19,36 @@
     <string name="wineyfeed_banner_insta_title">무슨 앱인지 궁금하다면?</string>
     <string name="wineyfeed_banner_insta_subtitle">위니 공식 인스타에서\n더 재밌게 사용하는 법 알아보기!</string>
     <string name="wineyfeed_banner1_title">위니와 절약을 더 쉽고 재밌게!</string>
-    <string name="wineyfeed_banner1_subtitle">절약한 소비를 피드에 올리고\n사람들과 소통해요</string>
+    <string name="wineyfeed_banner1_subtitle">절약한 소비를 피드에 올리고 사람들과 소통해요</string>
     <string name="wineyfeed_banner2_subtitle">하단 버튼을 통해</string>
-    <string name="wineyfeed_banner2_title">나만의 절약방법을 사람들과\n공유할 수 있어요</string>
+    <string name="wineyfeed_banner2_title">나만의 절약방법을 사람들과 공유할 수 있어요</string>
     <string name="wineyfeed_banner3_subtitle">서로의 절약방법을 피드백해요</string>
-    <string name="wineyfeed_banner3_title">좋아요를 눌러 서로의 절약을\n응원해주세요!</string>
+    <string name="wineyfeed_banner3_title">좋아요를 눌러 서로의 절약을 응원해주세요!</string>
     <string name="wineyfeed_banner4_subtitle">찾기 힘든 국가기관 금융혜택도</string>
-    <string name="wineyfeed_banner4_title">위니 추천피드에서\n한번에 볼 수 있어요!</string>
+    <string name="wineyfeed_banner4_title">위니 추천피드에서 한번에 볼 수 있어요!</string>
+
+    <string name="wineyfeed_upload_dialog_title">어떤 소비를 기록할까요?</string>
+    <string name="wineyfeed_feed_type_save">절약했어요</string>
+    <string name="wineyfeed_feed_type_consume">낭비했어요</string>
+
+    <string name="wineyfeed_item_save_money">&#160;+&#160;%s원</string>
+    <string name="wineyfeed_item_consume_money">&#160;-&#160;%s원</string>
+    <string name="wineyfeed_item_like_number">%s개</string>
+    <string name="wineyfeed_item_comment_number">댓글 %d개 모두 보기&#160;・&#160;</string>
+
+    <string name="wineyfeed_goal_progressbar_title">꾸준한 절약을 통해 %s 되어보아요</string>
+    <string name="wineyfeed_goal_progressbar_current_money">%s원</string>
+    <string name="wineyfeed_goal_progressbar_target_money">&#160;/&#160;%d만원</string>
+    <string name="wineyfeed_goal_progressbar_lv4_title">레벨 미션에 완료했어요</string>
+    <string name="wineyfeed_goal_progressbar_lv4_subTitle">절약을 통해 황제를 계속 유지해 보세요!</string>
 
     <string name="wineyfeed_goal_dialog_title">목표 설정 시 피드 작성이 가능해요!</string>
     <string name="wineyfeed_goal_dialog_subtitle">지금 마이프로필에서 간단한 목표를\n설정해보세요!</string>
-    <string name="wineyfeed_congratulation_dialog_title">🎉목표 달성을 축하드려요!🎉</string>
-    <string name="wineyfeed_congratulation_dialog_subtitle">마이페이지에서 새 목표를\n설정해 볼까요?</string>
     <string name="wineyfeed_goal_dialog_negative_button">취소</string>
     <string name="wineyfeed_goal_dialog_positive_button">설정하기</string>
+    <string name="wineyfeed_congratulation_dialog_title">🎉레벨업 축하드려요!🎉</string>
+    <string name="wineyfeed_congratulation_dialog_subtitle">마이페이지에서\n목표 여정을 확인해보세요!</string>
+    <string name="wineyfeed_congratulation_dialog_positive_button">확인하러 가기</string>
 
     <!-- comment delete dialog -->
     <string name="comment_delete_dialog_title">삭제하시겠습니까?</string>
@@ -48,22 +68,31 @@
     <string name="feed_delete_dialog_negative_button">취소</string>
     <string name="feed_delete_dialog_positive_button">삭제하기</string>
 
+    <!-- notification off dialog -->
+    <string name="notification_off_dialog_title">알림을 끄시겠어요?</string>
+    <string name="notification_off_dialog_subtitle">앞으로 위니 제국에서 오는 편지를 받으실 수 없어요.</string>
+    <string name="notification_off_dialog_negative_button">취소</string>
+    <string name="notification_off_dialog_positive_button">확인</string>
+
     <!-- upload -->
-    <string name="upload_plus_text">절약을 인증할 수 있는\n사진을 업로드 해 주세요.</string>
-    <string name="upload_photo_title">절약을 실천한\n모습을 보여주세요!</string>
+    <string name="upload_photo_title">%s\n모습을 보여주세요!</string>
     <string name="upload_photo_detail">사진은 피드의 썸네일로 사용됩니다 :)</string>
+    <string name="upload_plus_text">%s 인증할 수 있는\n사진을 업로드 해 주세요.</string>
     <string name="upload_next_btn_text">다음</string>
-    <string name="upload_content_title">절약 내용을\n작성해주세요!</string>
+
+    <string name="upload_content_title">%s한 내용을\n작성해 주세요!</string>
     <string name="upload_content_detail">적어주신 글을 썸네일과 함께 표시합니다 :)</string>
-    <string name="upload_content_edittext_hint">Ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!\n</string>
-    <string name="upload_content_counter">(%d/36)</string>
+    <string name="upload_save_content_edittext_hint">ex) 버스 타고 가는 길을 운동 삼아 20분 일찍 일어나 걸어갔어요!</string>
+    <string name="upload_consume_content_edittext_hint">ex) 술 먹다 막차를 놓쳐 결국 택시를 타고 집에 갔어요.</string>
+    <string name="upload_content_counter">(%d/100)</string>
     <string name="upload_content_error_text">6자 이상 작성해주세요</string>
-    <string name="upload_content_counter_preview">(0/36)</string>
-    <string name="upload_amount_title">얼마나 절약했나요?</string>
-    <string name="upload_amount_detail">절약하신 금액을 작성해주세요!</string>
-    <string name="upload_amount_unit_text">원</string>
+    <string name="upload_content_counter_preview">(0/100)</string>
+
+    <string name="upload_amount_title">얼마나\n%s했나요?</string>
+    <string name="upload_amount_detail">%s 금액을 작성해주세요!</string>
     <string name="upload_amount_hint_text">0</string>
     <string name="upload_last_btn_text">업로드</string>
+
     <string name="upload_loading_title">%s 값을</string>
     <string name="upload_dialog_title">지금 나가시면 작성하신 게 지워져요</string>
     <string name="upload_dialog_subtitle">절약 실천 게시물을 올리면 레벨업에 가까워져요\n그래도 나가시겠습니까?</string>
@@ -76,10 +105,9 @@
     <string name="mypage_period">절약 기간</string>
     <string name="mypage_accumulated_winey">누적 위니</string>
     <string name="mypage_winey_count">위니 횟수</string>
-    <string name="mypage_myfeed">마이피드</string>
+    <string name="mypage_myfeed">내가 올린 피드</string>
     <string name="mypage_not_yet_set">아직 없어요</string>
     <string name="mypage_d_day">D-DAY</string>
-    <string name="mypage_amount">원</string>
     <string name="mypage_dday">D-</string>
     <string name="mypage_count">번</string>
     <string name="mypage_formatted_number">%s%s%s</string>
@@ -88,8 +116,55 @@
     <string name="impossible_dialog_close">닫기</string>
     <string name="mypage_1on1"><u>1:1 문의</u></string>
     <string name="mypage_terms"><u>이용약관</u></string>
+    <string name="mypage_noti_agree">알림설정</string>
+    <string name="mypage_noti_agree_permission">기기 설정을 변경해야 알림을 받을 수 있어요</string>
     <string name="mypage_withdraw">탈퇴하기</string>
     <string name="mypage_logout">로그아웃</string>
+    <string name="mypage_trip">목표까지 남은 여정</string>
+    <string name="mypage_item_title">위니를 만나고</string>
+    <string name="mypage_2weeks_title">최근 2주간</string>
+    <string name="mypage_description_eat">%s 이만큼\n먹을 수 있어요</string>
+    <string name="mypage_description_buy">%s 이만큼\n살 수 있어요</string>
+    <string name="mypage_save_for_100days_prefix">100일간 총&#160;</string>
+    <string name="mypage_save_for_100days_suffix">원을 아꼈네요.</string>
+    <string name="mypage_reamining_amount">%s원만 더!</string>
+    <string name="mypage_lv4">절약을 통해 황제를 계속 유지해 보세요!</string>
+    <string name="mypage_current_amount">%s원 절약중</string>
+    <string name="mypage_goal_amount_complete">%s원 절약 완료</string>
+    <string name="mypage_goal_amount_incomplete">누적 절약 금액 %s원</string>
+    <string name="mypage_goal_count_complete">절약 피드 %d개 업로드 완료</string>
+    <string name="mypage_goal_count_incomplete">누적 절약 피드 %d개</string>
+    <string name="mypage_save_for_2weeks">원을 절약했어요</string>
+    <string name="mypage_waste_for_2weeks">원을 낭비했어요</string>
+    <string name="mypage_save_money">+ %s원</string>
+    <string name="mypage_spend_money">- %s원</string>
+
+    <string name="mypage_goal_money_lv1">3만원</string>
+    <string name="mypage_goal_money_lv2">15만원</string>
+    <string name="mypage_goal_money_lv3">30만원</string>
+    <string name="mypage_goal_money_lv4">레벨 미션 완료</string>
+    <string name="mypage_goal_lv1">치킨값 절약하기</string>
+    <string name="mypage_goal_lv2">운동화값 절약하기</string>
+    <string name="mypage_goal_lv3">에어팟값 절약하기</string>
+    <string name="mypage_goal_lv4">목표를 다 이루었어요!</string>
+    <string name="mypage_goal_amount_lv1">누적 3만원 이상 절약하기</string>
+    <string name="mypage_goal_amount_lv2">누적 15만원 이상 절약하기</string>
+    <string name="mypage_goal_amount_lv3">누적 30만원 이상 절약하기</string>
+    <string name="mypage_goal_count_lv1">절약 피드 2개 이상 올리기</string>
+    <string name="mypage_goal_count_lv2">절약 피드 4개 이상 올리기</string>
+    <string name="mypage_goal_count_lv3">절약 피드 10개 이상 올리기</string>
+    <string name="mypage_2weeks_save_for_job">알바를 %s 뛴 금액과 같아요</string>
+    <string name="mypage_2weeks_save_for_1year">이렇게 절약한다면 일년 후에 %s이 모여요!</string>
+    <string name="mypage_2weeks_spend_for_1year">이렇게 낭비한다면 일년 후에 %s이 사라져요!</string>
+
+    <string name="mypage_americano_money">5천원</string>
+    <string name="mypage_sneakers_money">15만원</string>
+    <string name="mypage_airpods_money">30만원</string>
+    <string name="mypage_chicken_money">3만원</string>
+    <string name="mypage_americano_measurement">잔</string>
+    <string name="mypage_sneakers_measurement">켤레</string>
+    <string name="mypage_airpods_measurement">개</string>
+    <string name="mypage_chicken_measurement">마리</string>
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
@@ -102,7 +177,6 @@
 
     <string name="target_amount_cancel">취소</string>
     <string name="target_amount_set_amount">목표 절약 금액을 설정해주세요</string>
-    <string name="target_amount_won">원</string>
     <string name="target_amount_set_day">목표 절약 일수를 설정해주세요</string>
     <string name="target_amount_day">일</string>
     <string name="target_amount_warning">설정한 목표는 목표 절약 일수 전까지 변경이 불가능합니다.\n신중하게 작성해주세요!</string>
@@ -172,8 +246,8 @@
     <string name="guide_wineyfeed_detail">나와 사람들의 절약 방법을 볼 수 있어요</string>
     <string name="guide_recommend_title">추천 피드에서\n절약법을 추천해 드릴게요!</string>
     <string name="guide_recommend_detail">흩어져 있는 절약법을 한눈에 볼 수 있어요</string>
-    <string name="guide_level_title">절약 목표를 세우고 실천하며\n캐릭터를 키워보세요!</string>
-    <string name="guide_level_detail">캐릭터를 통해 절약을 재밌게 실천할 수 있어요</string>
+    <string name="guide_level_title">절약 목표를 달성해\n캐릭터를 키워보세요!</string>
+    <string name="guide_level_detail">레벨업을 통해 절약을 재미있게 실천할 수 있어요</string>
 
     <!-- story -->
     <string name="story_nav_number">%d/3</string>
@@ -215,6 +289,8 @@
     <string name="snackbar_delete_fail">죄송합니다. 다시 시도해주세요.</string>
     <string name="snackbar_report_success">정상적으로 신고되었습니다 :)</string>
     <string name="snackbar_report_fail">죄송합니다. 신고접수에 실패하였습니다.</string>
+    <string name="snackbar_noti_permission_denied">기기 설정을 변경해야 알림을 받을 수 있어요</string>
+    <string name="snackbar_noti_permission_setting_text">설정하기</string>
 
     <!-- comment -->
     <string name="comment_level_1">LV. 평민 ㆍ </string>
@@ -231,12 +307,29 @@
     <string name="popup_delete_title">삭제하기</string>
     <string name="popup_report_title">신고하기</string>
     <string name="story_skip_btn_text">건너뛰기</string>
-    <string name="upload_loading_title_first__line1">티끌 모아 태산</string>
+    <string name="upload_loading_title_first_line1">티끌 모아 태산</string>
     <string name="upload_loading_title_first_line2">조금 더 아껴볼까요?</string>
     <string name="upload_loading_title_other_line1">오늘은</string>
-    <string name="upload_loading_title_other_line3">절약했어요</string>
+    <string name="upload_loading_title_other_save_line3">절약했어요</string>
+    <string name="upload_loading_title_other_consume_line3">낭비했어요</string>
 
     <!-- error -->
     <string name="error_winey_feed_loading">Can\'t loading winey feed list</string>
 
+    <!-- app update fail dialog -->
+    <string name="update_dialog_title">업데이트가 필요해요.</string>
+    <string name="update_dialog_guide_title">업데이트가 잘 되지 않으시나요?</string>
+    <string name="update_dialog_guide_content_1">• 위니를 삭제 후 재설치 해보세요.</string>
+    <string name="update_dialog_guide_content_2">• 위니 삭제 후 Google play 스토어를 강제 종료한 뒤, 재설치해 보세요.</string>
+    <string name="update_dialog_guide_content_3">• 설정 → 어플리케이션 → Google play 스토어 → 저장공간 → 데이터 삭제 및 캐시 삭제, 강제 종료 후 재시작하여 위니를 재설치해 보세요.</string>
+    <string name="update_dialog_btn_text">업데이트하러 가기</string>
+
+    <!-- goal path -->
+    <string name="goal_path_guide_level">다음 레벨까지</string>
+    <string name="goal_path_money_guide">을 더 절약해보세요.</string>
+    <string name="goal_path_feed_guide">의 절약피드를 더 올려야 해요.</string>
+    <string name="goal_path_remaining_money">%s원</string>
+    <string name="goal_path_remaining_feed">%d개</string>
+    <string name="goal_path_guide_lv4_title">축하합니다. 모든 목표를 다 이루었어요!</string>
+    <string name="goal_path_guide_lv4_desc">레벨이 떨어지지 않게 꾸준히 절약을 실천해 보세요</string>
 </resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="consume_amount_range">
+        <item>0</item>
+        <item>10000</item>
+        <item>20000</item>
+        <item>25000</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>80000</item>
+        <item>100000</item>
+        <item>300000</item>
+    </integer-array>
+</resources>

@@ -3,7 +3,6 @@ package org.go.sopt.winey.presentation.main.feed.detail
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
@@ -23,7 +22,10 @@ import org.go.sopt.winey.domain.entity.Comment
 import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
+import org.go.sopt.winey.presentation.main.mypage.myfeed.MyFeedActivity
+import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.util.activity.hideKeyboard
+import org.go.sopt.winey.util.activity.showReportGoogleForm
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.amplitude.type.EventType
 import org.go.sopt.winey.util.binding.BindingActivity
@@ -34,6 +36,7 @@ import org.go.sopt.winey.util.context.wineySnackbar
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.view.WineyPopupMenu
+import org.go.sopt.winey.util.view.snackbar.SnackbarType
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber
@@ -44,7 +47,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     private val viewModel by viewModels<DetailViewModel>()
     private val feedId by lazy { intent.getIntExtra(KEY_FEED_ID, 0) }
     private val feedWriterId by lazy { intent.getIntExtra(KEY_FEED_WRITER_ID, 0) }
-    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN, "") }
+    private val prevScreenName by lazy { intent.extras?.getString(KEY_PREV_SCREEN_NAME, "") }
 
     private var _detailFeedAdapter: DetailFeedAdapter? = null
     private val detailFeedAdapter get() = requireNotNull(_detailFeedAdapter)
@@ -153,7 +156,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                 showFeedDeletePopupMenu(anchorView)
             } else {
                 // 다른 사람 게시물 신고
-                showReportPopupMenu(anchorView, TARGET_DETAIL_FEED)
+                showReportPopupMenu(anchorView)
             }
         }
     }
@@ -168,7 +171,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     showCommentDeletePopupMenu(anchorView, commentId)
                 } else {
                     // 방문자 댓글 삭제/신고
-                    showAllPopupMenu(anchorView, commentId)
+                    showDeleteReportPopupMenu(anchorView, commentId)
                 }
             } else {
                 if (isMyComment(currentUserId, commentAuthorId)) {
@@ -176,7 +179,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                     showCommentDeletePopupMenu(anchorView, commentId)
                 } else {
                     // 다른 사람 댓글 신고
-                    showReportPopupMenu(anchorView, TARGET_COMMENT)
+                    showReportPopupMenu(anchorView)
                 }
             }
         }
@@ -200,7 +203,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         }
     }
 
-    private fun showAllPopupMenu(anchorView: View, commentId: Long) {
+    private fun showDeleteReportPopupMenu(anchorView: View, commentId: Long) {
         val menuTitles = listOf(
             stringOf(R.string.popup_delete_title),
             stringOf(R.string.popup_report_title)
@@ -208,7 +211,7 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         WineyPopupMenu(context = anchorView.context, titles = menuTitles) { _, _, position ->
             when (position) {
                 0 -> showCommentDeleteDialog(commentId)
-                1 -> showReportDialog(TARGET_COMMENT)
+                1 -> showReportDialog()
             }
         }.apply {
             showCustomPosition(anchorView)
@@ -216,11 +219,13 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     }
 
     private fun showFeedDeleteDialog() {
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.feed_delete_dialog_title),
-            stringOf(R.string.feed_delete_dialog_subtitle),
-            stringOf(R.string.comment_delete_dialog_negative_button),
-            stringOf(R.string.comment_delete_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.feed_delete_dialog_title),
+                stringOf(R.string.feed_delete_dialog_subtitle),
+                stringOf(R.string.comment_delete_dialog_negative_button),
+                stringOf(R.string.comment_delete_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = { viewModel.deleteFeed(feedId) }
         )
@@ -228,46 +233,42 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     }
 
     private fun showCommentDeleteDialog(commentId: Long) {
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.comment_delete_dialog_title),
-            stringOf(R.string.comment_delete_dialog_subtitle),
-            stringOf(R.string.comment_delete_dialog_negative_button),
-            stringOf(R.string.comment_delete_dialog_positive_button),
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.comment_delete_dialog_title),
+                stringOf(R.string.comment_delete_dialog_subtitle),
+                stringOf(R.string.comment_delete_dialog_negative_button),
+                stringOf(R.string.comment_delete_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = { viewModel.deleteComment(commentId) }
         )
         dialog.show(supportFragmentManager, TAG_COMMENT_DELETE_DIALOG)
     }
 
-    private fun showReportPopupMenu(anchorView: View, target: String) {
+    private fun showReportPopupMenu(anchorView: View) {
         val reportTitle = listOf(stringOf(R.string.popup_report_title))
         WineyPopupMenu(context = anchorView.context, titles = reportTitle) { _, _, _ ->
-            showReportDialog(target)
+            showReportDialog()
         }.apply {
             showCustomPosition(anchorView)
         }
     }
 
-    // 신고의 대상이 무엇인지에 따라 스낵바가 뜨는 위치가 달라지도록
-    private fun showReportDialog(target: String) {
-        val dialog = WineyDialogFragment(
-            stringOf(R.string.report_dialog_title),
-            stringOf(R.string.report_dialog_subtitle),
-            stringOf(R.string.report_dialog_negative_button),
-            stringOf(R.string.report_dialog_positive_button),
+    private fun showReportDialog() {
+        val dialog = WineyDialogFragment.newInstance(
+            WineyDialogLabel(
+                stringOf(R.string.report_dialog_title),
+                stringOf(R.string.report_dialog_subtitle),
+                stringOf(R.string.report_dialog_negative_button),
+                stringOf(R.string.report_dialog_positive_button)
+            ),
             handleNegativeButton = {},
             handlePositiveButton = {
-                when (target) {
-                    TARGET_DETAIL_FEED -> navigateToMainWithBundle(EXTRA_REPORT_KEY)
-                    TARGET_COMMENT -> showCommentReportSnackbar()
-                }
+                showReportGoogleForm()
             }
         )
         dialog.show(supportFragmentManager, TAG_REPORT_DIALOG)
-    }
-
-    private fun showCommentReportSnackbar() {
-        wineySnackbar(binding.root, true, stringOf(R.string.snackbar_report_success))
     }
 
     private fun isMyFeed(currentUserId: Int?) = currentUserId == feedWriterId
@@ -352,11 +353,15 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
         viewModel.deleteFeedDetailState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
-                    navigateToMainWithBundle(EXTRA_DELETE_KEY)
+                    navigateToPreviousScreen()
                 }
 
                 is UiState.Failure -> {
-                    wineySnackbar(binding.root, false, stringOf(R.string.snackbar_delete_fail))
+                    wineySnackbar(
+                        anchorView = binding.root,
+                        message = stringOf(R.string.snackbar_delete_fail),
+                        type = SnackbarType.WineyFeedResult(isSuccess = false)
+                    )
                 }
 
                 else -> Timber.tag("failure").e(MSG_DETAIL_ERROR)
@@ -409,35 +414,49 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
                         }
 
                         wineySnackbar(
-                            binding.root,
-                            true,
-                            stringOf(R.string.snackbar_comment_delete_success)
+                            anchorView = binding.root,
+                            message = stringOf(R.string.snackbar_comment_delete_success),
+                            type = SnackbarType.WineyFeedResult(isSuccess = true)
                         )
                     }
 
                     is UiState.Failure -> {
-                        wineySnackbar(binding.root, false, stringOf(R.string.snackbar_delete_fail))
+                        wineySnackbar(
+                            anchorView = binding.root,
+                            message = stringOf(R.string.snackbar_delete_fail),
+                            type = SnackbarType.WineyFeedResult(isSuccess = false)
+                        )
                     }
 
-                    else -> {
-                    }
+                    else -> {}
                 }
             }.launchIn(lifecycleScope)
     }
 
     private fun isCommentNumberZero(commentNumber: Int) = commentNumber == 0
 
-    private fun navigateToMainWithBundle(extraKey: String) {
-        Intent(this, MainActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            putExtra(extraKey, true)
-            putExtra(KEY_PREV_SCREEN, prevScreenName)
+    private fun navigateToPreviousScreen() {
+        if (prevScreenName == MY_FEED_SCREEN) {
+            navigateToMyFeedScreen()
+        } else {
+            navigateToMainScreen()
+        }
+    }
+
+    private fun navigateToMyFeedScreen() {
+        Intent(this, MyFeedActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(MainActivity.KEY_FEED_DELETE, true)
             startActivity(this)
         }
     }
 
-    private fun WineyPopupMenu.showCustomPosition(anchorView: View) {
-        showAsDropDown(anchorView, -POPUP_MENU_POS_OFFSET, -POPUP_MENU_POS_OFFSET, Gravity.END)
+    private fun navigateToMainScreen() {
+        Intent(this, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            putExtra(MainActivity.KEY_FEED_DELETE, true)
+            startActivity(this)
+        }
     }
 
     private fun sendEventToAmplitude(type: EventType, feed: DetailFeed) {
@@ -470,18 +489,14 @@ class DetailActivity : BindingActivity<ActivityDetailBinding>(R.layout.activity_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-        private const val KEY_PREV_SCREEN = "PREV_SCREEN_NAME"
+        private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
+        private const val MY_FEED_SCREEN = "MyFeedActivity"
 
         private const val TAG_FEED_DELETE_DIALOG = "FEED_DELETE_DIALOG"
         private const val TAG_COMMENT_DELETE_DIALOG = "COMMENT_DELETE_DIALOG"
         private const val TAG_REPORT_DIALOG = "REPORT_DIALOG"
 
-        private const val POPUP_MENU_POS_OFFSET = 65
         private const val MSG_DETAIL_ERROR = "ERROR"
-        private const val EXTRA_DELETE_KEY = "delete"
-        private const val EXTRA_REPORT_KEY = "report"
-        private const val TARGET_DETAIL_FEED = "detailFeed"
-        private const val TARGET_COMMENT = "comment"
         private const val ACTION_COMMENT_POST = "POST"
         private const val ACTION_COMMENT_DELETE = "DELETE"
     }
