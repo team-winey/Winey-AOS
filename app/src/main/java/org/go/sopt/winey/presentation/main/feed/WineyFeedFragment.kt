@@ -522,6 +522,6 @@ class WineyFeedFragment :
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
 
         const val KEY_FEED_TYPE = "feedType"
-        const val KEY_LEVEL_UP = "LEVEL_UP_MOMENT"
+        const val KEY_LEVEL_UP = "nowLevelUp"
     }
 }

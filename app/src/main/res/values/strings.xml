@@ -125,7 +125,7 @@
     <string name="mypage_2weeks_title">최근 2주간</string>
     <string name="mypage_description_eat">%s 이만큼\n먹을 수 있어요</string>
     <string name="mypage_description_buy">%s 이만큼\n살 수 있어요</string>
-    <string name="mypage_save_for_100days_prefix">100일간 총\t</string>
+    <string name="mypage_save_for_100days_prefix">100일간 총&#160;</string>
     <string name="mypage_save_for_100days_suffix">원을 아꼈네요.</string>
     <string name="mypage_reamining_amount">%s원만 더!</string>
     <string name="mypage_lv4">절약을 통해 황제를 계속 유지해 보세요!</string>
@@ -157,6 +157,14 @@
     <string name="mypage_2weeks_save_for_1year">이렇게 절약한다면 일년 후에 %s이 모여요!</string>
     <string name="mypage_2weeks_spend_for_1year">이렇게 낭비한다면 일년 후에 %s이 사라져요!</string>
 
+    <string name="mypage_americano_money">5천원</string>
+    <string name="mypage_sneakers_money">15만원</string>
+    <string name="mypage_airpods_money">30만원</string>
+    <string name="mypage_chicken_money">3만원</string>
+    <string name="mypage_americano_measurement">잔</string>
+    <string name="mypage_sneakers_measurement">켤레</string>
+    <string name="mypage_airpods_measurement">개</string>
+    <string name="mypage_chicken_measurement">마리</string>
 
     <string name="mypage_logout_dialog_title">정말 로그아웃 하시겠어요?</string>
     <string name="mypage_logout_dialog_subtitle">로그아웃 후 장기간 미접속 시\n레벨이 내려갈 수 있습니다.</string>
@@ -299,10 +307,11 @@
     <string name="popup_delete_title">삭제하기</string>
     <string name="popup_report_title">신고하기</string>
     <string name="story_skip_btn_text">건너뛰기</string>
-    <string name="upload_loading_title_first__line1">티끌 모아 태산</string>
+    <string name="upload_loading_title_first_line1">티끌 모아 태산</string>
     <string name="upload_loading_title_first_line2">조금 더 아껴볼까요?</string>
     <string name="upload_loading_title_other_line1">오늘은</string>
-    <string name="upload_loading_title_other_line3">절약했어요</string>
+    <string name="upload_loading_title_other_save_line3">절약했어요</string>
+    <string name="upload_loading_title_other_consume_line3">낭비했어요</string>
 
     <!-- error -->
     <string name="error_winey_feed_loading">Can\'t loading winey feed list</string>
@@ -321,4 +330,6 @@
     <string name="goal_path_feed_guide">의 절약피드를 더 올려야 해요.</string>
     <string name="goal_path_remaining_money">%s원</string>
     <string name="goal_path_remaining_feed">%d개</string>
+    <string name="goal_path_guide_lv4_title">축하합니다. 모든 목표를 다 이루었어요!</string>
+    <string name="goal_path_guide_lv4_desc">레벨이 떨어지지 않게 꾸준히 절약을 실천해 보세요</string>
 </resources>

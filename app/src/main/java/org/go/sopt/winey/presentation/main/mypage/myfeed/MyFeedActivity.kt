@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 import org.go.sopt.winey.R
 import org.go.sopt.winey.databinding.FragmentMyfeedBinding
 import org.go.sopt.winey.domain.entity.WineyFeed
+import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.main.feed.adapter.WineyFeedLoadAdapter
 import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.model.WineyDialogLabel
@@ -55,7 +56,7 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
     }
 
     private fun showFeedDeleteSuccessSnackBar() {
-        val isDeleteSuccess = intent.getBooleanExtra(KEY_FEED_DELETE, false)
+        val isDeleteSuccess = intent.getBooleanExtra(MainActivity.KEY_FEED_DELETE, false)
         if (isDeleteSuccess) {
             wineySnackbar(
                 anchorView = binding.root,
@@ -281,11 +282,8 @@ class MyFeedActivity : BindingActivity<FragmentMyfeedBinding>(R.layout.fragment_
     companion object {
         private const val KEY_FEED_ID = "feedId"
         private const val KEY_FEED_WRITER_ID = "feedWriterId"
-        private const val KEY_FEED_DELETE = "delete"
-
         private const val KEY_PREV_SCREEN_NAME = "PREV_SCREEN_NAME"
         private const val MY_FEED_SCREEN = "MyFeedActivity"
-
         private const val MSG_MYFEED_ERROR = "ERROR"
         private const val TAG_FEED_DELETE_DIALOG = "DELETE_DIALOG"
     }

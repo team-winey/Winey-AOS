@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="consume_item_categories">
+        <item>스타벅스 2잔</item>
+        <item>치킨 1마리</item>
+        <item>치킨 2마리</item>
+        <item>운동화 1켤레</item>
+        <item>한달 통신비</item>
+        <item>한달 교통비</item>
+        <item>일주일 식비</item>
+        <item>한달 식비</item>
+    </string-array>
+</resources>
