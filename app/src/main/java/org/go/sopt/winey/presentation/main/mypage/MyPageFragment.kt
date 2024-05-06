@@ -269,10 +269,21 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun showLoadingProgressBar() {
+        binding.pbMypageLoading.isVisible = true
+        binding.svMypage.isVisible = false
+    }
+
+    private fun dismissLoadingProgressBar() {
+        binding.pbMypageLoading.isVisible = false
+        binding.svMypage.isVisible = true
+    }
+
     private fun setupGetUserStateObserver() {
         mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
             when (state) {
                 is UiState.Success -> {
+                    dismissLoadingProgressBar()
                     val data = dataStoreRepository.getUserInfo().first() ?: return@onEach
                     updateUserInfo(data)
                     setUpUserGoalByLevel(data)
@@ -283,6 +294,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
+                }
+
+                is UiState.Loading -> {
+                    showLoadingProgressBar()
                 }
 
                 else -> {}
