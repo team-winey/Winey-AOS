@@ -22,6 +22,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
@@ -280,11 +281,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
     }
 
     private fun setupGetUserStateObserver() {
-        mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
+        mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach launch@{ state ->
             when (state) {
                 is UiState.Success -> {
                     dismissLoadingProgressBar()
-                    val data = dataStoreRepository.getUserInfo().first() ?: return@onEach
+                    delay(100)
+                    val data = dataStoreRepository.getUserInfo().first() ?: return@launch
                     updateUserInfo(data)
                     setUpUserGoalByLevel(data)
                     setUpUserDataByGoal(data)
