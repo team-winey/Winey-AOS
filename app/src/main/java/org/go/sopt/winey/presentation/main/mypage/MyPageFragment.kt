@@ -22,6 +22,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
@@ -269,11 +270,23 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
         }
     }
 
+    private fun showLoadingProgressBar() {
+        binding.pbMypageLoading.isVisible = true
+        binding.svMypage.isVisible = false
+    }
+
+    private fun dismissLoadingProgressBar() {
+        binding.pbMypageLoading.isVisible = false
+        binding.svMypage.isVisible = true
+    }
+
     private fun setupGetUserStateObserver() {
-        mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach { state ->
+        mainViewModel.getUserState.flowWithLifecycle(lifecycle).onEach launch@{ state ->
             when (state) {
                 is UiState.Success -> {
-                    val data = dataStoreRepository.getUserInfo().first() ?: return@onEach
+                    dismissLoadingProgressBar()
+                    delay(100)
+                    val data = dataStoreRepository.getUserInfo().first() ?: return@launch
                     updateUserInfo(data)
                     setUpUserGoalByLevel(data)
                     setUpUserDataByGoal(data)
@@ -283,6 +296,10 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
 
                 is UiState.Failure -> {
                     snackBar(binding.root) { state.msg }
+                }
+
+                is UiState.Loading -> {
+                    showLoadingProgressBar()
                 }
 
                 else -> {}
