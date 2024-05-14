@@ -42,7 +42,7 @@ data class ResponseGetUserDto(
             fcmIsAllowed = userData.fcmIsAllowed,
             accumulatedAmount = userData.accumulatedAmount,
             accumulatedCount = userData.accumulatedCount,
-            createdDay = userData.createdDday,
+            createdDday = userData.createdDday,
             amountSavedTwoWeeks = userData.amountSavedTwoWeeks,
             amountSpentTwoWeeks = userData.amountSpentTwoWeeks,
             remainingAmount = userData.remainingAmount,
