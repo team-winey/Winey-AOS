@@ -125,8 +125,8 @@
     <string name="mypage_2weeks_title">최근 2주간</string>
     <string name="mypage_description_eat">%s 이만큼\n먹을 수 있어요</string>
     <string name="mypage_description_buy">%s 이만큼\n살 수 있어요</string>
-    <string name="mypage_save_for_100days_prefix">100일간 총&#160;</string>
-    <string name="mypage_save_for_100days_suffix">원을 아꼈네요.</string>
+    <string name="mypage_saved_after_joined_prefix">일간 총&#160;</string>
+    <string name="mypage_saved_after_joined_suffix">원을 아꼈네요.</string>
     <string name="mypage_reamining_amount">%s원만 더!</string>
     <string name="mypage_lv4">절약을 통해 황제를 계속 유지해 보세요!</string>
     <string name="mypage_current_amount">%s원 절약중</string>
