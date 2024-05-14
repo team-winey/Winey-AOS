@@ -6,7 +6,7 @@ data class UserV2(
     val fcmIsAllowed: Boolean,
     val accumulatedAmount: Int,
     val accumulatedCount: Int,
-    val amountSavedHundredDays: Int,
+    val createdDay: Int,
     val amountSavedTwoWeeks: Int,
     val amountSpentTwoWeeks: Int,
     val remainingAmount: Int,
