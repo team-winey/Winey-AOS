@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
                 android:scaleType="centerCrop"
-                android:src="@{vm.notiState ? @drawable/ic_wineyfeed_notification_new : @drawable/ic_wineyfeed_notification_none}"
+                android:src="@{vm.notiState ? @drawable/ic_noti_new : @drawable/ic_noti_none}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

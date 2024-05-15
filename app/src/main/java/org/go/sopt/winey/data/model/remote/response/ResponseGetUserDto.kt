@@ -15,6 +15,8 @@ data class ResponseGetUserDto(
         val userId: Int,
         @SerialName("nickname")
         val nickname: String,
+        @SerialName("createdDday")
+        val createdDday: Int,
         @SerialName("userLevel")
         val userLevel: String,
         @SerialName("fcmIsAllowed")
@@ -23,8 +25,6 @@ data class ResponseGetUserDto(
         val accumulatedAmount: Int,
         @SerialName("accumulatedCount")
         val accumulatedCount: Int,
-        @SerialName("amountSavedHundredDays")
-        val amountSavedHundredDays: Int,
         @SerialName("amountSavedTwoWeeks")
         val amountSavedTwoWeeks: Int,
         @SerialName("amountSpentTwoWeeks")
@@ -42,7 +42,7 @@ data class ResponseGetUserDto(
             fcmIsAllowed = userData.fcmIsAllowed,
             accumulatedAmount = userData.accumulatedAmount,
             accumulatedCount = userData.accumulatedCount,
-            amountSavedHundredDays = userData.amountSavedHundredDays,
+            createdDday = userData.createdDday,
             amountSavedTwoWeeks = userData.amountSavedTwoWeeks,
             amountSpentTwoWeeks = userData.amountSpentTwoWeeks,
             remainingAmount = userData.remainingAmount,

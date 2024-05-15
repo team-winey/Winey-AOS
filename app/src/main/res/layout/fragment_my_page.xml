@@ -14,6 +14,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:id="@+id/pb_mypage_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
         <TextView
             android:id="@+id/tv_mypage_title"
             android:layout_width="wrap_content"
@@ -329,9 +339,9 @@
 
                     <TextView
                         android:id="@+id/tv_mypage_item_save"
-                        setAmount="@{data.amountSavedHundredDays}"
-                        setPrefix="@{@string/mypage_save_for_100days_prefix}"
-                        setSuffix="@{@string/mypage_save_for_100days_suffix}"
+                        setAmount="@{data.accumulatedAmount}"
+                        setPrefix="@{data.createdDday + @string/mypage_saved_after_joined_prefix}"
+                        setSuffix="@{@string/mypage_saved_after_joined_suffix}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
@@ -361,7 +371,7 @@
                             app:layout_constraintEnd_toStartOf="@+id/l_mypage_item_chicken"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:savedAmount="@{data.amountSavedHundredDays}" />
+                            app:savedAmount="@{data.accumulatedAmount}" />
 
                         <include
                             android:id="@+id/l_mypage_item_chicken"
@@ -374,7 +384,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/l_mypage_item_coffee"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:savedAmount="@{data.amountSavedHundredDays}" />
+                            app:savedAmount="@{data.accumulatedAmount}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -398,7 +408,7 @@
                             app:layout_constraintEnd_toStartOf="@+id/l_mypage_item_airpod"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:savedAmount="@{data.amountSavedHundredDays}" />
+                            app:savedAmount="@{data.accumulatedAmount}" />
 
                         <include
                             android:id="@+id/l_mypage_item_airpod"
@@ -410,7 +420,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/l_mypage_item_sneakers"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:savedAmount="@{data.amountSavedHundredDays}" />
+                            app:savedAmount="@{data.accumulatedAmount}" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
