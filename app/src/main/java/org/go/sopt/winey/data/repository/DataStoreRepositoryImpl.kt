@@ -119,7 +119,7 @@ class DataStoreRepositoryImpl @Inject constructor(
                         fcmIsAllowed = true,
                         accumulatedAmount = 0,
                         accumulatedCount = 0,
-                        amountSavedHundredDays = 0,
+                        createdDday = 0,
                         amountSavedTwoWeeks = 0,
                         amountSpentTwoWeeks = 0,
                         remainingCount = 0,
