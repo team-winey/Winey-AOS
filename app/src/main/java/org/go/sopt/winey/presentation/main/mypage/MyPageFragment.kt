@@ -284,13 +284,12 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
                 is UiState.Success -> {
                     dismissLoadingProgressBar()
                     binding.root.post {
-                        state.data?.let {
-                            updateUserInfo(it)
-                            setUpUserGoalByLevel(it)
-                            setUpUserDataByGoal(it)
-                            animate2weeksSaveGraph(it.amountSavedTwoWeeks)
-                            animate2weeksSpendGraph(it.amountSpentTwoWeeks)
-                        }
+                        val data = state.data ?: return@post
+                        updateUserInfo(data)
+                        setUpUserGoalByLevel(data)
+                        setUpUserDataByGoal(data)
+                        animate2weeksSaveGraph(data.amountSavedTwoWeeks)
+                        animate2weeksSpendGraph(data.amountSpentTwoWeeks)
                     }
                 }
 
