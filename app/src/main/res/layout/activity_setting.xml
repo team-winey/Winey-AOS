@@ -199,8 +199,7 @@
                 android:textAppearance="@style/TextAppearance.WINEY.body_m_16"
                 android:textColor="@color/gray_700"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/v_setting_line3"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <ImageView
                 android:id="@+id/iv_setting_terms"
