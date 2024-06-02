@@ -22,8 +22,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -285,13 +283,14 @@ class MyPageFragment : BindingFragment<FragmentMyPageBinding>(R.layout.fragment_
             when (state) {
                 is UiState.Success -> {
                     dismissLoadingProgressBar()
-                    delay(100)
-                    val data = dataStoreRepository.getUserInfo().first() ?: return@launch
-                    updateUserInfo(data)
-                    setUpUserGoalByLevel(data)
-                    setUpUserDataByGoal(data)
-                    animate2weeksSaveGraph(data.amountSavedTwoWeeks)
-                    animate2weeksSpendGraph(data.amountSpentTwoWeeks)
+                    binding.root.post {
+                        val data = state.data ?: return@post
+                        updateUserInfo(data)
+                        setUpUserGoalByLevel(data)
+                        setUpUserDataByGoal(data)
+                        animate2weeksSaveGraph(data.amountSavedTwoWeeks)
+                        animate2weeksSpendGraph(data.amountSpentTwoWeeks)
+                    }
                 }
 
                 is UiState.Failure -> {
