@@ -133,6 +133,5 @@ class WineyFeedViewModel @Inject constructor(
         private const val CODE_WINEYFEED_INVALID_USER = 404
         private const val CODE_WINEYFEED_INVALID_REQUEST = 400
         private const val MSG_WINEYFEED_FAIL = "FAIL"
-        private const val ERROR_GET_WINEY_FEED_LIST = "error get winey feed list"
     }
 }
