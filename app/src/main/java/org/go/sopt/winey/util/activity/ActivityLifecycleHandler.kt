@@ -1,4 +1,4 @@
-package org.go.sopt.winey
+package org.go.sopt.winey.util.activity
 
 import android.app.Activity
 import android.app.Application

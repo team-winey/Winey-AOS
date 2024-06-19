@@ -46,7 +46,7 @@ import org.go.sopt.winey.util.fragment.drawableOf
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.number.formatAmountNumber
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
 

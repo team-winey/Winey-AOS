@@ -18,7 +18,7 @@ import org.go.sopt.winey.domain.entity.Comment
 import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.repository.FeedRepository
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject

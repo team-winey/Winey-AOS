@@ -12,9 +12,9 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import org.go.sopt.winey.R
-import org.go.sopt.winey.util.view.snackbar.NotiPermissionSnackbar
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
-import org.go.sopt.winey.util.view.snackbar.WineyFeedResultSnackbar
+import org.go.sopt.winey.util.custom.snackbar.NotiPermissionSnackbar
+import org.go.sopt.winey.util.custom.snackbar.SnackbarType
+import org.go.sopt.winey.util.custom.snackbar.WineyFeedResultSnackbar
 
 /** Hide keyboard from window */
 fun Context.hideKeyboard(view: View) {

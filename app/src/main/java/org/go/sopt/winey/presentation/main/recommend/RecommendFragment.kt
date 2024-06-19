@@ -19,7 +19,7 @@ import org.go.sopt.winey.presentation.main.notification.NotificationActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.fragment.snackBar
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import org.json.JSONException
 import org.json.JSONObject
 import javax.inject.Inject

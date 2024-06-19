@@ -31,7 +31,7 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
 import javax.inject.Inject
 

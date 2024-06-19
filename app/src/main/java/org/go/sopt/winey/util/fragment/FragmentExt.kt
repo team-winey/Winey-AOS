@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import org.go.sopt.winey.R
-import org.go.sopt.winey.util.view.snackbar.NotiPermissionSnackbar
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
-import org.go.sopt.winey.util.view.snackbar.WineyFeedResultSnackbar
+import org.go.sopt.winey.util.custom.snackbar.NotiPermissionSnackbar
+import org.go.sopt.winey.util.custom.snackbar.SnackbarType
+import org.go.sopt.winey.util.custom.snackbar.WineyFeedResultSnackbar
 
 fun Fragment.toast(message: String) {
     Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
