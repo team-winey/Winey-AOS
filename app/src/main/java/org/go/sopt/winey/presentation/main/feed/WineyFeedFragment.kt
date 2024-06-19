@@ -14,6 +14,7 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -40,6 +41,7 @@ import org.go.sopt.winey.util.amplitude.type.EventType
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_LIKE
 import org.go.sopt.winey.util.binding.BindingFragment
+import org.go.sopt.winey.util.event.Event
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.fragment.WineyUploadDialogFragment
 import org.go.sopt.winey.util.fragment.snackBar
@@ -107,6 +109,7 @@ class WineyFeedFragment :
         initPostLikeStateObserver()
         initDeleteFeedStateObserver()
         initLevelUpStateObserver()
+        collectEvent()
     }
 
     /** Adapter */
@@ -327,10 +330,6 @@ class WineyFeedFragment :
                     is UiState.Success -> {
                         val pagingData = state.data
                         wineyFeedAdapter.submitData(pagingData)
-
-                        // 상세피드 들어갔다 나올 때, 성공 상태가 계속 관찰되어
-                        // 이미 삭제된 항목이 되살아나는 일이 없도록 UiState 초기화
-                        viewModel.initGetWineyFeedState()
                     }
 
                     is UiState.Failure -> {
@@ -391,17 +390,8 @@ class WineyFeedFragment :
                         val response = state.data ?: return@onEach
                         deletePagingDataItem(response.feedId.toInt())
 
-                        wineySnackbar(
-                            anchorView = binding.root,
-                            message = stringOf(R.string.snackbar_feed_delete_success),
-                            type = SnackbarType.WineyFeedResult(isSuccess = true)
-                        )
-
+                        // 목표 프로그레스바 갱신을 위해 유저 데이터 재조회
                         mainViewModel.getUser()
-
-                        // 상세피드 들어갔다 나올 때 성공 상태가 계속 관찰되어
-                        // 스낵바가 반복해서 뜨지 않도록 UiState 초기화
-                        viewModel.initDeleteFeedState()
                     }
 
                     is UiState.Failure -> {
@@ -411,6 +401,28 @@ class WineyFeedFragment :
                     else -> {}
                 }
             }.launchIn(viewLifeCycleScope)
+    }
+
+    private fun collectEvent() {
+        viewModel.eventFlow.flowWithLifecycle(viewLifeCycle)
+            .onEach { event ->
+                when (event) {
+                    is Event.ShowSnackBar -> {
+                        showFeedDeleteSuccessSnackBar()
+                    }
+
+                    else -> {}
+                }
+            }
+            .launchIn(viewLifeCycleScope)
+    }
+
+    private fun showFeedDeleteSuccessSnackBar() {
+        wineySnackbar(
+            anchorView = binding.root,
+            message = stringOf(R.string.snackbar_feed_delete_success),
+            type = SnackbarType.WineyFeedResult(isSuccess = true)
+        )
     }
 
     private fun deletePagingDataItem(feedId: Int) {

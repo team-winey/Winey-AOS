@@ -5,18 +5,24 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import org.go.sopt.winey.R
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.data.model.remote.response.ResponseDeleteFeedDto
 import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.FeedRepository
+import org.go.sopt.winey.util.event.Event
+import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.view.UiState
 import retrofit2.HttpException
 import timber.log.Timber
@@ -44,6 +50,9 @@ class WineyFeedViewModel @Inject constructor(
     val deleteWineyFeedState: StateFlow<UiState<ResponseDeleteFeedDto?>> =
         _deleteWineyFeedState.asStateFlow()
 
+    private val _eventFlow = MutableSharedFlow<Event>()
+    val eventFlow: SharedFlow<Event> = _eventFlow.asSharedFlow()
+
     init {
         getWineyFeedList()
     }
@@ -60,10 +69,6 @@ class WineyFeedViewModel @Inject constructor(
                     _getWineyFeedListState.emit(UiState.Success(pagingData))
                 }
         }
-    }
-
-    fun initGetWineyFeedState() {
-        _getWineyFeedListState.value = UiState.Empty
     }
 
     fun getDetailFeed(feedId: Int) {
@@ -102,13 +107,16 @@ class WineyFeedViewModel @Inject constructor(
             feedRepository.deleteFeed(feedId)
                 .onSuccess { response ->
                     _deleteWineyFeedState.emit(UiState.Success(response))
+                    sendEvent(Event.ShowSnackBar)
                 }
                 .onFailure { t -> handleFailureState(_deleteWineyFeedState, t) }
         }
     }
 
-    fun initDeleteFeedState() {
-        _deleteWineyFeedState.value = UiState.Empty
+    private fun sendEvent(event: Event) {
+        viewModelScope.launch {
+            _eventFlow.emit(event)
+        }
     }
 
     private fun <T> handleFailureState(loadingState: MutableStateFlow<UiState<T>>, t: Throwable) {
