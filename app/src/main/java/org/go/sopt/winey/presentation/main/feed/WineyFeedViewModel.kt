@@ -14,15 +14,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.go.sopt.winey.R
 import org.go.sopt.winey.data.model.remote.request.RequestPostLikeDto
 import org.go.sopt.winey.data.model.remote.response.ResponseDeleteFeedDto
 import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.FeedRepository
-import org.go.sopt.winey.util.event.Event
-import org.go.sopt.winey.util.fragment.stringOf
+import org.go.sopt.winey.util.event.EventBus
 import org.go.sopt.winey.util.view.UiState
 import retrofit2.HttpException
 import timber.log.Timber
@@ -50,8 +48,8 @@ class WineyFeedViewModel @Inject constructor(
     val deleteWineyFeedState: StateFlow<UiState<ResponseDeleteFeedDto?>> =
         _deleteWineyFeedState.asStateFlow()
 
-    private val _eventFlow = MutableSharedFlow<Event>()
-    val eventFlow: SharedFlow<Event> = _eventFlow.asSharedFlow()
+    private val _eventFlow = MutableSharedFlow<EventBus>()
+    val eventFlow: SharedFlow<EventBus> = _eventFlow.asSharedFlow()
 
     init {
         getWineyFeedList()
@@ -107,13 +105,13 @@ class WineyFeedViewModel @Inject constructor(
             feedRepository.deleteFeed(feedId)
                 .onSuccess { response ->
                     _deleteWineyFeedState.emit(UiState.Success(response))
-                    sendEvent(Event.ShowSnackBar)
+                    sendEvent(EventBus.ShowSnackBar)
                 }
                 .onFailure { t -> handleFailureState(_deleteWineyFeedState, t) }
         }
     }
 
-    private fun sendEvent(event: Event) {
+    private fun sendEvent(event: EventBus) {
         viewModelScope.launch {
             _eventFlow.emit(event)
         }

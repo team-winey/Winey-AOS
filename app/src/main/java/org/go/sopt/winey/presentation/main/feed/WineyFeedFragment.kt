@@ -14,7 +14,6 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.SimpleItemAnimator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -41,7 +40,7 @@ import org.go.sopt.winey.util.amplitude.type.EventType
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
 import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_LIKE
 import org.go.sopt.winey.util.binding.BindingFragment
-import org.go.sopt.winey.util.event.Event
+import org.go.sopt.winey.util.event.EventBus
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
 import org.go.sopt.winey.util.fragment.WineyUploadDialogFragment
 import org.go.sopt.winey.util.fragment.snackBar
@@ -407,7 +406,7 @@ class WineyFeedFragment :
         viewModel.eventFlow.flowWithLifecycle(viewLifeCycle)
             .onEach { event ->
                 when (event) {
-                    is Event.ShowSnackBar -> {
+                    is EventBus.ShowSnackBar -> {
                         showFeedDeleteSuccessSnackBar()
                     }
 
