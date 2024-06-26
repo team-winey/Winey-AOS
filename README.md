@@ -33,13 +33,13 @@
 | ----------------------- | ------------------------------------------------------------------------- |
 | Architecture            | MVVM                                                                      |
 | Design Pattern          | Observer Pattern, Repository Pattern, State Pattern                       |
-| JetPack Components      | LifeCycle, ViewModel, LiveData, StateFlow, DataBinding, DataStore, Paging |
+| JetPack Components      | Lifecycle, ViewModel, LiveData, DataBinding, DataStore, Paging |
 | Dependency Injection    | Hilt                                                                      |
 | Network                 | Retrofit, OkHttp, kotlinx.serialization                                   |
-| Asynchronous Processing | Coroutine, Flow                                                           |
+| Asynchronous Processing | Coroutine + Flow                                                           |
 | Third Party Library     | Kakao Login, FCM, Coil, Lottie, Timber, CircleImageView                  |
 | Branch Strategy         | Git Flow                                                                  |
-| CI/CD                   | GitHub Actions (KtLint, Compile Check)                                    |
+| CI                   | GitHub Actions (KtLint, Compile Check)                                    |
 | Data Analytics          | Amplitude                                                                 |
 | Communication Tool      | Notion, Slack, Figma, Postman, Swagger                                    |
 
