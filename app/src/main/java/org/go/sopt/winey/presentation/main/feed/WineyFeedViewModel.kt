@@ -21,7 +21,6 @@ import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.FeedRepository
 import org.go.sopt.winey.util.event.EventBus
-import org.go.sopt.winey.util.view.UiState
 import org.go.sopt.winey.util.state.UiState
 import retrofit2.HttpException
 import timber.log.Timber
