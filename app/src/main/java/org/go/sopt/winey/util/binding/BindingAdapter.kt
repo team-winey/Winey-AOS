@@ -196,7 +196,7 @@ fun TextView.setNicknameHelperTextColor(inputUiState: InputUiState) {
 fun TextView.setNicknameCounter(
     prevScreenName: String,
     inputNicknameLength: Int,
-    originalNicknameLength: Int,
+    originalNicknameLength: Int
 ) {
     when (prevScreenName) {
         STORY_SCREEN -> {

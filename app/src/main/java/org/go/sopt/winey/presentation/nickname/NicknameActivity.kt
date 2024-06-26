@@ -22,8 +22,6 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
-import org.go.sopt.winey.util.state.InputError
-import org.go.sopt.winey.util.state.InputUiState
 import org.go.sopt.winey.util.state.UiState
 import org.json.JSONException
 import org.json.JSONObject

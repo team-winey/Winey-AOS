@@ -1,6 +1,5 @@
 package org.go.sopt.winey.presentation.nickname
 
-import android.renderscript.ScriptGroup.Input
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NicknameViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
     val _nickname = MutableStateFlow("")
     private val nickname: String get() = _nickname.value
@@ -132,7 +131,7 @@ class NicknameViewModel @Inject constructor(
 
     private fun <T> Flow<T>.mutableStateIn(
         initialValue: T,
-        scope: CoroutineScope,
+        scope: CoroutineScope
     ): MutableStateFlow<T> {
         val flow = MutableStateFlow(initialValue)
         scope.launch {
