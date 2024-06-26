@@ -19,15 +19,14 @@ import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingActivity
-import org.go.sopt.winey.util.state.ErrorCode
 import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
+import org.go.sopt.winey.util.state.InputError
 import org.go.sopt.winey.util.state.InputUiState
 import org.go.sopt.winey.util.state.UiState
 import org.json.JSONException
 import org.json.JSONObject
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -63,15 +62,12 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable?) {}
 
-            // 텍스트가 바뀌면 중복체크 상태 false로 초기화
+            // 텍스트가 변할 때마다 중복 체크 상태 갱신
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val inputText = s.toString()
-
-                if (inputText.isNotBlank() && inputText != prevText) {
+                if (inputText != prevText) {
                     viewModel.updateDuplicateCheckState(false)
-                    Timber.d("DUPLICATE CHECK: ${viewModel.duplicateChecked.value}")
                 }
-
                 prevText = inputText
             }
         })
@@ -80,7 +76,7 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
     private fun initDuplicateCheckButtonClickListener() {
         binding.btnNicknameDuplicateCheck.setOnClickListener {
             viewModel.apply {
-                if (checkValidInput()) {
+                if (validateNickname()) {
                     getNicknameDuplicateCheck()
                 }
             }
@@ -89,15 +85,13 @@ class NicknameActivity : BindingActivity<ActivityNicknameBinding>(R.layout.activ
 
     private fun initCompleteButtonClickListener() {
         binding.btnNicknameComplete.setOnClickListener {
-            // 중복체크 하지 않고 시작하기 버튼 누르면 에러 표시
+            if (!viewModel.validateNickname()) return@setOnClickListener
+
             if (!viewModel.duplicateChecked.value) {
-                viewModel.updateInputUiState(
-                    InputUiState.Failure(ErrorCode.CODE_UNCHECKED_DUPLICATION)
-                )
+                viewModel.showUncheckedDuplicationError()
                 return@setOnClickListener
             }
 
-            // 유효한 닉네임인 경우에만 PATCH 서버통신 진행
             if (viewModel.isValidNickname.value) {
                 sendEventToAmplitude()
                 viewModel.patchNickname()

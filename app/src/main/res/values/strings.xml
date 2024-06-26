@@ -229,7 +229,6 @@
     <string name="nickname_start_btn_text">시작하기</string>
 
     <string name="nickname_blank_input_error">입력값이 비어있습니다 :(</string>
-    <string name="nickname_invalid_length_error">1~8자로 입력해주세요 :(</string>
     <string name="nickname_space_special_char_error">공백과 특수문자는 사용할 수 없습니다 :(</string>
     <string name="nickname_unchecked_duplication_error">닉네임 중복확인을 해주세요 :(</string>
     <string name="nickname_duplicated_error">중복된 닉네임입니다 :(</string>
