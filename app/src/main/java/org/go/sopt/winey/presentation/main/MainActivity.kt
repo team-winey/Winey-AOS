@@ -30,8 +30,8 @@ import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
-import org.go.sopt.winey.util.view.UiState
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
+import org.go.sopt.winey.util.state.UiState
+import org.go.sopt.winey.util.custom.snackbar.SnackbarType
 
 @AndroidEntryPoint
 class MainActivity : BindingActivity<ActivityMainBinding>(R.layout.activity_main) {

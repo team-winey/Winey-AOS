@@ -19,12 +19,12 @@ import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
 import org.go.sopt.winey.util.binding.BindingActivity
-import org.go.sopt.winey.util.code.ErrorCode
+import org.go.sopt.winey.util.state.ErrorCode
 import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
-import org.go.sopt.winey.util.view.InputUiState
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.InputUiState
+import org.go.sopt.winey.util.state.UiState
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber

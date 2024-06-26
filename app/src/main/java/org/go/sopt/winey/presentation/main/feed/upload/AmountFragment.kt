@@ -23,9 +23,9 @@ import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
 import org.go.sopt.winey.util.multipart.UriToRequestBody
 import org.go.sopt.winey.util.number.formatAmountNumber
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import org.go.sopt.winey.util.view.setOnSingleClickListener
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
+import org.go.sopt.winey.util.custom.snackbar.SnackbarType
 
 @AndroidEntryPoint
 class AmountFragment : BindingFragment<FragmentAmountBinding>(R.layout.fragment_amount) {

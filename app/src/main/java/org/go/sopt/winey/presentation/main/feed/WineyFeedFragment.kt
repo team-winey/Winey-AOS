@@ -36,9 +36,9 @@ import org.go.sopt.winey.presentation.model.WineyDialogLabel
 import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.util.activity.showReportGoogleForm
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
-import org.go.sopt.winey.util.amplitude.type.EventType
-import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_FEED_ITEM
-import org.go.sopt.winey.util.amplitude.type.EventType.TYPE_CLICK_LIKE
+import org.go.sopt.winey.util.amplitude.EventType
+import org.go.sopt.winey.util.amplitude.EventType.TYPE_CLICK_FEED_ITEM
+import org.go.sopt.winey.util.amplitude.EventType.TYPE_CLICK_LIKE
 import org.go.sopt.winey.util.binding.BindingFragment
 import org.go.sopt.winey.util.event.EventBus
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
@@ -48,10 +48,10 @@ import org.go.sopt.winey.util.fragment.stringOf
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
 import org.go.sopt.winey.util.fragment.wineySnackbar
-import org.go.sopt.winey.util.view.UiState
-import org.go.sopt.winey.util.view.WineyPopupMenu
+import org.go.sopt.winey.util.state.UiState
+import org.go.sopt.winey.util.custom.WineyPopupMenu
 import org.go.sopt.winey.util.view.setOnSingleClickListener
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
+import org.go.sopt.winey.util.custom.snackbar.SnackbarType
 import org.json.JSONException
 import org.json.JSONObject
 import timber.log.Timber

@@ -26,9 +26,9 @@ import org.go.sopt.winey.util.context.snackBar
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.context.wineySnackbar
 import org.go.sopt.winey.util.fragment.WineyDialogFragment
-import org.go.sopt.winey.util.view.UiState
-import org.go.sopt.winey.util.view.WineyPopupMenu
-import org.go.sopt.winey.util.view.snackbar.SnackbarType
+import org.go.sopt.winey.util.state.UiState
+import org.go.sopt.winey.util.custom.WineyPopupMenu
+import org.go.sopt.winey.util.custom.snackbar.SnackbarType
 import timber.log.Timber
 
 @AndroidEntryPoint

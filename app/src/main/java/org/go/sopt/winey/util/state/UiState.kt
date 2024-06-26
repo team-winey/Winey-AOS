@@ -1,4 +1,4 @@
-package org.go.sopt.winey.util.view
+package org.go.sopt.winey.util.state
 
 sealed interface UiState<out T> {
     object Empty : UiState<Nothing>

@@ -15,7 +15,7 @@ import org.go.sopt.winey.domain.entity.UserV2
 import org.go.sopt.winey.domain.repository.AuthRepository
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.domain.repository.NotificationRepository
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject

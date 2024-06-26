@@ -18,13 +18,13 @@ import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.MY_PAGE_SCREEN
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.STORY_SCREEN
-import org.go.sopt.winey.util.code.ErrorCode.*
+import org.go.sopt.winey.util.state.ErrorCode.*
 import org.go.sopt.winey.util.context.colorOf
 import org.go.sopt.winey.util.context.drawableOf
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.number.formatAmountNumber
-import org.go.sopt.winey.util.view.InputUiState
-import org.go.sopt.winey.util.view.InputUiState.*
+import org.go.sopt.winey.util.state.InputUiState
+import org.go.sopt.winey.util.state.InputUiState.*
 import java.text.DecimalFormat
 
 @BindingAdapter("likedAmount")

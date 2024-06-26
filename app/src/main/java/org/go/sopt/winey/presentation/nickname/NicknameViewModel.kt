@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.data.model.remote.request.RequestPatchNicknameDto
 import org.go.sopt.winey.domain.repository.AuthRepository
-import org.go.sopt.winey.util.code.ErrorCode
-import org.go.sopt.winey.util.view.InputUiState
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.ErrorCode
+import org.go.sopt.winey.util.state.InputUiState
+import org.go.sopt.winey.util.state.UiState
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject

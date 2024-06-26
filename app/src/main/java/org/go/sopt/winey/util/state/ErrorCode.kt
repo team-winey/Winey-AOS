@@ -1,4 +1,4 @@
-package org.go.sopt.winey.util.code
+package org.go.sopt.winey.util.state
 
 enum class ErrorCode {
     CODE_BLANK_INPUT,

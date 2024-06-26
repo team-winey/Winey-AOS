@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.go.sopt.winey.ActivityLifecycleHandler
+import org.go.sopt.winey.util.activity.ActivityLifecycleHandler
 import org.go.sopt.winey.R
 import org.go.sopt.winey.domain.repository.DataStoreRepository
 import org.go.sopt.winey.presentation.splash.SplashActivity

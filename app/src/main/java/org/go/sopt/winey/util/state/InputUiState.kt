@@ -1,6 +1,4 @@
-package org.go.sopt.winey.util.view
-
-import org.go.sopt.winey.util.code.ErrorCode
+package org.go.sopt.winey.util.state
 
 sealed class InputUiState {
     object Empty : InputUiState()

@@ -23,7 +23,7 @@ import org.go.sopt.winey.util.context.hideKeyboard
 import org.go.sopt.winey.util.fragment.snackBar
 import org.go.sopt.winey.util.fragment.viewLifeCycle
 import org.go.sopt.winey.util.fragment.viewLifeCycleScope
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import java.text.DecimalFormat
 
 @AndroidEntryPoint
