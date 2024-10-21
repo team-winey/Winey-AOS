@@ -7,9 +7,8 @@ plugins {
     id(ModulePlugins.kotlinKapt)
     id(ModulePlugins.kotlinSerialization)
     id(ModulePlugins.hilt)
-    id(ModulePlugins.oss)
     id(ModulePlugins.googleService)
-    id(ModulePlugins.firebaseAppdistribution)
+    id(ModulePlugins.firebaseAppDistribution)
     id(ModulePlugins.firebaseCrashlytics)
 }
 
@@ -95,12 +94,10 @@ dependencies {
         implementation(appCompat)
         implementation(constraintLayout)
         implementation(swipeRefreshLayout)
-        implementation(startup)
         implementation(hilt)
         implementation(activity)
         implementation(fragment)
         implementation(legacy)
-        implementation(security)
         implementation(lifecycleKtx)
         implementation(lifecycleLiveDataKtx)
         implementation(lifecycleViewModelKtx)
@@ -108,8 +105,6 @@ dependencies {
         implementation(lifecycleService)
         implementation(splashScreen)
         implementation(pagingRuntime)
-        implementation(workManager)
-        implementation(hiltWorkManager)
         implementation(exif)
         implementation(dataStore)
         implementation(dataStoreCore)
@@ -123,12 +118,10 @@ dependencies {
 
     KaptDependencies.run {
         kapt(hiltAndroidCompiler)
-        kapt(hiltWorkManagerCompiler)
     }
 
     GoogleDependencies.run {
         implementation(materialDesign)
-        implementation(ossLicense)
         implementation(inAppUpdate)
         implementation(inAppUpdateKtx)
     }
@@ -142,16 +135,10 @@ dependencies {
         implementation(retrofitJsonConverter)
         implementation(timber)
         implementation(progressView)
-        implementation(balloon)
         implementation(lottie)
         implementation(circleImageView)
         implementation(kakaoLogin)
         implementation(amplitude)
-
-        debugImplementation(flipper)
-        debugImplementation(flipperNetwork)
-        debugImplementation(flipperLeakCanary)
-        debugImplementation(soloader)
     }
 
     FirebaseDependencies.run {
@@ -159,6 +146,5 @@ dependencies {
         implementation(messaging)
         implementation(analytics)
         implementation(crashlytics)
-        implementation(remoteConfig)
     }
 }
