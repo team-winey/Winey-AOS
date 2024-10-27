@@ -35,15 +35,14 @@ jobs:
                   KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
                   KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
                   STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-                  GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
               run: |
-                  echo "auth.base.url=$AUTH_BASE_URL" >> ./local.properties
-                  echo "kakao.native.key=$KAKAO_NATIVE_KEY" >> ./local.properties
-                  echo "amplitude.api.key=$AMPLITUDE_API_KEY" >> ./local.properties
-                  echo "kakaoNativeKey=$KAKAO_NATIVE_KEY" >> ./local.properties
-                  echo "keyAlias=$KEY_ALIAS" >> ./local.properties
-                  echo "keyPassword=$KEY_PASSWORD" >> ./local.properties
-                  echo "storePassword=$STORE_PASSWORD" >> ./local.properties
+                  echo auth.base.url=\"$AUTH_BASE_URL\" >> ./local.properties
+                  echo kakao.native.key=\"$KAKAO_NATIVE_KEY\" >> ./local.properties
+                  echo amplitude.api.key=\"$AMPLITUDE_API_KEY\" >> ./local.properties
+                  echo kakaoNativeKey=$KAKAO_NATIVE_KEY >> ./local.properties
+                  echo keyAlias=$KEY_ALIAS >> ./local.properties
+                  echo keyPassword=$KEY_PASSWORD >> ./local.properties
+                  echo storePassword=$STORE_PASSWORD >> ./local.properties
 
             - name: Create Google Services JSON File
               env:
