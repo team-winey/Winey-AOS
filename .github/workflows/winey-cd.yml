@@ -2,6 +2,7 @@
 env:
     GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false"
     GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
+
 # main, develop 브랜치에 PR을 올릴 시 트리거
 on:
     pull_request:
@@ -9,6 +10,9 @@ on:
             - develop
             - main
 
+# 전체 워크플로우에 대한 권한 설정
+permissions:
+    contents: write
 
 jobs:
     cd-build:
