@@ -36,6 +36,9 @@ jobs:
                       exit 1
                     fi
 
+            -   name: List keys in winey.jks
+                run: |
+                    keytool -list -v -keystore ./app/winey.jks -storepass "${{ secrets.STORE_PASSWORD }}"
 
             -   name: Generate local.properties
                 env:
