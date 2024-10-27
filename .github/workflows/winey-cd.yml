@@ -2,11 +2,13 @@
 env:
     GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false"
     GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
-# main 브랜치에 PR을 올릴 시 트리거
+# main, develop 브랜치에 PR을 올릴 시 트리거
 on:
     pull_request:
         branches:
             - develop
+            - main
+
 
 jobs:
     cd-build:
@@ -19,7 +21,7 @@ jobs:
             - name: Set up JDK 17
               uses: actions/setup-java@v3
               with:
-                  distribution: 'corretto'
+                  distribution: 'temurin'
                   java-version: 17
 
             - name: Generate winey.keystore.jks
