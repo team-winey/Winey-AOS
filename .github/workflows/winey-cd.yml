@@ -43,10 +43,13 @@ jobs:
                   echo "keyPassword=$KEY_PASSWORD" >> ./local.properties
                   echo "storePassword=$STORE_PASSWORD" >> ./local.properties
 
-            -   name: Generate google-services.json
-                run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' | base64 --d > ./app/google-services.json
+            - name: Create Google Services JSON File
+              env:
+                 GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+              run: echo $GOOGLE_SERVICES_JSON > ./app/google-services.json
 
-            # PR 제목에서 release v*.*.* 형식의 버전을 추출
+
+        # PR 제목에서 release v*.*.* 형식의 버전을 추출
             -   name: Extract Version Name
                 run: echo "##[set-output name=version;]v$(echo '${{ github.event.pull_request.title }}' | grep -oP 'release v\K[0-9]+\.[0-9]+\.[0-9]+')"
                 id: extract_version
