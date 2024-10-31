@@ -8,9 +8,8 @@ buildscript {
         classpath(ClassPathPlugins.gradle)
         classpath(ClassPathPlugins.kotlinGradlePlugin)
         classpath(ClassPathPlugins.hilt)
-        classpath(ClassPathPlugins.oss)
         classpath(ClassPathPlugins.googleService)
-        classpath(ClassPathPlugins.firebaseAppdistribution)
+        classpath(ClassPathPlugins.firebaseAppDistribution)
         classpath(ClassPathPlugins.firebaseCrashlytics)
     }
 }
@@ -18,7 +17,6 @@ buildscript {
 plugins {
     id(ProjectPlugins.ktlint) version Versions.ktlintVersion
     id(ProjectPlugins.kotlinSerialization) version Versions.kotlinVersion
-    id("org.jetbrains.kotlin.android") version "1.8.20" apply false
 }
 
 allprojects {
