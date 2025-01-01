@@ -1,0 +1,102 @@
+# JVM 옵션을 설정, 최대 힙 메모리를 4GB로
+env:
+    GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false"
+    GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: true
+
+# main, develop 브랜치에 PR을 올릴 시 트리거
+on:
+    pull_request:
+        branches:
+            - develop
+            - main
+
+# 전체 워크플로우에 대한 권한 설정
+permissions:
+    contents: write
+
+jobs:
+    cd-build:
+        runs-on: ubuntu-latest
+
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v4
+
+            -   name: Set up JDK 17
+                uses: actions/setup-java@v3
+                with:
+                    distribution: 'temurin'
+                    java-version: 17
+
+            -   name: Generate winey.keystore.jks
+                run: echo '${{ secrets.WINEY_KEYSTORE }}' | base64 -d > ./app/winey.jks
+
+            -   name: Check if winey.jks exists
+                run: |
+                    if [ -f "./app/winey.jks" ]; then
+                        echo "winey.jks file exists in the app directory."
+                    else
+                        echo "Error: winey.jks file is missing in the app directory." >&2
+                      exit 1
+                    fi
+
+            -   name: List keys in winey.jks
+                run: |
+                    keytool -list -v -keystore ./app/winey.jks -storepass "${{ secrets.STORE_PASSWORD }}"
+
+            -   name: Generate local.properties
+                env:
+                    AUTH_BASE_URL: ${{ secrets.AUTH_BASE_URL }}
+                    KAKAO_NATIVE_KEY: ${{ secrets.KAKAO_NATIVE_KEY }}
+                    AMPLITUDE_API_KEY: ${{ secrets.AMPLITUDE_API_KEY }}
+                    KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+                    KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+                    STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+                run: |
+                    echo auth.base.url=\"$AUTH_BASE_URL\" >> ./local.properties
+                    echo kakao.native.key=\"$KAKAO_NATIVE_KEY\" >> ./local.properties
+                    echo amplitude.api.key=\"$AMPLITUDE_API_KEY\" >> ./local.properties
+                    echo kakaoNativeKey=$KAKAO_NATIVE_KEY >> ./local.properties
+                    echo keyAlias=$KEY_ALIAS >> ./local.properties
+                    echo keyPassword=$KEY_PASSWORD >> ./local.properties
+                    echo storePassword=$STORE_PASSWORD >> ./local.properties
+
+            -   name: Create Google Services JSON File
+                env:
+                    GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+                run: echo $GOOGLE_SERVICES_JSON > ./app/google-services.json
+
+
+            # PR 제목에서 release v*.*.* 형식의 버전을 추출
+            -   name: Extract Version Name
+                run: echo "##[set-output name=version;]v$(echo '${{ github.event.pull_request.title }}' | grep -oP 'release v\K[0-9]+\.[0-9]+\.[0-9]+')"
+                id: extract_version
+
+            -   name: Build Release APK
+                run: |
+                    ./gradlew :app:assembleRelease
+
+            # GitHub Actions Artifacts에 릴리즈 apk 추출
+            -   name: Upload Release Build to Artifacts
+                uses: actions/upload-artifact@v3
+                with:
+                    name: release-artifacts
+                    path: app/build/outputs/apk/release/
+                    if-no-files-found: error
+
+            -   name: Create Github Release
+                uses: softprops/action-gh-release@v1
+                with:
+                    tag_name: ${{ steps.extract_version.outputs.version }}
+                    release_name: ${{ steps.extract_version.outputs.version }}
+                    generate_release_notes: true
+                    files: |
+                        app/build/outputs/apk/release/app-release.apk
+
+            -   name: Upload artifact to Firebase App Distribution
+                uses: wzieba/Firebase-Distribution-Github-Action@v1
+                with:
+                    appId: ${{secrets.FIREBASE_APP_ID}}
+                    serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+                    groups: testers
+                    file: app/build/outputs/apk/release/app-release.apk
