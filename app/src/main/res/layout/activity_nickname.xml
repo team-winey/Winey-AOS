@@ -15,7 +15,7 @@
 
         <import type="android.view.View" />
 
-        <import type="org.go.sopt.winey.util.view.InputUiState" />
+        <import type="org.go.sopt.winey.util.state.InputUiState" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

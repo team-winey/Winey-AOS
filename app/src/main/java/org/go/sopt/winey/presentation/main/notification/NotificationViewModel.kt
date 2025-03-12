@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.go.sopt.winey.domain.entity.Notification
 import org.go.sopt.winey.domain.repository.NotificationRepository
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject

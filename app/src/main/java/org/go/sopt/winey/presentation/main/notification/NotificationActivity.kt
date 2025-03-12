@@ -15,7 +15,7 @@ import org.go.sopt.winey.presentation.main.feed.detail.DetailActivity
 import org.go.sopt.winey.presentation.main.mypage.goal.GoalPathActivity
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 
 @AndroidEntryPoint
 class NotificationActivity :

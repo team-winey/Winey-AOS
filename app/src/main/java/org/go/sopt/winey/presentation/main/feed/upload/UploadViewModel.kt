@@ -18,10 +18,10 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.go.sopt.winey.data.model.remote.response.ResponsePostWineyFeedDto
 import org.go.sopt.winey.domain.repository.FeedRepository
 import org.go.sopt.winey.presentation.model.WineyFeedType
-import org.go.sopt.winey.util.code.ErrorCode
 import org.go.sopt.winey.util.multipart.UriToRequestBody
-import org.go.sopt.winey.util.view.InputUiState
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.InputError
+import org.go.sopt.winey.util.state.InputUiState
+import org.go.sopt.winey.util.state.UiState
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -94,9 +94,11 @@ class UploadViewModel @Inject constructor(
 
     private fun checkInputUiState(content: String): InputUiState {
         if (content.isBlank()) return InputUiState.Empty
+
         if (!checkContentLength((content))) {
-            return InputUiState.Failure(ErrorCode.CODE_INVALID_LENGTH)
+            return InputUiState.Failure(InputError.Upload)
         }
+
         return InputUiState.Success
     }
 

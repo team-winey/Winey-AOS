@@ -1,4 +1,4 @@
-package org.go.sopt.winey.util.view.snackbar
+package org.go.sopt.winey.util.custom.snackbar
 
 import android.view.LayoutInflater
 import android.view.View

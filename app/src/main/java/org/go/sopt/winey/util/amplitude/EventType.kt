@@ -1,4 +1,4 @@
-package org.go.sopt.winey.util.amplitude.type
+package org.go.sopt.winey.util.amplitude
 
 enum class EventType {
     TYPE_VIEW_SCREEN,

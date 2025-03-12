@@ -1,4 +1,4 @@
-# 👑 Winey - AOS 💸
+# 👑 Winey - Android 💸
 
 [GO SOPT](https://www.sopt.org/) 32기 앱잼 Winey Android 팀 레포입니다.
 
@@ -24,8 +24,8 @@
 ||                                          [@이하은](https://github.com/leeeha)                                          |                                          [@백혜선](https://github.com/sxunea)                                          |                                     [@우상욱](https://github.com/Sangwook123)                                     |
 |:---:| :--------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------: |
 || <img width="150" src="https://github.com/team-winey/Winey-AOS/assets/68090939/9eedf973-cd28-4601-abf5-e419d2152410" /> | <img width="150" src="https://github.com/team-winey/Winey-AOS/assets/68090939/7eb22b00-ef67-4ad0-9ae9-1bc5e579524b" /> | <img width="150" src="https://github.com/team-winey/Winey-AOS/assets/68090939/352352e9-9a4c-4de8-8fdb-dc73c26a271e" /> |
-|1차 릴리즈 <br> (23.06.20 ~ 23.11.05)|                            스플래시, 온보딩 <br> 절약 피드 생성 <br> 댓글 생성/삭제, 회원 탈퇴                              |                                    위니 피드, 상세 피드 <br> 마이 피드, 댓글 조회                                    |                                    카카오 로그인, 마이페이지 <br> 추천 피드, 알림 목록                                     |
-|2차 릴리즈 <br> (23.11.10 ~ ing)|과소비 피드 생성 <br> 피드 UI 수정 <br> 목표 여정 | 마이페이지 전면 수정 <br> 설정 화면 | FCM 푸시 알림 |
+|1차 릴리즈 <br> (23.06.20 ~ 23.11.05)|                           온보딩, 절약 피드 생성 <br> 댓글 생성/삭제 <br> 이벤트 태깅                            |                                    위니 피드, 상세 피드 <br> 마이 피드, 댓글 조회                                    |                                    카카오 로그인, 마이페이지 <br> 추천 피드, 알림 목록                                     |
+|2차 릴리즈 <br> (23.11.10 ~ 24.04.30)|과소비 피드 생성 <br> 목표 여정 <br> 인앱 업데이트 | 마이페이지 전면 수정 <br> 설정 화면 | FCM 푸시 알림 |
 
 ## 🛠 Tech Stack
 
@@ -33,13 +33,13 @@
 | ----------------------- | ------------------------------------------------------------------------- |
 | Architecture            | MVVM                                                                      |
 | Design Pattern          | Observer Pattern, Repository Pattern, State Pattern                       |
-| JetPack Components      | LifeCycle, ViewModel, LiveData, StateFlow, DataBinding, DataStore, Paging |
+| JetPack Components      | Lifecycle, ViewModel, LiveData, DataBinding, DataStore, Paging |
 | Dependency Injection    | Hilt                                                                      |
 | Network                 | Retrofit, OkHttp, kotlinx.serialization                                   |
-| Asynchronous Processing | Coroutine, Flow                                                           |
+| Asynchronous Processing | Coroutine + Flow                                                           |
 | Third Party Library     | Kakao Login, FCM, Coil, Lottie, Timber, CircleImageView                  |
 | Branch Strategy         | Git Flow                                                                  |
-| CI/CD                   | GitHub Actions (KtLint, Compile Check)                                    |
+| CI                   | GitHub Actions (KtLint, Compile Check)                                    |
 | Data Analytics          | Amplitude                                                                 |
 | Communication Tool      | Notion, Slack, Figma, Postman, Swagger                                    |
 

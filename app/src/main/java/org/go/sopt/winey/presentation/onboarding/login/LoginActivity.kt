@@ -14,10 +14,10 @@ import org.go.sopt.winey.databinding.ActivityLoginBinding
 import org.go.sopt.winey.presentation.main.MainActivity
 import org.go.sopt.winey.presentation.onboarding.story.StoryActivity
 import org.go.sopt.winey.util.amplitude.AmplitudeUtils
-import org.go.sopt.winey.util.amplitude.type.EventType
+import org.go.sopt.winey.util.amplitude.EventType
 import org.go.sopt.winey.util.binding.BindingActivity
 import org.go.sopt.winey.util.context.snackBar
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.state.UiState
 import org.json.JSONException
 import org.json.JSONObject
 import javax.inject.Inject

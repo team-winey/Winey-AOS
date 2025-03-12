@@ -37,7 +37,7 @@ data class ResponseGetNotificationDto(
             notiType = data.notiType,
             isChecked = data.isChecked,
             timeAgo = data.timeAgo,
-            linkId = data.linkId ?: null
+            linkId = data.linkId
         )
     }
 }

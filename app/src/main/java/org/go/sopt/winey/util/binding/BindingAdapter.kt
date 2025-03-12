@@ -18,13 +18,13 @@ import org.go.sopt.winey.presentation.model.UserLevel
 import org.go.sopt.winey.presentation.model.WineyFeedType
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.MY_PAGE_SCREEN
 import org.go.sopt.winey.presentation.nickname.NicknameActivity.Companion.STORY_SCREEN
-import org.go.sopt.winey.util.code.ErrorCode.*
 import org.go.sopt.winey.util.context.colorOf
 import org.go.sopt.winey.util.context.drawableOf
 import org.go.sopt.winey.util.context.stringOf
 import org.go.sopt.winey.util.number.formatAmountNumber
-import org.go.sopt.winey.util.view.InputUiState
-import org.go.sopt.winey.util.view.InputUiState.*
+import org.go.sopt.winey.util.state.InputError
+import org.go.sopt.winey.util.state.InputUiState
+import org.go.sopt.winey.util.state.InputUiState.*
 import java.text.DecimalFormat
 
 @BindingAdapter("likedAmount")
@@ -122,7 +122,7 @@ fun TextView.setUploadContentHelperText(inputUiState: InputUiState) {
 
     if (inputUiState is Failure) {
         visibility = View.VISIBLE
-        if (inputUiState.code == CODE_INVALID_LENGTH) {
+        if (inputUiState.error == InputError.Upload) {
             text = context.stringOf(R.string.upload_content_error_text)
         }
     }
@@ -167,12 +167,12 @@ fun TextView.setNicknameHelperText(inputUiState: InputUiState) {
 
         is Failure -> {
             visibility = View.VISIBLE
-            text = when (inputUiState.code) {
-                CODE_BLANK_INPUT -> context.stringOf(R.string.nickname_blank_input_error)
-                CODE_INVALID_LENGTH -> context.stringOf(R.string.nickname_invalid_length_error)
-                CODE_SPACE_SPECIAL_CHAR -> context.stringOf(R.string.nickname_space_special_char_error)
-                CODE_UNCHECKED_DUPLICATION -> context.stringOf(R.string.nickname_unchecked_duplication_error)
-                CODE_DUPLICATED -> context.stringOf(R.string.nickname_duplicated_error)
+            text = when (inputUiState.error) {
+                InputError.Nickname.BLANK_INPUT -> context.stringOf(R.string.nickname_blank_input_error)
+                InputError.Nickname.INVALID_CHAR -> context.stringOf(R.string.nickname_space_special_char_error)
+                InputError.Nickname.UNCHECKED_DUPLICATION -> context.stringOf(R.string.nickname_unchecked_duplication_error)
+                InputError.Nickname.DUPLICATED -> context.stringOf(R.string.nickname_duplicated_error)
+                else -> ""
             }
         }
     }

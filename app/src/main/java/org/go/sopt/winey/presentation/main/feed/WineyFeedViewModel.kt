@@ -5,8 +5,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
@@ -17,7 +20,8 @@ import org.go.sopt.winey.domain.entity.DetailFeed
 import org.go.sopt.winey.domain.entity.Like
 import org.go.sopt.winey.domain.entity.WineyFeed
 import org.go.sopt.winey.domain.repository.FeedRepository
-import org.go.sopt.winey.util.view.UiState
+import org.go.sopt.winey.util.event.EventBus
+import org.go.sopt.winey.util.state.UiState
 import retrofit2.HttpException
 import timber.log.Timber
 import javax.inject.Inject
@@ -44,6 +48,9 @@ class WineyFeedViewModel @Inject constructor(
     val deleteWineyFeedState: StateFlow<UiState<ResponseDeleteFeedDto?>> =
         _deleteWineyFeedState.asStateFlow()
 
+    private val _eventFlow = MutableSharedFlow<EventBus>()
+    val eventFlow: SharedFlow<EventBus> = _eventFlow.asSharedFlow()
+
     init {
         getWineyFeedList()
     }
@@ -60,10 +67,6 @@ class WineyFeedViewModel @Inject constructor(
                     _getWineyFeedListState.emit(UiState.Success(pagingData))
                 }
         }
-    }
-
-    fun initGetWineyFeedState() {
-        _getWineyFeedListState.value = UiState.Empty
     }
 
     fun getDetailFeed(feedId: Int) {
@@ -102,13 +105,16 @@ class WineyFeedViewModel @Inject constructor(
             feedRepository.deleteFeed(feedId)
                 .onSuccess { response ->
                     _deleteWineyFeedState.emit(UiState.Success(response))
+                    sendEvent(EventBus.ShowSnackBar)
                 }
                 .onFailure { t -> handleFailureState(_deleteWineyFeedState, t) }
         }
     }
 
-    fun initDeleteFeedState() {
-        _deleteWineyFeedState.value = UiState.Empty
+    private fun sendEvent(event: EventBus) {
+        viewModelScope.launch {
+            _eventFlow.emit(event)
+        }
     }
 
     private fun <T> handleFailureState(loadingState: MutableStateFlow<UiState<T>>, t: Throwable) {
@@ -127,6 +133,5 @@ class WineyFeedViewModel @Inject constructor(
         private const val CODE_WINEYFEED_INVALID_USER = 404
         private const val CODE_WINEYFEED_INVALID_REQUEST = 400
         private const val MSG_WINEYFEED_FAIL = "FAIL"
-        private const val ERROR_GET_WINEY_FEED_LIST = "error get winey feed list"
     }
 }
